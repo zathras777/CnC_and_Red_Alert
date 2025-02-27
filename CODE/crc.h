@@ -76,7 +76,7 @@ class CRCEngine {
 
 		long Value(void) const {
 			if (Buffer_Needs_Data()) {
-				return(_lrotl(CRC, 1) + StagingBuffer.Composite);
+				return((CRC << 1 | CRC >> 31) + StagingBuffer.Composite);
 			}
 			return(CRC);
 		};
