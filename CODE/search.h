@@ -54,19 +54,6 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
-/*
-**	The "bool" integral type was defined by the C++ committee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
-*/
-#ifndef __BORLANDC__
-#ifndef TRUE_FALSE_DEFINED
-#define TRUE_FALSE_DEFINED
-enum {false=0,true=1};
-typedef int bool;
-#endif
-#endif
-
 #ifndef __BORLANDC__
 #define	_USERENTRY
 #endif

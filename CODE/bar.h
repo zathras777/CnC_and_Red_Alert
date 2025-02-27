@@ -38,19 +38,6 @@
 #ifndef BAR_H
 #define BAR_H
 
-/*
-**	The "bool" integral type was defined by the C++ committee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
-*/
-#ifndef __BORLANDC__
-#ifndef TRUE_FALSE_DEFINED
-#define TRUE_FALSE_DEFINED
-enum {false=0,true=1};
-typedef int bool;
-#endif
-#endif
-
 #include "fixed.h"
 
 

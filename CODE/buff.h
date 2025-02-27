@@ -41,19 +41,6 @@
 
 
 /*
-**	The "bool" integral type was defined by the C++ committee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
-*/
-#ifndef __BORLANDC__
-#ifndef TRUE_FALSE_DEFINED
-#define TRUE_FALSE_DEFINED
-enum {false=0,true=1};
-typedef int bool;
-#endif
-#endif
-
-/*
 **	A general purpose buffer pointer handler object. It holds not only the pointer to the
 **	buffer, but its size as well. By using this class instead of separate pointer and size
 **	values, function interfaces and algorithms become simpler to manage and understand.

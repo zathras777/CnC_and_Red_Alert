@@ -78,13 +78,4 @@
 //#pragma off(unreferenced)
 
 
-// Fix deficiency in Watcom so that true/false will be defined.
-#ifndef __BORLANDC__
-#ifndef TRUE_FALSE_DEFINED
-#define TRUE_FALSE_DEFINED
-enum {false=0,true=1};
-typedef int bool;
-#endif
-#endif
-
 #endif
