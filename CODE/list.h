@@ -38,6 +38,9 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <algorithm>
+using std::max;
+
 #include "control.h"
 #include "shapebtn.h"
 #include "slider.h"
