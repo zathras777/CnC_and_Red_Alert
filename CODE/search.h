@@ -614,7 +614,7 @@ bool IndexClass<T>::Remove_Index(int id)
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 template<class T>
-static int _USERENTRY IndexClass<T>::search_compfunc(void const * ptr1, void const * ptr2)
+int _USERENTRY IndexClass<T>::search_compfunc(void const * ptr1, void const * ptr2)
 {
 	if (*(int const *)ptr1 == *(int const *)ptr2) {
 		return(0);
