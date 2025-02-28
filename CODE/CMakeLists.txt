@@ -6,7 +6,10 @@ add_compile_definitions(-DWIN32) # hopefully easier than DOS
 include_directories(../port)
 add_compile_definitions(-D__cdecl= -D__far= -Dcdecl= -Dfar=)
 
-#jshell
+add_library(jshell STATIC
+	rotbmp.cpp
+	sprite.cpp
+)
 
 add_library(tech STATIC
     lzo1x_c.cpp
