@@ -643,7 +643,7 @@ static int _USERENTRY IndexClass<T>::search_compfunc(void const * ptr1, void con
  *   11/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 template<class T>
-IndexClass<T>::NodeElement const * IndexClass<T>::Search_For_Node(int id) const
+typename IndexClass<T>::NodeElement const * IndexClass<T>::Search_For_Node(int id) const
 {
 	/*
 	**	If there are no elements in the list, then it certainly can't find any matches.

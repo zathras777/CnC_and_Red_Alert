@@ -271,7 +271,7 @@ TListClass<T>::TListClass(int id, int x, int y, int w, int h, TextPrintType flag
 	/*
 	**	Set the list box to a default state.
 	*/
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TextFlags);
+	this->Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TextFlags);
 	LineHeight = FontHeight+FontYSpacing-1;
 	LineCount = (h-1) / LineHeight;
 }
@@ -461,11 +461,11 @@ int TListClass<T>::Draw_Me(int forced)
 		/*
 		**	Turn off the mouse.
 		*/
-		if (LogicPage == &SeenBuff) {
+		if (LogicPage == &this->SeenBuff) {
 			Conditional_Hide_Mouse(X, Y, X+Width, Y+Height);
 		}
 
-		Draw_Box(X, Y, Width, Height, BOXSTYLE_BOX, true);
+		this->Draw_Box(X, Y, Width, Height, BOXSTYLE_BOX, true);
 
 		/*
 		**	Draw List.
@@ -489,7 +489,7 @@ int TListClass<T>::Draw_Me(int forced)
 		/*
 		**	Turn on the mouse.
 		*/
-		if (LogicPage == &SeenBuff) {
+		if (LogicPage == &this->SeenBuff) {
 			Conditional_Show_Mouse();
 		}
 		return(true);
