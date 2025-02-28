@@ -19,8 +19,8 @@
 //	ToolTip.cpp
 
 #include "function.h"
-#include "ToolTip.h"
-#include "IconList.h"
+#include "tooltip.h"
+#include "iconlist.h"
 
 //#include "WolDebug.h"
 

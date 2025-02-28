@@ -40,7 +40,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	<stdlib.h>
-#include	<iostream.h>
+#include	<iostream>
 #include	"sha.h"
 
 

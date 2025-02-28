@@ -35,7 +35,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
  
-#include <WWSTD.H>
+#include <wwstd.h>
 
 typedef enum {
 	WWKEY_SHIFT_BIT	= 0x100,

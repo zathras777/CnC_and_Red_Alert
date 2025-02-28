@@ -20,7 +20,7 @@
 
 #include "function.h"
 //#include "_WSProto.h"
-#include "WSPUDP.h"
+#include "wspudp.h"
 
 
 bool Get_Broadcast_Addresses (void)

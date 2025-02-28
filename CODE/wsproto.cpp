@@ -56,7 +56,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"function.h"
-#include	"WSProto.h"
+#include	"wsproto.h"
 
 #include	<stdio.h>
 

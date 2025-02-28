@@ -37,7 +37,7 @@
 #ifndef WSPROTO_H
 #define WSPROTO_H
 
-#include	"_WSProto.h"
+#include	"_wsproto.h"
 
 /*
 ** Include standard Winsock 1.0 header file.

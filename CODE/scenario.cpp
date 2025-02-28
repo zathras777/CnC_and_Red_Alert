@@ -74,7 +74,7 @@ extern int PreserveVQAScreen;
 //#include "WolDebug.h"
 
 #ifdef FIXIT_VERSION_3		//	Stalemate games.
-#include "WolStrng.h"
+#include "wolstrng.h"
 #endif
 
 static void Remove_AI_Players(void);

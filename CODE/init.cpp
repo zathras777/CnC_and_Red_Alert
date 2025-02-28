@@ -91,7 +91,7 @@
 
 RemapControlType SidebarScheme;
 
-#include "WolDebug.h"
+#include "woldebug.h"
 
 #ifdef CHEAT_KEYS
 extern bool bNoMovies;

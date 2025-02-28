@@ -16,11 +16,11 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "function.h"
 
 #ifdef WOLAPI_INTEGRATION			//	Now implies also WINSOCK_IPX, WIN32, and FIXIT_CSII must be true
 
 #include "wol_gsup.h"
-#include "function.h"
 #include "IconList.h"
 #include <time.h>
 #include "WolStrng.h"

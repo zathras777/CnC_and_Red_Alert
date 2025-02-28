@@ -166,7 +166,7 @@ TimerClass	GameTimer;
 long			GameEndTime;
 void			*PacketLater = NULL;
 
-#include "WolDebug.h"
+#include "woldebug.h"
 
 #ifdef WOLAPI_INTEGRATION
 #include "WolapiOb.h"

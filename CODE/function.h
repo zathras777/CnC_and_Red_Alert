@@ -258,7 +258,7 @@ typedef struct {
 #include	<ctype.h>
 #include	<assert.h>
 #include	<process.h>
-#include	<new.h>
+#include	<new>
 
 
 
@@ -271,8 +271,8 @@ typedef struct {
 /*
 **	VQ player specific includes.
 */
-#include <vqa32\vqaplay.h>
-#include <vqa32\vqafile.h>
+#include <vqa32/vqaplay.h>
+#include <vqa32/vqafile.h>
 
 extern bool GameActive;
 extern long LParam;

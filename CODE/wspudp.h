@@ -37,7 +37,7 @@
 #ifndef WSPUDP_H
 #define WSPUDP_H
 
-#include	"WSProto.h"
+#include	"wsproto.h"
 #include	<nspapi.h>
 
 

@@ -50,7 +50,7 @@
 #include	"credits.h"
 #include	"goptions.h"
 #include	"options.h"
-#include	"infantry.H"
+#include	"infantry.h"
 
 
 extern char _staging_buffer[32000];
