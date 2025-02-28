@@ -65,9 +65,6 @@
 #include	<stdlib.h>
 #include	<stddef.h>
 
-inline void * operator new(size_t , void * pointer) {return(pointer);}
-inline void * operator new[](size_t , void * pointer) {return(pointer);}
-
 
 /**************************************************************************
 **	This is a general purpose vector class. A vector is defined by this
