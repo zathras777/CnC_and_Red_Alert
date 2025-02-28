@@ -1,0 +1,14 @@
+#pragma once
+#include "windows.h"
+
+struct DIRECTSOUND
+{
+};
+
+typedef DIRECTSOUND *LPDIRECTSOUND;
+
+struct DIRECTSOUNDBUFFER
+{
+};
+
+typedef DIRECTSOUNDBUFFER *LPDIRECTSOUNDBUFFER;
