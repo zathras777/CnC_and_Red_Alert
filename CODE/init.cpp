@@ -2237,6 +2237,7 @@ long Obfuscate(char const * string)
 		if (((length+3) & 0x00FC) > maxlen) {
 			maxlen = ((length+3) & 0x00FC);
 		}
+		int index;
 		for (index = length; index < maxlen; index++) {
 			buffer[index] = 'A' + ((('?' ^ buffer[index-length]) + index) % 26);
 		}
@@ -2276,7 +2277,7 @@ long Obfuscate(char const * string)
 	**	cypher process occurs later.
 	*/
 	strrev(buffer);		// Restore original string order.
-	for (index = 0; index < length; index++) {
+	for (int index = 0; index < length; index++) {
 		code ^= (unsigned char)buffer[index];
 		unsigned char temp = (unsigned char)code;
 		buffer[index] ^= temp;
@@ -2289,7 +2290,7 @@ long Obfuscate(char const * string)
 	**	cryptographic attack engines. Since this also weakens the key against
 	**	unconventional attacks, the loss is limited to less than 10%.
 	*/
-	for (index = 0; index < length; index++) {
+	for (int index = 0; index < length; index++) {
 		static unsigned char _lossbits[] = {0x00,0x08,0x00,0x20,0x00,0x04,0x10,0x00};
 		static unsigned char _addbits[] = {0x10,0x00,0x00,0x80,0x40,0x00,0x00,0x04};
 
@@ -2306,7 +2307,7 @@ long Obfuscate(char const * string)
 	**	algorithm. The sheer workload of reversing this transformation should be enough
 	**	to discourage even the most determined hackers.
 	*/
-	for (index = 0; index < length; index += 4) {
+	for (int index = 0; index < length; index += 4) {
 		short key1 = buffer[index];
 		short key2 = buffer[index+1];
 		short key3 = buffer[index+2];
@@ -2568,7 +2569,7 @@ static void Init_Color_Remaps(void)
 		for (int index = 0; index < 16; index++) {
 			ptr[HidPage.Get_Pixel(index, 0)] = HidPage.Get_Pixel(index, pcolor);
 		}
-		for (index = 0; index < 6; index++) {
+		for (int index = 0; index < 6; index++) {
 			ColorRemaps[pcolor].FontRemap[10+index] = HidPage.Get_Pixel(2+index, pcolor);
 		}
 		ColorRemaps[pcolor].BrightColor = WHITE;

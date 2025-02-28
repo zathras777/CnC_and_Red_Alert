@@ -165,7 +165,7 @@ void Special_Dialog(bool simple)
 			Dialog_Box(OPTION_X, OPTION_Y, OPTION_WIDTH, OPTION_HEIGHT);
 			Draw_Caption(TXT_SPECIAL_OPTIONS, OPTION_X, OPTION_Y, OPTION_WIDTH);
 
-			for (index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
+			for (int index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
 				Fancy_Text_Print(_options[index].Description, _options[index].Button->X+10*RESFACTOR, _options[index].Button->Y, GadgetClass::Get_Color_Scheme(), TBLACK, TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_NOSHADOW);
 			}
 			buttons->Draw_All();
@@ -177,7 +177,7 @@ void Special_Dialog(bool simple)
 			case KN_ESC:
 			case 200|KN_BUTTON:
 				process = false;
-				for (index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
+				for (int index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
 					bool setting = _options[index].Setting;
 					switch (_options[index].Description) {
 						case TXT_THREE_POINT:
@@ -204,7 +204,7 @@ void Special_Dialog(bool simple)
 				break;
 
 			default:
-				index = (input & ~KN_BUTTON) - 100;
+				int index = (input & ~KN_BUTTON) - 100;
 				if ((unsigned)index < sizeof(_options)/sizeof(_options[0])) {
 					_options[index].Setting = _options[index].Button->IsOn;
 				}

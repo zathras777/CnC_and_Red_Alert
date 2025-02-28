@@ -1397,7 +1397,8 @@ int AircraftClass::Exit_Object(TechnoClass * unit)
 	/*
 	**	Find a free cell to drop the unit off at.
 	*/
-	for (FacingType face = FACING_N; face < FACING_COUNT; face++) {
+	FacingType face;
+	for (face = FACING_N; face < FACING_COUNT; face++) {
 		cell = Adjacent_Cell(Coord_Cell(Coord), _toface[face]);
 		if (unit->Can_Enter_Cell(cell) == MOVE_OK) break;
 	}

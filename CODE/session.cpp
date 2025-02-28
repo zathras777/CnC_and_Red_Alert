@@ -829,7 +829,7 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 
 		//	Read the entry names in
 		int phonecount = ini.Entry_Count("PhoneBook");
-		for (index = 0; index < phonecount; index++) {
+		for (int index = 0; index < phonecount; index++) {
 			//	Create a new phone book entry
 			phone = new PhoneEntryClass();
 

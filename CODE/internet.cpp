@@ -391,7 +391,7 @@ int Read_Game_Options(char *name)
 			** See if that scenario is available now. Its fatal if it isnt.
 			*/
 			Session.Options.ScenarioIndex = -1;
-			for (i = 0; i < Session.Scenarios.Count(); i++) {
+			for (int i = 0; i < Session.Scenarios.Count(); i++) {
 				if (!strcmp (Session.Scenarios[i]->Description(), Session.Options.ScenarioDescription) ){
 					Session.Options.ScenarioIndex = i;
 					break;

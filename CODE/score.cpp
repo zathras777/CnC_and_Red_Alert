@@ -759,6 +759,7 @@ Keyboard->Clear();
 	*/
 	if (hallfame[NUMFAMENAMES-1].score >= total)
 								hallfame[NUMFAMENAMES-1].score = 0;
+	int index;
 	for (index = 0; index < NUMFAMENAMES; index++) {
 		if (total > hallfame[index].score) {
 			if (index < (NUMFAMENAMES-1)) for (i = (NUMFAMENAMES-1); i > index; i--) hallfame[i] = hallfame[i-1];
@@ -1004,7 +1005,7 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 /*BG		if (!Keyboard->Check()) */ Call_Back_Delay(1);
 	}
 
-	i = max(GBKilled, NBKilled);
+	int i = max(GBKilled, NBKilled);
 	for (int q = 0; q <= i; q++) {
 		Set_Font_Palette(_redpal);
 		Count_Up_Print( "%d", q, NBKilled, BUILDING_X + 16, BUILDING_Y + 10);

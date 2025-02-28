@@ -1962,7 +1962,8 @@ static int Net_Join_Dialog(void)
 				if (Session.Options.ScenarioDescription[0]) {
 
 					// EW - Scenario language translation goes here!!!!!!!! VG
-					for (int ii = 0; EngMisStr[ii] != NULL;  ii++) {
+					int ii;
+					for (ii = 0; EngMisStr[ii] != NULL;  ii++) {
 						if (!strcmp(Session.Options.ScenarioDescription, EngMisStr[ii])) {
 							#if defined(GERMAN) || defined(FRENCH)
 								sprintf(txt, "%s %s", p, EngMisStr[ii+1]);
@@ -2913,7 +2914,7 @@ static int Net_Join_Dialog(void)
 			//..................................................................
 			// Don't send myself the message.
 			//..................................................................
-			for (i = 1; i < Session.Players.Count(); i++) {
+			for (int i = 1; i < Session.Players.Count(); i++) {
 				Ipx.Send_Global_Message (&Session.GPacket,
 					sizeof(GlobalPacketType), 1,
 					&(Session.Players[i]->Address));
@@ -2952,7 +2953,7 @@ static int Net_Join_Dialog(void)
 		//	a chance to get to the other system.  If he doesn't get our ACK,
 		// he'll be waiting the whole time we load MIX files.
 		//.....................................................................
-		i = max(Ipx.Global_Response_Time() * 2, 60);
+		int i = max(Ipx.Global_Response_Time() * 2, 60ul);
 		starttime = TickCount;
 		while (TickCount - starttime < i) {
 			Ipx.Service();
