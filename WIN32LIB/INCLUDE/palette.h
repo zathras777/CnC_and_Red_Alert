@@ -43,6 +43,14 @@
 #define PALETTE_SIZE		256
 #define PALETTE_BYTES	768
 
+// ?? isn't declared anywhere, so this is a hack to make things compile
+class PaletteClass
+{
+public:
+	operator void *() {return NULL;}
+	static char *CurrentPalette;
+};
+
 /*
 ******************************** Prototypes *********************************
 */
@@ -77,7 +85,7 @@ extern BOOL __cdecl Bump_Color(void *palette, int changable, int target);
 #ifdef __cplusplus
 }
 #endif
-extern "C" extern unsigned char  CurrentPalette[];		/* in pal.asm */
+extern "C" unsigned char  CurrentPalette[];		/* in pal.asm */
 
 
 #endif // PALETTE_H

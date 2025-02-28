@@ -36,6 +36,10 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#if defined(BIG_ENDIAN) && defined(BYTE_ORDER) && BYTE_ORDER != BIG_ENDIAN
+#undef BIG_ENDIAN
+#endif
+
 /**********************************************************************
 **	Language control: define the desired language for this build.
 */
