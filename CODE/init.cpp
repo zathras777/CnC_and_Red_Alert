@@ -1436,7 +1436,9 @@ bool Select_Game(bool fade)
 //			debugprint( "Non Internet game: NewUnitsEnabled = %i\n", NewUnitsEnabled );
 			break;
 		case GAME_INTERNET:
+#ifdef WOLAPI_INTEGRATION
 			if( !pWolapi )
+#endif
 			{
 //				debugprint( "pWolapi is null on internet game!" );
 				Fatal( "pWolapi is null on internet game!" );

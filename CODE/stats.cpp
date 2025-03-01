@@ -401,7 +401,7 @@ void Send_Statistics_Packet(void)
 			int completion = -1;
 
 			if (player1 && player2){			//	Can this ever fail?		ajw
-#ifdef FIXIT_VERSION_3
+#if defined(FIXIT_VERSION_3) && defined(WOLAPI_INTEGRATION)
 				//	Send IP addresses of both players.
 				NetNumType net;
 				NetNodeType node;
@@ -854,6 +854,7 @@ void Send_Statistics_Packet(void)
 		PacketLater = NULL;
 	}
 
+#ifdef WOLAPI_INTEGRATION
 	/*
 	** Send it.....
 	*/
@@ -876,6 +877,7 @@ void Send_Statistics_Packet(void)
 			//debugprint( "RequestGameresSend( %s, %i ) failed!!!\n", szGameResServer, iPort );
 			;
 	}
+#endif
 
 	/*
 	** Save it to disk as well so I can see it

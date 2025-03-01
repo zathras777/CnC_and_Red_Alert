@@ -642,7 +642,7 @@ unsigned long VersionClass::Min_Version(void)
 	return (Version_Number());
 #else
 
-#ifdef FIXIT_VERSION_3
+#if defined(FIXIT_VERSION_3) && defined(WOLAPI_INTEGRATION)
 
 	//	Note! I'm no longer using MIN_VERSION, MAX_VERSION, or VERSION_RA_300!
 	//	But no time to do three full rebuilds right now, so I'm not deleting them from the header file...   ajw
@@ -697,7 +697,7 @@ unsigned long VersionClass::Max_Version(void)
 	return (Version_Number());
 #else
 
-#ifdef FIXIT_VERSION_3
+#if defined(FIXIT_VERSION_3) && defined(WOLAPI_INTEGRATION)
 
 	//	Note! I'm no longer using MIN_VERSION, MAX_VERSION, or VERSION_RA_300!
 	//	But no time to do three full rebuilds right now, so I'm not deleting them from the header file...   ajw
