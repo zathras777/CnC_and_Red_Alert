@@ -1901,7 +1901,8 @@ void InfantryClass::Scatter(COORDINATE threat, bool forced, bool nokidding)
 
 		CELL newcell = 0;
 		CELL altcell = 0;
-		for (FacingType face = FACING_N; face < FACING_COUNT; face++) {
+		FacingType face;
+		for (face = FACING_N; face < FACING_COUNT; face++) {
 			FacingType newface = toface + face;
 			newcell = Adjacent_Cell(Coord_Cell(Coord), newface);
 

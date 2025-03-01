@@ -158,7 +158,7 @@ const char* NewName[] = {
 	"Scout Ant",	  			"Kundschafter-Ameise",
 	"Warrior Ant",    		"Krieger-Ameise",
 	"Fire Ant",	  				"Feuer-Ameise",
-	"Queen Ant",	  			"Ameisenk�nigin",
+	"Queen Ant",	  			"Ameisenkönigin",
 	"ATS",						"Angriffs-U-Boot",
 	"Tesla Tank",	  			"Telsapanzer",
 	"Volkov",  					"Modell Volkov",
@@ -174,7 +174,7 @@ const char* NewName[] = {
 #ifdef FRENCH
 const char* NewName[] = {
 	"Scout Ant",	  			"Fourmi de Reconnaissance",
-	"Warrior Ant",    		"Fourmi Guerri�re",
+	"Warrior Ant",    		"Fourmi Guerrière",
 	"Fire Ant",	  				"Fourmi Lance-Flammes",
 	"Queen Ant",	  			"Reine des Fourmis",
 	"ATS", 						"SMTA",
@@ -182,9 +182,9 @@ const char* NewName[] = {
 	"Volkov",  					"Volkov",
 	"Chitzkoi", 				"Cyber-Chien",
 	"Stavros",					"Stavros",
-	"F-A Longbow",				"HAA (H�licopt�re d'Assaut Avanc�)",
-	"Civilian Specialist",	"Sp�cialiste Civil",
-	"Alloy Facility",			"Usine M�tallurgique",
+	"F-A Longbow",				"HAA (Hélicoptère d'Assaut Avancé)",
+	"Civilian Specialist",	"Spécialiste Civil",
+	"Alloy Facility",			"Usine Métallurgique",
 	NULL,
 	};
 
