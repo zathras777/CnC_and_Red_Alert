@@ -71,8 +71,6 @@
 #include	<stdarg.h>
 #include	<string.h>
 
-using std::min;
-
 
 extern void output(short port, short data);
 #pragma aux output parm [dx] [ax] =		\

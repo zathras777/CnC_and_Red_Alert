@@ -136,7 +136,9 @@ UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
 
 #endif
 
+#include <algorithm>
 
+using std::min;
 
 #ifndef BITMAPCLASS
 #define BITMAPCLASS
