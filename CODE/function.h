@@ -45,7 +45,7 @@
 
 #pragma warn -hid
 
-#ifdef NEVER
+/*
 Map (screen) class heirarchy.
 
  MapeditClass (most derived class) -- scenario editor
@@ -118,7 +118,7 @@ Map (screen) class heirarchy.
 UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
                    │                          │
            AircraftTypeClass          InfantryTypeClass
-#endif
+*/
 
 
 #include	"watcom.h"
