@@ -18,9 +18,9 @@
 
 //	New character strings for wolapi integration.
 
-#ifdef WOLAPI_INTEGRATION
+//#ifdef WOLAPI_INTEGRATION
 #include "function.h"
-#include "WolStrng.h"
+#include "wolstrng.h"
 
 //#undef ENGLISH
 //#define GERMAN
@@ -804,4 +804,4 @@ const char TXT_WOL_PRIVATE[]					= "<personnel>";
 #endif
 
 
-#endif
+//#endif
