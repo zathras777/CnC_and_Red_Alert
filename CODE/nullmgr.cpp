@@ -281,27 +281,6 @@ int NullModemClass::Init (int port, int irq, char *dev_name, int baud, char pari
 	/*------------------------------------------------------------------------
 	This call allocates all necessary queue buffers
 	------------------------------------------------------------------------*/
-	switch (port) {
-		case 0x3f8:
-			com = COM1;
-			break;
-
-		case 0x2f8:
-			com = COM2;
-			break;
-
-		case 0x3e8:
-			com = COM3;
-			break;
-
-		case 0x2e8:
-			com = COM4;
-			break;
-
-		default:
-			com = COM5;
-			break;
-	}
 
 #ifdef WIN32
 	int	i;
@@ -396,6 +375,28 @@ int NullModemClass::Init (int port, int irq, char *dev_name, int baud, char pari
 	Connection->Init (PortHandle);
 
 #else	//WIN32
+
+	switch (port) {
+		case 0x3f8:
+			com = COM1;
+			break;
+
+		case 0x2f8:
+			com = COM2;
+			break;
+
+		case 0x3e8:
+			com = COM3;
+			break;
+
+		case 0x2e8:
+			com = COM4;
+			break;
+
+		default:
+			com = COM5;
+			break;
+	}
 
 	status = FastGetPortHardware( com, &irqnum, &address );
 	if (status == ASSUCCESS) {
@@ -2264,8 +2265,11 @@ void NullModemClass::Setup_Modem_Echo( void ( *func )( char c) )
 void NullModemClass::Remove_Modem_Echo( void )
 {
 //	Smart_Printf( "Remove Echo modem code\n" );
+#ifdef WIN32
+	SerialPort->Set_Echo_Function(NULL);
+#else	//WIN32
 	HMSetUpEchoRoutine( NULL );
-
+#endif
 }	/* end of Remove_Modem_Echo */
 
 

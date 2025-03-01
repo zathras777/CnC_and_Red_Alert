@@ -71,7 +71,7 @@ class PacketClass {
 		void Add_Field(char *field, unsigned short data) {Add_Field(new FieldClass(field, data));};
 		void Add_Field(char *field, long data) {Add_Field(new FieldClass(field, data));};
 		void Add_Field(char *field, unsigned long data) {Add_Field(new FieldClass(field, data));};
-		void Add_Field(char *field, char *data) {Add_Field(new FieldClass(field, data));};
+		void Add_Field(char *field, const char *data) {Add_Field(new FieldClass(field, data));};
 		void Add_Field(char *field, void *data, int length) {Add_Field(new FieldClass(field, data, length));};
 
 		//

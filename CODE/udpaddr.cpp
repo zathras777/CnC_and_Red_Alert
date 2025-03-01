@@ -224,9 +224,11 @@ WWDebugString (debug);
 
 	for ( int i=0 ; i<ip_address_list.Count() ; i++ ) {
 		char const *temp = ip_address_list.Get_Item(i);
-		char *cut = strchr (temp, '#');
+		char *cut = strdup(temp);
+		cut = strchr (cut, '#');
 		if ( cut ) *cut = 0;
-		PacketTransport->Set_Broadcast_Address ((char*)temp);
+		PacketTransport->Set_Broadcast_Address (cut);
+		free(cut);
 	}
 
 	return (true);

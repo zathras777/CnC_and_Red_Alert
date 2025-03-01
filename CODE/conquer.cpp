@@ -4174,8 +4174,8 @@ int Get_CD_Index (int cd_drive, int timeout)
 		sprintf(buffer, "%c:\\", 'A' + cd_drive);
 
 		if (GetVolumeInformation ((char const *)buffer, &volume_name[0] ,
-				(unsigned long)sizeof(volume_name), (unsigned long *)NULL ,
-				(unsigned long *)&filename_length, (unsigned long *)&misc_dword,
+				(unsigned long)sizeof(volume_name), NULL,
+				(DWORD *)&filename_length, (DWORD *)&misc_dword,
 				(char *)NULL, (unsigned long)0))
 			{
 			/*

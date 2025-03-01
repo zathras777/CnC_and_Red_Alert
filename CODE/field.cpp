@@ -95,7 +95,7 @@ FieldClass::FieldClass(char *id, unsigned long data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, char *data)
+FieldClass::FieldClass(char *id, const char *data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_STRING;

@@ -68,7 +68,7 @@ class FieldClass {
 		FieldClass(char *id, unsigned short data);
 		FieldClass(char *id, long data);
 		FieldClass(char *id, unsigned long data);
-		FieldClass(char *id, char *data);
+		FieldClass(char *id, const char *data);
 		FieldClass(char *id, void *data, int length);
 
 		void Host_To_Net(void);
