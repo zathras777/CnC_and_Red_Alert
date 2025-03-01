@@ -5826,7 +5826,7 @@ int TechnoClass::Anti_Armor(void) const
 		WeaponTypeClass const * weapon = Techno_Type_Class()->PrimaryWeapon;
 		BulletTypeClass const * bullet = weapon->Bullet;
 		WarheadTypeClass const * warhead = weapon->WarheadPtr;
-		int mrange = min(weapon->Range, 0x0400);
+		int mrange = min(int(weapon->Range), 0x0400);
 
 		int value = ((weapon->Attack * warhead->Modifier[ARMOR_STEEL]) * mrange * warhead->SpreadFactor) / weapon->ROF;
 		if (Techno_Type_Class()->Is_Two_Shooter()) {
@@ -5867,7 +5867,7 @@ int TechnoClass::Anti_Infantry(void) const
 		WeaponTypeClass const * weapon = Techno_Type_Class()->PrimaryWeapon;
 		BulletTypeClass const * bullet = weapon->Bullet;
 		WarheadTypeClass const * warhead = weapon->WarheadPtr;
-		int mrange = min(weapon->Range, 0x0400);
+		int mrange = min(int(weapon->Range), 0x0400);
 
 		int value = ((weapon->Attack * warhead->Modifier[ARMOR_NONE]) * mrange * warhead->SpreadFactor) / weapon->ROF;
 		if (Techno_Type_Class()->Is_Two_Shooter()) {

@@ -1404,17 +1404,17 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 		**	Build the button list.
 		*/
 		bheight = FontHeight + FontYSpacing + 2;
-		bwidth = max((String_Pixel_Width(b1txt) + 8), 80);
+		bwidth = max((String_Pixel_Width(b1txt) + 8), 80u);
 		if (b2txt) {
 			numbuttons = 2;
 			b2char = toupper(b2txt[0]);
-			bwidth = max((String_Pixel_Width( b2txt ) + 8), bwidth);
+			bwidth = max((String_Pixel_Width( b2txt ) + 8), unsigned(bwidth));
 //			b1x = x + 10;								// left side
 
 			if (b3txt) {
 				numbuttons = 3;
 				b3char = toupper(b3txt[0]);
-				bwidth = max((String_Pixel_Width( b3txt ) + 8), bwidth);
+				bwidth = max((String_Pixel_Width( b3txt ) + 8), unsigned(bwidth));
 			}
 
 		} else {

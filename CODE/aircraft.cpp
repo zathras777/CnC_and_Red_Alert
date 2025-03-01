@@ -3536,7 +3536,7 @@ void AircraftClass::Set_Speed(int speed)
 
 	FootClass::Set_Speed(speed);
 
-	MPHType sp = MPHType(min(Class->MaxSpeed * SpeedBias * House->AirspeedBias, MPH_LIGHT_SPEED));
+	MPHType sp = MPHType(min(Class->MaxSpeed * SpeedBias * House->AirspeedBias, int(MPH_LIGHT_SPEED)));
 	Fly_Speed(speed, sp);
 }
 

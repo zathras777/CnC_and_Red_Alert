@@ -2966,7 +2966,7 @@ static int Net_Join_Dialog(void)
 	//------------------------------------------------------------------------
 //	Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1,
 //		Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120ul, Ipx.Global_Response_Time () * 8));
 
 
 	//------------------------------------------------------------------------
@@ -4718,7 +4718,7 @@ static int Net_New_Dialog(void)
 				//	an OK; force a wait longer than 1 second (to give all players
 				//	a chance to know about this new guy)
 				//...............................................................
-				i = max(Ipx.Global_Response_Time() * 2, 60);
+				i = max(Ipx.Global_Response_Time() * 2, 60ul);
 				while (TickCount - ok_timer < i) {
 					Ipx.Service();
 				}
@@ -5141,7 +5141,7 @@ static int Net_New_Dialog(void)
 	//	of what our retry delta & timeout should be.
 	//------------------------------------------------------------------------
 	//Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1, Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120ul, Ipx.Global_Response_Time () * 8));
 
 	//------------------------------------------------------------------------
 	//	Clear all lists, but NOT the Games or Players vectors.
@@ -5654,7 +5654,7 @@ void Net_Reconnect_Dialog(int reconn, int fresh, int oldest_index,
 			w += (d_margin * 5);
 		}
 #else
-		w = max(String_Pixel_Width(buf3), w) * RESFACTOR;
+		w = max(String_Pixel_Width(buf3), unsigned(w)) * RESFACTOR;
 		w += (d_margin * 5);
 #endif
 
@@ -6785,7 +6785,7 @@ static int Net_Fake_New_Dialog(void)
 	//------------------------------------------------------------------------
 	//Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1,
 	//	Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120ul, Ipx.Global_Response_Time () * 8));
 
 	Clear_Listbox(&playerlist);
 
@@ -7675,7 +7675,7 @@ static int Net_Fake_Join_Dialog(void)
 	//------------------------------------------------------------------------
 	//Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1,
 	//	Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120ul, Ipx.Global_Response_Time () * 8));
 
 	//------------------------------------------------------------------------
 	//	Clear all lists, but NOT the Games & Players vectors.

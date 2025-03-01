@@ -2071,7 +2071,7 @@ long CellClass::Tiberium_Adjust(bool pregame)
 
 			if (gems) {
 				OverlayData = _adjgem[count];
-				OverlayData = min(OverlayData, 2);
+				OverlayData = min(int(OverlayData), 2);
 			} else {
 				OverlayData = _adj[count];
 			}

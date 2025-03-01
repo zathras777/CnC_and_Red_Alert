@@ -331,7 +331,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 	**	Build the button list.
 	*/
 	bheight = FontHeight + FontYSpacing + 2*RESFACTOR;
-	bwidth = max((String_Pixel_Width(Text_String(btext)) + 8*RESFACTOR), 30*RESFACTOR);
+	bwidth = max((String_Pixel_Width(Text_String(btext)) + 8*RESFACTOR), 30u*RESFACTOR);
 
 	/*
 	**	Determine the dimensions of the text to be used for the dialog box.

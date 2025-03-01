@@ -114,11 +114,11 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 		**	Build the button list.
 		*/
 		bheight = FontHeight + FontYSpacing + (2 * RESFACTOR);
-		bwidth = max((String_Pixel_Width(b1txt) + (8 * RESFACTOR)), (30 * RESFACTOR));
+		bwidth = max((String_Pixel_Width(b1txt) + (8 * RESFACTOR)), (30u * RESFACTOR));
 
 		if (b2txt != NULL) {
 			numbuttons = 2;
-			bwidth = max((String_Pixel_Width( b2txt ) + (8 * RESFACTOR)), bwidth);
+			bwidth = max((String_Pixel_Width( b2txt ) + (8 * RESFACTOR)), unsigned(bwidth));
 
 			if (b3txt != NULL) {
 				numbuttons = 3;

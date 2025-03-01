@@ -536,8 +536,8 @@ IsTheaterShape = false;
 		Map.Sight_From(Coord_Cell(coord), Rule.DropZoneRadius / CELL_LEPTON_W, PlayerPtr, false);
 	}
 
-	Loops = (unsigned char)(max(loop, 1) * Class->Loops);
-	Loops = (unsigned char)max(Loops, 1);
+	Loops = (unsigned char)(max(int(loop), 1) * Class->Loops);
+	Loops = (unsigned char)max(int(Loops), 1);
 
 	/*
 	**	If the animation starts immediately, then play the associated sound effect now.

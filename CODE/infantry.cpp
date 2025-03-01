@@ -454,7 +454,7 @@ ResultType InfantryClass::Take_Damage(int & damage, int distance, WarheadType wa
 			int morefear = FEAR_ANXIOUS;
 			if (Health_Ratio() > Rule.ConditionRed) morefear /= 2;
 			if (Health_Ratio() > Rule.ConditionYellow) morefear /= 2;
-			Fear = FearType(min((int)Fear + morefear, FEAR_MAXIMUM));
+			Fear = FearType(min((int)Fear + morefear, int(FEAR_MAXIMUM)));
 		}
 	}
 	return(res);
@@ -490,7 +490,7 @@ int InfantryClass::Shape_Number(void) const
 	**	The infantry shape is always modulo the number of animation frames
 	**	of the action stage that the infantry is doing.
 	*/
-	int shapenum = Fetch_Stage() % max(Class->DoControls[doit].Count, 1);
+	int shapenum = Fetch_Stage() % max(int(Class->DoControls[doit].Count), 1);
 
 	/*
 	**	If facing makes a difference, then the shape number will be incremented
@@ -4012,7 +4012,7 @@ void InfantryClass::Movement_AI(void)
 				/*
 				**	Advance the infantry as far as it should go.
 				*/
-				MPHType maxspeed = MPHType(min(Class->MaxSpeed * SpeedBias * House->GroundspeedBias, MPH_LIGHT_SPEED));
+				MPHType maxspeed = MPHType(min(Class->MaxSpeed * SpeedBias * House->GroundspeedBias, int(MPH_LIGHT_SPEED)));
 
 				if (IsFormationMove) maxspeed = FormationMaxSpeed;
 

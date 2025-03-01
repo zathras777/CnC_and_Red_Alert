@@ -91,8 +91,8 @@ class CellClass;
 // Min value for MaxAhead, for both net & modem; only applies for
 // COMM_PROTOCOL_MULTI_E_COMP.
 //...........................................................................
-#define MODEM_MIN_MAX_AHEAD			5
-#define NETWORK_MIN_MAX_AHEAD			2
+#define MODEM_MIN_MAX_AHEAD			5ul
+#define NETWORK_MIN_MAX_AHEAD			2ul
 
 //...........................................................................
 // Send period (in frames) for COMM_PROTOCOL_MULTI_E_COMP and above
