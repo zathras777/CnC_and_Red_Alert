@@ -5469,6 +5469,7 @@ const char* Game_Registry_Key()
  *=============================================================================================*/
 bool Is_Counterstrike_Installed (void)
 {
+#ifdef _WIN32
 	//	ajw 9/29/98
 	static bool	bAlreadyChecked = false;
 	static bool bInstalled = false;
@@ -5489,7 +5490,9 @@ bool Is_Counterstrike_Installed (void)
 		bAlreadyChecked = true;
 	}
 	return bInstalled;
-
+#else
+	return true;
+#endif
 //	RawFileClass file("EXPAND.MIX");
 //	return(file.Is_Available());
 }
@@ -5499,6 +5502,7 @@ bool Is_Counterstrike_Installed (void)
  *=============================================================================================*/
 bool Is_Aftermath_Installed (void)
 {
+#ifdef _WIN32
 	//	ajw 9/29/98
 	static bool	bAlreadyChecked = false;
 	static bool bInstalled = false;
@@ -5519,7 +5523,9 @@ bool Is_Aftermath_Installed (void)
 		bAlreadyChecked = true;
 	}
 	return bInstalled;
-
+#else
+	return true;
+#endif
 //	RawFileClass file("EXPAND2.MIX");
 //	return(file.Is_Available());
 }

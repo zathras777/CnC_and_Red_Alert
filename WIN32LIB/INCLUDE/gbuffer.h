@@ -106,7 +106,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef _WIN32 // Denzil 6/2/98 Watcom 11.0 complains without this check
-#define _WIN32
+//#define _WIN32
 #endif // _WIN32
 
 #define WIN32_LEAN_AND_MEAN

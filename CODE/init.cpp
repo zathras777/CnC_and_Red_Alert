@@ -3569,6 +3569,7 @@ const char* Game_Registry_Key();
 //***********************************************************************************************
 bool Is_DVD_Installed()
 {
+#ifdef _WIN32
 	bool bInstalled;
 	HKEY hKey;
 	if( RegOpenKeyEx( HKEY_LOCAL_MACHINE, Game_Registry_Key(), 0, KEY_READ, &hKey ) != ERROR_SUCCESS )
@@ -3583,6 +3584,9 @@ bool Is_DVD_Installed()
 	RegCloseKey( hKey );
 
 	return bInstalled;
+#else
+	return true;
+#endif
 }
 
 //***********************************************************************************************
