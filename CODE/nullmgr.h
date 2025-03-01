@@ -153,10 +153,10 @@ class NullModemClass : public ConnManClass
 			{return (Num_Receive());}
 
 		DetectPortType Detect_Port( SerialSettingsType *settings );
-		int Detect_Modem( SerialSettingsType *settings, int reconnect = 0 );
-		DialStatusType Dial_Modem(char *string, DialMethodType method, int reconnect = 0);
-		DialStatusType Answer_Modem(int reconnect = 0);
-		int Hangup_Modem(void);
+		int Detect_Modem( SerialSettingsType *settings, bool reconnect = 0 );
+		DialStatusType Dial_Modem(char *string, DialMethodType method, bool reconnect = 0);
+		DialStatusType Answer_Modem(bool reconnect = 0);
+		bool Hangup_Modem(void);
 		void Setup_Modem_Echo(void (*func)(char c));
 		void Remove_Modem_Echo(void);
 		void Print_EchoBuf(void);

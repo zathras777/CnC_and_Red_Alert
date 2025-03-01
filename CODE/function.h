@@ -873,7 +873,7 @@ void Do_Win(void);
 void Do_Restart(void);
 void Fill_In_Data(void);
 bool Restate_Mission(char const * name, int button1, int button2);
-int BGMessageBox(char const *text, int button1, int button2);
+bool BGMessageBox(char const *text, int button1, int button2);
 
 /*
 **	SCORE.CPP
