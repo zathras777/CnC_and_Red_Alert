@@ -104,7 +104,7 @@ const char* Game_Registry_Key();
  * HISTORY:                                                                                    *
  *   03/20/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-#ifdef WIN32
+#if defined(WIN32) && !defined(PORTABLE)
 //int PASCAL WinMain(HINSTANCE, HINSTANCE, char *, int )
 int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int command_show )
 #else	//WIN32
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
 #endif	//WIN32
 
 {
-#ifdef WIN32
+#if defined(WIN32) && !defined(PORTABLE)
 
 	#ifndef MPEGMOVIE // Denzil 6/10/98
 	DDSCAPS	surface_capabilities;
@@ -180,7 +180,7 @@ int main(int argc, char * argv[])
 		return(EXIT_FAILURE);
 	}
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(PORTABLE)
 
 	if (strstr(command_line, "f:\\projects\\c&c0") != NULL ||
 			strstr(command_line, "F:\\PROJECTS\\C&C0") != NULL) {
@@ -347,7 +347,9 @@ int main(int argc, char * argv[])
 	}
 #endif	// MPATH
 
-#ifdef WIN32
+#ifdef PORTABLE
+		//nothing for now
+#elif defined(WIN32)
 		WindowsTimer = new WinTimerClass(60, FALSE);
 
 		int time_test = WindowsTimer->Get_System_Tick_Count();
@@ -411,7 +413,12 @@ int main(int argc, char * argv[])
 
 			Read_Private_Config_Struct(cfile, &NewConfig);
 
-#ifdef WIN32
+#ifdef PORTABLE
+			Read_Setup_Options( &cfile );
+
+			Create_Main_Window( NULL , 0 , ScreenWidth , ScreenHeight );
+			SoundOn = Audio_Init ( MainWindow , 16 , false , 11025*2 , 0 );
+#elif defined(WIN32)
 
 			/*
 			** Set the options as requested by the ccsetup program
