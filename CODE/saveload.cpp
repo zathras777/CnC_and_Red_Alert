@@ -879,7 +879,8 @@ bool Load_Game(int id)
 	**	Rescan the scenario file for any rules updates.
 	*/
 	CCINIClass ini;
-	int result = ini.Load(CCFileClass(Scen.ScenarioName), true);
+	CCFileClass fc(Scen.ScenarioName);
+	int result = ini.Load(fc, true);
 
 	/*
 	**	Reset the rules values to their initial settings.
@@ -958,7 +959,8 @@ if(Special.IsFromWChat || SpawnedFromWChat) {
 		     	}
 			}
 			CCINIClass mpini;
-			if (mpini.Load(CCFileClass("MPLAYER.INI"), false)) {
+			CCFileClass fc("MPLAYER.INI");
+			if (mpini.Load(fc, false)) {
 				Rule.General(mpini);
 				Rule.Recharge(mpini);
 				Rule.AI(mpini);

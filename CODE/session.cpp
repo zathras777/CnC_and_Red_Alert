@@ -743,7 +743,8 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 
 	//	Create filename and read the file.
 	INIClass ini;
-	if (ini.Load(RawFileClass(CONFIG_FILE_NAME))) {
+	RawFileClass fc(CONFIG_FILE_NAME);
+	if (ini.Load(fc)) {
 
 		//	Get the player's last-used Handle
 		ini.Get_String("MultiPlayer", "Handle", "Noname", Handle, sizeof(Handle));
