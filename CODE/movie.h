@@ -37,10 +37,14 @@
 #include <windows.h>
 #include <ddraw.h>
 
+#ifdef __GNUC__
+#define DLLCALL
+#else
 #ifdef MPGEXPORT		  
 #define DLLCALL __declspec(dllexport)
 #else
 #define DLLCALL __declspec(dllimport)
+#endif
 #endif
 
 typedef enum
