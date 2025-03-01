@@ -1014,7 +1014,7 @@ class DynamicVectorClass<EventChoiceClass *>;
 extern DynamicVectorClass<EventChoiceClass *> xxx2;
 class DynamicVectorClass<ActionChoiceClass *>;
 extern DynamicVectorClass<ActionChoiceClass *> xxx3;
-class DynamicVectorClass<EgoClass *>;
+//class DynamicVectorClass<EgoClass *>;
 extern DynamicVectorClass<EgoClass *> whatever;
 
 #endif

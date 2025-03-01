@@ -869,6 +869,7 @@ class HouseClass {
 	** These values are for multiplay only.
 	*/
 	public:
+		friend class TFixedIHeapClass<BuildChoiceClass>;
 		/*
 		** For multiplayer games, each house instance has a remap table; the table
 		** in the HousesTypeClass isn't used.  This variable is set to the remap
