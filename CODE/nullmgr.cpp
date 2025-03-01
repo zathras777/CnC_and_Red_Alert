@@ -1428,7 +1428,7 @@ int NullModemClass::Detect_Modem( SerialSettingsType *settings, bool reconnect )
 	------------------------------------------------------------------------*/
 	strcpy( buffer, Text_String( TXT_INITIALIZING_MODEM ) );
 
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_TEXT);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_TEXT);
 	int lines = Format_Window_String(buffer, SeenBuff.Get_Height(), width, height);
 
 	width = max(width, 90 * RESFACTOR);
@@ -1709,7 +1709,7 @@ DialStatusType NullModemClass::Dial_Modem( char *string, DialMethodType method, 
 		strcpy( buffer, Text_String( TXT_DIALING ) );
 	}
 
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_TEXT);
+	Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_TEXT);
 	Format_Window_String(buffer, SeenBuff.Get_Height(), width, height);
 
 	int text_width = width;
@@ -1914,7 +1914,7 @@ DialStatusType NullModemClass::Answer_Modem( bool reconnect )
 		strcpy( text_buffer, Text_String( TXT_WAITING_FOR_CALL ) );
 	}
 
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_TEXT);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_TEXT);
 	Format_Window_String(text_buffer, SeenBuff.Get_Height(), width, height);
 
 	text_width = width;
@@ -2026,7 +2026,7 @@ DialStatusType NullModemClass::Answer_Modem( bool reconnect )
 
 				strcpy( text_buffer, Text_String( TXT_ANSWERING ) );
 
-				Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_TEXT);
+				Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_TEXT);
 				Format_Window_String(text_buffer, SeenBuff.Get_Height(), width, height);
 
 				text_width = width;

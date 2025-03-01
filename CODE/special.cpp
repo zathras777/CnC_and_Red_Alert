@@ -319,7 +319,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 
 	if (btext == TXT_NONE) btext = TXT_OK;
 
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
 
 	/*
 	**	Examine the optional button parameters. Fetch the width and starting
@@ -339,7 +339,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 	*/
 	buffer[BUFFSIZE-1] = 0;
 	strncpy(buffer, Text_String(message), BUFFSIZE-1);
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
 	int width;
 	int height;
 	Format_Window_String(buffer, 255, width, height);
@@ -493,7 +493,7 @@ int Fetch_Difficulty(void)
 		}
 	}
 #endif
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
 	int width;
 	int height;
 	Format_Window_String(buffer, w-60*RESFACTOR, width, height);

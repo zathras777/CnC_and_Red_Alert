@@ -286,7 +286,7 @@ int Test_Null_Modem( void )
 	**	These dimensions will control how the dialog box looks.
 	*/
 	strcpy( buffer, Text_String( TXT_WAITING_CONNECT ) );
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String(buffer, SeenBuff.Get_Height(), width, height);
 
 	width = max(width, 50 * RESFACTOR);
@@ -619,7 +619,7 @@ static int Reconnect_Null_Modem( void )
 	**	These dimensions will control how the dialog box looks.
 	*/
 	strcpy( buffer, Text_String( TXT_NULL_CONNERR_CHECK_CABLES ) );
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String(buffer, SeenBuff.Get_Height(), width, height);
 
 	width = max(width, 50 * RESFACTOR);
@@ -2214,7 +2214,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 
 				// init font variables
 
-				Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_CENTER | TPF_TEXT);
+				Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_CENTER | TPF_TEXT);
 
 				/*
 				** Dialog & Field labels
@@ -3489,7 +3489,7 @@ oh_dear_its_a_label:
 
 				// init font variables
 
-				Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_CENTER | TPF_TEXT);
+				Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_CENTER | TPF_TEXT);
 
 				/*...............................................................
 				Dialog & Field labels
@@ -6484,7 +6484,7 @@ static int Phone_Dialog (void)
 
 				// init font variables
 
-				Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_CENTER | TPF_TEXT);
+				Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_CENTER | TPF_TEXT);
 
 				/*...............................................................
 				Dialog & Field labels

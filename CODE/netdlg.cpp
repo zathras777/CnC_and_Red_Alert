@@ -6217,7 +6217,7 @@ static int Net_Fake_New_Dialog(void)
 	bool	player_joined = false;
 	CountDownTimerClass join_timer;
 
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String((char*)TXT_HACKHACK, SeenBuff.Get_Height(), width, height);
 
 	//------------------------------------------------------------------------
@@ -7007,7 +7007,7 @@ static int Net_Fake_Join_Dialog(void)
 	int	width;
 	int	height;
 
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String((char*)TXT_HACKHACK, SeenBuff.Get_Height(), width, height);
 	char * item;
 	unsigned long starttime;

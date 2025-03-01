@@ -87,7 +87,7 @@ bool Get_Broadcast_Addresses (void)
 
 	RemapControlType * scheme = GadgetClass::Get_Color_Scheme();
 
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE,0,0,NULL,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String("IP Addresses", SeenBuff.Get_Height(), width, height);
 
 
