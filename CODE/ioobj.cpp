@@ -371,7 +371,7 @@ void FactoryClass::Decode_Pointers(void)
 		assert(Object != NULL);
 	}
 
-	((HouseClass *&)House) = HouseClass::As_Pointer((HousesType)House);
+	((HouseClass *&)House) = HouseClass::As_Pointer((HousesType)(intptr_t)House);
 	assert(House != NULL);
 }
 

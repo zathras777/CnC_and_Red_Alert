@@ -389,7 +389,7 @@ int Test_Null_Modem( void )
 		// put time from start of game for determining the host in case of tie.
 		//
 		SendPacket.ScenarioInfo.Seed = TickCount;
-		SendPacket.ID = (int) buffer;		// address of buffer for more uniqueness.
+		SendPacket.ID = (intptr_t) buffer;		// address of buffer for more uniqueness.
 
 		NullModem.Send_Message (&SendPacket, sizeof(SendPacket), 1);
 
