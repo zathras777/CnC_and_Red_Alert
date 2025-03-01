@@ -1202,7 +1202,7 @@ bool ObjectClass::Select(void)
  * HISTORY:                                                                                    *
  *   06/19/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool ObjectClass::Render(bool forced) const
+bool ObjectClass::Render(bool forced)// const
 {
 	assert(this != 0);
 	assert(IsActive);

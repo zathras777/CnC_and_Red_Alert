@@ -177,7 +177,7 @@ class InfantryClass : public FootClass
 		*/
 		virtual void AI(void);
 		void Fear_AI(void);
-		virtual TARGET Greatest_Threat(ThreatType threat) const;
+		virtual TARGET Greatest_Threat(ThreatType threat);// const;
 		virtual int Mission_Attack(void);
 		bool Edge_Of_World_AI(void);
 		void Firing_AI(void);

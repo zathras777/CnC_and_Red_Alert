@@ -1894,7 +1894,7 @@ void FootClass::Death_Announcement(TechnoClass const * ) const
  *   07/08/1995 JLB : Created.                                                                 *
  *   07/10/1996 JLB : Handles scan range limitation.                                           *
  *=============================================================================================*/
-TARGET FootClass::Greatest_Threat(ThreatType method) const
+TARGET FootClass::Greatest_Threat(ThreatType method)// const
 {
 	assert(IsActive);
 

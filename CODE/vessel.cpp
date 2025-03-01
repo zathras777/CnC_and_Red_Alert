@@ -1220,7 +1220,7 @@ void VesselClass::Init(void)
  * HISTORY:                                                                                    *
  *   05/13/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-TARGET VesselClass::Greatest_Threat(ThreatType threat) const
+TARGET VesselClass::Greatest_Threat(ThreatType threat)// const
 {
 	if (*this == VESSEL_SS) {
 		threat = threat & ThreatType(THREAT_RANGE|THREAT_AREA);

@@ -2694,7 +2694,7 @@ int TeamClass::TMission_Attack(void)
 		**	team members having any weapons, will a member without a weapon
 		**	be chosen.
 		*/
-		FootClass const * candidate = Fetch_A_Leader();
+		FootClass * candidate = Fetch_A_Leader();
 
 		/*
 		**	Have the team leader pick what the next team target will be.

@@ -199,7 +199,7 @@ class UnitClass :	public DriveClass
 		/*
 		**	AI.
 		*/
-		virtual TARGET Greatest_Threat(ThreatType threat) const;
+		virtual TARGET Greatest_Threat(ThreatType threat); // const;
 		virtual DirType Desired_Load_Dir(ObjectClass * passenger, CELL & moveto) const;
 		virtual RadioMessageType Receive_Message(RadioClass * from, RadioMessageType message, long & param);
 		virtual void AI(void);

@@ -315,7 +315,7 @@ class FootClass :	public TechnoClass
 		virtual void AI(void);
 		virtual void Sell_Back(int control);
 		virtual int Offload_Tiberium_Bail(void);
-		virtual TARGET Greatest_Threat(ThreatType method) const;
+		virtual TARGET Greatest_Threat(ThreatType method);// const;
 		virtual void Detach(TARGET target, bool all);
 		virtual void Detach_All(bool all=true);
 		virtual int Mission_Retreat(void);

@@ -204,7 +204,7 @@ COORDINATE AnimClass::Center_Coord(void) const
  * HISTORY:                                                                                    *
  *   05/31/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool AnimClass::Render(bool forced) const
+bool AnimClass::Render(bool forced)// const
 {
 #ifdef VIC
 	assert(Anims.ID(this) == ID);

@@ -2265,7 +2265,7 @@ bool InfantryClass::Unlimbo(COORDINATE coord, DirType facing)
  *   01/01/1995 JLB : Created.                                                                 *
  *   09/28/1995 JLB : Engineers try to recapture buildings first.                              *
  *=============================================================================================*/
-TARGET InfantryClass::Greatest_Threat(ThreatType threat) const
+TARGET InfantryClass::Greatest_Threat(ThreatType threat)// const
 {
 	assert(Infantry.ID(this) == ID);
 	assert(IsActive);

@@ -4617,7 +4617,7 @@ if (*b != STRUCT_REPAIR) {
  * HISTORY:                                                                                    *
  *   07/09/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-TARGET UnitClass::Greatest_Threat(ThreatType threat) const
+TARGET UnitClass::Greatest_Threat(ThreatType threat)// const
 {
 	assert(IsActive);
 	if (Class->PrimaryWeapon != NULL) {
