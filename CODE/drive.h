@@ -203,9 +203,5 @@ class DriveClass : public FootClass
 		static TrackType const Track1[24];
 };
 
-inline DriveClass::TrackControlType operator |(DriveClass::TrackControlType, DriveClass::TrackControlType);
-inline DriveClass::TrackControlType operator &(DriveClass::TrackControlType, DriveClass::TrackControlType);
-inline DriveClass::TrackControlType operator ~(DriveClass::TrackControlType);
-
 
 #endif
