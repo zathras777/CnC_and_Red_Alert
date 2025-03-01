@@ -487,7 +487,7 @@ bool Select_Game(bool fade)
 #endif
 
 #ifndef WOLAPI_INTEGRATION
-#ifdef WIN32
+#ifdef _WIN32
 	/*
 	** Enable the DDE Server so we can get internet start game packets from WChat
 	*/
@@ -640,7 +640,7 @@ bool Select_Game(bool fade)
 			if (Special.IsFromInstall) selection = SEL_START_NEW_GAME;
 
 #ifndef WOLAPI_INTEGRATION
-#if defined(WIN32) && !defined(INTERNET_OFF) // Denzil 5/1/98 - Internet play
+#if defined(_WIN32) && !defined(INTERNET_OFF) // Denzil 5/1/98 - Internet play
 			/*
 			** Handle case where we were spawned from Wchat and our start game
 			**  packet has already arrived
@@ -1105,12 +1105,14 @@ bool Select_Game(bool fade)
 								WWDebugString ("RA95 - About to call Init_Network.\n");
 								Init_Network();
 
+#ifdef _WIN32
 								if (DDEServer.Get_MPlayer_Game_Info()) {
 									WWDebugString ("RA95 - About to call Read_Game_Options.\n");
 									Read_Game_Options( NULL );
-								} else {
+								} else
+#endif
 									Read_Game_Options( "C&CSPAWN.INI" );
-								}
+								
 #ifdef WINSOCK_IPX
 								WWDebugString ("RA95 - About to set addresses.\n");
 								PacketTransport->Set_Broadcast_Address (PlanetWestwoodIPAddress);
@@ -1133,7 +1135,9 @@ bool Select_Game(bool fade)
 #endif	//WINSOCK_IPX
 										Session.Type = GAME_NORMAL;
 										selection = SEL_NONE;
+#ifdef _WIN32
 										DDEServer.Delete_MPlayer_Game_Info();	// Make sure we dont go round in an infinite loop
+#endif
 										break;
 									}
 								} else {
@@ -1153,7 +1157,9 @@ bool Select_Game(bool fade)
 #endif	//WINSOCK_IPX
 										Session.Type = GAME_NORMAL;
 										selection = SEL_NONE;
+#ifdef _WIN32
 										DDEServer.Delete_MPlayer_Game_Info();  // Make sure we dont go round in an infinite loop
+#endif
 										break;
 									}
 								}

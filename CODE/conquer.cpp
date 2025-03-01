@@ -268,7 +268,7 @@ void Main_Game(int argc, char * argv[])
 			PacketLater = NULL;
 			ConnectionLost = false;
 		} else {
-#ifndef WOLAPI_INTEGRATION
+#if !defined(WOLAPI_INTEGRATION) && defined(_WIN32)
 			DDEServer.Disable();
 #endif	//	!WOLAPI_INTEGRATION
 		}
@@ -492,7 +492,9 @@ void Main_Game(int argc, char * argv[])
 #endif	//WINSOCK_IPX
 			Special.IsFromWChat = false;
 			SpawnedFromWChat = false;
+#ifdef _WIN32
 			DDEServer.Delete_MPlayer_Game_Info();	//Make sure we dont use the same start packet twice
+#endif
 			Session.Type = GAME_NORMAL;			//Have to do this or we will got straight to the multiplayer menu
 			Spawn_WChat(false);		//Will switch back to Wchat. It must be there because its been poking us
 		}

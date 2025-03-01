@@ -948,7 +948,7 @@ void EventClass::Execute(void)
 			** If spawned from WChat then we should be getting poked every minute. If not then
 			** deliberately break the max ahead value
 			*/
-#ifdef WIN32
+#ifdef _WIN32
 			if (Special.IsFromWChat) {
 				Session.MaxAhead += DDEServer.Time_Since_Heartbeat()/(70*60);
 			}

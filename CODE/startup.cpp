@@ -607,7 +607,7 @@ int main(int argc, char * argv[])
 			}
 
 #ifndef WOLAPI_INTEGRATION
-#ifdef WIN32
+#ifdef _WIN32
 			/*
 			** If WChat has been trying to send us a game start packet then receive it and
 			** flag that we were spawned from WCHat so we dont play the into movie.
