@@ -295,7 +295,7 @@ int Read_Game_Options(char *name)
 
 	PlanetWestwoodGameID = WWGetPrivateProfileInt("Internet", "GameID", 0, buffer);
 	PlanetWestwoodStartTime = WWGetPrivateProfileInt ("Internet", "StartTime", 0, buffer);
-	WChatHWND = (HWND) WWGetPrivateProfileInt("Internet", "HWND", (int)FindWindow("OWL_Window", "Westwood Chat"), buffer);
+	WChatHWND = NULL;//(HWND) WWGetPrivateProfileInt("Internet", "HWND", (int)FindWindow("OWL_Window", "Westwood Chat"), buffer); //FIXME
 
 	Session.Options.AIPlayers = WWGetPrivateProfileInt("Options", "AI", 0, buffer);		//Number of AI players
 	if (Session.Options.AIPlayers){
@@ -437,9 +437,9 @@ int Read_Game_Options(char *name)
  * HISTORY:                                                                                    *
  *    1/12/96 2:11PM ST : Created                                                              *
  *=============================================================================================*/
-
+#ifdef _WIN32
 extern HKEY Get_Registry_Sub_Key (HKEY base_key, char *search_key, BOOL close);
-
+#endif
 
 
 void Just_Path(char *path, char *destpath)
@@ -473,6 +473,7 @@ void Just_Path(char *path, char *destpath)
  *=============================================================================================*/
 bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 {
+#ifdef _WIN32
 	HKEY	key;
 	char	user_handle[256];
 	DWORD	user_handle_size = sizeof (user_handle);
@@ -540,6 +541,9 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 	}else{
 		return (FALSE);
 	}
+#else
+	return false;
+#endif
 }
 
 
@@ -562,6 +566,7 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 bool Poke_WChat(void);
 bool Spawn_WChat(bool can_launch)
 {
+#ifdef _WIN32
 	WWDebugString ("RA95 - In Spawn_WChat.\n");
 	char packet[10] = {"Hello"};
 	HWND chat_window = NULL;
@@ -683,6 +688,9 @@ bool Spawn_WChat(bool can_launch)
 		while ( Keyboard->Check() ) {};
 		return (false);
 	}
+#else
+	return false;
+#endif
 }
 
 #endif	//#ifndef WOLAPI_INTEGRATION
@@ -704,7 +712,7 @@ bool Spawn_WChat(bool can_launch)
 #ifndef WOLAPI_INTEGRATION
 bool Spawn_Registration_App(void)
 {
-
+#ifdef _WIN32
 	/*
 	** Find where inetreg was installed to
 	*/
@@ -743,7 +751,9 @@ bool Spawn_Registration_App(void)
 		//ShowWindow ( MainWindow, SW_RESTORE );
 	}
 	return (success);
-
+#else
+	return false;
+#endif
 }
 
 #endif	//#ifndef WOLAPI_INTEGRATION
@@ -944,7 +954,9 @@ bool Do_The_Internet_Menu_Thang(void)
 			case (KN_ESC):
 			case (BUTTON_CANCEL | KN_BUTTON):
 				process = false;
+#ifdef _WIN32
 				Send_Data_To_DDE_Server (packet, strlen(packet), DDEServerClass::DDE_CONNECTION_FAILED);
+#endif
 				GameStatisticsPacketSent = false;
 				Spawn_WChat(false);
 				break;
