@@ -243,6 +243,20 @@ typedef struct {
 	char ModemName [ MODEM_NAME_MAX ];
 } SerialSettingsType;
 
+// ??
+class PhoneEntryClass
+{
+public:
+    SerialSettingsType Settings;
+
+    static const int PHONE_MAX_NUM = 20;
+	char Number[PHONE_MAX_NUM + 1];
+
+	static const int PHONE_MAX_NAME = 30;
+	char Name[PHONE_MAX_NAME];
+};
+//
+
 //...........................................................................
 //	This is a "node", used for the lists of available games & players.  The
 //	'Game' structure is used for games; the 'Player' structure for players.
