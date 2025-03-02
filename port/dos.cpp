@@ -27,7 +27,7 @@ void _dos_setdrive(unsigned drive, unsigned *drives)
 
 unsigned _dos_getdiskfree(unsigned drive, struct diskfree_t *diskspace)
 {
-    diskspace->avail_clusters = diskspace->avail_clusters = 1024;
+    diskspace->total_clusters = diskspace->avail_clusters = 8 * 1024;
     diskspace->sectors_per_cluster = 2;
     diskspace->bytes_per_sector = 512;
     return 0;
