@@ -41,7 +41,7 @@
 /*
 **	!!!DEFINE!!!  "NDEBUG" if the assertion code is to be !!!REMOVED!!! from the project.
 */
-#define	NDEBUG
+//#define	NDEBUG
 
 #pragma warn -hid
 
@@ -419,7 +419,7 @@ extern void Fatal(char const *message, ...);
 **  where we can see it.
 **
 */
-#ifndef __BORLANDC__
+#if !defined(__BORLANDC__) && !defined(__GNUC__)
 #ifdef assert
 #undef assert
 #endif	//assert

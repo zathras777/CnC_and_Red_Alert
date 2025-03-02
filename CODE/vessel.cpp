@@ -2331,7 +2331,7 @@ void VesselClass::Repair_AI(void)
  *=============================================================================================*/
 BulletClass * VesselClass::Fire_At(TARGET target, int which)
 {
-	assert(Units.ID(this) == ID);
+	assert(Units.ID((UnitClass *)this) == ID);
 	assert(IsActive);
 
 	if (*this == VESSEL_CARRIER) {
