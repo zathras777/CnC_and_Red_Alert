@@ -45,9 +45,9 @@ class MixFileClass : public Node<MixFileClass<T> >
 		static void const * Retrieve(char const *filename);
 
 		struct SubBlock {
-			long CRC;				// CRC code for embedded file.
-			long Offset;			// Offset from start of data section.
-			long Size;				// Size of data subfile.
+			int32_t CRC;				// CRC code for embedded file.
+			int32_t Offset;			// Offset from start of data section.
+			int32_t Size;				// Size of data subfile.
 
 			int operator < (SubBlock & two) const {return (CRC < two.CRC);};
 			int operator > (SubBlock & two) const {return (CRC > two.CRC);};
