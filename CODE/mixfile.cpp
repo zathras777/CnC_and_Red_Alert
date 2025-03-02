@@ -535,7 +535,9 @@ assert(filename != NULL);//BG
 	/*
 	**	Create the key block that will be used to binary search for the file.
 	*/
-	long crc = Calculate_CRC(strupr((char *)filename), strlen(filename));
+	char *upperFilename = strupr(strdup(filename));
+	long crc = Calculate_CRC(strupr(upperFilename), strlen(filename));
+	free(upperFilename);
 	SubBlock key;
 	key.CRC = crc;
 
