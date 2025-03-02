@@ -94,7 +94,7 @@ class Int {
 		int ByteCount(void) const {return(XMP_Count_Bytes(&reg[0], PRECISION));}
 		int BitCount(void) const {return(XMP_Count_Bits(&reg[0], PRECISION));}
 		bool Is_Negative(void) const {return(XMP_Is_Negative(&reg[0], PRECISION));}
-		unsigned MaxBitPrecision() const {return PRECISION*(sizeof(unsigned long)*CHAR_BIT);}
+		unsigned MaxBitPrecision() const {return PRECISION*(sizeof(digit)*CHAR_BIT);}
 		bool IsSmallPrime(void) const {return(XMP_Is_Small_Prime(&reg[0], PRECISION));}
 		bool SmallDivisorsTest(void) const {return(XMP_Small_Divisors_Test(&reg[0], PRECISION));}
 		bool FermatTest(unsigned rounds) const {return(XMP_Fermat_Test(&reg[0], rounds, PRECISION));}

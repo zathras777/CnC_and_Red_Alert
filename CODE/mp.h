@@ -44,12 +44,13 @@
 
 #include	"straw.h"
 #include	<stdlib.h>
+#include	<stdint.h>
 
 extern unsigned short primeTable[3511];
 
 
-#define	digit	unsigned long
-#define	signeddigit	signed long
+#define	digit	uint32_t
+#define	signeddigit	int32_t
 #define	LOG_UNITSIZE			5
 #define	UNITSIZE					32
 #define	UPPER_MOST_BIT			0x80000000L
