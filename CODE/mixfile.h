@@ -82,10 +82,12 @@ class MixFileClass : public Node<MixFileClass<T> >
 		**	This is the initial file header. It tells how many files are embedded
 		**	within this mixfile and the total size of all embedded files.
 		*/
+#pragma pack(push, 1)
 		typedef struct {
-			short	count;
-			long	size;
+			int16_t	count;
+			int32_t	size;
 		} FileHeader;
+#pragma pack(pop)
 
 		/*
 		**	The number of files within the mixfile.
