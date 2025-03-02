@@ -33,12 +33,15 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
 
-#ifndef WIN32
+#ifdef PORTABLE
+#include "keyboard.h"
+#elif !defined(WIN32)
 #include	"..\wwflat32\include\keyboard.h"
 #else
+
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 
 #include	<windows.h>
 
