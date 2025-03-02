@@ -41,6 +41,7 @@
 class PaletteClass;
 class HSVClass;
 
+#ifndef WIN32
 #ifndef OUTPORTB
 #define OUTPORTB
 extern void outportb(int port, unsigned char data);
@@ -70,6 +71,7 @@ extern void outrgb(unsigned char red, unsigned char green, unsigned char blue);
 		"out	dx,al"		\
 		"jmp	e3"			\
 		"e3:"
+#endif
 
 /*
 **	Each color entry is represented by this class. It holds the values for the color
@@ -114,14 +116,18 @@ class RGBClass
 		friend class PaletteClass;
 
 		void Raw_Set(void) const {
+#ifndef WIN32
 			outrgb(Red, Green, Blue);
 //			outportb(0x03C9, Red);
 //			outportb(0x03C9, Green);
 //			outportb(0x03C9, Blue);
+#endif
 		};
 
 		static void Raw_Color_Prep(unsigned char color) {
+#ifndef WIN32
 			outportb(0x03C8, color);
+#endif
 		};
 
 		/*
