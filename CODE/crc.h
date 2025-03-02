@@ -39,6 +39,7 @@
 #ifndef CRC_H
 #define CRC_H
 
+#include 	<stdint.h>
 #include	<stdlib.h>
 
 /*
@@ -52,21 +53,21 @@ class CRCEngine {
 	public:
 
 		// Constructor for CRC engine (it can have an override initial CRC value).
-		CRCEngine(long initial=0) : CRC(initial), Index(0) {
+		CRCEngine(int32_t initial=0) : CRC(initial), Index(0) {
 			StagingBuffer.Composite = 0;
 		};
 
 		// Fetches CRC value.
-		long operator() (void) const {return(Value());};
+		int32_t operator() (void) const {return(Value());};
 
 		// Submits one byte sized datum to the CRC accumulator.
 		void operator() (char datum);
 
 		// Submits an arbitrary buffer to the CRC accumulator.
-		long operator() (void const * buffer, int length);
+		int32_t operator() (void const * buffer, int length);
 
 		// Implicit conversion operator so this object appears like a 'long integer'.
-		operator long(void) const {return(Value());};
+		operator int32_t(void) const {return(Value());};
 
 	protected:
 
@@ -74,7 +75,7 @@ class CRCEngine {
 			return(Index != 0);
 		};
 
-		long Value(void) const {
+		int32_t Value(void) const {
 			if (Buffer_Needs_Data()) {
 				return((CRC << 1 | CRC >> 31) + StagingBuffer.Composite);
 			}
@@ -85,7 +86,7 @@ class CRCEngine {
 		**	Current accumulator of the CRC value. This value doesn't take into
 		**	consideration any pending data in the staging buffer.
 		*/
-		long CRC;
+		uint32_t CRC;
 
 		/*
 		**	This is the sub index into the staging buffer used to keep track of
@@ -99,8 +100,8 @@ class CRCEngine {
 		**	in preparation for additional data.
 		*/
 		union {
-			long Composite;
-			char Buffer[sizeof(long)];
+			int32_t Composite;
+			char Buffer[sizeof(int32_t)];
 		} StagingBuffer;
 };
 
