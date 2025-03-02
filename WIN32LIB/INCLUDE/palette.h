@@ -43,38 +43,6 @@
 #define PALETTE_SIZE		256
 #define PALETTE_BYTES	768
 
-// ?? isn't declared anywhere, so this is a hack to make things compile
-class RGBClass;
-
-class PaletteClass
-{
-public:
-	PaletteClass();
-	PaletteClass(const RGBClass &);
-
-	void Set(int fade = 0, void (*callback)() = NULL);
-
-	void Adjust(int);
-	void Adjust(int, PaletteClass &);
-	void Partial_Adjust(int, char *);
-	void Partial_Adjust(int, PaletteClass &, char *);
-
-	int Closest_Color(const RGBClass &) const;
-
-	RGBClass &operator[](int index);
-	const RGBClass &operator[](int index) const;
-
-	operator unsigned char *();
-	operator const unsigned char *() const;
-	//operator const void *();
-
-	//operator bool();
-
-	static const int COLOR_COUNT = 256;
-
-	static PaletteClass CurrentPalette;
-};
-
 /*
 ******************************** Prototypes *********************************
 */

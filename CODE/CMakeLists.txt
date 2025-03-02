@@ -58,7 +58,7 @@ add_library(tech STATIC
 	random.cpp
 	rgb.cpp
 	hsv.cpp
-	#palette.obj ?
+	palette.cpp
 	blowfish.cpp
 	sha.cpp
 	crc.cpp
