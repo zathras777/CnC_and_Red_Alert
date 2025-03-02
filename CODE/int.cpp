@@ -39,12 +39,4 @@
 #include	"mp.h"
 #include "int.h"
 
-template<>
-int bignum::Error = 0;
-template<>
-bool bignum::Carry = false;
-template<>
-bool bignum::Borrow = false;
-template<>
-bignum bignum::Remainder;
 

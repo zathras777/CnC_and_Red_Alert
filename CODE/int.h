@@ -294,8 +294,14 @@ T Generate_Prime(Straw & rng, int pbits, T const *)
 }
 
 
-
-
+template<int PRECISION>
+int Int<PRECISION>::Error = 0;
+template<int PRECISION>
+bool Int<PRECISION>::Carry = false;
+template<int PRECISION>
+bool Int<PRECISION>::Borrow = false;
+template<int PRECISION>
+Int<PRECISION> Int<PRECISION>::Remainder;
 
 
 typedef Int<MAX_UNIT_PRECISION>	bignum;
