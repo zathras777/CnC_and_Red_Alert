@@ -3,6 +3,7 @@ add_library(port STATIC
     dos.cpp
     mpeg.cpp
     string.cpp
+    vqa.cpp
     windows.cpp
 )
 
