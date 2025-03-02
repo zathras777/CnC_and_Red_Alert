@@ -12,4 +12,4 @@ enum
 #define ASSUCCESS 0
 #define ASUSERABORT -16 //COMMUSERABORT in wincomm.h
 
-void HMWaitForOK(int, void *);
+inline void HMWaitForOK(int, void *){}
