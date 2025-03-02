@@ -1,6 +1,7 @@
 add_library(port STATIC
     ddraw.cpp
     dos.cpp
+    mpeg.cpp
     string.cpp
     windows.cpp
 )
