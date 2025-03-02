@@ -153,14 +153,22 @@ bool WriteFile(HANDLE file, const void *buffer, DWORD bytesToWrite, DWORD *bytes
 
 DWORD SetFilePointer(HANDLE file, LONG distance, LONG *distHigh, DWORD method)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
+    // defined the methods to SEEK_x
+    fseek((FILE *)file, distance, method);
+    return ftell((FILE *)file);
 }
 
 DWORD GetFileSize(HANDLE file, DWORD *fileSizeHigh)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
+    long pos = ftell((FILE *)file);
+
+    fseek((FILE *)file, 0, SEEK_END);
+
+    long length = ftell((FILE *)file);
+
+    fseek((FILE *)file, pos, SEEK_SET);
+
+    return length;
 }
 
 bool DeleteFile(const char *fileName)
