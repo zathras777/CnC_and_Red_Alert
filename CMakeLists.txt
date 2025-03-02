@@ -7,4 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # -Wno-changes-meaning to compile, others for noise
 add_compile_options(-Wno-changes-meaning -Wno-write-strings)
 
+add_subdirectory(port)
+add_subdirectory(SDLLIB)
+
 add_subdirectory(CODE)

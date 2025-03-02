@@ -1,15 +1,15 @@
 # TODO: proper targets
-include_directories(../WIN32LIB/INCLUDE ../WINVQ/INCLUDE)
+include_directories( ../WINVQ/INCLUDE)
 add_compile_definitions(-DWIN32) # hopefully easier than DOS
 
 # wrappers/workarounds
-include_directories(../port)
 add_compile_definitions(-D__cdecl= -D__far= -D__stdcall= -Dcdecl= -Dfar=)
 
 add_library(jshell STATIC
 	rotbmp.cpp
 	sprite.cpp
 )
+target_link_libraries(jshell sdllib port)
 
 add_library(tech STATIC
     lzo1x_c.cpp
@@ -64,3 +64,214 @@ add_library(tech STATIC
 	crc.cpp
 	sendfile.cpp
 )
+target_link_libraries(tech sdllib port)
+
+add_executable(rasdl
+	aadata.cpp
+	abstract.cpp
+	adata.cpp
+	aircraft.cpp
+	anim.cpp
+	audio.cpp
+	bar.cpp
+	base.cpp
+	bbdata.cpp
+	bdata.cpp
+	building.cpp
+	bullet.cpp
+	cargo.cpp
+	carry.cpp
+	ccfile.cpp
+	ccini.cpp
+	ccptr.cpp
+	cdata.cpp
+	cell.cpp
+	checkbox.cpp
+	cheklist.cpp
+	colrlist.cpp
+	combat.cpp
+	combuf.cpp
+	connect.cpp
+	conquer.cpp
+	const.cpp
+	control.cpp
+	coord.cpp
+	crate.cpp
+	credits.cpp
+	crew.cpp
+	debug.cpp
+	dial8.cpp
+	dialog.cpp
+	display.cpp
+	door.cpp
+	drive.cpp
+	drop.cpp
+	dynavec.cpp
+	edit.cpp
+	egos.cpp
+	ending.cpp
+	event.cpp
+	expand.cpp
+	face.cpp
+	facing.cpp
+	factory.cpp
+	findpath.cpp
+	flasher.cpp
+	fly.cpp
+	foot.cpp
+	fuse.cpp
+	gadget.cpp
+	gamedlg.cpp
+	gauge.cpp
+	globals.cpp
+	goptions.cpp
+	gscreen.cpp
+	hdata.cpp
+	heap.cpp
+	help.cpp
+	house.cpp
+	idata.cpp
+	infantry.cpp
+	ini.cpp
+	init.cpp
+	intro.cpp
+	iomap.cpp
+	ioobj.cpp
+	ipx.cpp
+	ipxaddr.cpp
+	ipxconn.cpp
+	ipxgconn.cpp
+	ipxmgr.cpp
+	# ipxprot.asm
+	jshell.cpp
+	layer.cpp
+	link.cpp
+	list.cpp
+	loaddlg.cpp
+	logic.cpp
+	map.cpp
+	mapeddlg.cpp
+	mapedit.cpp
+	mapedplc.cpp
+	mapedtm.cpp
+	mapsel.cpp
+	menus.cpp
+	mission.cpp
+	mouse.cpp
+	mplayer.cpp
+	msgbox.cpp
+	msglist.cpp
+	netdlg.cpp
+	nullconn.cpp
+	nulldlg.cpp
+	nullmgr.cpp
+	object.cpp
+	odata.cpp
+	options.cpp
+	overlay.cpp
+	power.cpp
+	profile.cpp
+	queue.cpp
+	radar.cpp
+	radio.cpp
+	reinf.cpp
+	rules.cpp
+	saveload.cpp
+	scenario.cpp
+	score.cpp
+	scroll.cpp
+	sdata.cpp
+	session.cpp
+	shapebtn.cpp
+	sidebar.cpp
+	slider.cpp
+	smudge.cpp
+	sounddlg.cpp
+	special.cpp
+	startup.cpp
+	statbtn.cpp
+	super.cpp
+	tab.cpp
+	taction.cpp
+	target.cpp
+	tdata.cpp
+	team.cpp
+	teamtype.cpp
+	techno.cpp
+	template.cpp
+	terrain.cpp
+	tevent.cpp
+	textbtn.cpp
+	theme.cpp
+	toggle.cpp
+	tracker.cpp
+	trigger.cpp
+	trigtype.cpp
+	txtlabel.cpp
+	udata.cpp
+	unit.cpp
+	utracker.cpp
+	vdata.cpp
+	vector.cpp
+	version.cpp
+	vessel.cpp
+	visudlg.cpp
+	vortex.cpp
+	warhead.cpp
+	weapon.cpp
+	mcimovie.cpp
+	mci.cpp
+	mpgset.cpp
+	iconlist.cpp
+	wol_main.cpp
+	wol_chat.cpp
+	rawolapi.cpp
+	wolapiob.cpp
+	w95trace.cpp
+	# cominit.cpp # COM
+	wol_logn.cpp
+	woledit.cpp
+	# passedit.obj ?
+	seditdlg.cpp
+	#dibfile.cpp #very win32-api
+	#dibutil.cpp #
+	wol_gsup.cpp
+	udpaddr.cpp
+	#wsproto.cpp #winsock
+	#wspudp.cpp #winsock
+	#wspipx.cpp #winsock
+	_wsproto.cpp
+	#tooltip.cpp # requires WOLAPI_INTEGRATION
+	wol_opt.cpp
+	wol_cgam.cpp
+	bigcheck.cpp
+	wol_dnld.cpp
+	wolstrng.cpp
+	# win32
+	#2keyfbuf.asm
+	#cpuid.asm
+	#getcpu.cpp # unused
+	interpal.cpp
+	#winasm.asm
+	#2txtprnt.asm
+	writepcx.cpp
+	2keyfram.cpp
+	tcpip.cpp
+	internet.cpp
+	#dde.cpp # DDE
+	#ccdde.cpp # DDE
+	stats.cpp
+	packet.cpp
+	field.cpp
+
+	# new
+	nondosstub.cpp
+	sdlstub.cpp
+	ipxstub.cpp
+)
+
+target_compile_definitions(rasdl PRIVATE
+	ENGLISH=1  # TODO: also french/german
+	PORTABLE=1 # to indicate not windows or dos sometimes
+)
+target_link_libraries(rasdl PRIVATE tech jshell port sdllib) # mpgdll wqa32wp wqm32wp wwipx32 keyboard
