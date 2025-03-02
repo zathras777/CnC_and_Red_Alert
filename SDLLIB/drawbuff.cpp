@@ -21,6 +21,7 @@ void Buffer_Put_Pixel(void * thisptr, int x, int y, unsigned char color)
 int	Buffer_Get_Pixel(void * thisptr, int x, int y)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    return 0;
 }
 
 void Buffer_Clear(void *thisptr, unsigned char color)
@@ -31,11 +32,13 @@ void Buffer_Clear(void *thisptr, unsigned char color)
 long Buffer_To_Buffer(void *thisptr, int x, int y, int w, int h, void *buff, long size)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    return 0;
 }
 
 long Buffer_To_Page(int x, int y, int w, int h, void *Buffer, void *view)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    return 0;
 }
 
 bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel, int dx_pixel,
@@ -54,6 +57,7 @@ bool Linear_Scale_To_Linear(void *, void *, int, int, int, int, int, int, int, i
 long Buffer_Print(void *thisptr, const char *str, int x, int y, int fcolor, int bcolor)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    return 0;
 }
 
 void Buffer_Draw_Line(void *thisptr, int sx, int sy, int dx, int dy, unsigned char color)

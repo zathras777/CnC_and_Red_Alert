@@ -59,6 +59,7 @@ int Get_Mouse_State(void)
 void *Set_Mouse_Cursor(int hotx, int hoty, void *cursor)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+    return NULL;
 }
 
 int Get_Mouse_X(void)
