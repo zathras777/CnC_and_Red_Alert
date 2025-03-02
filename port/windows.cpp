@@ -4,13 +4,15 @@
 
 bool CloseHandle(HANDLE object)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    // potentially not a file, but nothing else is implemented
+    if(object)
+        fclose((FILE *)object);
     return true;
 }
 
 UINT SetErrorMode(UINT mode)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    // only used around calls to ReadFile
     return 0;
 }
 
@@ -105,26 +107,48 @@ bool PostMessage(HWND wnd, UINT msg, UINT *wParam, LONG *lParam)
 
 int MessageBox(HWND wnd, const char *text, const char *caption, UINT type)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("MessageBox %s/%s (%x)\n", text, caption, type);
     return MB_OK;
 }
 
 HANDLE CreateFile(const char *fileName, DWORD access, DWORD shareMode, void/*SECURITY_ATTRIBUTES*/ *security, DWORD creationDisposition, DWORD flags, HANDLE templ)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return NULL;
+    const char *mode;
+
+    if(access == GENERIC_READ && creationDisposition == OPEN_EXISTING)
+        mode = "rb";
+    else if(access == GENERIC_WRITE && creationDisposition == CREATE_ALWAYS)
+        mode = "wb";
+    else if(access == (GENERIC_READ | GENERIC_WRITE) && creationDisposition == CREATE_ALWAYS)
+        mode = "w+b";
+    else
+    {
+        printf("CreateFile %s %x %x %p %x %x %p\n", fileName, access, shareMode, security, creationDisposition, flags, templ);
+        return NULL;
+    }
+
+    // may need to tag...
+    return fopen(fileName, mode);
 }
 
 bool ReadFile(HANDLE file, void *buffer, DWORD bytesToRead, DWORD *bytesRead, void/*OVERLAPPED*/ *overlapped)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return false;
+    size_t read = fread(buffer, 1, bytesToRead, (FILE *)file);
+
+    if(bytesRead)
+        *bytesRead = read;
+
+    return ferror((FILE *)file) == 0;
 }
 
 bool WriteFile(HANDLE file, const void *buffer, DWORD bytesToWrite, DWORD *bytesWritten, void/*OVERLAPPED*/ *overlapped)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return false;
+    size_t written = fwrite(buffer, 1, bytesToWrite, (FILE *)file);
+
+    if(bytesWritten)
+        *bytesWritten = written;
+
+    return ferror((FILE *)file) == 0;
 }
 
 DWORD SetFilePointer(HANDLE file, LONG distance, LONG *distHigh, DWORD method)
