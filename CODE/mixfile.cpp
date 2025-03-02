@@ -187,6 +187,13 @@ MixFileClass<T>::MixFileClass(char const * filename, PKey const * key) :
 
 	T file(filename);		// Working file object.
 	Filename = strdup(file.File_Name());
+
+	if(!file.Is_Available()) {
+		// retry with lowercase name for case-sensitive fs
+		Filename = strlwr((char *)Filename);
+		file.Set_Name(Filename);
+	}
+
 	FileStraw fstraw(file);
 	PKStraw pstraw(PKStraw::DECRYPT, CryptRandom);
 	Straw * straw = &fstraw;
