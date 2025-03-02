@@ -461,7 +461,7 @@ bool Read_Scenario(char * name)
 				RequiredCD = 3;
 				if (!Force_CD_Available(RequiredCD)) {	// force Aftermath CD in drive.
 #ifndef WOLAPI_INTEGRATION
-					#ifdef WIN32
+					#ifdef _WIN32
 					if(Special.IsFromWChat || SpawnedFromWChat) {
 						char packet[10] = {"Hello"};
 					Send_Data_To_DDE_Server (packet, strlen(packet), DDEServerClass::DDE_CONNECTION_FAILED);

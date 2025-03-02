@@ -124,7 +124,9 @@ void Check_From_WChat(char *wchat_name)
 	if (wchat_name){
 		ini_file = new char [8192];
 	}else{
+#ifdef _WIN32
 		ini_file = DDEServer.Get_MPlayer_Game_Info();
+#endif
 
 #ifdef NEVER
 		/*
@@ -267,7 +269,9 @@ int Read_Game_Options(char *name)
 			file.Read(buffer, 8192-1);
 			file.Close();
 		}else{
+#ifdef _WIN32
 			buffer = DDEServer.Get_MPlayer_Game_Info();
+#endif
 		}
 	}
 
@@ -929,7 +933,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			display = false;
 		}
 
-
+#ifdef _WIN32
 		/*
 		** See if the game start packet has arrived from wchat yet.
 		*/
@@ -939,6 +943,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			//ShowWindow ( MainWindow, SW_SHOWMAXIMIZED	);
 			return(true);
 		}
+#endif
 
 		//input = buttons->Input();
 		input = cancelbtn.Input();

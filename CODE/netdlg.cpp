@@ -6427,7 +6427,9 @@ static int Net_Fake_New_Dialog(void)
 				Session.GameName[0] = 0;
 				process = false;
 				rc = false;
+#ifdef _WIN32
 				Send_Data_To_DDE_Server ("Hello", strlen("Hello"), DDEServerClass::DDE_CONNECTION_FAILED);
+#endif
 				GameStatisticsPacketSent = false;
 				Spawn_WChat(false);
 				break;
@@ -7236,7 +7238,9 @@ static int Net_Fake_Join_Dialog(void)
 					//............................................................
 					// exit the dialog
 					//............................................................
+#ifdef _WIN32
 					Send_Data_To_DDE_Server ("Hello", strlen("Hello"), DDEServerClass::DDE_CONNECTION_FAILED);
+#endif
 					GameStatisticsPacketSent = false;
 					Spawn_WChat(false);
 					process = false;
