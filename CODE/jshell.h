@@ -196,7 +196,9 @@ T _rotl(T X, int n)
 
 
 
-void Set_Bit(void * array, int bit, int value);
+inline void Set_Bit(void * array, int bit, int value)
+{
+/*
 #pragma aux Set_Bit parm [esi] [ecx] [eax] \
 	modify [esi ebx] = 			\
 	"mov	ebx,ecx"					\
@@ -207,18 +209,28 @@ void Set_Bit(void * array, int bit, int value);
 	"jz	ok"						\
 	"bts	[esi+ebx*4],ecx"		\
 	"ok:"
+*/
+    if(value)
+        ((uint32_t *)array)[(unsigned)bit >> 5] |= (1 << (bit & 0x1F));
+    else
+        ((uint32_t *)array)[(unsigned)bit >> 5] &= ~(1 << (bit & 0x1F));
+}
 
-int Get_Bit(void const * array, int bit);
-#pragma aux Get_Bit parm [esi] [eax] \
-	modify [esi ebx] \
-	value [eax]		= 				\
+inline int Get_Bit(void const * array, int bit)
+{
+/*
 	"mov	ebx,eax"					\
 	"shr	ebx,5"					\
 	"and	eax,01Fh"				\
 	"bt	[esi+ebx*4],eax"		\
 	"setc	al"
+*/
+    return !!(((const uint32_t *)array)[(unsigned)bit >> 5] & (1 << (bit & 0x1F)));
+}
 
-int First_True_Bit(void const * array);
+inline int First_True_Bit(void const * array)
+{
+/*
 #pragma aux First_True_Bit parm [esi] \
 	modify [esi ebx] \
 	value [eax]		= 				\
@@ -230,8 +242,22 @@ int First_True_Bit(void const * array);
 	"bsf	ebx,ebx"					\
 	"jz	again"					\
 	"add	eax,ebx"
+*/
+    const uint32_t *array32 = (const uint32_t *)array;
+    int off = 0;
+    while(true)
+    {
+        uint32_t v = *array32++;
+        int pos = __builtin_ffs(v); // FIXME
+        if(pos)
+            return off + pos;
 
-int First_False_Bit(void const * array);
+        off += 32;
+    }
+}
+inline int First_False_Bit(void const * array)
+{
+/*
 #pragma aux First_False_Bit parm [esi] \
 	modify [esi ebx] \
 	value [eax]		= 				\
@@ -244,6 +270,19 @@ int First_False_Bit(void const * array);
 	"bsf	ebx,ebx"					\
 	"jz	again"					\
 	"add	eax,ebx"
+*/
+    const uint32_t *array32 = (const uint32_t *)array;
+    int off = 0;
+    while(true)
+    {
+        uint32_t v = *array32++;
+        int pos = __builtin_ffs(~v); // FIXME
+        if(pos)
+            return off + pos;
+
+        off += 32;
+    }
+}
 
 #ifdef OBSOLETE
 extern int Bound(int original, int min, int max);

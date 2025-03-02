@@ -402,7 +402,9 @@ COORDINATE Coord_Scatter(COORDINATE coord, unsigned distance, bool lock)
 	return(newcoord);
 }
 
-extern int calcx(signed short, short distance);
+int calcx(signed short v, short distance)
+{
+/*
 #pragma aux calcx parm [ax] [bx] \
 	modify [eax dx] \
 	value [eax]		= 				\
@@ -413,8 +415,13 @@ extern int calcx(signed short, short distance);
 	"mov	ah,dl"					\
 	"cwd"								\
 //	"and	eax,0FFFFh";
+*/
+    return ((v * distance) & 0xFFFF) >> 7;
+}
 
-extern int calcy(signed short, short distance);
+int calcy(signed short v, short distance)
+{
+/*
 #pragma aux calcy parm [ax] [bx] \
 	modify [eax dx] \
 	value [eax]		= 				\
@@ -426,6 +433,9 @@ extern int calcy(signed short, short distance);
 	"cwd"								\
 	"neg	eax";
 //	"and	eax,0FFFFh"				\
+*/
+    return -(((v * distance) & 0xFFFF) >> 7);
+}
 
 void Move_Point(short &x, short &y, register DirType dir, unsigned short distance)
 {
