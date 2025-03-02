@@ -49,9 +49,9 @@ void _makepath(char *path, const char *drive, const char *dir, const char *fname
     const char *post_sep = "";
     const char *dot = "";
 
-    if(!dir || !strlen(dir))
-        dir = "/";
-    else
+    if(!dir)
+        dir = "";
+    else if(strlen(dir))
     {
         if(dir[0] != '/' && dir[0] != '\\')
             pre_sep = "/";
