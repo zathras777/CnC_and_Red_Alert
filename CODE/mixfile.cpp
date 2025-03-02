@@ -493,8 +493,8 @@ void MixFileClass<T>::Free(void)
 
 int compfunc(void const * ptr1, void const * ptr2)
 {
-	if (*(long const *)ptr1 < *(long const *)ptr2) return(-1);
-	if (*(long const *)ptr1 > *(long const *)ptr2) return(1);
+	if (*(int32_t const *)ptr1 < *(int32_t const *)ptr2) return(-1);
+	if (*(int32_t const *)ptr1 > *(int32_t const *)ptr2) return(1);
 	return(0);
 }
 
@@ -543,7 +543,7 @@ assert(filename != NULL);//BG
 	**	Create the key block that will be used to binary search for the file.
 	*/
 	char *upperFilename = strupr(strdup(filename));
-	long crc = Calculate_CRC(strupr(upperFilename), strlen(filename));
+	long crc = Calculate_CRC(upperFilename, strlen(filename));
 	free(upperFilename);
 	SubBlock key;
 	key.CRC = crc;
