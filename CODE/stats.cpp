@@ -570,10 +570,12 @@ void Send_Statistics_Packet(void)
 #endif
 
 
+#ifndef PORTABLE
 		/*
 		** CPU type
 		*/
 		stats.Add_Field (FIELD_CPU_TYPE, (char)CPUType);
+#endif
 
 		/*
 		** Memory
