@@ -26,6 +26,8 @@ public:
 
 	static const int COLOR_COUNT = 256;
 
+	RGBClass data[COLOR_COUNT];
+
 	static PaletteClass CurrentPalette;
 };
 

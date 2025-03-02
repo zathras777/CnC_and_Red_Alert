@@ -2,6 +2,7 @@
 
 #include "palette.h"
 
+// two current palettes?
 unsigned char CurrentPalette[3 * 256];
 
 PaletteClass PaletteClass::CurrentPalette;
@@ -12,9 +13,10 @@ PaletteClass::PaletteClass()
 {
 
 }
-PaletteClass::PaletteClass(const RGBClass &)
+PaletteClass::PaletteClass(const RGBClass &col)
 {
-
+    for(int i = 0; i < COLOR_COUNT; i++)
+        data[i] = col;
 }
 
 void PaletteClass::Set(int fade, void (*callback)())
@@ -48,20 +50,20 @@ int PaletteClass::Closest_Color(const RGBClass &) const
 
 RGBClass &PaletteClass::operator[](int index)
 {
-    return ohno;
+    return data[index];
 }
 
 const RGBClass &PaletteClass::operator[](int index) const
 {
-    return ohno;
+    return data[index];
 }
 
 PaletteClass::operator unsigned char *()
 {
-    return NULL;
+    return (unsigned char *)data;
 }
 
 PaletteClass::operator const unsigned char *() const
 {
-    return NULL;
+    return (const unsigned char *)data;
 }
