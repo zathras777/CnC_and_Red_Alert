@@ -68,9 +68,7 @@ template<class T> T MIN(T a, T b)
 {
 	return (b < a) ? b : a;
 };
-short MIN(short, short);
-int MIN(int, int);
-long MIN(long, long);
+inline int MIN(int a, int b) {return MIN<int>(a, b);}
 
 // Returns the maximum of the two numbers.
 #ifdef MAX
@@ -80,9 +78,7 @@ template<class T> T MAX(T a, T b)
 {
 	return (b > a) ? b : a;
 };
-short MAX(short, short);
-int MAX(int, int);
-long MAX(long, long);
+inline int MAX(int a, int b) {return MAX<int>(a, b);}
 
 
 /*

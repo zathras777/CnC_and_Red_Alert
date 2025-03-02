@@ -72,7 +72,7 @@ void  * Set_Font(void const *fontptr);
 
 int Char_Pixel_Width(char chr);
 unsigned int String_Pixel_Width(char const *string);
-void Get_Next_Text_Print_XY(GraphicViewPortClass& vp, unsigned long offset, INT *x, INT *y);
+void Get_Next_Text_Print_XY(GraphicViewPortClass& vp, unsigned long offset, int *x, int *y);
 
 /*=========================================================================*/
 /* The following prototypes are for the file: LOADFONT.CPP	  					*/
@@ -89,7 +89,7 @@ extern "C" {
 #endif
 
 
-void Set_Font_Palette_Range(void const *palette, INT start_idx, INT end_idx);
+void Set_Font_Palette_Range(void const *palette, int start_idx, int end_idx);
 
 
 #ifdef __cplusplus

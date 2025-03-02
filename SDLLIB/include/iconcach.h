@@ -74,7 +74,7 @@ class IconCacheClass {
 		void Restore(void);						// restore the surface
 		bool Cache_It (void * icon_ptr);		// Cache the icon to video memory
 		void Uncache_It (void);					// Restore the video memory and flag the icon as uncached
-		void Draw_It (LPDIRECTDRAWSURFACE dest_surface , int x_pixel, int y_pixel, int window_left , int window_top , int window_width , int window_height);
+		//void Draw_It (LPDIRECTDRAWSURFACE dest_surface , int x_pixel, int y_pixel, int window_left , int window_top , int window_width , int window_height);
 		inline bool Get_Is_Cached(void);		// Return the IsCached member
 
 		int						TimesDrawn;		// counter of times cached icon has been drawn
@@ -82,8 +82,6 @@ class IconCacheClass {
 
 
 	private:
-
-		LPDIRECTDRAWSURFACE	CacheSurface;	// Ptr to direct draw surface where icon resides
 		bool						IsCached;		// Flag to say whether an icon is cached
 		bool						SurfaceLost;	// Flag to indicate that our icons surface has been lost
 		int						DrawFrequency;	// Number of times icon has been drawn
@@ -120,10 +118,6 @@ extern "C" int Get_Icon_Index (void *icon_ptr);
 extern "C" int Get_Free_Index (void);
 extern "C" bool Cache_New_Icon (int icon_index, void *icon_ptr);
 extern "C" int Get_Free_Cache_Slot(void);
-
-
-extern	int	CachedIconsDrawn;
-extern	int	UnCachedIconsDrawn;
 
 
 /***********************************************************************************************

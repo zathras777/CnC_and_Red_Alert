@@ -56,7 +56,7 @@ class WWMouseClass {
 		// other than the hidpage.
 		//
 		void Draw_Mouse(GraphicViewPortClass *scr);
-		void Erase_Mouse(GraphicViewPortClass *scr, int forced = FALSE);
+		void Erase_Mouse(GraphicViewPortClass *scr, bool forced = false);
 
 		void Block_Mouse(GraphicBufferClass *buffer);
 		void Unblock_Mouse(GraphicBufferClass *buffer);

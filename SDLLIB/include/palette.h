@@ -66,9 +66,6 @@ public:
 
 	operator unsigned char *();
 	operator const unsigned char *() const;
-	//operator const void *();
-
-	//operator bool();
 
 	static const int COLOR_COUNT = 256;
 

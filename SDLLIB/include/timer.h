@@ -45,8 +45,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// Externs /////////////////////////////////////////////
 extern bool 		TimerSystemOn;
-extern	HANDLE	TimerThreadHandle;		//Handle of timer thread
-extern	int		InTimerCallback;			//true if we are currently in a callback
 
 
 /*=========================================================================*/
@@ -59,16 +57,16 @@ class TimerClass {
  	public:
 		// Constructor.  Timers set before low level init has been done will not
 		// be able to be 'Started' or 'on' until timer system is in place.
-		TimerClass(BaseTimerEnum timer=BT_SYSTEM, bool start=FALSE);
+		TimerClass(BaseTimerEnum timer=BT_SYSTEM, bool start=false);
 
 		// No destructor.
 		~TimerClass(void){}
 
 		//
-		long Set(long value, bool start=TRUE);	// Set initial timer value.
+		long Set(long value, bool start=true);	// Set initial timer value.
 		long Stop(void);				// Pause timer.
 		long Start(void);				// Resume timer.
-		long Reset(bool start=TRUE);	// Reset timer to zero.
+		long Reset(bool start=true);	// Reset timer to zero.
 		long Time(void);				// Fetch current timer value.
 
 	protected:
@@ -92,15 +90,15 @@ class CountDownTimerClass : private TimerClass {
 	public:
 		// Constructor.  Timers set before low level init has been done will not
 		// be able to be 'Started' or 'on' until timer system is in place.
-		CountDownTimerClass(BaseTimerEnum timer, long set, int on=FALSE);
-		CountDownTimerClass(BaseTimerEnum timer=BT_SYSTEM, int on=FALSE);
+		CountDownTimerClass(BaseTimerEnum timer, long set, bool on=false);
+		CountDownTimerClass(BaseTimerEnum timer=BT_SYSTEM, bool on=false);
 
 		// No destructor.
 		~CountDownTimerClass(void){}
 
 		// Public functions
-		long Set(long set, bool start=TRUE);	// Set count down value.
-		long Reset(bool start=TRUE);	// Reset timer to zero.
+		long Set(long set, bool start=true);	// Set count down value.
+		long Reset(bool start=true);	// Reset timer to zero.
 		long Stop(void);			// Pause timer.
 		long Start(void);			// Resume timer.
 		long Time(void);			// Fetch current count down value.
@@ -132,7 +130,7 @@ inline long CountDownTimerClass::Reset(bool start)
 class WinTimerClass {
 
 	public:
-		WinTimerClass ( UINT freq=60 , bool partial=0 );
+		WinTimerClass ( unsigned freq=60 , bool partial=false );
 		~WinTimerClass();
 
 		void 		Update_Tick_Count ( void );
@@ -175,7 +173,7 @@ extern CountDownTimerClass		CountDown;
 extern "C" {
 	long Get_System_Tick_Count(void);
 	long Get_User_Tick_Count(void);
-	void far Timer_Interrupt_Func(void);
+	void Timer_Interrupt_Func(void);
 //	long Get_Num_Interrupts(unsigned int realmode);
 	void Disable_Timer_Interrupt(void);
 	void Enable_Timer_Interrupt(void);
@@ -184,7 +182,7 @@ extern "C" {
 /*=========================================================================*/
 /* The following prototypes are for the file: TIMER.CPP							*/
 /*=========================================================================*/
-bool Init_Timer_System(unsigned int freq, int partial = FALSE);
+bool Init_Timer_System(unsigned int freq, int partial = false);
 bool Remove_Timer_System(void);
 
 

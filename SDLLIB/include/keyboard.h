@@ -61,8 +61,8 @@ class WWKeyboardClass
 		bool 	Check(void);															// checks keybuff for meta key
 		int 	Get(void);																// gets a meta key from the keybuffer
 		bool 	Put(int key);															// dumps a key into the keybuffer
-		bool	Put_Key_Message(	UINT vk_key, bool release = FALSE, 		// handles keyboard related message
-										bool dbl = FALSE);							//   and mouse clicks and dbl clicks
+		bool	Put_Key_Message(unsigned vk_key, bool release = false, 					// handles keyboard related message
+										bool dbl = false);								//   and mouse clicks and dbl clicks
 		int 	Check_Num(void);														// checks keybuff for a keynum key
 		int 	Get_VK(void);															// gets keynum key from key buff
 		int 	Check_ACII(void);														// checks keybuff for an ascii key
@@ -79,7 +79,7 @@ class WWKeyboardClass
 		/*===================================================================*/
 		/* Define the main hook for the message processing loop.					*/
 		/*===================================================================*/
-		void Message_Handler(HWND hwnd, UINT message, UINT wParam, long lParam);
+		//void Message_Handler(HWND hwnd, UINT message, UINT wParam, long lParam);
 
 		/*===================================================================*/
 		/* Define public routines which can be used on keys in general.		*/
@@ -114,7 +114,6 @@ class WWKeyboardClass
 		long				Tail;					// the tail position in keyboard buffer
 		int				MState;
 		int				Conditional;
-		HANDLE			CurrentCursor;
 };
 
 
@@ -380,7 +379,7 @@ class WWKeyboardClass
 #define	VK_DOWNRIGHT		  VK_NEXT
 #define	VK_ALT				  VK_MENU
 
-enum {
+typedef enum KeyASCIIType {
 	//
 	// Define all the KA types as variations of the VK types.  This is
 	// so the KA functions will work properly under windows 95.
@@ -486,178 +485,165 @@ enum {
 	KA_RBRACE,									/* ] */
 	KA_TILDA,									/* ~ */
 
-	KA_ESC 				= VK_ESCAPE | WWKEY_VK_BIT,
-	KA_EXTEND 			= VK_ESCAPE | WWKEY_VK_BIT,
-	KA_RETURN 			= VK_RETURN | WWKEY_VK_BIT,
-	KA_BACKSPACE 		= VK_BACK | WWKEY_VK_BIT,
-	KA_TAB 				= VK_TAB  | WWKEY_VK_BIT,
-	KA_DELETE			= VK_DELETE | WWKEY_VK_BIT,									/* <DELETE> */
-	KA_INSERT			= VK_INSERT | WWKEY_VK_BIT,									/* <INSERT> */
-	KA_PGDN				= VK_NEXT | WWKEY_VK_BIT,										/* <PAGE DOWN> */
-	KA_DOWNRIGHT 		= VK_NEXT | WWKEY_VK_BIT,
-	KA_DOWN				= VK_DOWN | WWKEY_VK_BIT,										/* <DOWN ARROW> */
-	KA_END				= VK_END | WWKEY_VK_BIT,										/* <END> */
-	KA_DOWNLEFT 		= VK_END | WWKEY_VK_BIT,
-	KA_RIGHT				= VK_RIGHT | WWKEY_VK_BIT,									/* <RIGHT ARROW> */
-	KA_KEYPAD5			= VK_SELECT | WWKEY_VK_BIT,									/* NUMERIC KEY PAD <5> */
-	KA_LEFT				= VK_LEFT | WWKEY_VK_BIT,										/* <LEFT ARROW> */
-	KA_PGUP				= VK_PRIOR | WWKEY_VK_BIT,										/* <PAGE UP> */
-	KA_UPRIGHT 			= VK_PRIOR | WWKEY_VK_BIT,
-	KA_UP					= VK_UP | WWKEY_VK_BIT,										/* <UP ARROW> */
-	KA_HOME				= VK_HOME | WWKEY_VK_BIT,										/* <HOME> */
-	KA_UPLEFT 			= VK_HOME | WWKEY_VK_BIT,
-	KA_F12				= VK_F12 | WWKEY_VK_BIT,
-	KA_F11				= VK_F11 | WWKEY_VK_BIT,
-	KA_F10				= VK_F10 | WWKEY_VK_BIT,
-	KA_F9 				= VK_F9 | WWKEY_VK_BIT,
-	KA_F8					= VK_F8 | WWKEY_VK_BIT,
-	KA_F7					= VK_F7 | WWKEY_VK_BIT,
-	KA_F6					= VK_F6 | WWKEY_VK_BIT,
-	KA_F5					= VK_F5 | WWKEY_VK_BIT,
-	KA_F4					= VK_F4 | WWKEY_VK_BIT,
-	KA_F3					= VK_F3 | WWKEY_VK_BIT,
-	KA_F2					= VK_F2 | WWKEY_VK_BIT,
-	KA_F1					= VK_F1 | WWKEY_VK_BIT,
-	KA_LMOUSE 	 		= VK_LBUTTON | WWKEY_VK_BIT,
-	KA_RMOUSE 	 		= VK_RBUTTON | WWKEY_VK_BIT,
+	KA_ESC 				= VK_ESCAPE,
+	KA_EXTEND 			= VK_ESCAPE,
+	KA_RETURN 			= VK_RETURN,
+	KA_BACKSPACE 		= VK_BACK,
+	KA_TAB 				= VK_TAB ,
+	KA_DELETE			= VK_DELETE,									/* <DELETE> */
+	KA_INSERT			= VK_INSERT,									/* <INSERT> */
+	KA_PGDN				= VK_NEXT,										/* <PAGE DOWN> */
+	KA_DOWNRIGHT 		= VK_NEXT,
+	KA_DOWN				= VK_DOWN,										/* <DOWN ARROW> */
+	KA_END				= VK_END,										/* <END> */
+	KA_DOWNLEFT 		= VK_END,
+	KA_RIGHT				= VK_RIGHT,									/* <RIGHT ARROW> */
+	KA_KEYPAD5			= VK_SELECT,									/* NUMERIC KEY PAD <5> */
+	KA_LEFT				= VK_LEFT,										/* <LEFT ARROW> */
+	KA_PGUP				= VK_PRIOR,										/* <PAGE UP> */
+	KA_UPRIGHT 			= VK_PRIOR,
+	KA_UP					= VK_UP,										/* <UP ARROW> */
+	KA_HOME				= VK_HOME,										/* <HOME> */
+	KA_UPLEFT 			= VK_HOME,
+	KA_F12				= VK_F12,
+	KA_F11				= VK_F11,
+	KA_F10				= VK_F10,
+	KA_F9 				= VK_F9,
+	KA_F8					= VK_F8,
+	KA_F7					= VK_F7,
+	KA_F6					= VK_F6,
+	KA_F5					= VK_F5,
+	KA_F4					= VK_F4,
+	KA_F3					= VK_F3,
+	KA_F2					= VK_F2,
+	KA_F1					= VK_F1,
+	KA_LMOUSE 	 		= VK_LBUTTON,
+	KA_RMOUSE 	 		= VK_RBUTTON,
 
 	KA_SHIFT_BIT 		= WWKEY_SHIFT_BIT,
 	KA_CTRL_BIT  		= WWKEY_CTRL_BIT,
 	KA_ALT_BIT   		= WWKEY_ALT_BIT,
 	KA_RLSE_BIT  		= WWKEY_RLS_BIT,
+} KeyASCIIType;
 
-	//
-	// Define all the KN types as variations of the KA types.  This is
-	// so the KN functions will work properly under windows 95.
-	//
+
+typedef enum KeyNumType {
 	KN_NONE				= 0,
-	KN_GRAVE 			= KA_GRAVE,
-	KN_1 					= KA_1,
-	KN_2 					= KA_2,
-	KN_3 					= KA_3,
-	KN_4 					= KA_4,
-	KN_5 					= KA_5,
-	KN_6 					= KA_6,
-	KN_7 					= KA_7,
-	KN_8 					= KA_8,
-	KN_9 					= KA_9,
-	KN_0 					= KA_0,
-	KN_MINUS 			= KA_MINUS,									/* - */
-	KN_EQUAL 			= KA_EQUAL,									/* = */
 
-	KN_BACKSPACE		= KA_BACKSPACE,
-
-	KN_TAB				= KA_TAB,										/* <TAB> */
-	KN_Q 					= KA_q,
-	KN_W 					= KA_w,
-	KN_E 					= KA_e,
-	KN_R 					= KA_r,
-	KN_T 					= KA_t,
-	KN_Y 					= KA_y,
-	KN_U 					= KA_u,
-	KN_I 					= KA_i,
-	KN_O 					= KA_o,
-	KN_P 					= KA_p,
-	KN_LBRACKET			= KA_LBRACKET,								/* [ */
-	KN_RBRACKET			= KA_RBRACKET,								/* ] */
-	KN_BACKSLASH		= KA_BACKSLASH,								/* \ */
-
-
-	KN_A 					= KA_a,
-	KN_S 					= KA_s,
-	KN_D 					= KA_d,
-	KN_F 					= KA_f,
-	KN_G 					= KA_g,
-	KN_H 					= KA_h,
-	KN_J 					= KA_j,
-	KN_K 					= KA_k,
-	KN_L 					= KA_l,
-	KN_SEMICOLON 		= KA_SEMICOLON,								/* ; */
-	KN_SQUOTE 			= KA_SQUOTE,									/* ' */
-	KN_BACKSLASH2 		= KA_BACKSLASH,
-	KN_RETURN 			= KA_RETURN,
-	KN_Z 					= KA_z,
-	KN_X 					= KA_x,
-	KN_C 					= KA_c,
-	KN_V 					= KA_v,
-	KN_B 					= KA_b,
-	KN_N 					= KA_n,
-	KN_M 					= KA_m,
-	KN_COMMA 			= KA_COMMA,									/* , */
-	KN_PERIOD 			= KA_PERIOD,									/* . */
-	KN_SLASH 			= KA_SLASH,									/* / */
-	KN_SPACE 			= KA_SPACE,
-	KN_LMOUSE			= KA_LMOUSE,
-	KN_RMOUSE			= KA_RMOUSE,
-
-	KN_HOME				= KA_HOME,										/* num key pad 7 */
-	KN_UPLEFT			= KA_UPLEFT,
-	KN_LEFT				= KA_LEFT,										/* num key pad 4 */
-	KN_END				= KA_END,										/* num key pad 1 */
-	KN_DOWNLEFT			= KA_DOWNLEFT,
-
-	KN_KEYPAD_SLASH	= KA_SLASH,												/* num key pad / */
-	KN_UP					= KA_UP,											/* num key pad 8 */
-	KN_CENTER			= KA_KEYPAD5,									/* num key pad 5 */
-	KN_DOWN				= KA_DOWN,										/* num key pad 2 */
-	KN_INSERT			= KA_INSERT,									/* num key pad 0 */
-	KN_KEYPAD_ASTERISK= KA_ASTERISK,									/* num key pad * */
-	KN_PGUP				= KA_PGUP,										/* num key pad 9 */
-	KN_UPRIGHT			= KA_UPRIGHT,
-	KN_RIGHT				= KA_RIGHT,									/* num key pad 6 */
-	KN_PGDN				= KA_PGDN,										/* num key pad 3 */
-	KN_DOWNRIGHT		= KA_DOWNRIGHT,
-	KN_DELETE			= KA_DELETE,									/* num key pad . */
-
-	KN_KEYPAD_MINUS	= KA_MINUS,							/* num key pad - */
-	KN_KEYPAD_PLUS		= KA_PLUS,							/* num key pad + */
-
-
-	KN_KEYPAD_RETURN	= KA_RETURN,							/* num key pad <ENTER> */
-
-	KN_ESC				= KA_ESC,
-	KN_F1					= KA_F1,
-	KN_F2					= KA_F2,
-	KN_F3					= KA_F3,
-	KN_F4					= KA_F4,
-	KN_F5					= KA_F5,
-	KN_F6					= KA_F6,
-	KN_F7					= KA_F7,
-	KN_F8					= KA_F8,
-	KN_F9					= KA_F9,
-	KN_F10				= KA_F10,
-	KN_F11				= KA_F11,
-	KN_F12				= KA_F12,
-
-	KN_PRNTSCRN			= VK_PRINT | WWKEY_VK_BIT,
-	KN_CAPSLOCK			= VK_CAPITAL | WWKEY_VK_BIT,
-	KN_SCROLLLOCK		= VK_SCROLL | WWKEY_VK_BIT,								/* <SCROLL LOCK> */
-	KN_PAUSE				= VK_PAUSE | WWKEY_VK_BIT,									/* <PAUSE> */
-	KN_LSHIFT			= VK_SHIFT | WWKEY_VK_BIT,
-	KN_RSHIFT			= VK_SHIFT | WWKEY_VK_BIT,
-	KN_LCTRL				= VK_CONTROL | WWKEY_VK_BIT,
-	KN_RCTRL				= VK_CONTROL | WWKEY_VK_BIT,
-	KN_LALT				= VK_MENU | WWKEY_VK_BIT,
-	KN_RALT				= VK_MENU | WWKEY_VK_BIT,
-	KN_E_INSERT			= VK_INSERT | WWKEY_VK_BIT,
-	KN_E_DELETE 		= VK_DELETE | WWKEY_VK_BIT,
-	KN_E_LEFT			= VK_LEFT | WWKEY_VK_BIT,									/* extended <LEFT ARROW> */
-	KN_E_HOME			= VK_HOME | WWKEY_VK_BIT,									/* extended <HOME> */
-	KN_E_END				= VK_END | WWKEY_VK_BIT,									/* extended <END> */
-	KN_E_UP				= VK_UP | WWKEY_VK_BIT,										/* extended <UP ARROW> */
-	KN_E_DOWN			= VK_DOWN | WWKEY_VK_BIT,									/* extended <DOWN ARROW> */
-	KN_E_PGUP			= VK_PRIOR | WWKEY_VK_BIT,									/* extended <PAGE UP> */
-	KN_E_PGDN   		= VK_NEXT | WWKEY_VK_BIT,									/* extended <PAGE DOWN> */
-	KN_E_RIGHT			= VK_RIGHT | WWKEY_VK_BIT,									/* extended <RIGHT ARROW> */
-	KN_NUMLOCK			= VK_NUMLOCK | WWKEY_VK_BIT,									/* <NUM LOCK> */
+	KN_0 					= VK_0,
+	KN_1 					= VK_1,
+	KN_2 					= VK_2,
+	KN_3 					= VK_3,
+	KN_4 					= VK_4,
+	KN_5 					= VK_5,
+	KN_6 					= VK_6,
+	KN_7 					= VK_7,
+	KN_8 					= VK_8,
+	KN_9 					= VK_9,
+	KN_A 					= VK_A,
+	KN_B 					= VK_B,
+	KN_BACKSLASH		= VK_NONE_DC,
+	KN_BACKSPACE		= VK_BACK,
+	KN_C 					= VK_C,
+	KN_CAPSLOCK			= VK_CAPITAL,
+	KN_CENTER			= VK_CLEAR,
+	KN_COMMA 			= VK_NONE_BC,
+	KN_D 					= VK_D,
+	KN_DELETE			= VK_DELETE,
+	KN_DOWN				= VK_DOWN,
+	KN_DOWNLEFT			= VK_END,
+	KN_DOWNRIGHT		= VK_NEXT,
+	KN_E 					= VK_E,
+	KN_END				= VK_END,
+	KN_EQUAL 			= VK_NONE_BB,
+	KN_ESC				= VK_ESCAPE,
+	KN_E_DELETE 		= VK_DELETE,
+	KN_E_DOWN			= VK_NUMPAD2,
+	KN_E_END				= VK_NUMPAD1,
+	KN_E_HOME			= VK_NUMPAD7,
+	KN_E_INSERT			= VK_INSERT,
+	KN_E_LEFT			= VK_NUMPAD4,
+	KN_E_PGDN   		= VK_NUMPAD3,
+	KN_E_PGUP			= VK_NUMPAD9,
+	KN_E_RIGHT			= VK_NUMPAD6,
+	KN_E_UP				= VK_NUMPAD8,
+	KN_F 					= VK_F,
+	KN_F1					= VK_F1,
+	KN_F10				= VK_F10,
+	KN_F11				= VK_F11,
+	KN_F12				= VK_F12,
+	KN_F2					= VK_F2,
+	KN_F3					= VK_F3,
+	KN_F4					= VK_F4,
+	KN_F5					= VK_F5,
+	KN_F6					= VK_F6,
+	KN_F7					= VK_F7,
+	KN_F8					= VK_F8,
+	KN_F9					= VK_F9,
+	KN_G 					= VK_G,
+	KN_GRAVE 			= VK_NONE_C0,
+	KN_H 					= VK_H,
+	KN_HOME				= VK_HOME,
+	KN_I 					= VK_I,
+	KN_INSERT			= VK_INSERT,
+	KN_J 					= VK_J,
+	KN_K 					= VK_K,
+	KN_KEYPAD_ASTERISK= VK_MULTIPLY,
+	KN_KEYPAD_MINUS	= VK_SUBTRACT,
+	KN_KEYPAD_PLUS		= VK_ADD,
+	KN_KEYPAD_RETURN	= VK_RETURN,
+	KN_KEYPAD_SLASH	= VK_DIVIDE,
+	KN_L 					= VK_L,
+	KN_LALT				= VK_MENU,
+	KN_LBRACKET			= VK_NONE_DB,
+	KN_LCTRL				= VK_CONTROL,
+	KN_LEFT				= VK_LEFT,
+	KN_LMOUSE			= VK_LBUTTON,
+	KN_LSHIFT			= VK_SHIFT,
+	KN_M 					= VK_M,
+	KN_MINUS 			= VK_NONE_BD,
+	KN_N 					= VK_N,
+	KN_NUMLOCK			= VK_NUMLOCK,
+	KN_O 					= VK_O,
+	KN_P 					= VK_P,
+	KN_PAUSE				= VK_PAUSE,
+	KN_PERIOD 			= VK_NONE_BE,
+	KN_PGDN				= VK_NEXT,
+	KN_PGUP				= VK_PRIOR,
+	KN_PRNTSCRN			= VK_PRINT,
+	KN_Q 					= VK_Q,
+	KN_R 					= VK_R,
+	KN_RALT				= VK_MENU,
+	KN_RBRACKET			= VK_NONE_DD,
+	KN_RCTRL				= VK_CONTROL,
+	KN_RETURN 			= VK_RETURN,
+	KN_RIGHT				= VK_RIGHT,
+	KN_RMOUSE			= VK_RBUTTON,
+	KN_RSHIFT			= VK_SHIFT,
+	KN_S 					= VK_S,
+	KN_SCROLLLOCK		= VK_SCROLL,
+	KN_SEMICOLON 		= VK_NONE_BA,
+	KN_SLASH 			= VK_NONE_BF,
+	KN_SPACE 			= VK_SPACE,
+	KN_SQUOTE 			= VK_NONE_DE,
+	KN_T 					= VK_T,
+	KN_TAB				= VK_TAB,
+	KN_U 					= VK_U,
+	KN_UP					= VK_UP,
+	KN_UPLEFT			= VK_HOME,
+	KN_UPRIGHT			= VK_PRIOR,
+	KN_V 					= VK_V,
+	KN_W 					= VK_W,
+	KN_X 					= VK_X,
+	KN_Y 					= VK_Y,
+	KN_Z 					= VK_Z,
 
 	KN_SHIFT_BIT 		= WWKEY_SHIFT_BIT,
-	KN_CTRL_BIT  		= WWKEY_CTRL_BIT | WWKEY_VK_BIT,
-	KN_ALT_BIT   		= WWKEY_ALT_BIT | WWKEY_VK_BIT,
+	KN_CTRL_BIT  		= WWKEY_CTRL_BIT,
+	KN_ALT_BIT   		= WWKEY_ALT_BIT,
 	KN_RLSE_BIT  		= WWKEY_RLS_BIT,
 	KN_BUTTON    		= WWKEY_BTN_BIT,
-};
-
+} KeyNumType;
 
 extern WWKeyboardClass *_Kbd;
 

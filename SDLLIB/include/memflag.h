@@ -35,6 +35,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #ifndef MEMFLAG_H
 #define MEMFLAG_H
+
+#include <stddef.h>
+
 // Memory Flags
 /*
 **	Memory allocation flags.  These are the flags that are passed into Alloc
@@ -72,7 +75,6 @@ long	Ram_Free(MemoryFlagType flag);
 long	Heap_Size(MemoryFlagType flag);
 long	Total_Ram_Free(MemoryFlagType flag);
 
-#pragma option -Jgd
 
 inline void * operator new(size_t size, MemoryFlagType flag)
 {
@@ -82,8 +84,6 @@ inline void * operator new[] (size_t size, MemoryFlagType flag)
 {
 	return(Alloc(size, flag));
 }
-
-#pragma option -Jgd
 
 /*=========================================================================*/
 /* The following prototypes are for the file: MEM_COPY.ASM						*/

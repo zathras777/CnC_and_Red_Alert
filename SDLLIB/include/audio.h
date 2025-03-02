@@ -118,15 +118,14 @@ typedef enum {
 /*=========================================================================*/
 /* The following prototypes are for the file: SOUNDIO.CPP						*/
 /*=========================================================================*/
-int File_Stream_Sample(char const *filename, bool real_time_start = FALSE);
-int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_start = FALSE);
+int File_Stream_Sample(char const *filename, bool real_time_start = false);
+int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_start = false);
 void Sound_Callback(void);
-void far maintenance_callback(void);
 void *Load_Sample(char const *filename);
 long Load_Sample_Into_Buffer(char const *filename, void *buffer, long size);
 long Sample_Read(int fh, void *buffer, long size);
 void Free_Sample(void const *sample);
-bool Audio_Init( HWND window , int bits_per_sample, bool stereo , int rate , int reverse_channels);
+bool Audio_Init( void * window , int bits_per_sample, bool stereo , int rate , int reverse_channels);
 void Sound_End(void);
 void Stop_Sample(int handle);
 bool Sample_Status(int handle);
@@ -154,7 +153,5 @@ extern	void (*Audio_Focus_Loss_Function)(void);
 extern int Misc;
 extern SFX_Type SoundType;
 extern Sample_Type SampleType;
-
-extern CRITICAL_SECTION	GlobalAudioCriticalSection;
 
 extern int StreamLowImpact;

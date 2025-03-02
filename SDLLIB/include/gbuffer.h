@@ -137,10 +137,7 @@
 #include "iconcach.h"
 
 
-
 #ifndef FUNCTION_H
-
-#pragma off (unreferenced)
 
 #ifndef BITMAPCLASS
 #define BITMAPCLASS
@@ -166,7 +163,6 @@ class TPoint2D
 };
 #endif
 
-#pragma on (unreferenced)
 #endif
 
 
@@ -264,14 +260,14 @@ class GraphicViewPortClass {
 		long	To_Buffer(int x, int y, int w, int h, void *buff, long size);
 		long	To_Buffer(int x, int y, int w, int h, BufferClass *buff);
 		long	To_Buffer(BufferClass *buff);
-		HRESULT	Blit(	GraphicViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
+		int	    Blit(	GraphicViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
 						int dy_pixel, int pixel_width, int pixel_height, bool trans = FALSE);
-		HRESULT	Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans = FALSE);
-		HRESULT	Blit(	GraphicViewPortClass& dest, bool trans = FALSE);
-		HRESULT	Blit(	VideoViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
+		int	    Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans = FALSE);
+		int	    Blit(	GraphicViewPortClass& dest, bool trans = FALSE);
+		int	    Blit(	VideoViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
 						int dy_pixel, int pixel_width, int pixel_height, bool trans = FALSE);
-		HRESULT	Blit(	VideoViewPortClass& dest, int dx, int dy, bool trans = FALSE);
-		HRESULT	Blit(	VideoViewPortClass& dest, bool trans = FALSE);
+		int	    Blit(	VideoViewPortClass& dest, int dx, int dy, bool trans = FALSE);
+		int	    Blit(	VideoViewPortClass& dest, bool trans = FALSE);
 		bool	Scale(	GraphicViewPortClass &dest, int src_x, int src_y, int dst_x,
 							int dst_y, int src_w, int src_h, int dst_w, int dst_h, bool trans = FALSE, char *remap = NULL);
 		bool	Scale(	GraphicViewPortClass &dest, int src_x, int src_y, int dst_x,
@@ -313,9 +309,6 @@ class GraphicViewPortClass {
 		inline bool 	Unlock();
 		inline int		Get_LockCount();
 
-		// Member to blit using direct draw access to hardware blitter
-		HRESULT DD_Linear_Blit_To_Linear ( GraphicViewPortClass &dest, int source_x, int source_y, int dest_x, int dest_y, int width	, int height, bool mask );
-
 		/*===================================================================*/
 		/* Define functions to attach the viewport to a graphicbuffer			*/
 		/*===================================================================*/
@@ -335,7 +328,6 @@ class GraphicViewPortClass {
 		int						YPos;			// y offset in relation to graphicbuff
 		long					Pitch;			//Distance from one line to the next
 		GraphicBufferClass		*GraphicBuff;	// related graphic buff
-		bool					IsDirectDraw;	//Flag to let us know if it is a direct draw surface
 		int						LockCount;		// Count for stacking locks if non-zero the buffer
 };                                              //   is a locked DD surface
 
@@ -405,7 +397,7 @@ inline int GraphicViewPortClass::Get_LockCount(void)
  *=============================================================================================*/
 inline bool GraphicViewPortClass::Get_IsDirectDraw(void)
 {
-	return (IsDirectDraw);
+	return false;
 }
 
 
@@ -477,9 +469,7 @@ inline bool GraphicViewPortClass::Unlock(void)
 {
 	bool unlock = GraphicBuff->Unlock();
 	if (!unlock) return(FALSE);
-	if (this != GraphicBuff && IsDirectDraw && !GraphicBuff->LockCount) {
-		Offset = 0;
-	}
+
 	return(TRUE);
 }
 
@@ -756,27 +746,20 @@ inline long	GraphicViewPortClass::To_Buffer(BufferClass *buff)
  * HISTORY:                                                                *
  *   01/06/1995 PWG : Created.                                             *
  *=========================================================================*/
-inline HRESULT	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
+inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
 				int dy_pixel, int pixel_width, int pixel_height, bool trans)
 {
-	HRESULT		return_code=0;
+	int		return_code=0;
 
-	if ( IsDirectDraw && dest.IsDirectDraw ){
-	return(DD_Linear_Blit_To_Linear( dest, XPos+x_pixel, YPos+y_pixel
-								, dest.Get_XPos()+dx_pixel, dest.Get_YPos()+dy_pixel
-								, pixel_width, pixel_height, trans));
-	} else {
-
-		if (Lock()){
-			if (dest.Lock()){
-				return_code=(Linear_Blit_To_Linear(this, &dest, x_pixel, y_pixel
-														, dx_pixel, dy_pixel
-														, pixel_width, pixel_height, trans));
-			}
-			dest.Unlock();
+	if (Lock()){
+		if (dest.Lock()){
+			return_code=(Linear_Blit_To_Linear(this, &dest, x_pixel, y_pixel
+													, dx_pixel, dy_pixel
+													, pixel_width, pixel_height, trans));
 		}
-		Unlock();
+		dest.Unlock();
 	}
+	Unlock();
 
 	return ( return_code );
 }
@@ -793,27 +776,19 @@ inline HRESULT	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pix
  * HISTORY:                                                                *
  *   01/06/1995 PWG : Created.                                             *
  *=========================================================================*/
-inline HRESULT	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans)
+inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans)
 {
-	HRESULT		return_code=0;
+	int		return_code=0;
 
-
-	if ( IsDirectDraw && dest.IsDirectDraw ){
-	return(DD_Linear_Blit_To_Linear( dest, XPos, YPos
-								, dest.Get_XPos()+dx, dest.Get_YPos()+dy
-								, Width, Height, trans));
-	} else {
-
-		if (Lock()){
-			if (dest.Lock()){
-				return_code=(Linear_Blit_To_Linear(this, &dest, 0, 0
-														, dx, dy
-														, Width, Height, trans));
-			}
-			dest.Unlock();
+	if (Lock()){
+		if (dest.Lock()){
+			return_code=(Linear_Blit_To_Linear(this, &dest, 0, 0
+													, dx, dy
+													, Width, Height, trans));
 		}
-		Unlock();
+		dest.Unlock();
 	}
+	Unlock();
 
 	return (return_code);
 
@@ -831,29 +806,19 @@ inline HRESULT	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int dx, i
  * HISTORY:                                                                *
  *   01/06/1995 PWG : Created.                                             *
  *=========================================================================*/
-inline HRESULT	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, bool trans)
+inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, bool trans)
 {
-	HRESULT		return_code=0;
+	int		return_code=0;
 
-
-	if ( IsDirectDraw && dest.IsDirectDraw ){
-	return(DD_Linear_Blit_To_Linear( dest, XPos, YPos
-								, dest.Get_XPos(), dest.Get_YPos()
-								, MAX( Width, dest.Get_Width())
-								, MAX( Height, dest.Get_Height())
-								, trans));
-	} else {
-
-		if (Lock()){
-			if (dest.Lock()){
-				return_code=(Linear_Blit_To_Linear(this, &dest, 0, 0
-														, 0, 0
-														, Width, Height, trans));
-			}
-			dest.Unlock();
+	if (Lock()){
+		if (dest.Lock()){
+			return_code=(Linear_Blit_To_Linear(this, &dest, 0, 0
+													, 0, 0
+													, Width, Height, trans));
 		}
-		Unlock();
+		dest.Unlock();
 	}
+	Unlock();
 
 	return (return_code);
 
@@ -1086,39 +1051,12 @@ inline void GraphicViewPortClass::Draw_Stamp(void const *icondata, int icon, int
  * HISTORY:                                                                *
  *    07/31/1995 BWG : Created.                                            *
  *=========================================================================*/
-extern bool IconCacheAllowed;
+
 inline void GraphicViewPortClass::Draw_Stamp(void const * icondata, int icon, int x_pixel, int y_pixel, void const * remap, int clip_window)
 {
-	int	cache_index=-1;
-
-   int drewit = 0;
-	if (IconCacheAllowed){
-		if (IsDirectDraw){
-			if (!remap){
-				cache_index = Is_Icon_Cached(icondata,icon);
-			}
-
-			if (cache_index != -1){
-				if (CachedIcons[cache_index].Get_Is_Cached()  ){
-					CachedIcons[cache_index].Draw_It (GraphicBuff->Get_DD_Surface() , x_pixel, y_pixel,
-																WindowList[clip_window][WINDOWX] + XPos,
-																WindowList[clip_window][WINDOWY] +YPos,
-																WindowList[clip_window][WINDOWWIDTH],
-																WindowList[clip_window][WINDOWHEIGHT]);
-					CachedIconsDrawn++;
-               drewit = 1;
-				}
-			}
-		}
+	if (Lock()){
+		Buffer_Draw_Stamp_Clip(this, icondata, icon, x_pixel, y_pixel, remap, WindowList[clip_window][WINDOWX], WindowList[clip_window][WINDOWY], WindowList[clip_window][WINDOWWIDTH], WindowList[clip_window][WINDOWHEIGHT]);
 	}
-
-
-   if (drewit == 0) {
-		if (Lock()){
-			UnCachedIconsDrawn++;
-			Buffer_Draw_Stamp_Clip(this, icondata, icon, x_pixel, y_pixel, remap, WindowList[clip_window][WINDOWX], WindowList[clip_window][WINDOWY], WindowList[clip_window][WINDOWWIDTH], WindowList[clip_window][WINDOWHEIGHT]);
-		}
-   }
 	Unlock();
 }
 
@@ -1157,52 +1095,9 @@ inline void GraphicViewPortClass::Draw_Line(int sx, int sy, int dx, int dy, unsi
  *=========================================================================*/
 inline void GraphicViewPortClass::Fill_Rect(int sx, int sy, int dx, int dy, unsigned char color)
 {
-	if (  AllowHardwareBlitFills
-			&& IsDirectDraw
-			&& ( (dx-sx) * (dy-sy) >= (32*32) )
-			&& GraphicBuff->Get_DD_Surface()->GetBltStatus(DDGBS_CANBLT) == DD_OK){
-		DDBLTFX	blit_effects;
-		RECT	dest_rectangle;
-
-		dest_rectangle.left	=sx+XPos;
-		dest_rectangle.top	=sy+YPos;
-		dest_rectangle.right	=dx+XPos;
-		dest_rectangle.bottom=dy+YPos;
-
-		if (dest_rectangle.left<XPos){
-			dest_rectangle.left=XPos;
-		}
-
-		if (dest_rectangle.right >= Width + XPos){
-			dest_rectangle.right = Width +XPos -1;
-		}
-
-		if (dest_rectangle.top<YPos){
-			dest_rectangle.top=YPos;
-		}
-
-		if (dest_rectangle.bottom >= Height + YPos){
-			dest_rectangle.bottom = Height + YPos -1;
-		}
-
-		if (dest_rectangle.left >= dest_rectangle.right)  return;
-		if (dest_rectangle.top  >= dest_rectangle.bottom) return;
-
-		dest_rectangle.right++;
-		dest_rectangle.bottom++;
-
-		blit_effects.dwSize=sizeof(blit_effects);
-		blit_effects.dwFillColor = color;
-		GraphicBuff->Get_DD_Surface()->Blt(&dest_rectangle,
-														NULL,
-														NULL,
-														DDBLT_WAIT | DDBLT_ASYNC | DDBLT_COLORFILL,
-														&blit_effects);
-	} else {
-		if (Lock()){
-			Buffer_Fill_Rect(this, sx, sy, dx, dy, color);
-			Unlock();
-		}
+	if (Lock()){
+		Buffer_Fill_Rect(this, sx, sy, dx, dy, color);
+		Unlock();
 	}
 }
 
