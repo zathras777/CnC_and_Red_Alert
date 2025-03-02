@@ -40,7 +40,8 @@ void strtrim(char * buffer)
 			source++;
 		}
 		if (source != buffer) {
-			strcpy(buffer, source);
+			int len = strlen(source);
+			memmove(buffer, source, len + 1);
 		}
 
 		/*
