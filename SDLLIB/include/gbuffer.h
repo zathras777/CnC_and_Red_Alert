@@ -233,7 +233,7 @@ class GraphicViewPortClass {
 		/*===================================================================*/
 		/* define functions to get at the private data members					*/
 		/*===================================================================*/
-		long	Get_Offset(void);
+		uint8_t*	Get_Offset(void);
 		int	Get_Height(void);
 		int	Get_Width(void);
 		int	Get_XAdd(void);
@@ -320,7 +320,7 @@ class GraphicViewPortClass {
 		/*===================================================================*/
 		/* Define the data used by a GraphicViewPortClass							*/
 		/*===================================================================*/
-		long					Offset;			// offset to graphic page
+		uint8_t *				Offset;			// offset to graphic page
 		int						Width;			// width of graphic page
 		int						Height;			// height of graphic page
 		int						XAdd;			// xadd for graphic page (0)
@@ -368,7 +368,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 
 	protected:
 		void *WindowSurface = NULL;
-
+		void *PaletteSurface = NULL;
 };
 
 
@@ -460,7 +460,7 @@ inline bool GraphicViewPortClass::Unlock(void)
  * HISTORY:                                                                *
  *   06/07/1994 PWG : Created.                                             *
  *=========================================================================*/
-inline long GraphicViewPortClass::Get_Offset(void)
+inline uint8_t * GraphicViewPortClass::Get_Offset(void)
 {
 	return(Offset);
 }

@@ -182,14 +182,19 @@ void GraphicBufferClass::Init(int w, int h, void *buffer, long size, GBC_Enum fl
 
     if(flags & GBC_VISIBLE) {
         WindowSurface = SDL_GetWindowSurface((SDL_Window *)MainWindow);
-        // this won't be a paletted surface
+        PaletteSurface = SDL_CreateRGBSurface(0, Width, Height, 8, 0, 0, 0, 0);
     } else {
         // regular allocation
         Allocated = !buffer;
         Buffer = buffer;
 
-        if(!Buffer)
+        if(!Buffer) {
+            if(!Size)
+                Size = w * h;
             Buffer = new uint8_t[Size];
+        }
+
+        Offset = (uint8_t *)Buffer;
     }
 }
 
@@ -205,20 +210,39 @@ void GraphicBufferClass::Attach_DD_Surface (GraphicBufferClass * attach_buffer)
 
 bool GraphicBufferClass::Lock(void)
 {
-    // lock surface
+    if(!WindowSurface)
+        return true;
+
+    if(!LockCount)
+    {
+        SDL_LockSurface((SDL_Surface *)PaletteSurface);
+        Offset = (uint8_t *)((SDL_Surface *)PaletteSurface)->pixels;
+    }
+
+    LockCount++;
     return true;
 }
 
 bool GraphicBufferClass::Unlock(void)
 {
-    // unlock surface
+    if(!WindowSurface || !LockCount)
+        return true;
+
+    LockCount--;
+
+    if(!LockCount)
+    {
+        SDL_UnlockSurface((SDL_Surface *)PaletteSurface);
+        Offset = NULL;
+    }
+
     return true;
 }
 
 void GraphicBufferClass::Update_Window_Surface()
 {
     // convert from paletted...
-
+    SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, (SDL_Surface *)WindowSurface, NULL);
     SDL_UpdateWindowSurface((SDL_Window*)MainWindow);
 
     // update the event loop here too for now
