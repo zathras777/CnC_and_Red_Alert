@@ -127,7 +127,7 @@ extern	SurfaceMonitorClass	AllSurfaces;				//List of all direct draw surfaces
 /*=========================================================================*/
 extern	LPDIRECTDRAW	DirectDrawObject;
 extern	LPDIRECTDRAW2	DirectDraw2Interface;
-extern	HWND				MainWindow;
+extern	void *			MainWindow;
 extern bool 				SystemToVideoBlits;
 extern bool				VideoToSystemBlits;
 extern bool				SystemToSystemBlits;

@@ -2,6 +2,10 @@
 
 #include "function.h"
 
+#include "ww_win.h"
+
+#include <SDL.h> // sdl includes leaking into the rest of the code is bad
+
 void Focus_Loss(void);
 void Focus_Restore(void);
 
@@ -29,14 +33,52 @@ void Memory_Error_Handler(void)
 }
 
 
+#if (ENGLISH)
+#define WINDOW_NAME		"Red Alert"
+#endif
+
+#if (FRENCH)
+#define WINDOW_NAME		"Alerte Rouge"
+#endif
+
+#if (GERMAN)
+#define WINDOW_NAME		"Alarmstufe Rot"
+#endif
+
 void Create_Main_Window(HANDLE instance, int command_show, int width, int height)
 {
-	printf("%s\n", __PRETTY_FUNCTION__);
+	SDL_Create_Main_Window(WINDOW_NAME, width, height);
 
 	//Audio_Focus_Loss_Function = &Focus_Loss;
 	Misc_Focus_Loss_Function = &Focus_Loss;
 	Misc_Focus_Restore_Function = &Focus_Restore;
 	//Gbuffer_Focus_Loss_Function = &Focus_Loss;
+}
+
+void SDL_Event_Handler(SDL_Event *event)
+{
+	// pass to keyboard
+
+	switch(event->type)
+	{
+		case SDL_WINDOWEVENT:
+		{
+			switch(event->window.event)
+			{
+				case SDL_WINDOWEVENT_FOCUS_GAINED:
+					GameInFocus = true;
+					break;
+				case SDL_WINDOWEVENT_FOCUS_LOST:
+					GameInFocus = false;
+					break;
+			}
+			break;
+		}
+		case SDL_QUIT:
+			// do cleanup...
+			exit(0);
+			break;
+	}
 }
 
 // these are in winasm.asm

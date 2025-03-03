@@ -1,12 +1,14 @@
 #include <algorithm>
 
+#include <SDL.h>
+
 #include "drawbuff.h"
 #include "gbuffer.h"
 
 LPDIRECTDRAW DirectDrawObject;
 LPDIRECTDRAWPALETTE	PalettePtr;
 
-HWND MainWindow;
+void *MainWindow;
 
 GraphicViewPortClass *LogicPage;
 bool AllowHardwareBlitFills = true;
@@ -179,7 +181,8 @@ void GraphicBufferClass::Init(int w, int h, void *buffer, long size, GBC_Enum fl
     XPos = YPos = 0;
 
     if(flags & GBC_VISIBLE) {
-        printf("GraphicBufferClass::Init screen\n");
+        WindowSurface = SDL_GetWindowSurface((SDL_Window *)MainWindow);
+        // this won't be a paletted surface
     } else {
         // regular allocation
         Allocated = !buffer;
@@ -210,4 +213,14 @@ bool GraphicBufferClass::Unlock(void)
 {
     // unlock surface
     return true;
+}
+
+void GraphicBufferClass::Update_Window_Surface()
+{
+    // convert from paletted...
+
+    SDL_UpdateWindowSurface((SDL_Window*)MainWindow);
+
+    // update the event loop here too for now
+    SDL_Event_Loop();
 }

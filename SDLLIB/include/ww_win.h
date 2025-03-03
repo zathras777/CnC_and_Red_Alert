@@ -37,6 +37,8 @@
 #ifndef WINDOWS_H
 #define WINDOWS_H
 
+union SDL_Event;
+
 /*=========================================================================*/
 /* The following prototypes are for the file: WINHIDE.CPP						*/
 /*=========================================================================*/
@@ -55,6 +57,11 @@ int Change_New_Window(int windnum);
 void New_Window(void);
 void Window_Int_Print(int num);
 void Window_Print(char const string[], ...);
+
+
+void SDL_Create_Main_Window(const char *title, int width, int height);
+void SDL_Event_Loop();
+void SDL_Event_Handler(SDL_Event *event); // implemented in app
 
 /*
 **	The WindowList[][8] array contains the following elements.  Use these

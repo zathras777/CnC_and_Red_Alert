@@ -23,3 +23,7 @@ target_include_directories(sdllib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 
 # FIXME: avoid needing this
 target_include_directories(sdllib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../port)
+
+
+find_package(SDL2 REQUIRED)
+target_link_libraries(sdllib SDL2::SDL2)

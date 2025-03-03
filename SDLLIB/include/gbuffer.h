@@ -172,7 +172,7 @@ class TPoint2D
 //
 //
 extern	LPDIRECTDRAW	DirectDrawObject;	//pointer to direct draw object
-extern	HWND			MainWindow;			//handle to programs main window
+extern	void *			MainWindow;			//handle to programs main window
 
 /*
 ** Pointer to function to call if we detect a focus loss
@@ -329,7 +329,7 @@ class GraphicViewPortClass {
 		long					Pitch;			//Distance from one line to the next
 		GraphicBufferClass		*GraphicBuff;	// related graphic buff
 		int						LockCount;		// Count for stacking locks if non-zero the buffer
-};                                              //   is a locked DD surface
+};
 
 /*=========================================================================*/
 /* GraphicBufferClass - A GraphicBuffer refers to an actual instance of an	*/
@@ -363,12 +363,11 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 
 		void Scale_Rotate(BitmapClass &bmp,TPoint2D const &pt,long scale,unsigned char angle);
 
-		// Member to get a pointer to a direct draw surface
-		LPDIRECTDRAWSURFACE Get_DD_Surface ( void );
+		bool Is_Window_Surface() const {return WindowSurface != NULL;}
+		void Update_Window_Surface();
 
 	protected:
-		LPDIRECTDRAWSURFACE	VideoSurfacePtr;		//Pointer to the related direct draw surface
-		DDSURFACEDESC			VideoSurfaceDescription;//Description of the said surface
+		void *WindowSurface = NULL;
 
 };
 
@@ -399,29 +398,6 @@ inline bool GraphicViewPortClass::Get_IsDirectDraw(void)
 {
 	return false;
 }
-
-
-
-/***********************************************************************************************
- * GBC::Get_DD_Surface -- returns a pointer to the buffer direct draw surface                  *
- *                                                                                             *
- *                                                                                             *
- *                                                                                             *
- * INPUT:    Nothing                                                                           *
- *                                                                                             *
- * OUTPUT:   ptr to direct draw surface                                                        *
- *                                                                                             *
- * WARNINGS: None                                                                              *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *    9/29/95 9:43AM ST : Created                                                              *
- *=============================================================================================*/
-inline LPDIRECTDRAWSURFACE GraphicBufferClass::Get_DD_Surface ( void )
-{
-	return ( VideoSurfacePtr );
-
-}
-
 
 
 /***********************************************************************************************
@@ -761,6 +737,10 @@ inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, 
 	}
 	Unlock();
 
+
+	if(GraphicBuff && GraphicBuff->Is_Window_Surface())
+		GraphicBuff->Update_Window_Surface();
+
 	return ( return_code );
 }
 
@@ -778,20 +758,7 @@ inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, 
  *=========================================================================*/
 inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans)
 {
-	int		return_code=0;
-
-	if (Lock()){
-		if (dest.Lock()){
-			return_code=(Linear_Blit_To_Linear(this, &dest, 0, 0
-													, dx, dy
-													, Width, Height, trans));
-		}
-		dest.Unlock();
-	}
-	Unlock();
-
-	return (return_code);
-
+	return Blit(dest, 0, 0, dx, dy, Width, Height, trans);
 }
 
 /***************************************************************************
@@ -808,19 +775,7 @@ inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int dx, int d
  *=========================================================================*/
 inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, bool trans)
 {
-	int		return_code=0;
-
-	if (Lock()){
-		if (dest.Lock()){
-			return_code=(Linear_Blit_To_Linear(this, &dest, 0, 0
-													, 0, 0
-													, Width, Height, trans));
-		}
-		dest.Unlock();
-	}
-	Unlock();
-
-	return (return_code);
+	return Blit(dest, 0, 0, 0, 0, Width, Height, trans);
 
 }
 

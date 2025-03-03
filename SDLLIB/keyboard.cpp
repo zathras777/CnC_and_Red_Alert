@@ -1,12 +1,19 @@
+#include <string.h>
+
 #include "keyboard.h"
+#include "ww_win.h"
 
-WWKeyboardClass::WWKeyboardClass()
+WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0), MState(0), Conditional(0)
 {
-
+    // clear buffer
+    memset(Buffer, 0, 256);
 }
 
 bool WWKeyboardClass::Check(void)
 {
+    // poll for events, return key if any pressed
+    SDL_Event_Loop();
+
     printf("%s\n", __PRETTY_FUNCTION__);
     return false;
 }
@@ -25,7 +32,7 @@ int WWKeyboardClass::To_ASCII(int num)
 
 void WWKeyboardClass::Clear(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    Head = Tail;
 }
 
 int WWKeyboardClass::Down(int key)
