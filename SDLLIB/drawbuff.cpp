@@ -93,7 +93,7 @@ GraphicViewPortClass *Set_Logic_Page(GraphicViewPortClass &ptr)
 
 GraphicViewPortClass::GraphicViewPortClass(GraphicBufferClass* graphic_buff, int x, int y, int w, int h)
 {
-
+    Attach(graphic_buff, x, y, w, h);
 }
 
 GraphicViewPortClass::GraphicViewPortClass()
@@ -113,35 +113,86 @@ void GraphicViewPortClass::Draw_Rect(int sx, int sy, int dx, int dy, unsigned ch
 
 void GraphicViewPortClass::Attach(GraphicBufferClass *graphic_buff, int x, int y, int w, int h)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+	if (this == Get_Graphic_Buffer()) 
+		return;
+
+    // clamp bounds
+	if (x < 0)
+		x = 0;
+	if (x >= graphic_buff->Get_Width())
+		x = graphic_buff->Get_Width() - 1;
+	if (y < 0)
+		y = 0;
+	if (y >= graphic_buff->Get_Height()) 
+		y = graphic_buff->Get_Height() - 1;
+
+	if (x + w > graphic_buff->Get_Width()) 
+		w = graphic_buff->Get_Width() - x;
+
+	if (y + h > graphic_buff->Get_Height())
+		h = graphic_buff->Get_Height() - y;
+
+	/*======================================================================*/
+	/* Get a pointer to the top left edge of the buffer.					*/
+	/*======================================================================*/
+ 	Offset 		= graphic_buff->Get_Offset() + ((graphic_buff->Get_Width() + graphic_buff->Get_Pitch()) * y) + x;
+
+	/*======================================================================*/
+	/* Copy over all of the variables that we need to store.						*/
+	/*======================================================================*/
+ 	XPos			= x;
+ 	YPos			= y;
+ 	XAdd			= graphic_buff->Get_Width() - w;
+ 	Width			= w;
+ 	Height		    = h;
+	Pitch			= graphic_buff->Get_Pitch();
+ 	GraphicBuff     = graphic_buff;
 }
 
 
-GraphicBufferClass::GraphicBufferClass(int w, int h, void *buffer, long size)
+GraphicBufferClass::GraphicBufferClass(int w, int h, void *buffer, long size) : GraphicBufferClass()
 {
-
+    Init(w, h, buffer, size, GBC_NONE);
 }
-GraphicBufferClass::GraphicBufferClass(int w, int h, void *buffer)
+
+GraphicBufferClass::GraphicBufferClass(int w, int h, void *buffer) : GraphicBufferClass(w, h, buffer, w * h)
 {
-
 }
+
 GraphicBufferClass::GraphicBufferClass(void)
 {
-
+    GraphicBuff = this;
 }
+
 GraphicBufferClass::~GraphicBufferClass()
 {
-
+    Un_Init();
 }
 
 void GraphicBufferClass::Init(int w, int h, void *buffer, long size, GBC_Enum flags)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    Size = size;
+    Width = w;
+    Height = h;
+    Pitch = 0;
+    XAdd = 0;
+    XPos = YPos = 0;
+
+    if(flags & GBC_VISIBLE) {
+        printf("GraphicBufferClass::Init screen\n");
+    } else {
+        // regular allocation
+        Allocated = !buffer;
+        Buffer = buffer;
+
+        if(!Buffer)
+            Buffer = new uint8_t[Size];
+    }
 }
 
 void GraphicBufferClass::Un_Init(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    // de-alloc surface
 }
 
 void GraphicBufferClass::Attach_DD_Surface (GraphicBufferClass * attach_buffer)
@@ -151,12 +202,12 @@ void GraphicBufferClass::Attach_DD_Surface (GraphicBufferClass * attach_buffer)
 
 bool GraphicBufferClass::Lock(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    // lock surface
     return true;
 }
 
 bool GraphicBufferClass::Unlock(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    // unlock surface
     return true;
 }
