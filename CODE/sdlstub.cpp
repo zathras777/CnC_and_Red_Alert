@@ -57,7 +57,8 @@ void Create_Main_Window(HANDLE instance, int command_show, int width, int height
 
 void SDL_Event_Handler(SDL_Event *event)
 {
-	// pass to keyboard
+	if(Keyboard->Event_Handler(event))
+		return;
 
 	switch(event->type)
 	{

@@ -37,6 +37,8 @@
  
 #include <wwstd.h>
 
+union SDL_Event;
+
 typedef enum {
 	WWKEY_SHIFT_BIT	= 0x100,
 	WWKEY_CTRL_BIT		= 0x200,
@@ -61,8 +63,8 @@ class WWKeyboardClass
 		bool 	Check(void);															// checks keybuff for meta key
 		int 	Get(void);																// gets a meta key from the keybuffer
 		bool 	Put(int key);															// dumps a key into the keybuffer
-		bool	Put_Key_Message(unsigned vk_key, bool release = false, 					// handles keyboard related message
-										bool dbl = false);								//   and mouse clicks and dbl clicks
+		bool	Put_Key_Message(unsigned vk_key, bool release = false);					// handles keyboard related message
+																						//   and mouse clicks and dbl clicks
 		int 	Check_Num(void);														// checks keybuff for a keynum key
 		int 	Get_VK(void);															// gets keynum key from key buff
 		int 	Check_ACII(void);														// checks keybuff for an ascii key
@@ -87,6 +89,7 @@ class WWKeyboardClass
 		void Split(int &key, int &shift, int &ctrl, int &alt, int &rls, int &dbl);
 		bool Is_Mouse_Key(int key);
 
+		bool Event_Handler(SDL_Event *event);
 
 		/*===================================================================*/
 		/* Define the public access variables which are used with the			*/
@@ -95,7 +98,6 @@ class WWKeyboardClass
 		int				MouseQX;
 		int				MouseQY;
 
-		unsigned char	VKRemap[256];		// gives vk for any ascii char
 	private:
 		/*===================================================================*/
 		/* Define the private access functions which are used by keyboard		*/
@@ -107,9 +109,7 @@ class WWKeyboardClass
 		/* Define the private access variables which are used with the			*/
 		/*   Keyboard Class.																	*/
 		/*===================================================================*/
-		unsigned char	AsciiRemap[2048];	// remap for shft/ctrl/alt key combos
 		unsigned short Buffer[256];		// buffer which holds actual keypresses
-		unsigned char  ToggleKeys[256];	// determines toggles which affect key
 		long				Head;					// the head position in keyboard buffer
 		long				Tail;					// the tail position in keyboard buffer
 		int				MState;

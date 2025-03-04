@@ -1,3 +1,5 @@
+#include <SDL.h>
+
 #include "mouse.h"
 
 WWMouseClass::WWMouseClass(GraphicViewPortClass *scr, int mouse_max_width, int mouse_max_height)
@@ -53,6 +55,7 @@ void Conditional_Show_Mouse(void)
 
 int Get_Mouse_State(void)
 {
+    printf("%s\n", __PRETTY_FUNCTION__);
     return 0;
 }
 
@@ -64,10 +67,14 @@ void *Set_Mouse_Cursor(int hotx, int hoty, void *cursor)
 
 int Get_Mouse_X(void)
 {
-    return 0;
+    int x;
+    SDL_GetMouseState(&x, NULL);
+    return x;
 }
 
 int Get_Mouse_Y(void)
 {
-    return 0;
+    int y;
+    SDL_GetMouseState(NULL, &y);
+    return y;
 }
