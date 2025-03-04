@@ -748,4 +748,7 @@ void GraphicBufferClass::Update_Palette(uint8_t *palette)
         sdl_pal->colors[i].g = palette[i * 3 + 1] << 2 | palette[i * 3 + 1] >> 4;
         sdl_pal->colors[i].b = palette[i * 3 + 2] << 2 | palette[i * 3 + 2] >> 4;
     }
+
+    // make sure it gets updated
+    SDL_SetPaletteColors(sdl_pal, sdl_pal->colors, 0, sdl_pal->ncolors);
 }
