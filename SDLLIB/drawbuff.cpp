@@ -697,6 +697,7 @@ bool GraphicBufferClass::Unlock(void)
     {
         SDL_UnlockSurface((SDL_Surface *)PaletteSurface);
         Offset = NULL;
+        PaletteSurfaceDirty = true;
     }
 
     return true;
@@ -704,7 +705,7 @@ bool GraphicBufferClass::Unlock(void)
 
 void GraphicBufferClass::Update_Window_Surface()
 {
-    // convert from paletted...
+    PaletteSurfaceDirty = false;
     SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, (SDL_Surface *)WindowSurface, NULL);
     SDL_UpdateWindowSurface((SDL_Window*)MainWindow);
 

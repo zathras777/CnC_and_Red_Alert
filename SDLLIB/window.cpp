@@ -33,4 +33,8 @@ void SDL_Event_Loop()
 	while(SDL_PollEvent(&event)) {
 		SDL_Event_Handler(&event);
 	}
+
+    // HACK: if we're checking for input and there is non-presented drawing, we probably wanted to see it
+    if(WindowBuffer && WindowBuffer->Is_Palette_Surface_Dirty())
+        WindowBuffer->Update_Window_Surface();
 }
