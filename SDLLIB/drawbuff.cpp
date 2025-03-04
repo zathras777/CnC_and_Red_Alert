@@ -212,7 +212,7 @@ long Buffer_Print(void *thisptr, const char *str, int x, int y, int fcolor, int 
     uint16_t widthblock_off = *((uint16_t *)(font + FONTWIDTHBLOCK));
     uint16_t heightblock_off = *((uint16_t *)(font + FONTHEIGHTBLOCK));
 
-    uint16_t *infoblock = (uint16_t *)(font + infoblock_off);
+    uint8_t *infoblock = font + infoblock_off;
     uint16_t *offsetblock = (uint16_t *)(font + offsetblock_off);
     uint8_t *widthblock = font + widthblock_off;
     uint16_t *heightblock = (uint16_t *)(font + heightblock_off);
