@@ -519,8 +519,9 @@ int BooleanVectorClass::Resize(unsigned size)
 		/*
 		**	Actually resize the bit array. Since this is a bit packed array,
 		**	there are 8 elements per byte (rounded up).
+		**  ... but our bit scan operations work 32bits at a time, so round up further
 		*/
-		int success = BitArray.Resize(((size + (8-1)) / 8));
+		int success = BitArray.Resize(((size + (32-1)) / 32) * 4);
 
 		/*
 		**	Since there is no default constructor for bit packed integers, a manual
