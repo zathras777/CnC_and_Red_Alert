@@ -13,6 +13,7 @@ PaletteClass::PaletteClass()
 {
 
 }
+
 PaletteClass::PaletteClass(const RGBClass &col)
 {
     for(int i = 0; i < COLOR_COUNT; i++)
@@ -21,7 +22,11 @@ PaletteClass::PaletteClass(const RGBClass &col)
 
 void PaletteClass::Set(int fade, void (*callback)())
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(fade || callback)
+        printf("PaletteClass::Set(%i, %p)\n", fade, callback);
+    // TODO: fade somehow?
+    CurrentPalette = *this;
+    Set_Palette(*this);
 }
 
 void PaletteClass::Adjust(int)

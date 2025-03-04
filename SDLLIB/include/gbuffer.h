@@ -174,6 +174,8 @@ class TPoint2D
 extern	LPDIRECTDRAW	DirectDrawObject;	//pointer to direct draw object
 extern	void *			MainWindow;			//handle to programs main window
 
+extern GraphicBufferClass *WindowBuffer;
+
 /*
 ** Pointer to function to call if we detect a focus loss
 */
@@ -365,6 +367,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 
 		bool Is_Window_Surface() const {return WindowSurface != NULL;}
 		void Update_Window_Surface();
+		void Update_Palette(uint8_t *palette);
 
 	protected:
 		void *WindowSurface = NULL;

@@ -1,8 +1,9 @@
 #include <stdio.h>
 
-extern unsigned char CurrentPalette;
+#include "gbuffer.h"
 
 void Set_Palette(void *palette)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(WindowBuffer)
+        WindowBuffer->Update_Palette((uint8_t *)palette);
 }

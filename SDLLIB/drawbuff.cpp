@@ -14,6 +14,8 @@ GraphicViewPortClass *LogicPage;
 bool AllowHardwareBlitFills = true;
 bool OverlappedVideoBlits = false;
 
+GraphicBufferClass *WindowBuffer = NULL;
+
 inline int Make_Code(int x, int y, int w, int h)
 {
     return (x < 0 ? 0b1000 : 0) | (x >= w ? 0b0100 : 0) | (y < 0 ? 0b0010 : 0) | (y >= h ? 0b0001 : 0);
@@ -491,6 +493,8 @@ void GraphicBufferClass::Init(int w, int h, void *buffer, long size, GBC_Enum fl
     if(flags & GBC_VISIBLE) {
         WindowSurface = SDL_GetWindowSurface((SDL_Window *)MainWindow);
         PaletteSurface = SDL_CreateRGBSurface(0, Width, Height, 8, 0, 0, 0, 0);
+
+        WindowBuffer = this;
     } else {
         // regular allocation
         Allocated = !buffer;
@@ -555,4 +559,17 @@ void GraphicBufferClass::Update_Window_Surface()
 
     // update the event loop here too for now
     SDL_Event_Loop();
+}
+
+void GraphicBufferClass::Update_Palette(uint8_t *palette)
+{
+    auto sdl_pal = ((SDL_Surface *)PaletteSurface)->format->palette;
+
+    for(int i = 0; i < sdl_pal->ncolors; i++)
+    {
+        // convert from 6-bit
+        sdl_pal->colors[i].r = palette[i * 3 + 0] << 2 | palette[i * 3 + 0] >> 4;
+        sdl_pal->colors[i].g = palette[i * 3 + 1] << 2 | palette[i * 3 + 1] >> 4;
+        sdl_pal->colors[i].b = palette[i * 3 + 2] << 2 | palette[i * 3 + 2] >> 4;
+    }
 }
