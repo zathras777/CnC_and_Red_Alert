@@ -37,13 +37,37 @@ void Buffer_Put_Pixel(void *thisptr, int x, int y, unsigned char color)
 
 int	Buffer_Get_Pixel(void * thisptr, int x, int y)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
+    auto vp_dst = (GraphicViewPortClass *)thisptr;
+
+    if(x < 0 || y < 0 || x >= vp_dst->Get_Width() || y >= vp_dst->Get_Height())
+        return 0;
+
+    int dst_area = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
+    auto dst_offset = vp_dst->Get_Offset() + x + y * dst_area;
+
+    return *dst_offset;
 }
 
 void Buffer_Clear(void *thisptr, unsigned char color)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    auto vp_dst = (GraphicViewPortClass *)thisptr;
+
+    int sx = 0;
+    int sy = 0;
+
+    int dst_area = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
+    auto dst_offset = vp_dst->Get_Offset();
+
+    int pixel_count = vp_dst->Get_Width();
+    int line_count = vp_dst->Get_Height();
+
+    // fill lines
+    do
+    {
+        memset(dst_offset, color, pixel_count);
+        dst_offset += dst_area;
+    }
+    while(--line_count);
 }
 
 long Buffer_To_Buffer(void *thisptr, int x_pixel, int y_pixel, int pixel_width, int pixel_height, void *buff, long size)
