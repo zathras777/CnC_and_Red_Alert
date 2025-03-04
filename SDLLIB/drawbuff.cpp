@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "drawbuff.h"
+#include "font.h"
 #include "gbuffer.h"
 
 LPDIRECTDRAW DirectDrawObject;
@@ -190,7 +191,157 @@ bool Linear_Scale_To_Linear(void *, void *, int, int, int, int, int, int, int, i
 
 long Buffer_Print(void *thisptr, const char *str, int x, int y, int fcolor, int bcolor)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    auto vp_dst = (GraphicViewPortClass *)thisptr;
+
+    if(!str)
+        return 0;
+
+    int start_x = x;
+    auto font = (uint8_t *)FontPtr; // this could use a struct
+
+    int vpheight = vp_dst->Get_Height();
+    int vpwidth = vp_dst->Get_Width();
+    int bufferwidth = vpwidth + vp_dst->Get_XAdd() + vp_dst->Get_Pitch();
+    auto curline = vp_dst->Get_Offset() + bufferwidth * y;
+
+    if (!FontPtr)
+        return 0;
+
+    uint16_t infoblock_off = *((uint16_t *)(font + FONTINFOBLOCK));
+    uint16_t offsetblock_off = *((uint16_t *)(font + FONTOFFSETBLOCK));
+    uint16_t widthblock_off = *((uint16_t *)(font + FONTWIDTHBLOCK));
+    uint16_t heightblock_off = *((uint16_t *)(font + FONTHEIGHTBLOCK));
+
+    uint16_t *infoblock = (uint16_t *)(font + infoblock_off);
+    uint16_t *offsetblock = (uint16_t *)(font + offsetblock_off);
+    uint8_t *widthblock = font + widthblock_off;
+    uint16_t *heightblock = (uint16_t *)(font + heightblock_off);
+
+    uint8_t maxheight = infoblock[FONTINFOMAXHEIGHT];
+    y = maxheight + y;
+    if(y > vpheight)
+        return 0;
+
+    // setup colours
+    ColorXlat[1] = fcolor;
+    ColorXlat[16] = fcolor;
+    ColorXlat[0] = bcolor;
+    
+    auto next_ptr = curline + x;
+
+    do
+    {
+        auto startdraw = next_ptr;
+
+        char ch = *str++;
+        if(!ch)
+            return (long)startdraw;
+
+        if(ch == '\n' || ch == '\r' || x + widthblock[ch] + FontXSpacing > vpwidth)
+        {
+            // newline
+            int line_height = (uint)maxheight + FontYSpacing;
+
+            // check bounds
+            if (vpheight < y + line_height) break;
+
+            curline += bufferwidth * line_height;
+            y = y + line_height;
+            x = 0;
+            if (ch != '\n')
+                x = start_x;
+            next_ptr = curline + x;
+
+            if(ch == '\n' || ch == '\r')
+                continue;
+        }
+
+        int char_w = widthblock[ch];
+        x += char_w + FontXSpacing;
+        next_ptr = startdraw + FontXSpacing + char_w;
+
+        int nextdraw = bufferwidth - char_w;
+        int char_offset = offsetblock[ch];
+        int height_val = heightblock[ch];
+        int charheight = height_val >> 8;
+        int topblank = height_val & 0xFF;
+        int bottomblank = maxheight - (charheight + topblank);
+
+        // top blank area
+        if(topblank != 0)
+        {
+            if(ColorXlat[0] == 0) // transparent
+                startdraw = startdraw + (uint)topblank * bufferwidth;
+            else
+            {
+                do
+                {
+                    int x_count = char_w;
+                    do
+                    {
+                        *startdraw++ = ColorXlat[0];
+                    }
+                    while (--x_count);
+
+                    startdraw += nextdraw;
+                }
+                while(--topblank);
+            }
+        }
+
+        // draw char
+        int y_count = charheight;
+        auto char_data = (font + char_offset);
+        if(y_count != 0)
+        {
+            do
+            {
+                int x_count = char_w;
+                do
+                {
+                    uint8_t b = *char_data++;
+                    int col = ColorXlat[b & 0xF];
+                    if(col != 0)
+                        *startdraw = col;
+                    
+                    startdraw++;
+                    x_count--;
+
+                    if(x_count)
+                    {
+                        int col = ColorXlat[b & 0xF0];
+                        if(col != 0)
+                            *startdraw = col;
+
+                        startdraw++;
+                        x_count--;
+                    }
+                }
+                while(x_count);
+
+                startdraw = startdraw + nextdraw;
+            }
+            while (--y_count);
+
+            if(bottomblank && (ColorXlat[0] != 0))
+            {
+                do
+                {
+                    int x_count = char_w;
+                    do
+                    {
+                        *startdraw++ = ColorXlat[0];
+                    }
+                    while (--x_count);
+
+                    startdraw += nextdraw;
+                }
+                while(--bottomblank);
+            }
+        }
+    }
+    while(true);
+
     return 0;
 }
 

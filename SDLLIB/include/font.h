@@ -111,6 +111,7 @@ extern char *FontWidthBlockPtr;
 
 
 extern "C" void const *FontPtr;
+extern uint8_t ColorXlat[];
 
 
 
