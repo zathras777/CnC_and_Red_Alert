@@ -63,6 +63,7 @@ add_library(tech STATIC
 	sha.cpp
 	crc.cpp
 	sendfile.cpp
+	lcwuncmp.cpp
 )
 target_link_libraries(tech sdllib port)
 

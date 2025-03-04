@@ -35,6 +35,8 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <stdint.h>
+
 extern "C" {
 
 /***************************************************************************
@@ -70,15 +72,17 @@ extern "C" {
  * HISTORY:                                                                *
  *    03/20/1995 IML : Created.                                            *
  *=========================================================================*/
-unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long )
+unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long length)
 //unsigned long LCW_Uncompress (void * source, void * dest, unsigned long length)
 {
-	unsigned char * source_ptr, * dest_ptr, * copy_ptr, op_code, data;
+	unsigned char * source_ptr, * dest_ptr, * copy_ptr, * dest_end, op_code, data;
 	unsigned	  count, * word_dest_ptr, word_data;
 
 	/* Copy the source and destination ptrs. */
 	source_ptr = (unsigned char*) source;
 	dest_ptr   = (unsigned char*) dest;
+
+	dest_end = dest_ptr + length;
 
 	while (1 /*TRUE*/) {
 
@@ -90,6 +94,10 @@ unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long 
 			/* Do a short copy from destination. */
 			count	 = (op_code >> 4) + 3;
 			copy_ptr = dest_ptr - ((unsigned) *source_ptr++ + (((unsigned) op_code & 0x0f) << 8));
+
+			// clamp to decompressed size
+			if(count > dest_end - dest_ptr)
+				count = dest_end - dest_ptr;
 
 			while (count--) *dest_ptr++ = *copy_ptr++;
 
@@ -120,7 +128,7 @@ unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long 
 					word_data  = (word_data << 24) + (word_data << 16) + (word_data << 8) + word_data;
 					source_ptr += 3;
 
-					copy_ptr = dest_ptr + 4 - ((unsigned) dest_ptr & 0x3);
+					copy_ptr = dest_ptr + 4 - ((uintptr_t) dest_ptr & 0x3);
 					count -= (copy_ptr - dest_ptr);
 					while (dest_ptr < copy_ptr) *dest_ptr++ = data;
 
