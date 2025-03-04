@@ -4,6 +4,11 @@
 
 char *Extract_String(void const *data, int string)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return NULL;
+	unsigned short int	const *ptr;
+	unsigned intoffset;
+
+	if (!data || string < 0) return(NULL);
+		
+	ptr = (unsigned short int const *)data;
+	return (((char*)data) + ptr[string]);
 }
