@@ -117,7 +117,6 @@ int Load_Picture(char const *filename, BufferClass& scratchbuf, BufferClass& des
 unsigned long Load_Data(char const *name, void *ptr, unsigned long size);
 unsigned long Write_Data(char const *name, void *ptr, unsigned long size);
 void * Load_Alloc_Data(char const *name, MemoryFlagType flags);
-unsigned long Load_Uncompress(char const *file, BufferClass& uncomp_buff, BufferClass& dest_buff, void *reserved_data=NULL);
 unsigned long Uncompress_Data(void const *src, void *dst);
 void Set_Uncomp_Buffer(int buffer_segment, int size_of_buffer);
 

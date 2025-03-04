@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include "iff.h"
 
-unsigned long Load_Uncompress(char const *file, BufferClass& uncomp_buff, BufferClass& dest_buff, void *reserved_data)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
-}
-
 unsigned long Uncompress_Data(void const *src, void *dst)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
