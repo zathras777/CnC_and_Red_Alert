@@ -102,8 +102,8 @@ long Buffer_To_Buffer(void *thisptr, int x_pixel, int y_pixel, int pixel_width, 
             src_x1 = vp_src->Get_Width();
         if(code0 & 0b0010)
         {
-            dst_x0 -= src_x0;
-            src_x0 = 0;
+            dst_y0 -= src_x0;
+            src_y0 = 0;
         }
         if(code0 & 0b0100)
             src_y1 = vp_src->Get_Height();
@@ -167,8 +167,8 @@ long Buffer_To_Page(int dx_pixel, int dy_pixel, int pixel_width, int pixel_heigh
             dst_x1 = vp_dst->Get_Width();
         if(code0 & 0b0010)
         {
-            src_x0 -= dst_x0;
-            dst_x0 = 0;
+            src_y0 -= dst_x0;
+            dst_y0 = 0;
         }
         if(code0 & 0b0100)
             dst_y1 = vp_dst->Get_Height();
