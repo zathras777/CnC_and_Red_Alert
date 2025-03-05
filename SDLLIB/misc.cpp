@@ -68,11 +68,6 @@ void *Build_Fading_Table(void const *palette, void const *dest, long int color, 
     return NULL;
 }
 
-int Clip_Rect(int *x, int *y, int *dw, int *dh, int width, int height)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
-}
 
 int Confine_Rect(int *x, int *y, int dw, int dh, int width, int height)
 {

@@ -5,6 +5,7 @@
 #include "drawbuff.h"
 #include "font.h"
 #include "gbuffer.h"
+#include "misc.h"
 
 LPDIRECTDRAW DirectDrawObject;
 LPDIRECTDRAWPALETTE	PalettePtr;
@@ -565,6 +566,43 @@ void Buffer_Remap(void * thisptr, int sx, int sy, int width, int height, void *r
 void Buffer_Draw_Stamp_Clip(void const *thisptr, void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap, int ,int,int,int)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+}
+
+// from misc.h, implemented here to share clipping helpers
+int Clip_Rect(int *x, int *y, int *dw, int *dh, int width, int height)
+{
+    int x0 = *x;
+    int y0 = *y;
+    int x1 = *x + *dw;
+    int y1 = *y + *dh;
+
+    int code0 = Make_Code(x0, y0, width, height);
+    int code1 = Make_Code(x1, y1, width + 1, height + 1);
+
+    // outside
+    if(code0 & code1)
+        return -1;
+
+    if(code0 | code1)
+    {
+        // apply clip
+        if(code0 & 0b1000)
+            x0 = 0;
+        if(code1 & 0b0100)
+            x1 = width;
+        if(code0 & 0b0010)
+            y0 = 0;
+        if(code1 & 0b0001)
+            y1 = height;
+
+        *x = x0;
+        *y = y0;
+        *dw = x1 - x1;
+        *dh = x1 - x1;
+        return 1;
+    }
+    
+    return 0;
 }
 
 GraphicViewPortClass *Set_Logic_Page(GraphicViewPortClass *ptr)
