@@ -1,6 +1,7 @@
 #include "shape.h"
 
 char  *_ShapeBuffer;
+long _ShapeBufferSize;
 
 int Extract_Shape_Count(void const *buffer)
 {
@@ -14,7 +15,8 @@ void * Extract_Shape(void const *buffer, int shape)
     return NULL;
 }
 
-void Set_Shape_Buffer(void const *buffer, int size)
+void Set_Shape_Buffer(void *buffer, int size)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+   _ShapeBuffer = (char *)buffer;
+   _ShapeBufferSize = size;
 }

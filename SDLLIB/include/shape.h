@@ -150,7 +150,7 @@ int Get_Shape_Uncomp_Size(void const *shape);
 ------------------------------- setshape.asm --------------------------------
 */
 extern "C" {
-void Set_Shape_Buffer(void const *buffer, int size);
+void Set_Shape_Buffer(void *buffer, int size);
 }
 /*
 ------------------------------- shapeinf.asm --------------------------------
