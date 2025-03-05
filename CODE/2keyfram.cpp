@@ -226,7 +226,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 	char *ptr, *lockptr;//, *uncomp_ptr;
 	unsigned long offcurr, off16, offdiff;
 #endif
-	unsigned long offset[SUBFRAMEOFFS];
+	uint32_t offset[SUBFRAMEOFFS];
 	KeyFrameHeaderType *keyfr;
 	unsigned short buffsize, currframe, subframe;
 	unsigned long length = 0;
