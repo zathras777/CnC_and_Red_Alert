@@ -250,7 +250,7 @@ inline int First_True_Bit(void const * array)
         uint32_t v = *array32++;
         int pos = __builtin_ffs(v); // FIXME
         if(pos)
-            return off + pos;
+            return off + pos - 1;
 
         off += 32;
     }
@@ -278,7 +278,7 @@ inline int First_False_Bit(void const * array)
         uint32_t v = *array32++;
         int pos = __builtin_ffs(~v); // FIXME
         if(pos)
-            return off + pos;
+            return off + pos - 1;
 
         off += 32;
     }
