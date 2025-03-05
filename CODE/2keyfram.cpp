@@ -334,7 +334,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 			currframe = (unsigned short)offset[1];
 
 			ptr = (char *)Add_Long_To_Pointer( dataptr, (((unsigned long)currframe << 3) + sizeof(KeyFrameHeaderType)) );
-			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(unsigned long)) );
+			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(uint32_t)) );
 		}
 
 		// key frame
@@ -404,7 +404,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 					Mem_Copy( Add_Long_To_Pointer( dataptr,
 									(((unsigned long)currframe << 3) +
 									sizeof(KeyFrameHeaderType)) ),
-						&offset[0], (long)(SUBFRAMEOFFS * sizeof(unsigned long)) );
+						&offset[0], (long)(SUBFRAMEOFFS * sizeof(uint32_t)) );
 					subframe = 0;
 				}
 			}
