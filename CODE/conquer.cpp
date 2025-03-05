@@ -4157,6 +4157,9 @@ static int _Num_Volumes = ARRAY_SIZE(_CD_Volume_Label);
  *=============================================================================================*/
 int Get_CD_Index (int cd_drive, int timeout)
 	{
+#ifndef _WIN32
+	return 5; // we uh, magically have the DVD
+#else
 	char		volume_name[128];
 	char		buffer[128];
 	unsigned	filename_length;
@@ -4225,6 +4228,7 @@ int Get_CD_Index (int cd_drive, int timeout)
 				return -1;
 			}	
 		}
+#endif
 	}
 #else
 int Get_CD_Index(int cd_drive, int)

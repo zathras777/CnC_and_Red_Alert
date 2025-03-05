@@ -195,12 +195,6 @@ bool SetFileTime(HANDLE file, const FILETIME *creationTime, const FILETIME *last
     return false;
 }
 
-bool GetVolumeInformation(const char *rootPath, char *volumeNameBuf, DWORD volumeNameSize, DWORD *volumeSerialNo, DWORD *maxComponentLen, DWORD *fileSystemFlags, char *fileSystemNameBuf, DWORD fileSystemNameLen)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return false;
-}
-
 HANDLE FindFirstFile(const char *fileName, WIN32_FIND_DATA *findData)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
