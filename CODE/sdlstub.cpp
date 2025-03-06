@@ -76,7 +76,10 @@ void SDL_Event_Handler(SDL_Event *event)
 			break;
 		}
 		case SDL_QUIT:
-			// do cleanup...
+			Prog_End();
+			VisiblePage.Un_Init();
+			HiddenPage.Un_Init();
+
 			exit(0);
 			break;
 	}
