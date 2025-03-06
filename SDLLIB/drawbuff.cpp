@@ -534,20 +534,20 @@ void Buffer_Fill_Rect(void *thisptr, int sx, int sy, int dx, int dy, unsigned ch
     if(sy < 0)
         sy = 0;
 
-    if(dx > vp_dst->Get_Width())
-        dx = vp_dst->Get_Width();
-    if(dy > vp_dst->Get_Height())
-        dy = vp_dst->Get_Height();
+    if(dx >= vp_dst->Get_Width())
+        dx = vp_dst->Get_Width() - 1;
+    if(dy >= vp_dst->Get_Height())
+        dy = vp_dst->Get_Height() - 1;
 
     // nothing to fill
-    if(dx <= sx || dy <= sy)
+    if(dx < sx || dy < sy)
         return;
 
     int dst_area = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
     auto dst_offset = vp_dst->Get_Offset() + sx + sy * dst_area;
 
-    int pixel_count = dx - sx;
-    int line_count = dy - sy;
+    int pixel_count = (dx - sx) + 1;
+    int line_count = (dy - sy) + 1;
 
     // fill lines
     do
