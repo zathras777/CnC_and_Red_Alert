@@ -100,7 +100,21 @@ int WWKeyboardClass::Down(int key)
         }
     }
 
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(key == KN_LSHIFT || key == KN_LCTRL || key == KN_LALT)
+    {
+        auto keymod = SDL_GetModState();
+        switch(key)
+        {
+            case KN_LSHIFT:
+                return keymod & KMOD_SHIFT;
+            case KN_LCTRL:
+                return keymod & KMOD_SHIFT;
+            case KN_LALT:
+                return keymod & KMOD_ALT;
+        }
+    }
+
+    printf("%s(%i)\n", __PRETTY_FUNCTION__, key);
     return 0;
 }
 
