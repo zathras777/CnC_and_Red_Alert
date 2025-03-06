@@ -154,7 +154,7 @@ extern "C" {
 
 
 
-void * Build_Fading_Table(void const *palette, void const *dest, long int color, long int frac);
+void * Build_Fading_Table(void const *palette, void *dest, long int color, long int frac);
 /*=========================================================================*/
 /* The following prototype is for the file: CRC.ASM							*/
 /*=========================================================================*/
