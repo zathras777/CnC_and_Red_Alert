@@ -54,7 +54,7 @@ class GenericList;
 class GenericNode {
 	public:
 		GenericNode(void) : NextNode(0), PrevNode(0) {}
-		~GenericNode(void) {Unlink();}
+		virtual ~GenericNode(void) {Unlink();}
 		GenericNode(GenericNode & node) {node.Link(this);}
 		GenericNode & operator = (GenericNode & node) {
 			if (&node != this) {
