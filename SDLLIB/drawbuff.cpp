@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <assert.h>
 
 #include <SDL.h>
 
@@ -204,7 +205,131 @@ long Buffer_To_Page(int dx_pixel, int dy_pixel, int pixel_width, int pixel_heigh
 bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel, int dx_pixel,
     int dy_pixel, int pixel_width, int pixel_height, bool trans)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    assert(!trans); // not seen a user
+
+    auto vp_src = (GraphicViewPortClass *)thisptr;
+    auto vp_dst = (GraphicViewPortClass *)dest;
+
+    // clip source
+    int src_x0 = x_pixel;
+    int src_y0 = y_pixel;
+    int src_x1 = x_pixel + pixel_width;
+    int src_y1 = y_pixel + pixel_height;
+
+    int code0 = Make_Code(src_x0, src_y0, vp_src->Get_Width(), vp_src->Get_Height());
+    int code1 = Make_Code(src_x1, src_y1, vp_src->Get_Width() + 1, vp_src->Get_Height() + 1);
+
+    // outside
+    if(code0 & code1)
+        return true;
+
+    if(code0 | code1)
+    {
+        // apply clip
+        if(code0 & 0b1000)
+            src_x0 = 0;
+        if(code1 & 0b0100)
+            src_x1 = vp_src->Get_Width();
+        if(code0 & 0b0010)
+            src_y0 = 0;
+        if(code1 & 0b0001)
+            src_y1 = vp_src->Get_Height();
+    }
+
+    // clip dest
+    int dst_x0 = dx_pixel;
+    int dst_y0 = dy_pixel;
+    int dst_x1 = dx_pixel + (src_x1 - src_x0);
+    int dst_y1 = dy_pixel + (src_y1 - src_y0);
+
+    code0 = Make_Code(dst_x0, dst_y0, vp_dst->Get_Width(), vp_dst->Get_Height());
+    code1 = Make_Code(dst_x1, dst_y1, vp_dst->Get_Width() + 1, vp_dst->Get_Height() + 1);
+
+    // outside
+    if(code0 & code1)
+        return true; // i'm not sure this actually has a return value...
+
+    if(code0 | code1)
+    {
+        // apply clip
+        if(code0 & 0b1000)
+        {
+            src_x0 -= dst_x0;
+            dst_x0 = 0;
+        }
+        if(code1 & 0b0100)
+        {
+            src_x1 - (dst_x1 - vp_dst->Get_Width());
+            dst_x1 = vp_dst->Get_Width();
+        }
+        if(code0 & 0b0010)
+        {
+            src_y0 -= dst_x0;
+            dst_y0 = 0;
+        }
+        if(code1 & 0b0001)
+        {
+            src_y1 - (dst_x1 - vp_dst->Get_Height());
+            dst_y1 = vp_dst->Get_Height();
+        }
+    }
+
+    int src_area = vp_src->Get_XAdd() + vp_src->Get_Width() + vp_src->Get_Pitch();
+    auto src_offset = vp_src->Get_Offset() + src_x0 + src_y0 * src_area;
+    int src_adjust_width = src_area + src_x0 - src_x1;
+
+    int dst_area = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
+    auto dst_offset = vp_dst->Get_Offset() + dst_x0 + dst_y0 * dst_area;
+    int dst_adjust_width = dst_area + dst_x0 - dst_x1;
+
+    if(dst_x1 <= dst_x0 || dst_y1 <= dst_y0)
+        return true;
+    
+    if(src_offset == dst_offset)
+        return true;
+
+    int pixel_count = src_x1 - src_x0;
+    int line_count = src_y1 - src_y0;
+
+    if(src_offset < dst_offset)
+    {
+        // backward (bottom -> top)
+        if(trans)
+        {
+        }
+        else
+        {
+            // copy lines backwards
+            src_offset += src_area * (line_count - 1);
+            dst_offset += dst_area * (line_count - 1);
+            do
+            {
+                memmove(dst_offset, src_offset, pixel_count);
+                src_offset -= src_area;
+                dst_offset -= dst_area;
+            }
+            while(--line_count);
+        }
+    }
+    else
+    {
+        // forward (top-> bottom)
+        if(trans)
+        {
+        }
+        else
+        {
+            // copy lines
+            do
+            {
+                memmove(dst_offset, src_offset, pixel_count);
+                src_offset += src_area;
+                dst_offset += dst_area;
+            }
+            while(--line_count);
+        }
+    }
+
     return true;
 }
 
