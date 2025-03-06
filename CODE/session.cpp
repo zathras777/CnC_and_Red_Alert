@@ -1577,7 +1577,7 @@ void SessionClass::Free_Scenario_Descriptions(void)
 	//	Clear the initstring entries
 	//------------------------------------------------------------------------
 	for (i = 0; i < InitStrings.Count(); i++) {
-		delete InitStrings[i];
+		delete[] InitStrings[i];
 	}
 	InitStrings.Clear();
 
