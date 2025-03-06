@@ -63,6 +63,7 @@ typedef enum {
 	SHAPE_VIEWPORT_REL 	= 0x0010,		// Coords are window-relative
 	SHAPE_WIN_REL 			= 0x0010,		// Coordinates are window relative instead of absolute.
 	SHAPE_CENTER 			= 0x0020,		// Coords are based on shape's center pt
+	SHAPE_TRANS             = 0x0040,
 	SHAPE_FADING 			= 0x0100,		// Fading effect (void * fading_table,
 													//  WORD fading_num)
 	SHAPE_PREDATOR 		= 0x0200,		// Transparent warping effect

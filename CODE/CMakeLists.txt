@@ -269,6 +269,7 @@ add_executable(rasdl
 	nondosstub.cpp
 	sdlstub.cpp
 	ipxstub.cpp
+	2keyfbuf.cpp
 )
 
 target_compile_definitions(rasdl PRIVATE

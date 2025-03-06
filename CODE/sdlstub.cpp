@@ -102,10 +102,3 @@ extern "C" void Asm_Interpolate_Line_Interpolate(unsigned char* src_ptr, unsigne
 {
 	printf("%s\n", __PRETTY_FUNCTION__);
 }
-
-// this is in 2keyfbuf.asm
-long Buffer_Frame_To_Page(int x, int y, int w, int h, void *Buffer, GraphicViewPortClass &view, int flags, ...)
-{
-	printf("%s\n", __PRETTY_FUNCTION__);
-	return 0;
-}
