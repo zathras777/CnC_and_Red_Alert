@@ -597,8 +597,8 @@ int Clip_Rect(int *x, int *y, int *dw, int *dh, int width, int height)
 
         *x = x0;
         *y = y0;
-        *dw = x1 - x1;
-        *dh = x1 - x1;
+        *dw = x1 - x0;
+        *dh = y1 - y0;
         return 1;
     }
     
