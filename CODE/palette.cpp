@@ -47,10 +47,28 @@ void PaletteClass::Partial_Adjust(int, PaletteClass &, char *)
     printf("%s\n", __PRETTY_FUNCTION__);
 }
 
-int PaletteClass::Closest_Color(const RGBClass &) const
+int PaletteClass::Closest_Color(const RGBClass &col) const
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
+    int index = -1;
+    int diff = 256 * 3;
+
+    for(int i = 0; i < COLOR_COUNT; i++)
+    {
+        int new_diff = std::abs(col.Red_Component() - data[i].Red_Component())
+                     + std::abs(col.Green_Component() - data[i].Green_Component())
+                     + std::abs(col.Blue_Component() - data[i].Blue_Component());
+
+        if(new_diff == 0)
+            return i;
+
+        if(new_diff < diff)
+        {
+            index = i;
+            diff = new_diff;
+        }
+    }
+
+    return index;
 }
 
 RGBClass &PaletteClass::operator[](int index)
