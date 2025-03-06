@@ -663,7 +663,11 @@ int main(int argc, char * argv[])
 			/*
 			** Post a message to our message handler to tell it to clean up.
 			*/
+#ifdef PORTABLE
+			SDL_Send_Quit();
+#else
 			PostMessage(MainWindow, WM_DESTROY, 0, 0);
+#endif
 
 			/*
 			** Wait until the message handler has dealt with the message
@@ -936,7 +940,11 @@ void Emergency_Exit ( int code )
 	/*
 	** Post a message to our message handler to tell it to clean up.
 	*/
+#ifdef PORTABLE
+			SDL_Send_Quit();
+#else
 	PostMessage(MainWindow, WM_DESTROY, 0, 0);
+#endif
 
 	/*
 	** Wait until the message handler has dealt with the message

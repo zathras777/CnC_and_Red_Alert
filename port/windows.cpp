@@ -99,12 +99,6 @@ HWND FindWindow(const char *className, const char *windowName)
     return NULL;
 }
 
-bool PostMessage(HWND wnd, UINT msg, UINT *wParam, LONG *lParam)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return true;
-}
-
 int MessageBox(HWND wnd, const char *text, const char *caption, UINT type)
 {
     printf("MessageBox %s/%s (%x)\n", text, caption, type);

@@ -38,3 +38,10 @@ void SDL_Event_Loop()
     if(WindowBuffer && WindowBuffer->Is_Palette_Surface_Dirty())
         WindowBuffer->Update_Window_Surface();
 }
+
+void SDL_Send_Quit()
+{
+    SDL_Event quit_event;
+    quit_event.type = SDL_QUIT;
+    SDL_PushEvent(&quit_event);
+}

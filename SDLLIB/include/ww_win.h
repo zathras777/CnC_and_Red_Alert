@@ -62,6 +62,7 @@ void Window_Print(char const string[], ...);
 void SDL_Create_Main_Window(const char *title, int width, int height);
 void SDL_Event_Loop();
 void SDL_Event_Handler(SDL_Event *event); // implemented in app
+void SDL_Send_Quit();
 
 /*
 **	The WindowList[][8] array contains the following elements.  Use these
