@@ -2,14 +2,16 @@
 
 #include "mouse.h"
 
+extern void *MainWindow;
+
 WWMouseClass::WWMouseClass(GraphicViewPortClass *scr, int mouse_max_width, int mouse_max_height)
 {
-
+    Set_Cursor_Clip();
 }
 
 WWMouseClass::~WWMouseClass()
 {
-
+    Clear_Cursor_Clip();
 }
 
 void WWMouseClass::Draw_Mouse(GraphicViewPortClass *scr)
@@ -24,12 +26,12 @@ void WWMouseClass::Erase_Mouse(GraphicViewPortClass *scr, bool forced)
 
 void WWMouseClass::Set_Cursor_Clip(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    SDL_SetWindowGrab((SDL_Window *)MainWindow, SDL_TRUE);
 }
 
 void WWMouseClass::Clear_Cursor_Clip(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    SDL_SetWindowGrab((SDL_Window *)MainWindow, SDL_FALSE);
 }
 
 
