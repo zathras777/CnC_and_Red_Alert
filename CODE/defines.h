@@ -2936,7 +2936,7 @@ typedef enum WindowNumberType {
 **	when referring to adjacent cells. This comes into play when moving
 **	between cells and in the Desired_Facing() algorithm.
 */
-typedef enum FacingType {
+typedef enum FacingType : int8_t {
 	FACING_NONE=-1,
 	FACING_N,			// North
 	FACING_NE,			// North-East
