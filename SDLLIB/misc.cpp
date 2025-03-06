@@ -158,6 +158,29 @@ void *Build_Fading_Table(void const *palette, void *dest, long int color, long i
 
 int Confine_Rect(int *x, int *y, int dw, int dh, int width, int height)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
+    int ret = 0;
+
+    if(*x < 0)
+    {
+        *x = 0;
+        ret = 1;
+    }
+    else if(*x + dw > width)
+    {
+        *x -= (*x + dw) - width;
+        ret = 1;
+    }
+
+    if(*y < 0)
+    {
+        *y = 0;
+        ret = 1;
+    }
+    else if(*y + dh > height)
+    {
+        *y -= (*y + dh) - height;
+        ret = 1;
+    }
+
+    return ret;
 }
