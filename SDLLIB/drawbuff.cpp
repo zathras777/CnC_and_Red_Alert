@@ -685,7 +685,59 @@ void Buffer_Fill_Rect(void *thisptr, int sx, int sy, int dx, int dy, unsigned ch
 
 void Buffer_Remap(void * thisptr, int sx, int sy, int width, int height, void *remap)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(!remap)
+        return;
+
+    auto vp_dst = (GraphicViewPortClass *)thisptr;
+
+    // clip
+    int dst_x0 = sx;
+    int dst_y0 = sy;
+    int dst_x1 = sx + width;
+    int dst_y1 = sy + height;
+
+    int code0 = Make_Code(dst_x0, dst_y0, vp_dst->Get_Width(), vp_dst->Get_Height());
+    int code1 = Make_Code(dst_x1, dst_y1, vp_dst->Get_Width() + 1, vp_dst->Get_Height() + 1);
+
+    // outside
+    if(code0 & code1)
+        return;
+
+    if(code0 | code1)
+    {
+        // apply clip
+        if(code0 & 0b1000)
+            dst_x0 = 0;
+        if(code1 & 0b0100)
+            dst_x1 = vp_dst->Get_Width();
+        if(code0 & 0b0010)
+            dst_y0 = 0;
+        if(code1 & 0b0001)
+            dst_y1 = vp_dst->Get_Height();
+    }
+
+    int dst_area = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
+    auto dst_offset = vp_dst->Get_Offset() + dst_x0 + dst_y0 * dst_area;
+
+    if(dst_x1 <= dst_x0 || dst_y1 <= dst_y0)
+        return;
+
+    int pixel_count = dst_x1 - dst_x0;
+    int line_count = dst_y1 - dst_y0;
+
+    int skip = dst_area - pixel_count;
+
+    // remap lines
+    do
+    {
+        for(int x = 0; x < pixel_count; x++)
+        {
+            auto v = ((uint8_t *)remap)[*dst_offset];
+            *dst_offset++ = v;
+        }
+        dst_offset += skip;
+    }
+    while(--line_count);
 }
 
 // from misc.h, implemented here to share clipping helpers
