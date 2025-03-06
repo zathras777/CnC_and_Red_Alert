@@ -1959,7 +1959,7 @@ CellClass const & CellClass::Adjacent_Cell(FacingType face) const
 	}
 
 	CellClass const * ptr = this + AdjacentCell[face];
-	if ((unsigned)ptr->Cell_Number() > MAP_CELL_TOTAL) return(*this);
+	if ((unsigned)Cell_Number() + AdjacentCell[face] >= MAP_CELL_TOTAL) return(*this);
 	return(*ptr);
 }
 
