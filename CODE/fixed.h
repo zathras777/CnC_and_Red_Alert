@@ -39,6 +39,10 @@
 #ifndef FIXED_H
 #define FIXED_H
 
+#if defined(BIG_ENDIAN) && defined(BYTE_ORDER) && BYTE_ORDER != BIG_ENDIAN
+#undef BIG_ENDIAN
+#endif
+
 //#pragma warning 604 9
 //#pragma warning 595 9
 
