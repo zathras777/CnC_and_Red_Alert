@@ -416,7 +416,7 @@ int calcx(signed short v, short distance)
 	"cwd"								\
 //	"and	eax,0FFFFh";
 */
-    return ((v * distance) & 0xFFFF) >> 7;
+    return (v * distance) >> 7;
 }
 
 int calcy(signed short v, short distance)
@@ -434,7 +434,7 @@ int calcy(signed short v, short distance)
 	"neg	eax";
 //	"and	eax,0FFFFh"				\
 */
-    return -(((v * distance) & 0xFFFF) >> 7);
+    return -((v * distance) >> 7);
 }
 
 void Move_Point(short &x, short &y, register DirType dir, unsigned short distance)
