@@ -563,11 +563,6 @@ void Buffer_Remap(void * thisptr, int sx, int sy, int width, int height, void *r
     printf("%s\n", __PRETTY_FUNCTION__);
 }
 
-void Buffer_Draw_Stamp_Clip(void const *thisptr, void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap, int ,int,int,int)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-}
-
 // from misc.h, implemented here to share clipping helpers
 int Clip_Rect(int *x, int *y, int *dw, int *dh, int width, int height)
 {
