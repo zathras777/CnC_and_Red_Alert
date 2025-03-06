@@ -2335,7 +2335,7 @@ DirType BuildingClass::Turret_Facing(void) const
  * HISTORY:                                                                                    *
  *   01/01/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-TARGET BuildingClass::Greatest_Threat(ThreatType threat) const
+TARGET BuildingClass::Greatest_Threat(ThreatType threat)// const
 {
 	assert(Buildings.ID(this) == ID);
 	assert(IsActive);

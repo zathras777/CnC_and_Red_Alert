@@ -1984,7 +1984,7 @@ int TechnoClass::Evaluate_Just_Cell(CELL cell) const
  *   09/22/1995 JLB : Takes into account the zone (if necessary).                              *
  *   05/30/1996 JLB : Tighter elimination mask checking.                                       *
  *=============================================================================================*/
-TARGET TechnoClass::Greatest_Threat(ThreatType method) const
+TARGET TechnoClass::Greatest_Threat(ThreatType method)// const
 {
 	assert(IsActive);
 
