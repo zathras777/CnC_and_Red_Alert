@@ -348,7 +348,7 @@ int main(int argc, char * argv[])
 #endif	// MPATH
 
 #ifdef PORTABLE
-		//nothing for now
+		WindowsTimer = new WinTimerClass(60, FALSE);
 #elif defined(WIN32)
 		WindowsTimer = new WinTimerClass(60, FALSE);
 

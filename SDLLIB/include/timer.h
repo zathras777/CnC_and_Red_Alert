@@ -138,16 +138,9 @@ class WinTimerClass {
 		unsigned	Get_User_Tick_Count ( void );
 
 	private:
-
 		unsigned		TimerHandle;	//Handle for windows timer event
-		unsigned		Frequency;		//Frequency of our windows timer in ticks per second
-
-		unsigned		TrueRate;		//True rate of clock. (only use word)
 		unsigned		SysTicks;		//Tick count of timer.
 		unsigned		UserTicks;		//Tick count of timer.
-		unsigned		UserRate;		//Desired rate of timer.
-
-
 };
 
 
