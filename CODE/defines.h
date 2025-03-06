@@ -521,7 +521,7 @@ typedef union {
 	} Sub;
 } LEPTON_COMPOSITE;
 
-typedef unsigned long	COORDINATE;
+typedef uint32_t	COORDINATE;
 typedef union {
 	COORDINATE Coord;
 	struct {
@@ -1474,7 +1474,7 @@ typedef enum StructType {
 **	a transparent icon. It is placed over the terrain but usually falls
 **	"under" buildings, trees, and units.
 */
-typedef enum OverlayType {
+typedef enum OverlayType : int8_t {
 	OVERLAY_NONE=-1,
 	OVERLAY_SANDBAG_WALL,	// Piled sandbags.
 	OVERLAY_CYCLONE_WALL,	// Chain-link fence.
@@ -1687,7 +1687,7 @@ typedef enum AircraftType {
 **	terrain is broken up into icons, is not transparent, and is drawn
 **	as the bottom most layer, then it is a template.
 */
-typedef enum TemplateType {
+typedef enum TemplateType : uint16_t {
 	TEMPLATE_CLEAR1,
 	TEMPLATE_WATER,			// This must be the first non-clear template.
 	TEMPLATE_WATER2,
