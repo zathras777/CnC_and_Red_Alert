@@ -242,14 +242,6 @@ int main(int argc, char * argv[])
 #endif	//WIN32
 
 	/*
-	**	Remember the current working directory and drive.
-	*/
-	unsigned olddrive;
-	char oldpath[PATH_MAX];
-	getcwd(oldpath, sizeof(oldpath));
-	_dos_getdrive(&olddrive);
-
-	/*
 	**	Change directory to the where the executable is located. Handle the
 	**	case where there is no path attached to argv[0].
 	*/
@@ -257,13 +249,20 @@ int main(int argc, char * argv[])
 	char path[_MAX_PATH];
 	unsigned drivecount;
 	_splitpath(argv[0], drive, path, NULL, NULL);
+
+#ifndef PORTABLE
 	if (!drive[0]) {
+		unsigned olddrive;
+		_dos_getdrive(&olddrive);
 		drive[0] = ('A' + olddrive)-1;
 	}
+	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
+#endif
+
 	if (!path[0]) {
 		strcpy(path, ".");
 	}
-	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
+
 	if (path[strlen(path)-1] == '\\') {
 		path[strlen(path)-1] = '\0';
 	}
