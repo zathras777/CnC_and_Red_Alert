@@ -34,6 +34,7 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <stdint.h>
 #include "wwstd.h"
 
 /*=========================================================================*/
@@ -47,13 +48,13 @@
 //   flag entry even though they could have fit in a 8 bit entry.
 #pragma pack(push, 1)
 typedef struct {
-	unsigned short int	Rate;				// Playback rate (hertz).
-	long	Size;				// Size of data (bytes).
-	long	UncompSize;				// Size of data (bytes).
-	unsigned char Flags;	// Holds flags for info
+	uint16_t Rate;				// Playback rate (hertz).
+	int32_t	 Size;				// Size of data (bytes).
+	int32_t	 UncompSize;		// Size of data (bytes).
+	uint8_t  Flags;				// Holds flags for info
 								//  1: Is the sample stereo?
 								//  2: Is the sample 16 bits?
-	unsigned char Compression;	// What kind of compression for this sample?
+	uint8_t  Compression;		// What kind of compression for this sample?
 } AUDHeaderType;
 #pragma pack(pop)
 
@@ -65,51 +66,14 @@ typedef struct {
 /*=========================================================================*/
 typedef enum {
 	SAMPLE_NONE,		// No digitized sounds will be played.
-	SAMPLE_SB,			// Sound Blaster digitized driver.
-	SAMPLE_SBPRO,		// Sound Blaster Pro digitized driver.
-	SAMPLE_PAS,			// Pro-Audio Spectrum digitized driver.
-	SAMPLE_ADLIBG,		// Adlib-Gold digitized driver.
-	SAMPLE_TANDY,		// Tandy 'compatible' driver.
-	SAMPLE_PCSPKR,		// PC speaker digitized driver (The Audio Solution driver).
-	SAMPLE_ADLIB,		// Adlib digitized driver (The Audio Solution driver).
+	SAMPLE_SDL,
 	SAMPLE_TEMP=0x1000,
 	SAMPLE_LAST
 } Sample_Type;
 
 typedef enum {
-	SCORE_NONE,			// No scores will be played.
-	SCORE_ALFX,			// Westwood's ALFX adlib compatable driver.
-	SCORE_WWPCSPKR,	// Westwood's PC-speaker driver (obsolete).
-	SCORE_WWTANDY,		// Westwood's PC-speaker driver with Tandy mod (obsolete).
-	SCORE_PCSPKR,		// PC speaker XMIDI driver.
-	SCORE_TANDY,		// Tandy XMIDI driver.
-	SCORE_MT32,			// MT-32 / LAPC-1 Roland XMIDI driver.
-	SCORE_CANVAS,		// Sound Canvas SC-55.
-	SCORE_ADLIB,		// Adlib XMIDI driver.
-	SCORE_ADLIBG,		// Adlib Gold XMIDI driver.
-	SCORE_PASFM,		// Pro Audio Spectrum XMIDI driver.
-	SCORE_SBFM,			// Sound Blaster XMIDI driver.
-	SCORE_SBP1FM,		// Sound Blaster Pro (YM3812) XMIDI driver.
-	SCORE_SBP2FM,		// Sound Blaster Pro (OPL3) XMIDI driver (Can't use with SFX_ALFX).
-	SCORE_TEMP=0x1000,
-	SCORE_LAST
-} Score_Type;
-
-typedef enum {
 	SFX_NONE,			// No sound effects will be played.
-	SFX_ALFX,			// Westwood's ALFX adlib compatable driver.
-	SFX_WWPCSPKR,		// Westwood's PC-speaker driver.
-	SFX_WWTANDY,		// Westwood's PC-speaker driver with Tandy mod.
-	SFX_PCSPKR,			// PC speaker XMIDI driver.
-	SFX_TANDY,			// Tandy XMIDI driver.
-	SFX_MT32,			// MT-32 / LAPC-1 Roland XMIDI driver.
-	SFX_CANVAS,			// Sound Canvas SC-55.
-	SFX_ADLIB,			// Adlib XMIDI driver.
-	SFX_ADLIBG,			// Adlib Gold XMIDI driver.
-	SFX_PASFM,			// Pro Audio Spectrum XMIDI driver.
-	SFX_SBFM,			// Sound Blaster XMIDI driver.
-	SFX_SBP1FM,			// Sound Blaster Pro (YM3812) XMIDI driver.
-	SFX_SBP2FM,			// Sound Blaster Pro (OPL3) XMIDI driver.
+	SFX_SDL,
 	SFX_TEMP=0x1000,
 	SFX_LAST
 } SFX_Type;
