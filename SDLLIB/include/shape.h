@@ -79,6 +79,7 @@ typedef enum {
 /*
 ------------------------------- Shape header --------------------------------
 */
+#pragma pack(push, 1)
 typedef struct {
 	unsigned short		ShapeType;			// 0 = normal, 1 = 16 colors,
 										//  2 = uncompressed, 4 = 	<16 colors
@@ -95,12 +96,12 @@ typedef struct {
 */
 typedef struct {
 	unsigned short		NumShapes;			// number of shapes in the block
-	long		Offsets[];			// array of offsets to shape data
+	uint32_t		Offsets[];			// array of offsets to shape data
 										//  (offsets within the shape block, with
 										//  0 being the first offset value, not the
 										//  start of the shape block)
 } ShapeBlock_Type;
-
+#pragma pack(pop)
 
 /*
 ******************************** Prototypes *********************************
