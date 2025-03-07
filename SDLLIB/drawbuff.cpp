@@ -967,3 +967,8 @@ void GraphicBufferClass::Update_Palette(uint8_t *palette)
     // make sure it gets updated
     SDL_SetPaletteColors(sdl_pal, sdl_pal->colors, 0, sdl_pal->ncolors);
 }
+
+const void *GraphicBufferClass::Get_Palette() const
+{
+    return ((SDL_Surface *)PaletteSurface)->format->palette;
+}

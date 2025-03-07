@@ -63,23 +63,20 @@ class WWMouseClass {
 		void Set_Cursor_Clip(void);
 		void Clear_Cursor_Clip(void);
 
+		void Update_Palette();
+
 	private:
 		enum 	{
 			CONDHIDE		= 1,
 			CONDHIDDEN 	= 2,
 		};
-		void Low_Hide_Mouse(void);
-		void Low_Show_Mouse(int x, int y);
 
-		char						*MouseCursor;	// pointer to the mouse cursor in memory
+		uint8_t	*				MouseCursor = NULL;	// pointer to the mouse cursor in memory
+		void *					SDLCursor = NULL;
+		void *					SDLSurface = NULL;
 		int						MouseXHot;		// X hot spot of the current mouse cursor
 		int						MouseYHot;		// Y hot spot of the current mouse cursor
-		int						CursorWidth;	// width of the mouse cursor in pixels
-		int						CursorHeight;	// height of the mouse cursor in pixels
 
-		char						*MouseBuffer;	// pointer to background buffer in memory
-		int						MouseBuffX;		// pixel x mouse buffer was preserved at
-		int						MouseBuffY;		// pixel y mouse buffer was preserved at
 		int						MaxWidth;		// maximum width of mouse background buffer
 		int						MaxHeight;		// maximum height of mouse background buffer
 
@@ -94,24 +91,6 @@ class WWMouseClass {
 		char *					PrevCursor;		// pointer to previous cursor shape
 		int						MouseUpdate;
 		int						State;
-
-		char						*EraseBuffer;	// Buffer which holds background to restore to hidden page
-		int						EraseBuffX;		// X position of the hidden page background
-		int						EraseBuffY;		// Y position of the hidden page background
-		int						EraseBuffHotX;	// X position of the hidden page background
-		int						EraseBuffHotY;	// Y position of the hidden page background
-
-		int						EraseFlags;		// Records whether mutex has been released
-
-		CRITICAL_SECTION		MouseCriticalSection;  // Control for mouse re-enterancy
-		unsigned					TimerHandle;
-
-};
-
-extern "C" {
-	 void Mouse_Shadow_Buffer(void *thisptr, GraphicViewPortClass *srcdst, void *buffer, int x, int y, int hotx, int hoty, int store);
-	 void Draw_Mouse(void *thisptr, GraphicViewPortClass *srcdst, int x, int y);
-	 void * ASM_Set_Mouse_Cursor(void * thisptr, int hotspotx, int hotspoty, void *cursor);
 };
 
 void Hide_Mouse(void);
@@ -122,5 +101,7 @@ int Get_Mouse_State(void);
 void *Set_Mouse_Cursor(int hotx, int hoty, void *cursor);
 int Get_Mouse_X(void);
 int Get_Mouse_Y(void);
+
+void Update_Mouse_Palette();
 
 #endif

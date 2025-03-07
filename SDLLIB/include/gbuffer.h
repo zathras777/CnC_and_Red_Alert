@@ -368,6 +368,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 		bool Is_Window_Surface() const {return WindowSurface != NULL;}
 		void Update_Window_Surface();
 		void Update_Palette(uint8_t *palette);
+		const void *Get_Palette() const;
 		bool Is_Palette_Surface_Dirty() const {return PaletteSurfaceDirty;}
 
 	protected:
