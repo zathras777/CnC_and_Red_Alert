@@ -369,7 +369,6 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 		void Update_Window_Surface();
 		void Update_Palette(uint8_t *palette);
 		const void *Get_Palette() const;
-		bool Is_Palette_Surface_Dirty() const {return PaletteSurfaceDirty;}
 
 	protected:
 		void *WindowSurface = NULL;
@@ -742,10 +741,6 @@ inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, 
 		dest.Unlock();
 	}
 	Unlock();
-
-
-	if(GraphicBuff && GraphicBuff->Is_Window_Surface())
-		GraphicBuff->Update_Window_Surface();
 
 	return ( return_code );
 }

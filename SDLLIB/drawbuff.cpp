@@ -965,7 +965,7 @@ bool GraphicBufferClass::Unlock(void)
     {
         SDL_UnlockSurface((SDL_Surface *)PaletteSurface);
         Offset = NULL;
-        PaletteSurfaceDirty = true;
+        Update_Window_Surface();
     }
 
     return true;
