@@ -115,7 +115,7 @@ struct TActionClass {
 		QuarryType			Quarry;		// Preferred target for attack.
 		VQType				Movie;		// The movie to play.
 		bool					Bool;			// Boolean value.
-		long					Value;
+		int					Value;
 	} Data;
 
 	TActionClass(void) : Action(TACTION_NONE) {

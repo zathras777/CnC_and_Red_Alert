@@ -1133,7 +1133,7 @@ typedef enum MPHType{
 **	The houses that can be played are listed here. Each has their own
 **	personality and strengths.
 */
-typedef enum HousesType {
+typedef enum HousesType : int8_t {
 	HOUSE_NONE=-1,
 	HOUSE_SPAIN,				//	Gold (unremapped)
 	HOUSE_GREECE,				// LtBlue
@@ -3248,7 +3248,7 @@ typedef enum VocType{
 /*
 **	EVA voices are specified by these identifiers.
 */
-typedef enum VoxType{
+typedef enum VoxType : int8_t{
 	VOX_NONE=-1,
 	VOX_ACCOMPLISHED,					//	mission accomplished
 	VOX_FAIL,							//	your mission has failed
