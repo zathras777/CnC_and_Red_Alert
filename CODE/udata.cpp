@@ -883,7 +883,7 @@ UnitTypeClass::UnitTypeClass(
  * HISTORY:                                                                                    *
  *   07/09/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * UnitTypeClass::operator new(size_t)
+void * UnitTypeClass::operator new(size_t) throw()
 {
 	return(UnitTypes.Alloc());
 }

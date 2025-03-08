@@ -49,8 +49,8 @@ class WarheadTypeClass
 		WarheadTypeClass(char const * name);
 		WarheadTypeClass(NoInitClass const &) {}
 
-		void * operator new(size_t);
-		static void * operator new(size_t , void * ptr) {return(ptr);};
+		void * operator new(size_t) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		void operator delete(void * pointer);
 
 		void Code_Pointers(void) {}

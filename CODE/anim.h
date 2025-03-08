@@ -60,8 +60,8 @@ class AnimClass : public ObjectClass, public StageClass {
 
 		operator AnimType(void) const {return Class->Type;};
 
-		static void * operator new(size_t size);
-		static void * operator new(size_t , void * ptr) {return(ptr);};
+		static void * operator new(size_t size)  throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 
 		/*---------------------------------------------------------------------

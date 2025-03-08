@@ -125,7 +125,7 @@ class TeamTypeClass : public AbstractTypeClass
 		virtual ~TeamTypeClass(void) {};
 
 		static void * operator new(size_t );
-		static void * operator new(size_t, void * ptr) {return(ptr);};
+		static void * operator new(size_t, void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 
 		/*

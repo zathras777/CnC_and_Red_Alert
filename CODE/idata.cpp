@@ -973,7 +973,7 @@ InfantryTypeClass::InfantryTypeClass (
  * HISTORY:                                                                                    *
  *   07/11/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * InfantryTypeClass::operator new(size_t)
+void * InfantryTypeClass::operator new(size_t) throw()
 {
 	return(InfantryTypes.Alloc());
 }

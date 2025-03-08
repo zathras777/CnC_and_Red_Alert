@@ -58,8 +58,8 @@ class TemplateClass : public ObjectClass
 		/*-------------------------------------------------------------------
 		**	Constructors and destructors.
 		*/
-		static void * operator new(size_t size);
-		static void * operator new(size_t , void * ptr) {return(ptr);};
+		static void * operator new(size_t size)  throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		TemplateClass(TemplateType type, CELL pos=-1);
 		TemplateClass(NoInitClass const & x) : ObjectClass(x), Class(x) {};

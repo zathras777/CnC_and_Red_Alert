@@ -307,7 +307,7 @@ AircraftTypeClass::AircraftTypeClass(
  * HISTORY:                                                                                    *
  *   07/09/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * AircraftTypeClass::operator new(size_t)
+void * AircraftTypeClass::operator new(size_t) throw()
 {
 	return(AircraftTypes.Alloc());
 }

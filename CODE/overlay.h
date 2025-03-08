@@ -57,8 +57,8 @@ class OverlayClass : public ObjectClass
 		/*-------------------------------------------------------------------
 		**	Constructors and destructors.
 		*/
-		static void * operator new(size_t size);
-		static void * operator new(size_t , void * ptr) {return(ptr);};
+		static void * operator new(size_t size)  throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		OverlayClass(OverlayType type, CELL pos=-1, HousesType = HOUSE_NONE);
 		OverlayClass(NoInitClass const & x) : ObjectClass(x), Class(x) {};

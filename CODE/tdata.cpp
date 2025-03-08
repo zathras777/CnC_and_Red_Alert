@@ -548,7 +548,7 @@ TerrainTypeClass::TerrainTypeClass(
  * HISTORY:                                                                                    *
  *   07/19/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * TerrainTypeClass::operator new(size_t)
+void * TerrainTypeClass::operator new(size_t) throw()
 {
 	return(TerrainTypes.Alloc());
 }
