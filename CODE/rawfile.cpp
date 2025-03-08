@@ -376,6 +376,20 @@ int RawFileClass::Is_Available(int forced)
 		Handle = CreateFile(Filename, GENERIC_READ, FILE_SHARE_READ,
 											NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (Handle == NULL_HANDLE) {
+			// retry with lowercase name for case-sensitive fs
+			char *lower_name = strlwr(strdup(Filename));
+			Handle = CreateFile(lower_name, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+			if(Handle) {
+				// if successful, replace the filename with the working one
+				if(Allocated)
+					free((char *)Filename);
+
+				((char *&)Filename) = lower_name;
+			} else
+				free(lower_name);
+		}
+		if (Handle == NULL_HANDLE) {
 			return(false);
 		}
 		break;
