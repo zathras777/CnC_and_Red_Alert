@@ -218,7 +218,14 @@ void Sound_End(void)
 
 void Stop_Sample(int handle)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(handle < 0 || handle >= MAX_SFX)
+        return;
+
+    SDL_LockAudio();
+
+    Channels[handle].playing = false;
+
+    SDL_UnlockAudio();
 }
 
 bool Sample_Status(int handle)
