@@ -6,12 +6,12 @@
 
 struct find_t
 {
-    char reserved[21];
-    char attrib;
     unsigned wr_time;
     unsigned wr_date;
-    long size;
-    char name[13];
+    const char *name;
+
+    void *data;
+    int off;
 };
 
 unsigned _dos_findfirst(char *, unsigned, struct find_t *);
