@@ -4,7 +4,7 @@
 #include "keyboard.h"
 #include "ww_win.h"
 
-WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0), MState(0), Conditional(0)
+WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0)
 {
     // clear buffer
     memset(Buffer, 0, 256);
@@ -75,7 +75,16 @@ bool WWKeyboardClass::Put_Key_Message(unsigned vk_key, bool release)
 
 int WWKeyboardClass::To_ASCII(int num)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(num & WWKEY_RLS_BIT)
+        return 0;
+
+    // this isn't great but we can't do much better without rewriting everything to use textinput events
+    // (SDL3 would allow passing the mods in)
+    int key = SDL_GetKeyFromScancode((SDL_Scancode)(num & 0xFF));
+
+    if(key <= SDLK_z)
+        return key;
+
     return 0;
 }
 
@@ -114,7 +123,12 @@ int WWKeyboardClass::Down(int key)
         }
     }
 
-    printf("%s(%i)\n", __PRETTY_FUNCTION__, key);
+    int numkeys;
+    auto keys = SDL_GetKeyboardState(&numkeys);
+
+    if(key < numkeys)
+        return keys[key];
+
     return 0;
 }
 
@@ -144,7 +158,14 @@ bool WWKeyboardClass::Event_Handler(SDL_Event *event)
             Put(event->button.y);
             return true;
         }
+
+        case SDL_KEYDOWN:
+        case SDL_KEYUP:
+            Put_Key_Message(event->key.keysym.scancode, event->key.state == SDL_RELEASED);
+            break;
     }
+
+    SDL_SCANCODE_0;
     return false;
 }
 
