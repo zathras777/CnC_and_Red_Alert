@@ -746,7 +746,7 @@ void LoadOptionsClass::Fill_List(ListClass * list)
  * HISTORY:                                                                                    *
  *   02/14/1995 BR : Created.                                                                  *
  *=============================================================================================*/
-int LoadOptionsClass::Num_From_Ext(char * fname)
+int LoadOptionsClass::Num_From_Ext(const char * fname)
 {
 	char ext[_MAX_EXT];
 

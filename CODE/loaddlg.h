@@ -70,7 +70,7 @@ class LoadOptionsClass
 		*/
 		void Clear_List (ListClass *list);		// clears the list & game # array
 		void Fill_List (ListClass *list);		// fills the list & game # array
-		int Num_From_Ext (char *fname);			// translates filename to file #
+		int Num_From_Ext (const char *fname);			// translates filename to file #
 		static int Compare(const void *p1, const void *p2); // for qsort()
 
 		/*
