@@ -373,7 +373,6 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 	protected:
 		void *WindowSurface = NULL;
 		void *PaletteSurface = NULL;
-		bool PaletteSurfaceDirty = false;
 };
 
 
