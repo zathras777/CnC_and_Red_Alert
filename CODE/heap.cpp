@@ -385,9 +385,21 @@ void FixedIHeapClass::Clear(void)
  *=============================================================================================*/
 int FixedIHeapClass::Set_Heap(int count, void * buffer)
 {
+	// avoid reallocating if possible
+	// this is a workaround to prevent use-after-free errors in rule loading
+	void *reuse_buf = NULL;
+	if(count == TotalCount && !buffer && IsAllocated) {
+		reuse_buf = buffer = Buffer;
+		Buffer = NULL;
+	}
+
 	Clear();
+
 	if (FixedHeapClass::Set_Heap(count, buffer)) {
 		ActivePointers.Resize(count);
+
+		if(reuse_buf)
+			IsAllocated = true;
 		return(true);
 	}
 	return(false);
