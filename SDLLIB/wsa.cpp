@@ -59,10 +59,10 @@ unsigned int Apply_XOR_Delta(char *source_ptr, char *delta_ptr)
 
                 if(count & 0x8000)
                 {
-                    count &= 0x7FFF;
                     if(count & 0x4000)
                     {
                         // LONGRUN
+                        count &= 0x3FFF;
                         uint8_t xor_b = *udelta++; // get XOR byte
                         do
                         {
@@ -74,6 +74,7 @@ unsigned int Apply_XOR_Delta(char *source_ptr, char *delta_ptr)
                     else
                     {
                         // LONGDUMP
+                        count &= 0x7FFF;
                         do
                         {
                             uint8_t xor_b = *udelta++; // get delta XOR byte
