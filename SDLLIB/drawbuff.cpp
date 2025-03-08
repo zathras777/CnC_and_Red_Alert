@@ -15,7 +15,7 @@ void *MainWindow;
 
 GraphicViewPortClass *LogicPage;
 bool AllowHardwareBlitFills = true;
-bool OverlappedVideoBlits = false;
+bool OverlappedVideoBlits = true;
 
 GraphicBufferClass *WindowBuffer = NULL;
 

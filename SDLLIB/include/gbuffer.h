@@ -401,7 +401,8 @@ inline int GraphicViewPortClass::Get_LockCount(void)
  *=============================================================================================*/
 inline bool GraphicViewPortClass::Get_IsDirectDraw(void)
 {
-	return false;
+	// this flag is used as "do we need to lock" in a few places
+	return GraphicBuff && GraphicBuff->Is_Window_Surface();
 }
 
 
