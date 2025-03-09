@@ -127,8 +127,10 @@ extern GraphicBufferClass	HiddenPage;
 extern GraphicBufferClass		VisiblePage;
 extern GraphicViewPortClass	SeenBuff;
 extern GraphicBufferClass		SysMemPage;
+#ifndef PORTABLE
 extern LPDIRECTSOUND				SoundObject;
 extern LPDIRECTSOUNDBUFFER		PrimaryBufferPtr;
+#endif
 extern int							ScreenWidth;
 extern int							ScreenHeight;
 extern GraphicBufferClass		ModeXBuff;

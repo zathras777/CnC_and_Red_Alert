@@ -1690,8 +1690,10 @@ void Anim_Init(void)
 	if (SlowPalette) {
 		AnimControl.OptionFlags |= VQAOPTF_SLOWPAL;
 	}
+#ifndef PORTABLE
 	AnimControl.SoundObject = SoundObject;
 	AnimControl.PrimaryBufferPtr = PrimaryBufferPtr;
+#endif
 	if (MonoClass::Is_Enabled()) {
 		AnimControl.OptionFlags |= VQAOPTF_MONO;
 	}
