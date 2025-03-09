@@ -984,16 +984,29 @@ void GraphicBufferClass::Update_Palette(uint8_t *palette)
 {
     auto sdl_pal = ((SDL_Surface *)PaletteSurface)->format->palette;
 
+    bool changed = false;
+
     for(int i = 0; i < sdl_pal->ncolors; i++)
     {
         // convert from 6-bit
-        sdl_pal->colors[i].r = palette[i * 3 + 0] << 2 | palette[i * 3 + 0] >> 4;
-        sdl_pal->colors[i].g = palette[i * 3 + 1] << 2 | palette[i * 3 + 1] >> 4;
-        sdl_pal->colors[i].b = palette[i * 3 + 2] << 2 | palette[i * 3 + 2] >> 4;
+        int new_r = palette[i * 3 + 0] << 2 | palette[i * 3 + 0] >> 4;
+        int new_g = palette[i * 3 + 1] << 2 | palette[i * 3 + 1] >> 4;
+        int new_b = palette[i * 3 + 2] << 2 | palette[i * 3 + 2] >> 4;
+
+        changed = changed || sdl_pal->colors[i].r != new_r || sdl_pal->colors[i].g != new_g || sdl_pal->colors[i].b != new_b;
+
+        sdl_pal->colors[i].r = new_r;
+        sdl_pal->colors[i].g = new_g;
+        sdl_pal->colors[i].b = new_b;
     }
+
+    if(!changed)
+        return;
 
     // make sure it gets updated
     SDL_SetPaletteColors(sdl_pal, sdl_pal->colors, 0, sdl_pal->ncolors);
+
+    Update_Window_Surface();
 }
 
 const void *GraphicBufferClass::Get_Palette() const
