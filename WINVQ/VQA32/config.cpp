@@ -284,7 +284,7 @@ VideoModeTag VideoModeTags[] = {
 *     NONE
 *
 ****************************************************************************/
-
+#if !PORTABLE // RA doesn't use this
 void VQA_INIConfig(VQAConfig *config)
 {
 	char *ininame;
@@ -490,7 +490,7 @@ void VQA_INIConfig(VQAConfig *config)
 	config->NumFrameBufs = 6;
 	config->NumCBBufs = 3;
 }
-
+#endif
 
 /****************************************************************************
 *
