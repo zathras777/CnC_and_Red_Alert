@@ -259,7 +259,7 @@ long VQA_Play(VQAHandle *vqa, long mode)
 
 
 
-#ifdef WIN32
+#ifdef _WIN32
 	/*
 	** Save the process priority level then bump it up
 	*/
@@ -336,7 +336,7 @@ long VQA_Play(VQAHandle *vqa, long mode)
 
 						/* Stop audio, if it's playing. */
 						VQA_StopAudio((VQAHandleP *)vqa);
-					#ifdef WIN32
+					#ifdef _WIN32
 						/*
 						** Restore the process priority level
 						*/
@@ -471,7 +471,7 @@ long VQA_Play(VQAHandle *vqa, long mode)
 	#endif
 
 
-#ifdef WIN32
+#ifdef _WIN32
 	/*
 	** Restore the process priority level
 	*/
