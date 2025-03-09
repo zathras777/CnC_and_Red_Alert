@@ -124,7 +124,7 @@ static VQAConfig _defaultconfig = {
 	/* NumCBBufs: The number of codebook buffers to allocate/use. */
 	3,
 
-#if VQASTUB_SOUND
+#if VQASDL_SOUND
 	0, // AudioDeviceID
 	NULL, // AudioCallback
 	NULL, // AudioSpec

@@ -70,11 +70,11 @@ extern void Debug_Printf( char *format_string, ... );
 #if PORTABLE
 #define	VQAMONO_ON    0
 #define VQADIRECT_SOUND 0
-#define VQASTUB_SOUND 1  // TODO
+#define VQASDL_SOUND 1
 #else
 #define	VQAMONO_ON    1  /* Mono display output enable/disable */
 #define VQADIRECT_SOUND 1	/* Use windows direct sound system */
-#define VQASTUB_SOUND 0
+#define VQASDL_SOUND 0
 #endif
 #define VQAAUDIO_ON   1  /* Audio playback enable/disable */
 #define VQAVIDEO_ON   0  /* Video manager enable/disable */
@@ -203,7 +203,7 @@ typedef struct _VQAConfig {
 	long          			OptionFlags;
 	long          			NumFrameBufs;
 	long          			NumCBBufs;
-#if VQASTUB_SOUND
+#if VQASDL_SOUND
 	uint32_t AudioDeviceID; // SDL_AudioDeviceID
 	void (**AudioCallback)(uint8_t *, int);
 	void *AudioSpec; // pointer to an SDL_AudioSpec

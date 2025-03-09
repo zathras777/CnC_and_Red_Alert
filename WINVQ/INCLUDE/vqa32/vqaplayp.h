@@ -356,7 +356,9 @@ typedef struct _VQAAudio {
 	unsigned char      BitsPerSample;
 	unsigned long      BytesPerSec;
 	_SOS_COMPRESS_INFO ADPCM_Info;
-#if (!VQADIRECT_SOUND)
+#if VQASDL_SOUND
+	unsigned					ChunksMovedToAudioBuffer;
+#elif (!VQADIRECT_SOUND)
 	WORD               DigiHandle;
 	WORD               SampleHandle;
 	WORD               DigiTimer;

@@ -96,8 +96,8 @@
 #endif
 
 #if(VQAAUDIO_ON)
-#if VQASTUB_SOUND
-// TODO
+#if VQASDL_SOUND
+#include "SDL.h"
 #elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
 BOOL Move_HMI_Audio_Block_To_Direct_Sound_Buffer (void);
@@ -133,7 +133,68 @@ char *HMIDevName = "<none>";
 
 #if(VQAAUDIO_ON)
 
-#if VQASTUB_SOUND
+#if VQASDL_SOUND
+
+extern int VQAMovieDone;
+static bool VQAAudioPaused = false;
+static SDL_AudioStream *SDLStream = NULL;
+static unsigned StreamConvScale = 1 << 15;
+
+static void VQA_Audio_Callback(uint8_t *stream, int len)
+{
+	// called from SDL audio callback
+	if(!VQAP)
+		return;
+	auto audio = &VQAP->VQABuf->Audio;
+	if(!(audio->Flags & VQAAUDF_ISPLAYING) || VQAAudioPaused || !SDLStream)
+		return;
+
+	auto config = &VQAP->Config;
+
+	while(SDL_AudioStreamAvailable(SDLStream) < len)
+	{
+		SDL_AudioStreamPut(SDLStream, audio->Buffer + audio->PlayPosition, config->HMIBufSize);
+
+		/* Compute the 'NextBlock' index */
+		audio->NextBlock = audio->CurBlock + 1;
+
+		if (audio->NextBlock >= audio->NumAudBlocks) {
+			audio->NextBlock = 0;
+		}
+
+		/* See if the next block has data in it; if so, update the audio
+			* buffer play position & the 'CurBlock' value.
+			* If not, don't change anything and replay this block.
+			*/
+		if (audio->IsLoaded[audio->NextBlock] == 1) {
+
+			/* Update this block's status to loadable (0) */
+			audio->IsLoaded[audio->CurBlock] = 0;
+
+			/* Update position within audio buffer */
+			audio->PlayPosition += config->HMIBufSize;
+			audio->CurBlock++;
+
+			if (audio->PlayPosition >= config->AudioBufSize) {
+				audio->PlayPosition = 0;
+				audio->CurBlock = 0;
+			}
+			audio->ChunksMovedToAudioBuffer++;
+		} else {
+			if (VQAMovieDone){
+				audio->ChunksMovedToAudioBuffer++;
+			}
+			audio->NumSkipped++;
+			/*
+			** Enable frame skipping to prevent this happening again
+			*/
+			config->DrawFlags &= ~VQACFGF_NOSKIP;
+		}
+	}
+
+	// output stream
+	SDL_AudioStreamGet(SDLStream, stream, len);
+}
 
 /****************************************************************************
 *
@@ -276,7 +337,25 @@ long VQA_OpenAudio(VQAHandleP *vqap, HWND window)
 	audio->CurBlock = 0;
 
 
-	// TODO: setup audio
+	// setup audio stream
+	if(SDLStream)
+		SDL_FreeAudioStream(SDLStream);
+
+	auto spec = (SDL_AudioSpec *)config->AudioSpec;
+
+	SDLStream = SDL_NewAudioStream(
+		audio->BitsPerSample == 16 ? AUDIO_S16 : AUDIO_S8, audio->Channels, audio->SampleRate,
+		spec->format, spec->channels, spec->freq
+	);
+
+	// calculate scaling factor
+	unsigned bytes_per_second_in = (audio->BitsPerSample / 8) * audio->Channels * audio->SampleRate;
+	unsigned bytes_per_second_out = (SDL_AUDIO_BITSIZE(spec->format) / 8) * spec->channels * spec->freq;
+
+	StreamConvScale = (bytes_per_second_in << 15) / bytes_per_second_out;
+
+	// register our audio callback
+	*config->AudioCallback = VQA_Audio_Callback;
 
 	audio->Flags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
 	AudioFlags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
@@ -323,7 +402,17 @@ void VQA_CloseAudio(VQAHandleP *vqap)
 	audio->Flags &= ~VQAAUDF_TIMERINIT;
 	AudioFlags &= ~VQAAUDF_TIMERINIT;
 
-	// TODO: destroy audio
+	// unregister our audio callback
+	// and make sure we're not in it
+	SDL_LockAudioDevice(config->AudioDeviceID);
+	*config->AudioCallback = NULL;
+	SDL_UnlockAudioDevice(config->AudioDeviceID);
+
+	if(SDLStream)
+	{
+		SDL_FreeAudioStream(SDLStream);
+		SDLStream = NULL;
+	}
 
 	audio->Flags &= ~VQAAUDF_DIGIINIT;
 	AudioFlags &= ~VQAAUDF_DIGIINIT;
@@ -370,7 +459,9 @@ long VQA_StartAudio(VQAHandleP *vqap)
 		return (-1);
 	}
 
-	// TODO: setup playback
+	SDL_LockAudioDevice(config->AudioDeviceID);
+	// setup playback
+	audio->ChunksMovedToAudioBuffer = 0;
 
 	/*
 	** Set the volume
@@ -378,11 +469,10 @@ long VQA_StartAudio(VQAHandleP *vqap)
 	long volume = config->Volume << 7;
 	//audio->SecondaryBufferPtr->SetVolume(- ( ( (32768 - volume)*1000) >>15 ) );
 
-	// Set orf 60hz timer
-	//audio->TimerHandle = timeSetEvent ( 1000/60 , 1 , AudioCallback , 0 , TIME_PERIODIC);
-
 	audio->Flags |= VQAAUDF_ISPLAYING;
 	AudioFlags |= VQAAUDF_ISPLAYING;
+
+	SDL_UnlockAudioDevice(config->AudioDeviceID);
 
 	return (0);
 }
@@ -499,6 +589,8 @@ long CopyAudio(VQAHandleP *vqap)
 	if (audio->IsLoaded[endblock] == 1) {
 		return (VQAERR_SLEEPING);
 	}
+	
+	SDL_LockAudioDevice(config->AudioDeviceID);
 
 	/* Copy the data:
 	 *
@@ -508,6 +600,7 @@ long CopyAudio(VQAHandleP *vqap)
 	 */
 	if (startblock <= endblock) {
 
+		
 		/* Copy data */
 		memcpy((audio->Buffer + audio->AudBufPos), audio->TempBuf,
 				audio->TempBufLen);
@@ -523,6 +616,7 @@ long CopyAudio(VQAHandleP *vqap)
 			audio->IsLoaded[i] = 1;
 		}
 
+		SDL_UnlockAudioDevice(config->AudioDeviceID);
 		return (0);
 	} else {
 
@@ -551,12 +645,10 @@ long CopyAudio(VQAHandleP *vqap)
 			audio->IsLoaded[i] = 1;
 		}
 
+		SDL_UnlockAudioDevice(config->AudioDeviceID);
 		return (0);
 	}
 }
-
-
-bool	VQAAudioPaused = false;
 
 void VQA_PauseAudio(void)
 {
@@ -2598,8 +2690,19 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 			config = &vqap->Config;
 			//vqabuf = ((VQAHandleP *)vqa)->VQABuf;
 
-			#if VQASTUB_SOUND
-			// TODO
+			#if VQASDL_SOUND
+			SDL_LockAudioDevice(vqap->Config.AudioDeviceID);
+			totalbytes = (audio->ChunksMovedToAudioBuffer) * config->HMIBufSize;
+
+			// offset by any bytes still in the stream
+			// there will still be samples in the "hardware" queue, but this is the best we can do
+			play_cursor = SDL_AudioStreamAvailable(SDLStream);
+			totalbytes -= (play_cursor * StreamConvScale) >> 15;
+			SDL_UnlockAudioDevice(vqap->Config.AudioDeviceID);
+
+			samples = totalbytes/audio->Channels;
+			samples = samples/(audio->BitsPerSample >> 3);
+
 			#elif (VQADIRECT_SOUND)
 
 				totalbytes = (audio->ChunksMovedToAudioBuffer) * config->HMIBufSize;

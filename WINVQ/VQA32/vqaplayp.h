@@ -51,7 +51,7 @@
 #include "caption.h"
 
 #if(VQAAUDIO_ON)
-#if VQASTUB_SOUND
+#if VQASDL_SOUND
 typedef void *HWND;
 extern HWND MainWindow;
 #elif(VQADIRECT_SOUND)
@@ -360,8 +360,8 @@ typedef struct _VQAAudio {
 	unsigned char      BitsPerSample;
 	unsigned long      BytesPerSec;
 	_SOS_COMPRESS_INFO ADPCM_Info;
-#if VQASTUB_SOUND
-// TODO
+#if VQASDL_SOUND
+	unsigned					ChunksMovedToAudioBuffer;
 #elif (!VQADIRECT_SOUND)
 	WORD               DigiHandle;
 	WORD               SampleHandle;
