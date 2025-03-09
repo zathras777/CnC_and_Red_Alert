@@ -1,7 +1,3 @@
-# TODO: proper targets
-include_directories( ../WINVQ/INCLUDE)
-
-
 add_library(jshell STATIC
 	rotbmp.cpp
 	sprite.cpp
@@ -62,7 +58,7 @@ add_library(tech STATIC
 	sendfile.cpp
 	lcwuncmp.cpp
 )
-target_link_libraries(tech sdllib port)
+target_link_libraries(tech sdllib port vqa32)
 
 add_executable(rasdl
 	aadata.cpp
@@ -273,4 +269,4 @@ target_compile_definitions(rasdl PRIVATE
 	ENGLISH=1  # TODO: also french/german
 	PORTABLE=1 # to indicate not windows or dos sometimes
 )
-target_link_libraries(rasdl PRIVATE tech jshell port sdllib) # mpgdll wqa32wp wqm32wp wwipx32 keyboard
+target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwipx32
