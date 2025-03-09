@@ -41,6 +41,7 @@
 *     August 21, 1995
 *
 ****************************************************************************/
+#include <stdint.h>
 
 #include <vqm32/video.h>
 #include <vqm32/soscomp.h>
@@ -96,8 +97,8 @@ extern HWND MainWindow;
  * size - Size of chunk.
  */
 typedef struct _ChunkHeader {
-	unsigned long id;
-	unsigned long size;
+	uint32_t id;
+	uint32_t size;
 } ChunkHeader;
 
 
