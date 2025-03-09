@@ -100,7 +100,7 @@ void SDL_Event_Handler(SDL_Event *event)
 // these are in winasm.asm
 extern "C" void ModeX_Blit(GraphicBufferClass * source)
 {
-	printf("%s\n", __PRETTY_FUNCTION__);
+	printf("%s\n", __func__);
 }
 
 extern "C" void Asm_Interpolate(unsigned char* src_ptr, unsigned char* dest_ptr, int lines, int src_width, int dest_width)
@@ -196,5 +196,5 @@ extern "C" void Asm_Interpolate_Line_Double(unsigned char* src_ptr, unsigned cha
 
 extern "C" void Asm_Interpolate_Line_Interpolate(unsigned char* src_ptr, unsigned char* dest_ptr, int lines, int src_width, int dest_width)
 {
-	printf("%s\n", __PRETTY_FUNCTION__);
+	printf("%s\n", __func__);
 }
