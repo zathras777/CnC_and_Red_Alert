@@ -334,7 +334,7 @@ bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel,
 
 bool Linear_Scale_To_Linear(void *, void *, int, int, int, int, int, int, int, int, bool, char *)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
     return true;
 }
 

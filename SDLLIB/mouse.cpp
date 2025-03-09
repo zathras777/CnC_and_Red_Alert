@@ -122,12 +122,12 @@ void WWMouseClass::Show_Mouse(void)
 
 void WWMouseClass::Conditional_Hide_Mouse(int x1, int y1, int x2, int y2)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("WWMouseClass:%s\n", __func__);
 }
 
 void WWMouseClass::Conditional_Show_Mouse(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("WWMouseClass:%s\n", __func__);
 }
 
 int WWMouseClass::Get_Mouse_State(void)

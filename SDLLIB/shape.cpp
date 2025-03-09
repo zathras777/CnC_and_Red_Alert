@@ -5,7 +5,7 @@ long _ShapeBufferSize;
 
 int Extract_Shape_Count(void const *buffer)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
     return 0;
 }
 

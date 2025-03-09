@@ -11,7 +11,7 @@ unsigned int Window;
 
 int Change_Window(int windnum)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
     return 0;
 }
 

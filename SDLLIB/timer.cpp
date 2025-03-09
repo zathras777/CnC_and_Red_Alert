@@ -19,7 +19,7 @@ TimerClass::TimerClass(BaseTimerEnum timer, bool start) : Accumulated(0), Starte
 
 long TimerClass::Set(long value, bool start)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("TimerClass::%s\n", __func__);
     return 0;
 }
 
@@ -43,7 +43,7 @@ long TimerClass::Time(void)
 
 long TimerClass::Get_Ticks(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("TimerClass::%s\n", __func__);
     return 0;
 }
 
@@ -55,7 +55,7 @@ CountDownTimerClass::CountDownTimerClass(BaseTimerEnum timer, bool on) : TimerCl
 
 long CountDownTimerClass::Set(long set, bool start)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("CountDownTimerClass::%s\n", __func__);
     return 0;
 }
 

@@ -13,18 +13,18 @@ void (*Misc_Focus_Restore_Function)(void);
 
 bool Set_Video_Mode(void *hwnd, int w, int h, int bits_per_pixel)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
     return true;
 }
 
 void Wait_Blit(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
 }
 
 void Delay(int duration)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
 }
 
 void *Build_Fading_Table(void const *palette, void *dest, long int color, long int frac)

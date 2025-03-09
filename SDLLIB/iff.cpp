@@ -42,6 +42,6 @@ unsigned long Uncompress_Data(void const *src, void *dst)
 
 extern "C" int LCW_Comp(void const *source, void *dest, int length)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __func__);
     return 0;
 }
