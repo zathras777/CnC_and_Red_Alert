@@ -9,12 +9,20 @@
 void Focus_Loss(void);
 void Focus_Restore(void);
 
+void VQA_ResumeAudio(void);
+
 void WWDebugString (char *string)
 {}
 
 void Check_For_Focus_Loss(void)
-{}
-
+{
+	if(!GameInFocus)
+	{
+		SDL_Event_Loop();
+		if(GameInFocus)
+			VQA_ResumeAudio();
+	}
+}
 void Memory_Error_Handler(void)
 {
 	VisiblePage.Clear();
