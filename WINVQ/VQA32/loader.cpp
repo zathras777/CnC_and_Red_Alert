@@ -696,6 +696,8 @@ long VQA_LoadFrame(VQAHandle *vqa)
 	curframe = loader->CurFrame;
 	chunk = &loader->CurChunkHdr;
 
+	iffsize = REVERSE_LONG(chunk->size);
+
 	/* We have reached the end of the file if we loaded all the frames. */
 	if (loader->CurFrameNum >= vqap->Header.Frames) {
 		return (VQAERR_EOF);
