@@ -46,7 +46,7 @@
 #include <vqm32/compress.h>
 #include <vqm32/video.h>
 #include <vqm32/palette.h>
-#include <vqm32/vesavid.h>
+//#include <vqm32/vesavid.h>
 #include <vqm32/vesablit.h>
 #include <vqm32/graphics.h>
 #include <vqm32/mixfile.h>
