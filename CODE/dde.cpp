@@ -52,11 +52,11 @@
  * These are static members of Instance_Class
  *=========================================================================*/
 
-static DWORD	Instance_Class::id_inst;			// instance identifier set by DdeInitialize
-static BOOL		Instance_Class::process_pokes;	// controls response to pokes
-static char 	Instance_Class::ascii_name[32];	// name of server
+DWORD	Instance_Class::id_inst;			// instance identifier set by DdeInitialize
+BOOL		Instance_Class::process_pokes;	// controls response to pokes
+char 	Instance_Class::ascii_name[32];	// name of server
 
-static BOOL CALLBACK	(*Instance_Class::callback) (
+BOOL	(CALLBACK *Instance_Class::callback) (
 			LPBYTE pointer,		// pointer to received data
 			long	length			// length of received data or advisory flag
 			) = NULL;
@@ -186,7 +186,7 @@ BOOL	Instance_Class::Enable_Callback( BOOL flag )		// enable or disable callback
  *   6/1/1996 SW : Created.                                                *
  *=========================================================================*/
 
-BOOL	Instance_Class::Register_Server( BOOL CALLBACK ( *callback_fnc) (LPBYTE, long) )
+BOOL	Instance_Class::Register_Server( BOOL ( CALLBACK *callback_fnc) (LPBYTE, long) )
 {
 
 	if (DdeNameService( id_inst, local_name,	0L, DNS_REGISTER ) != 0L) {
@@ -360,8 +360,8 @@ HDDEDATA CALLBACK Instance_Class::dde_callback(
 	HSZ  hsz1,			// handle of a string
 	HSZ  hsz2,			// handle of a string
 	HDDEDATA  hdata,	// handle of a global memory object
-	DWORD  			,	// transaction-specific data
-	DWORD  			 	// transaction-specific data
+	ULONG_PTR  			,	// transaction-specific data
+	ULONG_PTR  			 	// transaction-specific data
 	)
 {
 

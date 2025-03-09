@@ -52,6 +52,7 @@
 #define	__DDE_H
 
 #include <windows.h>
+#include <ddeml.h>
 
 #define	DDE_ADVISE_CONNECT		-1		// advisory "client has connected"
 #define	DDE_ADVISE_DISCONNECT	-2		// advisory "client has disconnected"
@@ -93,7 +94,7 @@ class	Instance_Class {
 		- sets up DNS for the server and registers a user callback to handle
 		  incoming data
 		.....................................................................*/
-		BOOL	Register_Server( BOOL CALLBACK (*)(LPBYTE, long));
+		BOOL	Register_Server( BOOL (CALLBACK *)(LPBYTE, long));
 
 		/*.....................................................................
 		Does a trial connect to the remote server.
@@ -123,7 +124,7 @@ class	Instance_Class {
 		/*.....................................................................
 		User callback - called upon receipt of incoming data (static member!)
 		.....................................................................*/
-		static BOOL CALLBACK	(*callback) (
+		static BOOL 	(CALLBACK *callback) (
 
 			LPBYTE pointer,		// pointer to received data
 			long length				// if >0 length of received data
@@ -143,8 +144,8 @@ class	Instance_Class {
 			HSZ  hsz1,			// handle of a string
 			HSZ  hsz2,			// handle of a string
 			HDDEDATA  hdata,	// handle of a global memory object
-			DWORD  dwData1,	// transaction-specific data
-			DWORD  dwData2 	// transaction-specific data
+			ULONG_PTR  dwData1,	// transaction-specific data
+			ULONG_PTR  dwData2 	// transaction-specific data
 			);
 		HANDLE	instance;	// this application's instance
 		HWND		hwnd;			// valid window handle
