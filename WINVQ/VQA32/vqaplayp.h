@@ -53,6 +53,9 @@
 #if(VQAAUDIO_ON)
 #if VQASDL_SOUND
 extern void *MainWindow;
+#ifndef __cdecl
+#define __cdecl
+#endif
 #elif(VQADIRECT_SOUND)
 extern HWND MainWindow;
 #else
