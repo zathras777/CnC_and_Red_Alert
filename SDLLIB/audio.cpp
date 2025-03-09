@@ -295,7 +295,7 @@ int Play_Sample(void const *sample, int priority, int volume, signed short panlo
     chan.sample = sample;
     chan.playing = true;
     chan.priority = priority;
-    chan.volume = volume * (32767 / MAX_SFX) / 100;
+    chan.volume = volume * (32767 / MAX_SFX) / 255;
 
     // re-allocate stream if needed
     if(channels != chan.channels || bits != chan.bits || header->Rate != chan.sample_rate)
