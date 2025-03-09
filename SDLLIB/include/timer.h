@@ -37,6 +37,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <stdint.h>
 
 /*=========================================================================*/
 /* The following prototypes are for the file: TIMERA.ASM							*/
