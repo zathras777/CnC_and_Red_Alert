@@ -50,7 +50,7 @@
 #include <string.h>
 #include "vq.h"
 #include "vqaplayp.h"
-#include <vqm32\all.h>
+#include <vqm32/all.h>
 
 #if(VQAMONO_ON)
 

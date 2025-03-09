@@ -75,7 +75,7 @@
 #include <dos.h>
 #include "vq.h"
 #include "vqaplayp.h"
-#include <vqm32\all.h>
+#include <vqm32/all.h>
 #include "caption.h"
 
 /*---------------------------------------------------------------------------

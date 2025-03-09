@@ -50,7 +50,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "vqaplayp.h"
-#include <vqm32\all.h>
+#include <vqm32/all.h>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

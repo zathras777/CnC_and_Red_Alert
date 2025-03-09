@@ -41,10 +41,10 @@
 
 #include <mem.h>
 #include <malloc.h>
-#include <vqm32\font.h>
-#include <vqm32\text.h>
-#include <vqm32\graphics.h>
-#include <vqm32\captoken.h>
+#include <vqm32/font.h>
+#include <vqm32/text.h>
+#include <vqm32/graphics.h>
+#include <vqm32/captoken.h>
 #include "caption.h"
 
 #if( VQACAPTIONS_ON )

@@ -79,7 +79,7 @@
 #include "vq.h"
 #include "unvq.h"
 #include "vqaplayp.h"
-#include <vqm32\all.h>
+#include <vqm32/all.h>
 #include "caption.h"
 
 /*---------------------------------------------------------------------------
