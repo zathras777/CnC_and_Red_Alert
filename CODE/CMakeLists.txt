@@ -1,9 +1,6 @@
 # TODO: proper targets
 include_directories( ../WINVQ/INCLUDE)
-add_compile_definitions(-DWIN32) # hopefully easier than DOS
 
-# wrappers/workarounds
-add_compile_definitions(-D__cdecl= -D__far= -D__stdcall= -Dcdecl= -Dfar=)
 
 add_library(jshell STATIC
 	rotbmp.cpp
