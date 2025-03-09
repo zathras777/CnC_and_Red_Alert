@@ -14,5 +14,6 @@ add_compile_definitions(-D__cdecl= -D__far= -D__stdcall= -Dcdecl= -Dfar=)
 
 add_subdirectory(port)
 add_subdirectory(SDLLIB)
+add_subdirectory(WINVQ)
 
 add_subdirectory(CODE)
