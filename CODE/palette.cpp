@@ -71,12 +71,12 @@ void PaletteClass::Adjust(int, PaletteClass &)
 
 void PaletteClass::Partial_Adjust(int, char *)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("PaletteClass::%s\n", __func__);
 }
 
 void PaletteClass::Partial_Adjust(int, PaletteClass &, char *)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("PaletteClass::%s\n", __func__);
 }
 
 int PaletteClass::Closest_Color(const RGBClass &col) const
