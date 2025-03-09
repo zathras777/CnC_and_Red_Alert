@@ -10,6 +10,9 @@ add_library(vqa32 STATIC
     #unvqvesa.asm
     vertag.cpp
     caption.cpp
+
+    unvqbuff.cpp
+    vqmstub.cpp
 )
 
 target_include_directories(vqa32 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../INCLUDE)
