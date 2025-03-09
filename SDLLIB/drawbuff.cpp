@@ -389,7 +389,7 @@ long Buffer_Print(void *thisptr, const char *str, int x, int y, int fcolor, int 
         if(ch == '\n' || ch == '\r' || x + widthblock[ch] + FontXSpacing > vpwidth)
         {
             // newline
-            int line_height = (uint)maxheight + FontYSpacing;
+            int line_height = maxheight + FontYSpacing;
 
             // check bounds
             if (vpheight < y + line_height) break;
@@ -420,7 +420,7 @@ long Buffer_Print(void *thisptr, const char *str, int x, int y, int fcolor, int 
         if(topblank != 0)
         {
             if(ColorXlat[0] == 0) // transparent
-                startdraw = startdraw + (uint)topblank * bufferwidth;
+                startdraw = startdraw + topblank * bufferwidth;
             else
             {
                 do
