@@ -1330,7 +1330,7 @@ GameType Select_Serial_Dialog( void )
  * HISTORY:                                                                                    *
  *    12/16/96 2:29PM ST : Created                                                             *
  *=============================================================================================*/
-int Advanced_Modem_Settings (SerialSettingsType *settings)
+void Advanced_Modem_Settings (SerialSettingsType *settings)
 {
 
 	/*........................................................................
