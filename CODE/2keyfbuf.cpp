@@ -51,7 +51,7 @@ inline int Make_Code(int x, int y, int w, int h)
     return (x < 0 ? 0b1000 : 0) | (x >= w ? 0b0100 : 0) | (y < 0 ? 0b0010 : 0) | (y >= h ? 0b0001 : 0);
 }
 
-static void Setup_Shape_Header(int pixel_width, int pixel_height, char *src, ShapeHeaderType *headers, uint flags, uint8_t *Translucent, uint8_t *IsTranslucent)
+static void Setup_Shape_Header(int pixel_width, int pixel_height, char *src, ShapeHeaderType *headers, int flags, uint8_t *Translucent, uint8_t *IsTranslucent)
 {
 	headers->draw_flags = flags & (SHAPE_TRANS | SHAPE_FADING | SHAPE_PREDATOR | SHAPE_GHOST);
 	auto ptr = (uint8_t *)headers + sizeof(ShapeHeaderType);
