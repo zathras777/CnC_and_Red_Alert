@@ -320,7 +320,7 @@ void VQA_StopTimerInt(VQAHandleP *vqap)
 *
 ****************************************************************************/
 
-long VQA_OpenAudio(VQAHandleP *vqap, HWND window)
+long VQA_OpenAudio(VQAHandleP *vqap, void *window)
 {
 	VQAData       *vqabuf;
 	VQAAudio      *audio;

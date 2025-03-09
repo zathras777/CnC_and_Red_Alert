@@ -52,8 +52,7 @@
 
 #if(VQAAUDIO_ON)
 #if VQASDL_SOUND
-typedef void *HWND;
-extern HWND MainWindow;
+extern void *MainWindow;
 #elif(VQADIRECT_SOUND)
 extern HWND MainWindow;
 #else
@@ -531,7 +530,11 @@ long VQA_TimerMethod(void);
 
 /* Audio system. */
 #if(VQAAUDIO_ON)
+#if VQASDL_SOUND
+long VQA_OpenAudio(VQAHandleP *vqap , void *window);
+#else
 long VQA_OpenAudio(VQAHandleP *vqap , HWND window);
+#endif
 void VQA_CloseAudio(VQAHandleP *vqap);
 long VQA_StartAudio(VQAHandleP *vqap);
 void VQA_StopAudio(VQAHandleP *vqap);
