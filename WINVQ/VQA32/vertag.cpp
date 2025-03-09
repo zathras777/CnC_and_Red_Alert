@@ -47,6 +47,6 @@
 #define DEVNAME "Borland/TNT"
 #endif
 
-char VerTag[] = {"$VER$" VQA_IDSTRING" "DEVNAME" ("VQA_DATE")"};
+char VerTag[] = {"$VER$" VQA_IDSTRING " " DEVNAME " (" VQA_DATE ")"};
 char ReqTag[] = {"$REQ$" VQA_REQUIRES};
 
