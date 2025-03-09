@@ -253,30 +253,11 @@ void Stop_Sample_Playing(void const * sample)
 
 int Play_Sample(void const *sample, int priority, int volume, signed short panloc)
 {
-    // find free channel
-    int id;
-    for(id = MAX_SFX - 1; id >= 0; id--)
-    {
-        if(!Channels[id].playing)
-            break;
-    }
+    return Play_Sample_Handle(sample, priority, volume, panloc, Get_Free_Sample_Handle(priority));
+}
 
-    if(id < 0)
-    {
-        // look for lower priority channel instead
-        for(id = 0; id < MAX_SFX; id++)
-        {
-            if(Channels[id].priority < priority)
-                break;
-        }
-
-        // no channel found, give up
-        if(id == MAX_SFX)
-            return -1;
-
-        Stop_Sample(id);
-    }
-
+int Play_Sample_Handle(void const *sample, int priority, int volume, signed short panloc, int id)
+{
     // play it
     auto header = (AUDHeaderType *)sample;
     int channels = header->Flags & 1 ? 2 : 1;
@@ -338,6 +319,35 @@ int Set_Score_Vol(int volume)
 void Fade_Sample(int handle, int ticks)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+}
+
+int Get_Free_Sample_Handle(int priority)
+{
+    // find free channel
+    int id;
+    for(id = MAX_SFX - 1; id >= 0; id--)
+    {
+        if(!Channels[id].playing)
+            break;
+    }
+
+    if(id < 0)
+    {
+        // look for lower priority channel instead
+        for(id = 0; id < MAX_SFX; id++)
+        {
+            if(Channels[id].priority < priority)
+                break;
+        }
+
+        // no channel found, give up
+        if(id == MAX_SFX)
+            return -1;
+
+        Stop_Sample(id);
+    }
+
+    return id;
 }
 
 int Get_Digi_Handle(void)
