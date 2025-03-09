@@ -1690,7 +1690,11 @@ void Anim_Init(void)
 	if (SlowPalette) {
 		AnimControl.OptionFlags |= VQAOPTF_SLOWPAL;
 	}
-#ifndef PORTABLE
+#ifdef PORTABLE
+	AnimControl.AudioDeviceID = Get_Audio_Device();
+	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
+	AnimControl.AudioSpec = Get_Audio_Spec();
+#else
 	AnimControl.SoundObject = SoundObject;
 	AnimControl.PrimaryBufferPtr = PrimaryBufferPtr;
 #endif

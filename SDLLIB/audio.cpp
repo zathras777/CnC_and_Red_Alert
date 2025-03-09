@@ -43,6 +43,7 @@ int StreamLowImpact;
 static SDL_AudioDeviceID AudioDevice;
 static SDL_AudioSpec ObtainedSpec;
 static uint8_t *MixBuffer; // temp buffer for mixing
+static AudioCallback ExtraCallback = NULL;
 
 struct ChannelState
 {
@@ -136,6 +137,10 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
     int samples = len / sizeof(int16_t);
     memset(stream, 0, len);
     auto stream16 = (int16_t *)stream;
+
+    // let VQA do its thing
+    if(ExtraCallback)
+        ExtraCallback(stream, len);
 
     for(auto &chan : Channels)
     {
@@ -356,4 +361,19 @@ bool Start_Primary_Sound_Buffer(bool forced)
 void Stop_Primary_Sound_Buffer(void)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
+}
+
+uint32_t Get_Audio_Device()
+{
+    return AudioDevice;
+}
+
+void *Get_Audio_Spec()
+{
+    return &ObtainedSpec;
+}
+
+AudioCallback *Get_Audio_Callback_Ptr()
+{
+    return &ExtraCallback;
 }

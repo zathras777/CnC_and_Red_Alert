@@ -203,6 +203,11 @@ typedef struct _VQAConfig {
 	long          			OptionFlags;
 	long          			NumFrameBufs;
 	long          			NumCBBufs;
+#if VQASTUB_SOUND
+	uint32_t AudioDeviceID; // SDL_AudioDeviceID
+	void (**AudioCallback)(uint8_t *, int);
+	void *AudioSpec; // pointer to an SDL_AudioSpec
+#endif
 #if (VQADIRECT_SOUND)
 	LPDIRECTSOUND			SoundObject;
 	LPDIRECTSOUNDBUFFER	PrimaryBufferPtr;

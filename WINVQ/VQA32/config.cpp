@@ -124,6 +124,11 @@ static VQAConfig _defaultconfig = {
 	/* NumCBBufs: The number of codebook buffers to allocate/use. */
 	3,
 
+#if VQASTUB_SOUND
+	0, // AudioDeviceID
+	NULL, // AudioCallback
+	NULL, // AudioSpec
+#endif
 #if (VQADIRECT_SOUND)
 	/* -----------------12/15/95 10:40AM-----------------
 	 * SoundObject - ptr to games direct sound object. Null if VQ should create

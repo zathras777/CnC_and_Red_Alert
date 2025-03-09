@@ -109,6 +109,11 @@ bool Set_Primary_Buffer_Format(void);
 bool Start_Primary_Sound_Buffer (bool forced);
 void Stop_Primary_Sound_Buffer (void);
 
+typedef void (*AudioCallback)(uint8_t *stream, int len);
+uint32_t Get_Audio_Device();
+void *Get_Audio_Spec();
+AudioCallback *Get_Audio_Callback_Ptr(); // returns a ptr to a function ptr as we're passing this the wrong way around
+
 /*
 ** Function to call if we detect focus loss
 */
