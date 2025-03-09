@@ -35,10 +35,6 @@ static const int16_t ima_adpcm_step_table[89] = {
     15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767 
 };
 
-// technically dsound objects
-void *SoundObject;
-void *PrimaryBufferPtr;
-
 SFX_Type SoundType;
 Sample_Type SampleType;
 
