@@ -218,11 +218,11 @@ void Stop_Sample(int handle)
     if(handle < 0 || handle >= MAX_SFX)
         return;
 
-    SDL_LockAudio();
+    SDL_LockAudioDevice(AudioDevice);
 
     Channels[handle].playing = false;
 
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(AudioDevice);
 }
 
 bool Sample_Status(int handle)
@@ -284,7 +284,7 @@ int Play_Sample(void const *sample, int priority, int volume, signed short panlo
     }
 
     // setup channel
-    SDL_LockAudio();
+    SDL_LockAudioDevice(AudioDevice);
     auto &chan = Channels[id];
 
     chan.sample = sample;
@@ -319,7 +319,7 @@ int Play_Sample(void const *sample, int priority, int volume, signed short panlo
         chan.predictor = 0;
     }
 
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(AudioDevice);
 
     return id;
 }
