@@ -64,7 +64,9 @@
 ****************************************************************************/
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include <malloc.h>
 #include <mem.h>
 #include <sys/timeb.h>
@@ -94,7 +96,9 @@
 #endif
 
 #if(VQAAUDIO_ON)
-#if(VQADIRECT_SOUND)
+#if VQASTUB_SOUND
+// TODO
+#elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
 BOOL Move_HMI_Audio_Block_To_Direct_Sound_Buffer (void);
 void CALLBACK AudioCallback ( UINT , UINT , DWORD , DWORD , DWORD );
@@ -119,7 +123,7 @@ static VQAHandleP *VQAP = NULL;
 static long AudioFlags = 0;
 static long TimerSysCount = 0;
 static long TimerIntCount = 0;
-static WORD VQATimer = 0;
+static uint16_t VQATimer = 0;
 static long TimerMethod;
 static long VQATickCount = 0;
 #endif /* VQAAUDIO_ON */
@@ -129,7 +133,471 @@ char *HMIDevName = "<none>";
 
 #if(VQAAUDIO_ON)
 
-#if(!VQADIRECT_SOUND)
+#if VQASTUB_SOUND
+
+/****************************************************************************
+*
+* NAME
+*     VQA_StartTimerInt - Initialize system timer interrupt.
+*
+* SYNOPSIS
+*     Error = VQA_StartTimerInt(VQA, Init)
+*
+*     long VQA_StartTimerInt(VQAHandeP *, long);
+*
+* FUNCTION
+*     Initialize the HMI timer system and add our own timer event. If the
+*     system has already been initialized then we are given access to the
+*     the timer system.
+*
+* INPUTS
+*     VQA  - Pointer to private VQAHandle structure.
+*     Init - Initialize HMI timer system flag. (TRUE = Initialize)
+*
+* RESULT
+*     Error - 0 if successful, -1 if error.
+*
+****************************************************************************/
+
+long VQA_StartTimerInt(VQAHandleP *vqap, long init)
+{
+	VQAAudio *audio;
+
+	/* Dereference for quick access. */
+	audio = &vqap->VQABuf->Audio;
+
+	/* Register the VQA_TickCount timer event. */
+	if ((AudioFlags & VQAAUDF_HMITIMER) == (HMI_UNINIT<<VQAAUDB_HMITIMER)) {
+		// TODO: add timer (VQATimer)
+
+		if (VQATimer){
+
+			/* Flag the timer interrupt as being registered. */
+			AudioFlags |= (HMI_VQAINIT << VQAAUDB_HMITIMER);
+		} else {
+			return (-1);
+		}
+	}
+
+	/* Flag availability of the timer interrupt. */
+	audio->Flags |= (HMI_VQAINIT << VQAAUDB_HMITIMER);
+
+	/* Increment the timer interrupt usage count. */
+	TimerIntCount++;
+
+	return (0);
+}
+
+
+/****************************************************************************
+*
+* NAME
+*     VQA_StopTimerInt - Remove system timer interrupt.
+*
+* SYNOPSIS
+*     VQA_StopTimerInt()
+*
+*     void VQA_StopTimerInt(void);
+*
+* FUNCTION
+*     Remove our timer event from the HMI timer system. Uninitialize the
+*     HMI timer system if we initialized it.
+*
+* INPUTS
+*     NONE
+*
+* RESULT
+*     NONE
+*
+****************************************************************************/
+
+void VQA_StopTimerInt(VQAHandleP *vqap)
+{
+	VQAAudio *audio;
+
+	/* Dereference for quick access. */
+	audio = &vqap->VQABuf->Audio;
+
+	/* Decrement the timer interrupt usage count. */
+	if (TimerIntCount) {
+		TimerIntCount--;
+	}
+
+	/* Remove the timer interrrupt if it is initialized and the use count is
+	 * zero. Otherwise, clear the callers timer interrupt availability flag.
+	 */
+	if (((AudioFlags & VQAAUDF_HMITIMER) == (HMI_VQAINIT<<VQAAUDB_HMITIMER))
+			&& (TimerIntCount == 0)) {
+
+		// TODO: remove timer
+		AudioFlags &= ~VQAAUDF_HMITIMER;
+	} else {
+		AudioFlags &= ~VQAAUDF_HMITIMER;
+	}
+
+}
+
+/****************************************************************************
+*
+* NAME
+*     VQA_OpenAudio - Open sound system.
+*
+* SYNOPSIS
+*     Error = VQA_OpenAudio(VQAHandleP)
+*
+*     long VQA_OpenAudio(VQAHandleP *);
+*
+* FUNCTION
+*     Initialise the sound system. Create a direct sound object and the
+*     direct sound primary sound buffer if they dont already exist.
+*
+* INPUTS
+*     VQAHandleP - Pointer to private VQAHandle.
+*
+* RESULT
+*     Error - 0 if successful, -1 if error.
+*
+****************************************************************************/
+
+long VQA_OpenAudio(VQAHandleP *vqap, HWND window)
+{
+	VQAData       *vqabuf;
+	VQAAudio      *audio;
+	VQAConfig     *config;
+	VQAHeader     *header;
+
+	/* Dereference data memebers for quicker access. */
+	config = &vqap->Config;
+	header = &vqap->Header;
+	vqabuf = vqap->VQABuf;
+	audio = &vqabuf->Audio;
+
+	/* Reset the buffer position to the beginning. */
+	audio->CurBlock = 0;
+
+
+	// TODO: setup audio
+
+	audio->Flags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
+	AudioFlags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
+
+	return (0);
+}
+
+
+/****************************************************************************
+*
+* NAME
+*     VQA_CloseAudio - Close sound system
+*
+* SYNOPSIS
+*     VQA_CloseAudio()
+*
+*     void VQA_CloseAudio(void);
+*
+* FUNCTION
+*     Removes VQA's involvement in the audio system.
+*
+* INPUTS
+*     NONE
+*
+* RESULT
+*     NONE
+*
+****************************************************************************/
+
+void VQA_CloseAudio(VQAHandleP *vqap)
+{
+	VQAAudio		*audio;
+	VQAConfig	*config;
+
+	/* Dereference for quick access. */
+	audio	 = &vqap->VQABuf->Audio;
+	config = &vqap->Config;
+
+	/*
+	** If the audio is still playing then stop it
+	*/
+	VQA_StopAudio(vqap);
+
+	audio->Flags &= ~VQAAUDF_TIMERINIT;
+	AudioFlags &= ~VQAAUDF_TIMERINIT;
+
+	// TODO: destroy audio
+
+	audio->Flags &= ~VQAAUDF_DIGIINIT;
+	AudioFlags &= ~VQAAUDF_DIGIINIT;
+	AudioFlags &= ~VQAAUDF_ISPLAYING;
+
+}
+
+
+/****************************************************************************
+*
+* NAME
+*     VQA_StartAudio - Starts audio playback
+*
+* SYNOPSIS
+*     Error = VQA_StartAudio(VQA)
+*
+*     long VQA_StartAudio(VQAHandleP *);
+*
+* FUNCTION
+*     Start the audio playback for the movie.
+*
+* INPUTS
+*     VQA - Pointer to private VQA handle.
+*
+* RESULT
+*     Error - 0 if successful, or -1 error code.
+*
+****************************************************************************/
+
+long VQA_StartAudio(VQAHandleP *vqap)
+{
+	VQAConfig *config;
+	VQAAudio  *audio;
+
+	/* Save buffers for the callback routine */
+	VQAP = vqap;
+
+	/* Dereference commonly used data members for quicker access. */
+	config = &vqap->Config;
+	audio = &vqap->VQABuf->Audio;
+
+	/* Return if already playing */
+	if (AudioFlags & VQAAUDF_ISPLAYING) {
+		return (-1);
+	}
+
+	// TODO: setup playback
+
+	/*
+	** Set the volume
+	*/
+	long volume = config->Volume << 7;
+	//audio->SecondaryBufferPtr->SetVolume(- ( ( (32768 - volume)*1000) >>15 ) );
+
+	// Set orf 60hz timer
+	//audio->TimerHandle = timeSetEvent ( 1000/60 , 1 , AudioCallback , 0 , TIME_PERIODIC);
+
+	audio->Flags |= VQAAUDF_ISPLAYING;
+	AudioFlags |= VQAAUDF_ISPLAYING;
+
+	return (0);
+}
+
+
+/****************************************************************************
+*
+* NAME
+*     VQA_StopAudio - Stop audio playback.
+*
+* SYNOPSIS
+*     VQA_StopAudio(VQA)
+*
+*     void VQA_StopAudio(VQAHandleP *);
+*
+* FUNCTION
+*     Halts the currently playing audio stream.
+*
+* INPUTS
+*     VQA - Pointer to private VQAHandle.
+*
+* RESULT
+*     NONE
+*
+****************************************************************************/
+
+void VQA_StopAudio(VQAHandleP *vqap)
+{
+	VQAAudio *audio;
+	VQAConfig *config;
+
+	/* Dereference commonly used data members for quicker access. */
+	config = &vqap->Config;
+	audio = &vqap->VQABuf->Audio;
+
+	/* Just return if not playing */
+	if (AudioFlags & VQAAUDF_ISPLAYING) {
+
+
+		//audio->TimerHandle = NULL;
+
+		// TODO: stop buffer
+
+		audio->Flags &= ~VQAAUDF_ISPLAYING;
+		AudioFlags &= ~VQAAUDF_ISPLAYING;
+	}
+
+	VQAP = NULL;
+}
+
+
+/****************************************************************************
+*
+* NAME
+*     CopyAudio - Copy data from Audio Temp buffer into Audio play buffer.
+*
+* SYNOPSIS
+*     Error = CopyAudio(VQA)
+*
+*     long CopyAudio(VQAHandleP *);
+*
+* FUNCTION
+*     This routine just copies the data in the TempBuf into the correct
+*     spots in the audio play buffer.  If there is no room available in the
+*     audio play buffer, the routine returns VQAERR_SLEEPING, which will put
+*     the whole Loader to "sleep" while it waits for a free buffer.
+*
+*     If there's no data in the TempBuf to copy, the routine just returns 0.
+*
+* INPUTS
+*     VQA - Pointer to private VQAHandle structure.
+*
+* RESULT
+*     Error - 0 if successful or VQAERR_??? error code.
+*
+****************************************************************************/
+
+long CopyAudio(VQAHandleP *vqap)
+{
+	VQAAudio  *audio;
+	VQAConfig *config;
+	long      startblock;
+	long      endblock;
+	long      len1,len2;
+	long      i;
+
+	/* Dereference commonly used data members for quicker access. */
+	audio = &vqap->VQABuf->Audio;
+	config = &vqap->Config;
+
+	/* If audio is disabled, or if we're playing from a VOC file, or if
+	 * there's no Audio Buffer, or if there's no data to copy, just return 0
+	 */
+	#if(VQAVOC_ON && VQAAUDIO_ON)
+	if (((config->OptionFlags & VQAOPTF_AUDIO) == 0) || (vqap->vocfh != -1)
+			|| (audio->Buffer == NULL) || (audio->TempBufLen == 0)) {
+	#else  /* VQAVOC_ON */
+	if (((config->OptionFlags & VQAOPTF_AUDIO) == 0) || (audio->Buffer == NULL)
+			|| (audio->TempBufLen == 0)) {
+	#endif /* VQAVOC_ON */
+
+		return (0);
+	}
+
+	/* Compute start & end blocks to copy into */
+	startblock = (audio->AudBufPos / config->HMIBufSize);
+	endblock = (audio->AudBufPos + audio->TempBufLen) / config->HMIBufSize;
+
+	if (endblock >= audio->NumAudBlocks) {
+		endblock -= audio->NumAudBlocks;
+	}
+
+	/* If 'endblock' hasn't played yet, return VQAERR_SLEEPING */
+	if (audio->IsLoaded[endblock] == 1) {
+		return (VQAERR_SLEEPING);
+	}
+
+	/* Copy the data:
+	 *
+	 *  - If 'startblock' < 'endblock', copy the entire buffer
+	 *  - Otherwise, fill to the end of the buffer with part of the data, then
+	 *    copy the rest to the beginning of the buffer
+	 */
+	if (startblock <= endblock) {
+
+		/* Copy data */
+		memcpy((audio->Buffer + audio->AudBufPos), audio->TempBuf,
+				audio->TempBufLen);
+
+		/* Adjust current load position */
+		audio->AudBufPos += audio->TempBufLen;
+
+		/* Mark buffer as empty */
+		audio->TempBufLen = 0;
+
+		/* Set all blocks to loaded */
+		for (i = startblock; i < endblock; i++) {
+			audio->IsLoaded[i] = 1;
+		}
+
+		return (0);
+	} else {
+
+		/* Compute length of each piece */
+		len1 = config->AudioBufSize - audio->AudBufPos;
+		len2 = audio->TempBufLen - len1;
+
+		/* Copy 1st piece into end of Audio Buffer */
+		memcpy((audio->Buffer + audio->AudBufPos), audio->TempBuf, len1);
+
+		/* Copy 2nd piece into start of Audio Buffer */
+		memcpy(audio->Buffer, audio->TempBuf + len1, len2);
+
+		/* Adjust load position */
+		audio->AudBufPos = len2;
+
+		/* Mark buffer as empty */
+		audio->TempBufLen = 0;
+
+		/* Set blocks to loaded */
+		for (i = startblock; i < audio->NumAudBlocks; i++) {
+			audio->IsLoaded[i] = 1;
+		}
+
+		for (i = 0; i < endblock; i++) {
+			audio->IsLoaded[i] = 1;
+		}
+
+		return (0);
+	}
+}
+
+
+bool	VQAAudioPaused = false;
+
+void VQA_PauseAudio(void)
+{
+	VQAAudio  	*audio;
+	if (VQAP && VQAP->VQABuf){
+
+		audio = &VQAP->VQABuf->Audio;
+
+		//if (audio->SecondaryBufferPtr){
+
+			if (AudioFlags & VQAAUDF_ISPLAYING && !VQAAudioPaused) {
+
+				//audio->SecondaryBufferPtr->Stop();
+				VQAAudioPaused = true;
+			}
+		//}
+	}
+}
+
+
+void VQA_ResumeAudio(void)
+{
+	VQAAudio  	*audio;
+	if (VQAP && VQAP->VQABuf){
+
+		audio = &VQAP->VQABuf->Audio;
+
+		//if (audio->SecondaryBufferPtr){
+
+			if (AudioFlags & VQAAUDF_ISPLAYING && VQAAudioPaused) {
+
+				// TODO: resume
+				VQAAudioPaused = false;
+			}
+		//}
+	}
+}
+
+
+
+#elif(!VQADIRECT_SOUND)
 
 /* This is a dummy function that is used to mark the start of the module.
  * It is necessary for locking the memory the module occupies. This prevents
@@ -2109,8 +2577,8 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 	unsigned long dma_diff;
 	unsigned long totalbytes;
 	unsigned long samples;
-	DWORD				play_cursor;		//Position that direct sound is reading from
-	DWORD				write_cursor;		//Position in buffer that we can write to
+	uint32_t				play_cursor;		//Position that direct sound is reading from
+	uint32_t				write_cursor;		//Position in buffer that we can write to
 	unsigned			temp;
 	#endif
 
@@ -2130,7 +2598,9 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 			config = &vqap->Config;
 			//vqabuf = ((VQAHandleP *)vqa)->VQABuf;
 
-			#if (VQADIRECT_SOUND)
+			#if VQASTUB_SOUND
+			// TODO
+			#elif (VQADIRECT_SOUND)
 
 				totalbytes = (audio->ChunksMovedToAudioBuffer) * config->HMIBufSize;
 

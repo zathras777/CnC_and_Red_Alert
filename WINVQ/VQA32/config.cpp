@@ -52,6 +52,10 @@
 #include "vqaplayp.h"
 #include <vqm32/all.h>
 
+#if PORTABLE
+#include "windows.h" // stricmp
+#endif
+
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS
  *-------------------------------------------------------------------------*/

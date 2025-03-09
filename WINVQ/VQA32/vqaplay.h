@@ -67,11 +67,18 @@ extern void Debug_Printf( char *format_string, ... );
 #else
 #define VQASTANDALONE 0  /* Stand alone player */
 #define VQAVOC_ON     0  /* Enable VOC file override */
+#if PORTABLE
+#define	VQAMONO_ON    0
+#define VQADIRECT_SOUND 0
+#define VQASTUB_SOUND 1  // TODO
+#else
 #define	VQAMONO_ON    1  /* Mono display output enable/disable */
 #define VQADIRECT_SOUND 1	/* Use windows direct sound system */
+#define VQASTUB_SOUND 0
+#endif
 #define VQAAUDIO_ON   1  /* Audio playback enable/disable */
 #define VQAVIDEO_ON   0  /* Video manager enable/disable */
-#define VQAMCGA_ON    1  /* MCGA enable/disable */
+#define VQAMCGA_ON    0  /* MCGA enable/disable */
 #define VQAXMODE_ON   0  /* Xmode enable/disable */
 #define VQAVESA_ON    0  /* VESA enable/disable */
 #define	VQABLOCK_2X2  0  /* 2x2 block decode enable/disable */

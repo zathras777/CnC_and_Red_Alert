@@ -437,9 +437,12 @@ long VQA_Open(VQAHandle *vqa, char const *filename, VQAConfig *config)
 	/* Set the VBIBit polarity. */
 	vqap->VQABuf->VBIBit = GetVBIBit();
 	#else
+
+	#if !PORTABLE
 	if (config->VBIBit == -1) {
 		config->VBIBit = TestVBIBit();
 	}
+	#endif
 
 	vqap->VQABuf->VBIBit = config->VBIBit;
 

@@ -50,7 +50,10 @@
 #include "caption.h"
 
 #if(VQAAUDIO_ON)
-#if(VQADIRECT_SOUND)
+#if VQASTUB_SOUND
+typedef void *HWND;
+extern HWND MainWindow;
+#elif(VQADIRECT_SOUND)
 extern HWND MainWindow;
 #else
 #include "sos.h"
@@ -356,7 +359,9 @@ typedef struct _VQAAudio {
 	unsigned char      BitsPerSample;
 	unsigned long      BytesPerSec;
 	_SOS_COMPRESS_INFO ADPCM_Info;
-#if (!VQADIRECT_SOUND)
+#if VQASTUB_SOUND
+// TODO
+#elif (!VQADIRECT_SOUND)
 	WORD               DigiHandle;
 	WORD               SampleHandle;
 	WORD               DigiTimer;
