@@ -818,7 +818,7 @@ GraphicViewPortClass *Set_Logic_Page(GraphicViewPortClass &ptr)
     return Set_Logic_Page(&ptr);
 }
 
-GraphicViewPortClass::GraphicViewPortClass(GraphicBufferClass* graphic_buff, int x, int y, int w, int h)
+GraphicViewPortClass::GraphicViewPortClass(GraphicBufferClass* graphic_buff, int x, int y, int w, int h) : GraphicBuff(NULL)
 {
     Attach(graphic_buff, x, y, w, h);
 }
