@@ -41,6 +41,8 @@ Sample_Type SampleType;
 
 int StreamLowImpact;
 
+static int ScoreVolume = 255;
+
 static SDL_AudioDeviceID AudioDevice;
 static SDL_AudioSpec ObtainedSpec;
 static uint8_t *MixBuffer; // temp buffer for mixing
@@ -53,6 +55,8 @@ struct ChannelState
     bool playing = false;
     int priority = 0;
     int16_t volume = 32767;
+
+    int raw_volume; // input local * global vol
     
     uint8_t channels = 0;
     uint8_t bits = 0;
@@ -202,6 +206,12 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
     }
 }
 
+int Calculate_Volume(int vol)
+{
+    // TODO: improve?
+    return vol * (32767) / (255 * 255);
+}
+
 int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_start)
 {
     int id = Get_Free_Sample_Handle(0xFF);
@@ -240,7 +250,8 @@ int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_star
     chan.sample = NULL;
     chan.playing = true;
     chan.priority = 0xFF;
-    chan.volume = volume * (32767 / MAX_SFX) / 255;
+    chan.raw_volume = volume * ScoreVolume;
+    chan.volume = Calculate_Volume(chan.raw_volume);
 
     ResetStream(chan, &header);
 
@@ -420,7 +431,8 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     chan.sample = sample;
     chan.playing = true;
     chan.priority = priority;
-    chan.volume = volume * (32767 / MAX_SFX) / 255;
+    chan.raw_volume = volume * 255;
+    chan.volume = Calculate_Volume(chan.raw_volume);
 
     ResetStream(chan, header);
 
@@ -447,8 +459,19 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
 
 int Set_Score_Vol(int volume)
 {
-    printf("%s(%i)\n", __func__, volume);
-    return 0;
+    int old = ScoreVolume;
+    ScoreVolume = volume;
+
+    for(auto &chan : Channels)
+    {
+        if(chan.playing && !chan.in_ptr) // score is a file stream
+        {
+            chan.raw_volume = chan.raw_volume / old * ScoreVolume;
+            chan.volume = Calculate_Volume(chan.raw_volume);
+        }
+    }
+
+    return old;
 }
 
 void Fade_Sample(int handle, int ticks)
