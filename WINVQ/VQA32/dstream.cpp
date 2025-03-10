@@ -48,7 +48,11 @@
 ****************************************************************************/
 
 #include <fcntl.h>
+#ifdef _WIN32
 #include <io.h>
+#else
+#include <unistd.h>
+#endif
 #include "vqaplayp.h"
 
 #ifndef O_BINARY

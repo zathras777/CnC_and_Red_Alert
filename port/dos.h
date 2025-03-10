@@ -3,6 +3,7 @@
 #define _HARDERR_FAIL 3
 
 #define _A_NORMAL 0x00
+#define _A_SUBDIR 0x10
 
 struct find_t
 {

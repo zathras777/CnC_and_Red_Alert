@@ -100,9 +100,10 @@ TcpipManagerClass	Winsock;
 #include	<stdio.h>
 #include	<string.h>
 #include	<fcntl.h>
-#include	<io.h>
+
 #include	<dos.h>
 #ifndef WIN32
+#include	<io.h>
 #include	<share.h>
 #endif
 #include	"ccdde.h"

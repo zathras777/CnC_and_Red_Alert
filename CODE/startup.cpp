@@ -43,6 +43,12 @@
 #include	<io.h>
 #endif
 
+#ifdef _WIN32
+#include <direct.h> //chdir
+#else
+#include <unistd.h>
+#endif
+
 #ifdef WIN32
 #include  "ccdde.h"
 #include	"ipx95.h"

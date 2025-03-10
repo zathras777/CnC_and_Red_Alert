@@ -70,9 +70,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
+#ifdef _WIN32
 #include <io.h>
+#else
+#include <unistd.h>
+#endif
 #include <malloc.h>
-#include <dos.h>
 #include "vq.h"
 #include "vqaplayp.h"
 #include <vqm32/all.h>

@@ -43,8 +43,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "function.h"
+#ifdef _WIN32
 #include <io.h>				// for unlink
-
+#else
+#include <unistd.h>
+#endif
 
 /***********************************************************************************************
  * LoadOptionsClass::LoadOptionsClass -- class constructor                                     *

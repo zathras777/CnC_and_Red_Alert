@@ -67,6 +67,7 @@ typedef int socklen_t
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <unistd.h>
 
 #define closesocket close
 #define INVALID_SOCKET -1

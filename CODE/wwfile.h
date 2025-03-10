@@ -45,7 +45,7 @@
 #define MINUTE(dt) ((dt & 0x000007E0) >> 5)
 #define SECOND(dt) ((dt & 0x0000001F) << 1)
 
-#include	<io.h>
+#include	<stdio.h>
 #include	<stddef.h>
 
 #ifndef READ
