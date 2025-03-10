@@ -423,7 +423,11 @@ bool Is_Sample_Playing(void const * sample)
 
 void Stop_Sample_Playing(void const * sample)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    for(int i = 0; i < MAX_SFX; i++)
+    {
+        if(Channels[i].sample == sample)
+            return Stop_Sample(i);
+    }
 }
 
 int Play_Sample(void const *sample, int priority, int volume, signed short panloc)
