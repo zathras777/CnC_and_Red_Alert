@@ -61,12 +61,12 @@
 
 #include "function.h"
 #include <stdio.h>
-#include <mem.h>
-#include <i86.h>
 #include "ipx.h"
 
 #ifdef WIN32
 #include "ipx95.h"
+#else
+#include <i86.h>
 #endif	//WIN32
 
 

@@ -4,6 +4,7 @@
 
 #include "ww_win.h"
 
+#undef WIN32
 #include <SDL.h> // sdl includes leaking into the rest of the code is bad
 
 void Focus_Loss(void);

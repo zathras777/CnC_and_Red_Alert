@@ -36,12 +36,17 @@
  *   PacketClass::Add_Field -- Adds a FieldClass entry to head of packet li*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include <stdlib.h>
-#include <mem.h>
 #include <string.h>
 #include <algorithm>
 
 #include "packet.h"
 
+// htons/ntohs
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include <arpa/inet.h>
+#endif
 
 /**************************************************************************
  * PACKETCLASS::~PACKETCLASS -- destroys a packet class be freeing list   *

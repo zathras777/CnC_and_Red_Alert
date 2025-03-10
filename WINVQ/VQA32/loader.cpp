@@ -72,7 +72,6 @@
 #include <fcntl.h>
 #include <io.h>
 #include <malloc.h>
-#include <mem.h>
 #include <dos.h>
 #include "vq.h"
 #include "vqaplayp.h"

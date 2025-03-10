@@ -99,11 +99,12 @@ TcpipManagerClass	Winsock;
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
-#include	<direct.h>
 #include	<fcntl.h>
 #include	<io.h>
 #include	<dos.h>
+#ifndef WIN32
 #include	<share.h>
+#endif
 #include	"ccdde.h"
 #include	"vortex.h"
 

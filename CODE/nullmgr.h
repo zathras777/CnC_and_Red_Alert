@@ -46,7 +46,9 @@
 */
 #include "nullconn.h"
 #include "connmgr.h"
+#ifndef WIN32
 #include "commlib.h"
+#endif
 
 /*
 ***************************** Class Declaration *****************************
@@ -161,7 +163,11 @@ class NullModemClass : public ConnManClass
 		void Remove_Modem_Echo(void);
 		void Print_EchoBuf(void);
 		void Reset_EchoBuf(void);
+#ifdef WIN32
+		static int Abort_Modem();
+#else
 		static int Abort_Modem(PORT *);
+#endif
 		void Setup_Abort_Modem(void);
 		void Remove_Abort_Modem(void);
 

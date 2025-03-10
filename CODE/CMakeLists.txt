@@ -221,7 +221,6 @@ add_executable(rasdl
 	wol_chat.cpp
 	rawolapi.cpp
 	wolapiob.cpp
-	w95trace.cpp
 	# cominit.cpp # COM
 	wol_logn.cpp
 	woledit.cpp

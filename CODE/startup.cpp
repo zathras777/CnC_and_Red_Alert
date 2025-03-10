@@ -38,8 +38,10 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"function.h"
+#ifndef WIN32
 #include	<conio.h>
 #include	<io.h>
+#endif
 
 #ifdef WIN32
 #include  "ccdde.h"

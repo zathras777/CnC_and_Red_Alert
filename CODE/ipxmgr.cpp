@@ -69,8 +69,6 @@
 
 #include	"function.h"
 #include <stdio.h>
-#include <mem.h>
-#include <i86.h>
 #include "ipxmgr.h"
 #include "wwlib32.h"	// to enable mono output
 
@@ -85,6 +83,7 @@
 #ifdef WIN32
 #include "tcpip.h"
 #else
+#include <i86.h>
 #include	"fakesock.h"
 #endif	//WIN32
 

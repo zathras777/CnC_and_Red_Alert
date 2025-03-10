@@ -240,13 +240,15 @@ typedef struct {
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<stddef.h>
+#ifndef PORTABLE
 #include	<mem.h>
 #include	<dos.h>
 #include	<direct.h>
+#include	<process.h>
+#endif
 #include	<stdarg.h>
 #include	<ctype.h>
 #include	<assert.h>
-#include	<process.h>
 #include	<new>
 
 
@@ -379,7 +381,7 @@ CELL Coord_Cell(COORDINATE coord);
 #include	"scenario.h"
 #include "msglist.h"			// Multiplayer chat message system
 #include "session.h"			// Multiplayer session class
-#include "phone.h"			// Phone list manager
+//#include "phone.h"			// Phone list manager
 #include "ipxmgr.h"			// IPX connection manager
 #include	"nullmgr.h"			// Modem connection manager
 #include	"readline.h"

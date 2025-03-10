@@ -43,7 +43,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include "function.h"
 #include <stdio.h>
-#include <mem.h>
 #include "ipxgconn.h"
 
 

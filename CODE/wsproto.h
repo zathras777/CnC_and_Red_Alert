@@ -39,10 +39,14 @@
 
 #include	"_wsproto.h"
 
+#ifdef _WIN32
 /*
 ** Include standard Winsock 1.0 header file.
 */
 #include	<winsock.h>
+#else
+typedef int SOCKET;
+#endif
 
 /*
 ** Misc defines

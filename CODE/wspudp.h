@@ -38,8 +38,6 @@
 #define WSPUDP_H
 
 #include	"wsproto.h"
-#include	<nspapi.h>
-
 
 
 

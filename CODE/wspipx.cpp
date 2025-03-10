@@ -46,6 +46,17 @@
 #include	<assert.h>
 #include	<stdio.h>
 
+/*
+** Include Windows specific extensions for Winsock that allow IPX over winsock 1.1
+*/
+#include	<wsipx.h>
+
+/*
+** This file normally resides with the SDK. However, since it needs fixing up before watcom will
+** compile it, it has been incorporated into the project.
+*/
+#include	"wsnwlink.h"
+
 
 /***********************************************************************************************
  * IPXInterfaceClass::IPXInterfaceClass -- Class constructor                                   *

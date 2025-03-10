@@ -56,8 +56,6 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
-#include	<direct.h>
-#include	<share.h>
 #include	<stddef.h>
 
 #include	"rawfile.h"
@@ -66,6 +64,7 @@
 #include	<fcntl.h>
 #include	<io.h>
 #include	<dos.h>
+#include	<share.h>
 extern short Hard_Error_Occured;
 #endif
 

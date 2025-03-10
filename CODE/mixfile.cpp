@@ -49,12 +49,7 @@
 
 #include	"buff.h"
 #include	"function.h"
-#include	<direct.h>
-#include	<fcntl.h>
-#include	<io.h>
-#include	<dos.h>
 #include	<errno.h>
-#include	<share.h>
 #include	"mixfile.h"
 
 #include	"cdfile.h"

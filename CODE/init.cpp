@@ -72,9 +72,9 @@
 #endif	//WINSOCK_IPX
 
 #endif
-#include	<conio.h>
 #include	<dos.h>
 #ifndef WIN32
+#include	<conio.h>
 #include	<sys\timeb.h>
 #endif
 #include  "ccdde.h"

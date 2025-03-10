@@ -68,7 +68,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
-#include <mem.h>
 #include <sys/timeb.h>
 #include "vqaplayp.h"
 #include <vqm32/all.h>
@@ -97,6 +96,7 @@
 
 #if(VQAAUDIO_ON)
 #if VQASDL_SOUND
+#undef WIN32
 #include "SDL.h"
 #elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );

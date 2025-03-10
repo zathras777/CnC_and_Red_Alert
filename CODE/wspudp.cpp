@@ -51,7 +51,7 @@
 #include	<assert.h>
 #include	<stdio.h>
 #include	<svcguid.h>
-
+#include	<nspapi.h>
 
 /***********************************************************************************************
  * UDPInterfaceClass::UDPInterfaceClass -- Class constructor.                                  *

@@ -35,6 +35,13 @@
 #include <string.h>
 #include "field.h"
 
+// htons/htonl
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include <arpa/inet.h>
+#endif
+
 FieldClass::FieldClass(char *id, char data)
 {
 	strncpy(ID, id, sizeof(ID));

@@ -121,6 +121,8 @@ HANDLE CreateFile(const char *fileName, DWORD access, DWORD shareMode, void/*SEC
         return NULL;
     }
 
+    //printf("fopen(%s, %s)\n", fileName, mode);
+
     // may need to tag...
     return fopen(fileName, mode);
 }
