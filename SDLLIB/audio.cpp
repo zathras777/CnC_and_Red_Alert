@@ -67,6 +67,40 @@ struct ChannelState
     int16_t predictor = 0;
 } Channels[MAX_SFX];
 
+static void DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in_ptr)
+{
+    auto clamp = [](int v, int min, int max)
+    {
+        return v < min ? min : (v > max ? max : v);
+    };
+
+    for(int i = 0; i < block_size; i++)
+    {
+        int16_t samples[2];
+        auto b = *in_ptr++;
+
+        int nibble = b & 0xF;
+        int step = ima_adpcm_step_table[chan.step];
+        chan.step = clamp(chan.step + ima_adpcm_index_table[nibble], 0, 88);
+
+        int diff = ((((nibble & 7) * 2 + 1) * step) >> 3) * (nibble & 8 ? -1 : 1);
+        chan.predictor = clamp(chan.predictor + diff, -32768, 32767);
+
+        samples[0] = chan.predictor;
+
+        nibble = b >> 4;
+        step = ima_adpcm_step_table[chan.step];
+        chan.step = clamp(chan.step + ima_adpcm_index_table[nibble], 0, 88);
+
+        diff = ((((nibble & 7) * 2 + 1) * step) >> 3) * (nibble & 8 ? -1 : 1);
+        chan.predictor = clamp(chan.predictor + diff, -32768, 32767);
+
+        samples[1] = chan.predictor;
+
+        SDL_AudioStreamPut(chan.stream, samples, sizeof(samples));
+    }
+}
+
 static bool RefillStream(ChannelState &chan)
 {
     uint32_t max_update = ObtainedSpec.samples; // assume the target rate is not lower
@@ -77,10 +111,6 @@ static bool RefillStream(ChannelState &chan)
     if(chan.compression == SCOMP_SOS)
     {
         // ADPCM
-        auto clamp = [](int v, int min, int max)
-        {
-            return v < min ? min : (v > max ? max : v);
-        };
         int samples_to_gen = std::min(max_update, chan.length - chan.offset);
         // read blocks until we have enough samples
         while(samples_to_gen)
@@ -92,31 +122,7 @@ static bool RefillStream(ChannelState &chan)
 
             // assert(block_out_size == block_in_size * 4);
 
-            for(int i = 0; i < block_in_size; i++)
-            {
-                int16_t samples[2];
-                auto b = *chan.in_ptr++;
-
-                int nibble = b & 0xF;
-                int step = ima_adpcm_step_table[chan.step];
-                chan.step = clamp(chan.step + ima_adpcm_index_table[nibble], 0, 88);
-
-                int diff = ((((nibble & 7) * 2 + 1) * step) >> 3) * (nibble & 8 ? -1 : 1);
-                chan.predictor = clamp(chan.predictor + diff, -32768, 32767);
-
-                samples[0] = chan.predictor;
-
-                nibble = b >> 4;
-                step = ima_adpcm_step_table[chan.step];
-                chan.step = clamp(chan.step + ima_adpcm_index_table[nibble], 0, 88);
-
-                diff = ((((nibble & 7) * 2 + 1) * step) >> 3) * (nibble & 8 ? -1 : 1);
-                chan.predictor = clamp(chan.predictor + diff, -32768, 32767);
-
-                samples[1] = chan.predictor;
-
-                SDL_AudioStreamPut(chan.stream, samples, sizeof(samples));
-            }
+            DecodeADPCMBlock(chan, block_in_size, chan.in_ptr);
 
             chan.offset += block_out_size / 2;
             samples_to_gen -= block_out_size / 2;
@@ -130,6 +136,23 @@ static bool RefillStream(ChannelState &chan)
         SDL_AudioStreamFlush(chan.stream);
 
     return true;
+}
+
+static void ResetStream(ChannelState &chan, AUDHeaderType *header)
+{
+    int channels = header->Flags & 1 ? 2 : 1;
+    int bits = header->Flags & 2 ? 16 : 8;
+
+    // re-allocate stream if needed
+    if(channels != chan.channels || bits != chan.bits || header->Rate != chan.sample_rate)
+    {
+        if(chan.stream)
+            SDL_FreeAudioStream(chan.stream);
+
+        chan.stream = SDL_NewAudioStream(bits == 16 ? AUDIO_S16 : AUDIO_S8, channels, header->Rate, ObtainedSpec.format, ObtainedSpec.channels, ObtainedSpec.freq);
+    }
+    else
+        SDL_AudioStreamClear(chan.stream);
 }
 
 static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
@@ -278,16 +301,7 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     chan.priority = priority;
     chan.volume = volume * (32767 / MAX_SFX) / 255;
 
-    // re-allocate stream if needed
-    if(channels != chan.channels || bits != chan.bits || header->Rate != chan.sample_rate)
-    {
-        if(chan.stream)
-            SDL_FreeAudioStream(chan.stream);
-
-        chan.stream = SDL_NewAudioStream(bits == 16 ? AUDIO_S16 : AUDIO_S8, channels, header->Rate, ObtainedSpec.format, ObtainedSpec.channels, ObtainedSpec.freq);
-    }
-    else
-        SDL_AudioStreamClear(chan.stream);
+    ResetStream(chan, header);
 
     chan.channels = channels;
     chan.bits = bits;
