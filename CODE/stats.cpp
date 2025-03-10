@@ -46,7 +46,9 @@
 #include	"function.h"
 #include "tcpip.h"
 #include "packet.h"
+#ifndef _WIN32
 #include "ccdde.h"
+#endif
 
 #define FIELD_PACKET_TYPE						"TYPE"
 #define FIELD_GAME_ID							"IDNO"
@@ -613,6 +615,7 @@ void Send_Statistics_Packet(void)
 		sprintf (version, "V%s", VerNum.Version_Name() );
 		stats.Add_Field (FIELD_GAME_VERSION, (char*)version);
 
+#ifndef PORTABLE
 		char path_to_exe[280];
 		FILETIME write_time;		//File time is 64 bits
 
@@ -629,6 +632,7 @@ void Send_Statistics_Packet(void)
 				stats.Add_Field (FIELD_GAME_BUILD_DATE, (void*)&write_time, sizeof (write_time));
 			}
 		}
+#endif
 
 		/*
 		** Covert installed? (Yes/No)
