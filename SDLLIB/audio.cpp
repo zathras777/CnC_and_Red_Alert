@@ -5,6 +5,7 @@
 #include <SDL.h>
 
 #include "audio.h"
+#include "file.h"
 
 // original code has 5 for windows, 4 for dos
 // effectively one less as one is used to track streaming from disk
@@ -60,6 +61,8 @@ struct ChannelState
     uint32_t offset = 0;
     uint32_t length = 0;
     uint8_t *in_ptr = NULL;
+
+    int file_handle = -1; // if this is a file stream
 
     // compression state
     SCompressType compression = SCOMP_NONE;
@@ -171,7 +174,8 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
             continue;
 
         // put more data into stream if needed
-        if(SDL_AudioStreamAvailable(chan.stream) < len)
+        // unless it's a file, we do that elsewhere
+        if(SDL_AudioStreamAvailable(chan.stream) < len && chan.in_ptr)
         {
             if(!RefillStream(chan) && !SDL_AudioStreamAvailable(chan.stream))
             {
@@ -179,6 +183,12 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
                 chan.playing = false;
                 continue;
             }
+        }
+        else if(!SDL_AudioStreamAvailable(chan.stream) && !chan.in_ptr && chan.file_handle == -1)
+        {
+            // if there's no data, pointer or file handle, this is a finished file stream
+            chan.playing = false;
+            continue;
         }
 
         int stream_len = SDL_AudioStreamGet(chan.stream, MixBuffer, len);
@@ -192,13 +202,113 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
 
 int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_start)
 {
-    // used for score
-    //printf("%s\n", __PRETTY_FUNCTION__);
-    return -1;
+    int id = Get_Free_Sample_Handle(0xFF);
+
+    if(id == -1)
+        return -1;
+
+    // try to open file and get header
+    int handle = Open_File(filename, READ);
+
+    if(handle < 0)
+        return -1;
+
+    AUDHeaderType header;
+
+    if(Read_File(handle, &header, sizeof(header)) != sizeof(header))
+    {
+        Close_File(handle);
+        return -1;
+    }
+
+    int channels = header.Flags & 1 ? 2 : 1;
+    int bits = header.Flags & 2 ? 16 : 8;
+
+    if(header.Compression != SCOMP_SOS || channels != 1 || bits != 16)
+    {
+        Close_File(handle);
+        printf("\trate %i size %i/%i channels %i bits %i comp %i\n", header.Rate, header.Size, header.UncompSize, channels, bits, header.Compression);
+        return -1;
+    }
+
+    // setup channel
+    SDL_LockAudioDevice(AudioDevice);
+    auto &chan = Channels[id];
+
+    chan.sample = NULL;
+    chan.playing = true;
+    chan.priority = 0xFF;
+    chan.volume = volume * (32767 / MAX_SFX) / 255;
+
+    ResetStream(chan, &header);
+
+    chan.channels = channels;
+    chan.bits = bits;
+    chan.sample_rate = header.Rate;
+
+    chan.offset = 0;
+    chan.length = header.UncompSize / channels / (bits / 8);
+    chan.in_ptr = NULL;
+
+    chan.file_handle = handle;
+
+    chan.compression = (SCompressType)header.Compression;
+
+    if(chan.compression == SCOMP_SOS)
+    {
+        chan.step = 0;
+        chan.predictor = 0;
+    }
+
+    SDL_UnlockAudioDevice(AudioDevice);
+
+    return id;
 }
 
 void Sound_Callback(void)
 {
+    // update file stream
+    for(auto &chan : Channels)
+    {
+        if(chan.file_handle == -1)
+            continue;
+
+        // limit how much we buffer so we don't end up with the whole file
+        // (not that it's a problem on any modern system, but still)
+        int max_buf = (SDL_AUDIO_BITSIZE(ObtainedSpec.format) / 8) * ObtainedSpec.channels * ObtainedSpec.freq;
+        if(SDL_AudioStreamAvailable(chan.stream) >= max_buf)
+            continue;
+        
+        uint16_t block_header[4];
+        if(Read_File(chan.file_handle, block_header, 8) !=8)
+        {
+            // must be eof
+
+            SDL_LockAudioDevice(AudioDevice);
+            SDL_AudioStreamFlush(chan.stream);
+            SDL_UnlockAudioDevice(AudioDevice);
+
+            Close_File(chan.file_handle);
+            chan.file_handle = -1;
+        }
+        else
+        {
+            // read block
+            auto in_size = block_header[0];
+            auto out_size = block_header[1];
+
+            uint8_t *buf = new uint8_t[in_size];
+
+            Read_File(chan.file_handle, buf, in_size);
+
+            SDL_LockAudioDevice(AudioDevice);
+            DecodeADPCMBlock(chan, in_size, buf);
+
+            delete[] buf;
+
+            SDL_UnlockAudioDevice(AudioDevice);
+        }
+    }
 }
 
 bool Audio_Init(void * window, int bits_per_sample, bool stereo, int rate, int reverse_channels)
@@ -251,6 +361,12 @@ void Stop_Sample(int handle)
     Channels[handle].playing = false;
 
     SDL_UnlockAudioDevice(AudioDevice);
+
+    if(Channels[handle].file_handle != -1)
+    {
+        Close_File(Channels[handle].file_handle);
+        Channels[handle].file_handle = -1;
+    }
 }
 
 bool Sample_Status(int handle)
@@ -326,7 +442,7 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
 
 int Set_Score_Vol(int volume)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    printf("%s(%i)\n", __func__, volume);
     return 0;
 }
 
