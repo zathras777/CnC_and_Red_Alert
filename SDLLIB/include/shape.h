@@ -34,9 +34,8 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
-#ifndef GBUFFER_H
 #include "gbuffer.h"
-#endif
+
 /*
 *********************************** Types ***********************************
 */
@@ -112,41 +111,15 @@ typedef struct {
 */
 
 extern "C" {
-extern void  *MaskPage;
-extern void  *BackGroundPage;
 extern long  _ShapeBufferSize;
 extern char  *_ShapeBuffer;
-}
-
-
-void Init_Priority_System (GraphicBufferClass *mask,
-											GraphicBufferClass *back);
-
-
-/*
--------------------------------- drawshp.asm --------------------------------
-*/
-
-extern "C" {
-int Draw_Shape(GraphicViewPortClass *gvp, void const *shape, long x, long y, long flags, ...);
 }
 
 /*
 ---------------------------------- shape.c ----------------------------------
 */
-short Get_Shape_Data(void const *shape, int data);
 int Extract_Shape_Count(void const *buffer);
 void * Extract_Shape(void const *buffer, int shape);
-int Restore_Shape_Height(void *shape);
-int Set_Shape_Height(void const *shape, int newheight);
-
-extern "C" {
-int Get_Shape_Width(void const *shape);
-int Get_Shape_Height(void const *shape);
-int Get_Shape_Original_Height(void const *shape);
-int Get_Shape_Uncomp_Size(void const *shape);
-}
-
 
 /*
 ------------------------------- setshape.asm --------------------------------
@@ -154,13 +127,6 @@ int Get_Shape_Uncomp_Size(void const *shape);
 extern "C" {
 void Set_Shape_Buffer(void *buffer, int size);
 }
-/*
-------------------------------- shapeinf.asm --------------------------------
-*/
-int Get_Shape_Flags(void const *shape);
-int  Get_Shape_Size(void const *shape);
-int  Get_Shape_Scaled_Width(void const *shape, int scale);
-int  Get_Shape_Scaled_Height(void const *shape, int scale);
 
 #endif // SHAPE_H
 

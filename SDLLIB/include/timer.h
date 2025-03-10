@@ -74,7 +74,6 @@ class TimerClass {
 		long Accumulated;				//	Total accumulated ticks.
 
 	private:
-//		long (*Get_Ticks)(void);	// System timer fetch.
 		BaseTimerEnum	TickType;
 		long Get_Ticks (void);
 };
@@ -123,10 +122,6 @@ inline long CountDownTimerClass::Reset(bool start)
 {
 	return (TimerClass::Reset(start));
 }
-
-
-
-
 class WinTimerClass {
 
 	public:
@@ -146,37 +141,11 @@ class WinTimerClass {
 
 extern	WinTimerClass	*WindowsTimer;
 
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// externs  //////////////////////////////////////////
 #ifndef FUNCTION_H
 extern TimerClass					TickCount;
 #endif
-extern CountDownTimerClass		CountDown;
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////// Prototypes //////////////////////////////////////////
-
-extern "C" {
-	long Get_System_Tick_Count(void);
-	long Get_User_Tick_Count(void);
-	void Timer_Interrupt_Func(void);
-//	long Get_Num_Interrupts(unsigned int realmode);
-	void Disable_Timer_Interrupt(void);
-	void Enable_Timer_Interrupt(void);
-}
-
-/*=========================================================================*/
-/* The following prototypes are for the file: TIMER.CPP							*/
-/*=========================================================================*/
-bool Init_Timer_System(unsigned int freq, int partial = false);
-bool Remove_Timer_System(void);
 
 
 #endif // TIMER_H

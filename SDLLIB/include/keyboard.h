@@ -35,7 +35,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
  
-#include <wwstd.h>
+#include "wwstd.h"
 
 union SDL_Event;
 
@@ -65,18 +65,9 @@ class WWKeyboardClass
 		bool 	Put(int key);															// dumps a key into the keybuffer
 		bool	Put_Key_Message(unsigned vk_key, bool release = false);					// handles keyboard related message
 																						//   and mouse clicks and dbl clicks
-		int 	Check_Num(void);														// checks keybuff for a keynum key
-		int 	Get_VK(void);															// gets keynum key from key buff
-		int 	Check_ACII(void);														// checks keybuff for an ascii key
-		int 	Get_ASCII(void);														// gets an ascii key from keybuff
-		int 	Check_Bits(void);														// checks keybuff for key w/ bits
-		int 	Get_Bits(void);														// get key from keybuff w/ bits
 		int 	To_ASCII(int num);													// converts keynum to ascii value
-		int 	Option_On(int option);												// turns specified option on
-		int 	Option_Off(int option);												// turns specified option off
 		void 	Clear(void);															// clears all keys from keybuffer
 		int 	Down(int key);															// tests to see if a key is down
-		void	AI(void);																// messaging logic for key manager
 
 		/*===================================================================*/
 		/* Define the main hook for the message processing loop.					*/
@@ -86,7 +77,6 @@ class WWKeyboardClass
 		/*===================================================================*/
 		/* Define public routines which can be used on keys in general.		*/
 		/*===================================================================*/
-		void Split(int &key, int &shift, int &ctrl, int &alt, int &rls, int &dbl);
 		bool Is_Mouse_Key(int key);
 
 		bool Event_Handler(SDL_Event *event);

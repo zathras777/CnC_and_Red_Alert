@@ -41,14 +41,7 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-
-/*=========================================================================*/
-/* If we have not already loaded the standard library header, than we can	*/
-/*		load it.																					*/
-/*=========================================================================*/
-#ifndef WWSTD_H
 #include "wwstd.h"
-#endif
 
 class GraphicViewPortClass;
 
@@ -85,8 +78,8 @@ class BufferClass {
 		/*	could be copied and the associated buffer freed.  If this were to	*/
 		/*	gappen it could cause weird general protection fault.					*/
 		/*===================================================================*/
-		BufferClass(BufferClass const &);
-		BufferClass &operator=(BufferClass const &);
+		BufferClass(BufferClass const &) = delete;
+		BufferClass &operator=(BufferClass const &) = delete;
 
 	protected:
 		void	*Buffer;

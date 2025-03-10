@@ -38,9 +38,7 @@
 #ifndef FONT_H
 #define FONT_H
 
-#ifndef GBUFFER_H
-#include <gbuffer.h>
-#endif
+#include "gbuffer.h"
 
 
 //////////////////////////////////////// Defines //////////////////////////////////////////
@@ -72,13 +70,6 @@ void  * Set_Font(void const *fontptr);
 
 int Char_Pixel_Width(char chr);
 unsigned int String_Pixel_Width(char const *string);
-void Get_Next_Text_Print_XY(GraphicViewPortClass& vp, unsigned long offset, int *x, int *y);
-
-/*=========================================================================*/
-/* The following prototypes are for the file: LOADFONT.CPP	  					*/
-/*=========================================================================*/
-
-void * Load_Font(char  const *name);
 
 /*=========================================================================*/
 /* The following prototypes are for the file: TEXTPRNT.ASM	  					*/

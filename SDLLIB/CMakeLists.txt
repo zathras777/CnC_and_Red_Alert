@@ -21,8 +21,8 @@ add_library(sdllib STATIC
 )
 target_include_directories(sdllib PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 
-# FIXME: avoid needing this
-target_include_directories(sdllib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../port)
+# somewhere in the SDL headers, this ends up enabling __WIN32__ and then it tries to include windows headers
+target_compile_options(sdllib PRIVATE -UWIN32)
 
 
 find_package(SDL2 REQUIRED)

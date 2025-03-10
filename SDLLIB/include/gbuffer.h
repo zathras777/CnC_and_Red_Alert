@@ -106,36 +106,19 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #define WIN32_LEAN_AND_MEAN
-#include <ddraw.h>
+//#include <ddraw.h>
 
 
 #ifndef GBUFFER_H
 #define GBUFFER_H
 
-/*=========================================================================*/
-/* If we have not already loaded the standard library header, than we can	*/
-/*		load it.																					*/
-/*=========================================================================*/
-
-#ifndef WWSTD_H
-#include "wwstd.h"
-#endif
-
-#ifndef DRAWBUFF_H
-#include "drawbuff.h"
-#endif
-
-//#ifndef BUFFER_H
-#include "buffer.h"
-//#endif
-
-#ifndef WINDOWS_H
-#include "ww_win.h"
-#endif
 #include <stdlib.h>
 
+#include "wwstd.h"
+#include "drawbuff.h"
+#include "buffer.h"
+#include "ww_win.h"
 #include "iconcach.h"
-
 
 #ifndef FUNCTION_H
 
@@ -171,15 +154,9 @@ class TPoint2D
 // Defines for direct draw
 //
 //
-extern	LPDIRECTDRAW	DirectDrawObject;	//pointer to direct draw object
 extern	void *			MainWindow;			//handle to programs main window
 
 extern GraphicBufferClass *WindowBuffer;
-
-/*
-** Pointer to function to call if we detect a focus loss
-*/
-extern	void (*Gbuffer_Focus_Loss_Function)(void);
 
 enum GBC_Enum {
 	GBC_NONE				= 0,
@@ -255,9 +232,9 @@ class GraphicViewPortClass {
 		/* Define the set of common graphic functions that are supported by	*/
 		/*		both Graphic ViewPorts and VideoViewPorts.							*/
 		/*===================================================================*/
-		long	Size_Of_Region(int w, int h);
+
 		void	Put_Pixel(int x, int y, unsigned char color);
-		int	Get_Pixel(int x, int y);
+		int		Get_Pixel(int x, int y);
 		void	Clear(unsigned char color = 0);
 		long	To_Buffer(int x, int y, int w, int h, void *buff, long size);
 		long	To_Buffer(int x, int y, int w, int h, BufferClass *buff);
@@ -266,26 +243,16 @@ class GraphicViewPortClass {
 						int dy_pixel, int pixel_width, int pixel_height, bool trans = FALSE);
 		int	    Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans = FALSE);
 		int	    Blit(	GraphicViewPortClass& dest, bool trans = FALSE);
-		int	    Blit(	VideoViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
-						int dy_pixel, int pixel_width, int pixel_height, bool trans = FALSE);
-		int	    Blit(	VideoViewPortClass& dest, int dx, int dy, bool trans = FALSE);
-		int	    Blit(	VideoViewPortClass& dest, bool trans = FALSE);
+
 		bool	Scale(	GraphicViewPortClass &dest, int src_x, int src_y, int dst_x,
 							int dst_y, int src_w, int src_h, int dst_w, int dst_h, bool trans = FALSE, char *remap = NULL);
 		bool	Scale(	GraphicViewPortClass &dest, int src_x, int src_y, int dst_x,
 							int dst_y, int src_w, int src_h, int dst_w, int dst_h, char *remap);
 		bool	Scale(	GraphicViewPortClass &dest, bool trans = FALSE, char *remap = NULL);
 		bool	Scale(	GraphicViewPortClass &dest, char *remap);
-		bool	Scale(	VideoViewPortClass &dest, int src_x, int src_y, int dst_x,
-							int dst_y, int src_w, int src_h, int dst_w, int dst_h, bool trans = FALSE, char *remap = NULL);
-		bool	Scale(	VideoViewPortClass &dest, int src_x, int src_y, int dst_x,
-							int dst_y, int src_w, int src_h, int dst_w, int dst_h, char *remap);
-		bool	Scale(	VideoViewPortClass &dest, bool trans = FALSE, char *remap = NULL);
-		bool	Scale(	VideoViewPortClass &dest, char *remap);
+
 		unsigned long	Print(char const *string, int x_pixel, int y_pixel, int fcolor, int bcolor);
-		unsigned long	Print(short num, int x_pixel, int y_pixel, int fcol, int bcol);
 		unsigned long	Print(int num, int x_pixel, int y_pixel, int fcol, int bcol);
-		unsigned long	Print(long num, int x_pixel, int y_pixel, int fcol, int bcol);
 
 		/*===================================================================*/
 		/* Define the list of graphic functions which work only with a 		*/
@@ -294,15 +261,11 @@ class GraphicViewPortClass {
 		void Draw_Line(int sx, int sy, int dx, int dy, unsigned char color);
 		void Draw_Rect(int sx, int sy, int dx, int dy, unsigned char color);
 		void Fill_Rect(int sx, int sy, int dx, int dy, unsigned char color);
-		void Fill_Quad(void *span_buff, int x0, int y0, int x1, int y1,
-							int x2, int y2, int x3, int y3, int color);
+
 		void Remap(int sx, int sy, int width, int height, void *remap);
 		void Remap(void *remap);
-		void Draw_Stamp(void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap);
-		void Draw_Stamp(void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap, int clip_window);
 
-//	This doesnt seem to exist anywhere?? - Steve T 9/26/95 6:05PM
-//		void Grey_Out_Region(int x, int y, int width, int height, int color);
+		void Draw_Stamp(void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap, int clip_window);
 
 		//
 		// New members to lock and unlock the direct draw video memory
@@ -315,7 +278,6 @@ class GraphicViewPortClass {
 		/* Define functions to attach the viewport to a graphicbuffer			*/
 		/*===================================================================*/
 		void Attach(GraphicBufferClass *graphic_buff, int x, int y, int w, int h);
-		void Attach(GraphicBufferClass *video_buff, int w, int h);
 
 	protected:
 
@@ -350,16 +312,14 @@ class GraphicViewPortClass {
 class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 
 	public:
-		GraphicBufferClass(int w, int h, GBC_Enum flags);
-		GraphicBufferClass(int w, int h,	void *buffer, long size);
+		GraphicBufferClass(int w, int h, void *buffer, long size);
 		GraphicBufferClass(int w, int h, void *buffer = 0);
 		GraphicBufferClass(void);
 		~GraphicBufferClass();
 
-		void DD_Init(GBC_Enum flags);
 		void Init(int w, int h, void *buffer, long size, GBC_Enum flags);
 		void Un_Init(void);
-		void Attach_DD_Surface (GraphicBufferClass * attach_buffer);
+
 		bool Lock(void);
 		bool Unlock(void);
 
@@ -563,59 +523,14 @@ inline GraphicBufferClass *GraphicViewPortClass::Get_Graphic_Buffer(void)
 	return (GraphicBuff);
 }
 
-/***************************************************************************
- * GVPC::SIZE_OF_REGION -- stub to call curr graphic mode Size_Of_Region	*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   03/01/1995 BWG : Created.                                             *
- *=========================================================================*/
-inline long	GraphicViewPortClass::Size_Of_Region(int w, int h)
-{
-	return Buffer_Size_Of_Region(this, w, h);
-}
-
-
-/***************************************************************************
- * GVPC::PUT_PIXEL -- stub to call curr graphic mode Put_Pixel					*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline void	GraphicViewPortClass::Put_Pixel(int x, int y, unsigned char color)
 {
-
 	if (Lock()){
 		Buffer_Put_Pixel(this, x, y, color);
 	}
 	Unlock();
-
-
 }
 
-/***************************************************************************
- * GVPC::GET_PIXEL -- stub to call curr graphic mode Get_Pixel          	*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline int	GraphicViewPortClass::Get_Pixel(int x, int y)
 {
 	int		return_code=0;
@@ -625,42 +540,16 @@ inline int	GraphicViewPortClass::Get_Pixel(int x, int y)
 	}
 	Unlock();
 	return(return_code);
-
 }
 
-/***************************************************************************
- * GVPC::CLEAR -- stub to call curr graphic mode Clear	                  *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline void	GraphicViewPortClass::Clear(unsigned char color)
 {
 	if (Lock()){
 		Buffer_Clear(this, color);
 	}
 	Unlock();
-
 }
 
-/***************************************************************************
- * GVPC::TO_BUFFER -- stub 1 to call curr graphic mode To_Buffer				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline long	GraphicViewPortClass::To_Buffer(int x, int y, int w, int h, void *buff, long size)
 {
 	long	return_code=0;
@@ -671,62 +560,16 @@ inline long	GraphicViewPortClass::To_Buffer(int x, int y, int w, int h, void *bu
 	return ( return_code );
 }
 
-/***************************************************************************
- * GVPC::TO_BUFFER -- stub 2 to call curr graphic mode To_Buffer 				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline long	GraphicViewPortClass::To_Buffer(int x, int y, int w, int h, BufferClass *buff)
 {
-	long	return_code=0;
-	if (Lock()){
-		return_code = (Buffer_To_Buffer(this, x, y, w, h, buff->Get_Buffer(), buff->Get_Size()));
-	}
-	Unlock();
-	return ( return_code );
+	return To_Buffer(x, y, w, h, buff->Get_Buffer(), buff->Get_Size());
 }
 
-/***************************************************************************
- * GVPC::TO_BUFFER -- stub 3 to call curr graphic mode To_Buffer 				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline long	GraphicViewPortClass::To_Buffer(BufferClass *buff)
 {
-	long	return_code=0;
-	if (Lock()){
-		return_code = (Buffer_To_Buffer(this, 0, 0, Width, Height, buff->Get_Buffer(), buff->Get_Size()));
-	}
-	Unlock();
-	return ( return_code );
+	return To_Buffer(0, 0, Width, Height, buff->Get_Buffer(), buff->Get_Size());
 }
 
-/***************************************************************************
- * GVPC::BLIT -- stub 1 to call curr graphic mode Blit to GVPC					*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, int y_pixel, int dx_pixel,
 				int dy_pixel, int pixel_width, int pixel_height, bool trans)
 {
@@ -745,54 +588,17 @@ inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int x_pixel, 
 	return ( return_code );
 }
 
-/***************************************************************************
- * GVPC::BLIT -- Stub 2 to call curr graphic mode Blit to GVPC					*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, int dx, int dy, bool trans)
 {
 	return Blit(dest, 0, 0, dx, dy, Width, Height, trans);
 }
 
-/***************************************************************************
- * GVPC::BLIT -- stub 3 to call curr graphic mode Blit to GVPC					*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline int	GraphicViewPortClass::Blit(	GraphicViewPortClass& dest, bool trans)
 {
 	return Blit(dest, 0, 0, 0, 0, Width, Height, trans);
 
 }
 
-
-/***************************************************************************
- * GVPC::SCALE -- stub 1 to call curr graphic mode Scale to GVPC				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline bool	GraphicViewPortClass::Scale(	GraphicViewPortClass &dest, int src_x, int src_y, int dst_x,
 					int dst_y, int src_w, int src_h, int dst_w, int dst_h, bool trans, char *remap)
 {
@@ -807,93 +613,22 @@ inline bool	GraphicViewPortClass::Scale(	GraphicViewPortClass &dest, int src_x, 
 	return ( return_code );
 }
 
-/***************************************************************************
- * GVPC::SCALE -- stub 2 to call curr graphic mode Scale to GVPC				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline bool	GraphicViewPortClass::Scale(	GraphicViewPortClass &dest, int src_x, int src_y, int dst_x,
 					int dst_y, int src_w, int src_h, int dst_w, int dst_h, char *remap)
 {
-	bool	return_code=0;
-	if (Lock()){
-		if (dest.Lock()){
-			return_code = (Linear_Scale_To_Linear(this, &dest, src_x, src_y, dst_x, dst_y, src_w, src_h, dst_w, dst_h, FALSE, remap));
-		}
-		dest.Unlock();
-	}
-	Unlock();
-	return ( return_code );
+	return Scale(dest, src_x, src_y, dst_x, dst_y, src_w, src_h, dst_w, dst_h, FALSE, remap);
 }
 
-/***************************************************************************
- * GVPC::SCALE -- stub 3 to call curr graphic mode Scale to GVPC				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline bool	GraphicViewPortClass::Scale(	GraphicViewPortClass &dest, bool trans, char *remap)
 {
-	bool	return_code=0;
-	if (Lock()){
-		if (dest.Lock()){
-			return_code = (Linear_Scale_To_Linear(this,	&dest, 0, 0, 0, 0, Width, Height, dest.Get_Width(), dest.Get_Height(), trans, remap));
-		}
-		dest.Unlock();
-	}
-	Unlock();
-	return ( return_code );
+	return Scale(dest, 0, 0, 0, 0, Width, Height, dest.Get_Width(), dest.Get_Height(), trans, remap);
 }
 
-/***************************************************************************
- * GVPC::SCALE -- stub 4 to call curr graphic mode Scale to GVPC				*
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/06/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline bool	GraphicViewPortClass::Scale(	GraphicViewPortClass &dest, char *remap)
 {
-	bool	return_code=0;
-	if (Lock()){
-		if (dest.Lock()){
-			return_code = (Linear_Scale_To_Linear(this, &dest, 0, 0, 0, 0, Width, Height, dest.Get_Width(), dest.Get_Height(), FALSE, remap));
-		}
-		dest.Unlock();
-	}
-	Unlock();
-	return ( return_code );
+	return Scale(dest, 0, 0, 0, 0, Width, Height, dest.Get_Width(), dest.Get_Height(), FALSE, remap);
 }
-/***************************************************************************
- * GVPC::PRINT -- stub func to print a text string                         *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/17/1995 PWG : Created.                                             *
- *=========================================================================*/
+
 inline unsigned long	GraphicViewPortClass::Print(char const *str, int x, int y, int fcol, int bcol)
 {
 	unsigned long	return_code=0;
@@ -904,109 +639,18 @@ inline unsigned long	GraphicViewPortClass::Print(char const *str, int x, int y, 
 	return ( return_code );
 }
 
-/***************************************************************************
- * GVPC::PRINT -- Stub function to print an integer                        *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *=========================================================================*/
 inline unsigned long	GraphicViewPortClass::Print(int num, int x, int y, int fcol, int bcol)
 {
 	char str[17];
 
 	unsigned long	return_code=0;
 	if (Lock()){
-		return_code = (Buffer_Print(this, itoa(num, str, 10), x, y, fcol, bcol));
+		snprintf(str, sizeof(str), "%i", num);
+		return_code = (Buffer_Print(this, str, x, y, fcol, bcol));
 	}
 	Unlock();
 	return ( return_code );
 }
-
-/***************************************************************************
- * GVPC::PRINT -- Stub function to print a short to a graphic viewport     *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *=========================================================================*/
-inline unsigned long	GraphicViewPortClass::Print(short num, int x, int y, int fcol, int bcol)
-{
-	char str[17];
-
-	unsigned long	return_code=0;
-	if (Lock()){
-		return_code = (Buffer_Print(this, itoa(num, str, 10), x, y, fcol, bcol));
-	}
-	Unlock();
-	return ( return_code );
-}
-
-/***************************************************************************
- * GVPC::PRINT -- stub function to print a long on a graphic view port     *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *=========================================================================*/
-inline unsigned long	GraphicViewPortClass::Print(long num, int x, int y, int fcol, int bcol)
-{
-	char str[33];
-
-	unsigned long	return_code=0;
-	if (Lock()){
-		return_code = (Buffer_Print(this, ltoa(num, str,10), x, y, fcol, bcol));
-	}
-	Unlock();
-	return ( return_code );
-}
-
-/***************************************************************************
- * GVPC::DRAW_STAMP -- stub function to draw a tile on a graphic view port *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *=========================================================================*/
-inline void GraphicViewPortClass::Draw_Stamp(void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap)
-{
-	if (Lock()){
-		Buffer_Draw_Stamp(this, icondata, icon, x_pixel, y_pixel, remap);
-	}
-	Unlock();
-}
-
-
-
-/***************************************************************************
- * GVPC::DRAW_STAMP -- stub function to draw a tile on a graphic view port *
- *                     This version clips the tile to a window             *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *    07/31/1995 BWG : Created.                                            *
- *=========================================================================*/
 
 inline void GraphicViewPortClass::Draw_Stamp(void const * icondata, int icon, int x_pixel, int y_pixel, void const * remap, int clip_window)
 {
@@ -1016,19 +660,6 @@ inline void GraphicViewPortClass::Draw_Stamp(void const * icondata, int icon, in
 	Unlock();
 }
 
-
-/***************************************************************************
- * GVPC::DRAW_LINE -- Stub function to draw line in Graphic Viewport Class *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/16/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline void GraphicViewPortClass::Draw_Line(int sx, int sy, int dx, int dy, unsigned char color)
 {
 	if (Lock()){
@@ -1037,18 +668,6 @@ inline void GraphicViewPortClass::Draw_Line(int sx, int sy, int dx, int dy, unsi
 	Unlock();
 }
 
-/***************************************************************************
- * GVPC::FILL_RECT -- Stub function to fill rectangle in a GVPC            *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/16/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline void GraphicViewPortClass::Fill_Rect(int sx, int sy, int dx, int dy, unsigned char color)
 {
 	if (Lock()){
@@ -1057,19 +676,6 @@ inline void GraphicViewPortClass::Fill_Rect(int sx, int sy, int dx, int dy, unsi
 	}
 }
 
-
-/***************************************************************************
- * GVPC::REMAP -- Stub function to remap a GVPC                            *
- *                                                                         *
- * INPUT:                                                                  *
- *                                                                         *
- * OUTPUT:                                                                 *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   01/16/1995 PWG : Created.                                             *
- *=========================================================================*/
 inline void GraphicViewPortClass::Remap(int sx, int sy, int width, int height, void *remap)
 {
 	if (Lock()){
@@ -1078,32 +684,9 @@ inline void GraphicViewPortClass::Remap(int sx, int sy, int width, int height, v
 	Unlock();
 }
 
-
-inline void GraphicViewPortClass::Fill_Quad(void *span_buff, int x0, int y0, int x1, int y1,
-							int x2, int y2, int x3, int y3, int color)
-{
-	if (Lock()){
-		Buffer_Fill_Quad(this, span_buff, x0, y0, x1, y1, x2, y2, x3, y3, color);
-	}
-	Unlock();
-}
-
-/***************************************************************************
- * GVPC::REMAP -- Short form to remap an entire graphic view port          *
- *                                                                         *
- * INPUT:		BYTE * to the remap table to use										*
- *                                                                         *
- * OUTPUT:     none                                                        *
- *                                                                         *
- * HISTORY:                                                                *
- *   07/01/1994 PWG : Created.                                             *
- *=========================================================================*/
 inline void GraphicViewPortClass::Remap(void *remap)
 {
-	if (Lock()){
-		Buffer_Remap(this, 0, 0, Width, Height, remap);
-	}
-	Unlock();
+	return Remap(0, 0, Width, Height, remap);
 }
 
 inline int GraphicViewPortClass::Get_Pitch(void)
@@ -1155,12 +738,7 @@ inline long Buffer_To_Page(int x, int y, int w, int h, void *Buffer, GraphicView
  *=========================================================================*/
 inline long BufferClass::To_Page(int w, int h, GraphicViewPortClass &view)
 {
-	long	return_code=0;
-	if (view.Lock()){
-		return_code = (Buffer_To_Page(0, 0, w, h, Buffer, &view));
-	}
-	view.Unlock();
-	return ( return_code );
+	return To_Page(0, 0, w, h, view);
 }
 /***************************************************************************
  * BC::TO_PAGE -- Copys a buffer class to a page with definable w, h 		*
@@ -1178,12 +756,7 @@ inline long BufferClass::To_Page(int w, int h, GraphicViewPortClass &view)
  *=========================================================================*/
 inline long BufferClass::To_Page(GraphicViewPortClass &view)
 {
-	long	return_code=0;
-	if (view.Lock()){
-		return_code = (Buffer_To_Page(0, 0, view.Get_Width(), view.Get_Height(), Buffer, &view));
-	}
-	view.Unlock();
-	return ( return_code );
+	return To_Page(0, 0, view.Get_Width(), view.Get_Height(), view);
 }
 /***************************************************************************
  * BC::TO_PAGE -- Copys a buffer class to a page with definable x, y, w, h *

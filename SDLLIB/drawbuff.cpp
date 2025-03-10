@@ -9,8 +9,6 @@
 #include "gbuffer.h"
 #include "misc.h"
 
-LPDIRECTDRAW DirectDrawObject;
-LPDIRECTDRAWPALETTE	PalettePtr;
 
 void *MainWindow;
 
@@ -933,11 +931,6 @@ void GraphicBufferClass::Init(int w, int h, void *buffer, long size, GBC_Enum fl
 void GraphicBufferClass::Un_Init(void)
 {
     // de-alloc surface
-}
-
-void GraphicBufferClass::Attach_DD_Surface (GraphicBufferClass * attach_buffer)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
 }
 
 bool GraphicBufferClass::Lock(void)

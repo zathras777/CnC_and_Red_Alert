@@ -81,14 +81,6 @@ template<class T> T MAX(T a, T b)
 inline int MAX(int a, int b) {return MAX<int>(a, b);}
 
 
-/*
-**	The type of processor running on this system as
-**	returned by Processor().
-*/
-#define	PROC_80386		0
-#define	PROC_80486		1
-#define	PROC_PENTIUM	2
-
 
 // Inline Routines
 //════════════════

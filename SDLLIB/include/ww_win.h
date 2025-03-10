@@ -40,23 +40,9 @@
 union SDL_Event;
 
 /*=========================================================================*/
-/* The following prototypes are for the file: WINHIDE.CPP						*/
-/*=========================================================================*/
-void Window_Hide_Mouse(int window);
-void Window_Show_Mouse(void);
-
-/*=========================================================================*/
 /* The following prototypes are for the file: WINDOWS.CPP						*/
 /*=========================================================================*/
-void Standard_More_Prompt(char const *prompt, int space, int fcolor, int bcolor);
-void Set_More_Prompt(char const *prompt, int space, int fcolor, int bcolor);
-void Set_More_On(void);
-void Set_More_Off(void);
 int Change_Window(int windnum);
-int Change_New_Window(int windnum);
-void New_Window(void);
-void Window_Int_Print(int num);
-void Window_Print(char const string[], ...);
 
 
 void SDL_Create_Main_Window(const char *title, int width, int height);

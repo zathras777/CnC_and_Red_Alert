@@ -20,10 +20,7 @@
 #ifndef DRAWBUFF_H
 #define DRAWBUFF_H
 
-
-#ifndef WWSTD_H
 #include "wwstd.h"
-#endif
 
 class GraphicViewPortClass;
 class GraphicBufferClass;
@@ -36,8 +33,6 @@ extern "C" {
 	/* Externs for all of the common functions between the video buffer		*/
 	/*		class and the graphic buffer class.											*/
 	/*======================================================================*/
-	 long Buffer_Size_Of_Region(void *thisptr, int w, int h);
-
 	 void	Buffer_Put_Pixel(void * thisptr, int x, int y, unsigned char color);
 	 int	Buffer_Get_Pixel(void * thisptr, int x, int y);
 	 void	Buffer_Clear(void *thisptr, unsigned char color);
@@ -55,11 +50,7 @@ extern "C" {
 	 void Buffer_Draw_Line(void *thisptr, int sx, int sy, int dx, int dy, unsigned char color);
 	 void Buffer_Fill_Rect(void *thisptr, int sx, int sy, int dx, int dy, unsigned char color);
 	 void Buffer_Remap(void * thisptr, int sx, int sy, int width, int height, void *remap);
-	 void Buffer_Fill_Quad(void * thisptr, void *span_buff, int x0, int y0, int x1, int y1,
-							 	int x2, int y2, int x3, int y3, int color);
-	 void Buffer_Draw_Stamp(void const *thisptr, void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap);
 	 void Buffer_Draw_Stamp_Clip(void const *thisptr, void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap, int ,int,int,int);
-	 void * Get_Font_Palette_Ptr ( void );
 }
 
 extern GraphicViewPortClass *LogicPage;

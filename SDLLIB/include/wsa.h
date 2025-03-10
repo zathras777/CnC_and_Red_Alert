@@ -46,15 +46,10 @@
 #ifndef WSA_H
 #define WSA_H
 
-#ifndef WWSTD_H
 #include "wwstd.h"
-#endif
 
-#ifndef GBUFFER_H
 #include "gbuffer.h"
-#endif
 
-//lint -strong(AJX,WSAType)
 typedef enum {
 	WSA_NORMAL,								// Normal WSA animation
 	WSA_GHOST	 	= 0x1000,			// Or'd with the above flags to get ghosting
@@ -64,7 +59,6 @@ typedef enum {
 } WSAType;
 
 
-//lint -strong(AJX,WSAOpenType)
 typedef enum {
 	WSA_OPEN_FROM_MEM		= 0x0000,	// Try to load entire anim into memory.
 	WSA_OPEN_INDIRECT		= 0x0000,	// First animate to internal buffer, then copy to page/viewport.
@@ -90,61 +84,6 @@ bool Animate_Frame(void *handle, GraphicViewPortClass& view,
                          int frame_number, int x_pixel=0, int y_pixel=0,
                          WSAType flags_and_prio = WSA_NORMAL, void *magic_cols=NULL, void *magic=NULL);
 int Get_Animation_Frame_Count(void *handle);
-bool Animate_Frame(void *handle, VideoViewPortClass& view,
-                         int frame_number, int x_pixel=0, int y_pixel=0,
-                         WSAType flags_and_prio = WSA_NORMAL, void *magic_cols=NULL, void *magic=NULL);
-int Get_Animation_Frame_Count(void *handle);
-int Get_Animation_X(void const *handle);
-int Get_Animation_Y(void const *handle);
-int Get_Animation_Width(void const *handle);
-int Get_Animation_Height(void const *handle);
-int Get_Animation_Palette(void const *handle);
-unsigned long Get_Animation_Size(void const *handle);
-
-
-/***************************************************************************
- * OPEN_ANIMATION -- file name, flags, palette, system allocates buffer.   *
- *                                                                         *
- *                                                                         *
- * INPUT:   char *file_name - name of file to open.                        *
- *          WSAOpenType user_flags - flags on how to open.                 *
- *          unsigned char *palette - pointer to a palette buffer to fill.          *
- *                                                                         *
- * OUTPUT:  void *pointer to animation data.  Must be used for all 			*
- *               other WSA calls.                                          *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   05/24/1994 SKB : Created.                                             *
- *=========================================================================*/
-inline void  * Open_Animation(char *file_name, WSAOpenType user_flags, unsigned char *palette=NULL)
-{
-	return (Open_Animation(file_name, NULL, 0L, user_flags,  palette));
-}
-
-
-/***************************************************************************
- * OPEN_ANIMATION -- file_name, bufferclass, flags. 								*
- *                                                                         *
- *                                                                         *
- * INPUT:   char *file_name - name of file to open.                        *
- *          GraphicBufferClass - pointer to a buffer.                      *
- *          WSAOpenType user_flags - flags on how to open.                 *
- *          unsigned char *palette - pointer to a palette buffer to fill.          *
- *                                                                         *
- * OUTPUT:  void *pointer to animation data.  Must be used for all 			*
- *               other WSA calls.                                          *
- *                                                                         *
- * WARNINGS:                                                               *
- *                                                                         *
- * HISTORY:                                                                *
- *   05/24/1994 SKB : Created.                                             *
- *=========================================================================*/
-inline void * Open_Animation(char *file_name, BufferClass& buffer, WSAOpenType user_flags,  unsigned char *palette=NULL)
-{
-	return (Open_Animation(file_name, (char *)buffer.Get_Buffer(), buffer.Get_Size(), user_flags, palette));
-}
 
 
 /*=========================================================================*/
