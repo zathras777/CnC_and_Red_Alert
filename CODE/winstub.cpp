@@ -64,6 +64,16 @@ extern	void VQA_ResumeAudio(void);
 void Focus_Loss(void);
 void Focus_Restore(void);
 
+BOOL Any_Locked (void)
+{
+	if (SeenBuff.Get_LockCount() ||
+		HidPage.Get_LockCount()) {
+		return (TRUE);
+	} else {
+		return(FALSE);
+	}
+}
+
 /***********************************************************************************************
  * Check_For_Focus_Loss -- check for the end of the focus loss                                 *
  *                                                                                             *

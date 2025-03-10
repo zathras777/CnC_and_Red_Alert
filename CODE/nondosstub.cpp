@@ -58,16 +58,6 @@ void Focus_Restore(void)
 	HiddenPage.Clear();
 }
 
-BOOL Any_Locked (void)
-{
-	if (SeenBuff.Get_LockCount() ||
-		HidPage.Get_LockCount()) {
-		return (TRUE);
-	} else {
-		return(FALSE);
-	}
-}
-
 unsigned char	*VQPalette;
 long				VQNumBytes;
 unsigned long	VQSlowpal;
