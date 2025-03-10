@@ -70,7 +70,7 @@ struct ChannelState
     int16_t predictor = 0;
 } Channels[MAX_SFX];
 
-static void DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in_ptr)
+static uint8_t *DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in_ptr)
 {
     auto clamp = [](int v, int min, int max)
     {
@@ -102,6 +102,8 @@ static void DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in_ptr
 
         SDL_AudioStreamPut(chan.stream, samples, sizeof(samples));
     }
+
+    return in_ptr;
 }
 
 static bool RefillStream(ChannelState &chan)
@@ -125,7 +127,7 @@ static bool RefillStream(ChannelState &chan)
 
             // assert(block_out_size == block_in_size * 4);
 
-            DecodeADPCMBlock(chan, block_in_size, chan.in_ptr);
+            chan.in_ptr = DecodeADPCMBlock(chan, block_in_size, chan.in_ptr);
 
             chan.offset += block_out_size / 2;
             samples_to_gen -= block_out_size / 2;
@@ -397,6 +399,9 @@ int Play_Sample(void const *sample, int priority, int volume, signed short panlo
 
 int Play_Sample_Handle(void const *sample, int priority, int volume, signed short panloc, int id)
 {
+    if(id == -1)
+        return -1;
+
     // play it
     auto header = (AUDHeaderType *)sample;
     int channels = header->Flags & 1 ? 2 : 1;
