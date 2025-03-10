@@ -712,7 +712,9 @@ int main(int argc, char * argv[])
 /* Initialize DirectDraw and surfaces */
 bool InitDDraw(void)
 	{
+#ifndef PORTABLE
 	DDSCAPS	surface_capabilities;
+#endif
 	BOOL video_success = FALSE;
 
 	/* Set 640x400 video mode. If its not available then try for 640x480 */
@@ -757,8 +759,9 @@ bool InitDDraw(void)
 	else
 		{
 		VisiblePage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)(GBC_VISIBLE|GBC_VIDEOMEM));
-
-#ifndef PORTABLE
+#ifdef PORTABLE
+		HiddenPage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)0);
+#else
 		/* Check that we really got a video memory page. Failure is fatal. */
 		memset(&surface_capabilities, 0, sizeof(surface_capabilities));
 		VisiblePage.Get_DD_Surface()->GetCaps(&surface_capabilities);
@@ -774,7 +777,6 @@ bool InitDDraw(void)
 				
 			return false;
 			}
-#endif
 
 		/* If we have enough left then put the hidpage in video memory unless...
 		 *
@@ -797,7 +799,6 @@ bool InitDDraw(void)
 			{
 			HiddenPage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)GBC_VIDEOMEM);
 
-#ifndef PORTABLE
 			/* Make sure we really got a video memory hid page. If we didnt then things
 			 * will run very slowly.
 			 */
@@ -817,8 +818,8 @@ bool InitDDraw(void)
 				{
 				VisiblePage.Attach_DD_Surface(&HiddenPage);
 				}
-#endif
 			}
+#endif
 		}
 
 	ScreenHeight = 400;
