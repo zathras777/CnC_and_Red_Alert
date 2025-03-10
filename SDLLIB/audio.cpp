@@ -352,8 +352,8 @@ int Get_Free_Sample_Handle(int priority)
 
 int Get_Digi_Handle(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return 0;
+    // used to check if audio is initialised
+    return AudioDevice ? 1 : -1;
 }
 
 bool Set_Primary_Buffer_Format(void)
