@@ -279,12 +279,13 @@ extern long LParam;
 #include	"ccptr.h"
 #include	"bar.h"
 
+#ifndef PORTABLE
 /*
 **	Greenleaf specific includes.
 */
 #include <modem.h>
 #include <fast.h>
-
+#endif
 
 extern long Frame;
 CELL Coord_Cell(COORDINATE coord);

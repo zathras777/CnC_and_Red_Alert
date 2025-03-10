@@ -54,7 +54,8 @@ typedef enum WinCommDialMethodType {
 #define	COMMSUCCESS		0
 #define 	ASTIMEOUT      -10
 #define	COMMUSERABORT	-16
-
+#define ASSUCCESS COMMSUCCESS
+#define ASUSERABORT COMMUSERABORT
 typedef void *HANDLE;
 
 /*
@@ -65,7 +66,14 @@ typedef void *HANDLE;
 */
 #define SIZE_OF_WINDOWS_SERIAL_BUFFER 2048
 
-
+// same enum as in the class below
+enum
+{
+    CTS_SET  = 0x10,
+    DSR_SET  = 0x20,
+    RI_SET   = 0x40,
+    CD_SET   = 0x80
+};
 
 /*
 ** WinModemClass.
