@@ -575,7 +575,6 @@ void Send_Statistics_Packet(void)
 		** CPU type
 		*/
 		stats.Add_Field (FIELD_CPU_TYPE, (char)CPUType);
-#endif
 
 		/*
 		** Memory
@@ -600,6 +599,7 @@ void Send_Statistics_Packet(void)
 				stats.Add_Field (FIELD_VIDEO_MEMORY, (long) video_memory);
 			}
 		}
+#endif
 
 		/*
 		** Game speed setting.
