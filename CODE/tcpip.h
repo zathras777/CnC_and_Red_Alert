@@ -46,6 +46,17 @@
 
 #ifdef WIN32
 
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include "compat.h"
+#include <netinet/in.h>
+typedef int SOCKET;
+typedef void *HANDLE;
+#define IN_ADDR in_addr
+#define MAXGETHOSTSTRUCT 1024
+#endif
+
 #ifndef WOLAPI_INTEGRATION
 extern bool Server;
 #endif
@@ -97,7 +108,9 @@ class TcpipManagerClass {
 		void Start_Server(void);
 		void Start_Client(void);
 		void Close_Socket(SOCKET s);
+#ifdef _WIN32
 	 	void Message_Handler(HWND window, UINT message, UINT wParam, LONG lParam);
+#endif
 		void Copy_To_In_Buffer(int bytes);
 		int  Read(void *buffer, int buffer_len);
 		void Write(void *buffer, int buffer_len);
@@ -143,7 +156,9 @@ class TcpipManagerClass {
 
 
 		BOOL 					WinsockInitialised;
+#ifdef _WIN32
 		WSADATA				WinsockInfo;
+#endif
 		SOCKET				ListenSocket;
 		SOCKET				ConnectSocket;
 		SOCKET				UDPSocket;

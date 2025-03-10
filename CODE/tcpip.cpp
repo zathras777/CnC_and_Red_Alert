@@ -71,6 +71,7 @@ typedef int socklen_t
 
 #define closesocket close
 #define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
 #endif
 
 /*
@@ -526,10 +527,10 @@ BOOL TcpipManagerClass::Add_Client(void)
  * HISTORY:                                                                                    *
  *    3/20/96 3:05PM ST : Created                                                              *
  *=============================================================================================*/
-
+#ifdef _WIN32
 void TcpipManagerClass::Message_Handler(HWND, UINT message, UINT , LONG lParam)
 {
-#ifdef _WIN32
+
 	struct 	hostent *hentry;
 	struct 	sockaddr_in addr;
 	int	 	event;
@@ -721,9 +722,8 @@ void TcpipManagerClass::Message_Handler(HWND, UINT message, UINT , LONG lParam)
 
 			}
 	}
-#endif
 }
-
+#endif
 
 
 /***********************************************************************************************
@@ -906,7 +906,7 @@ void TcpipManagerClass::Close_Socket(SOCKET s)
 
 	ling.l_onoff = 0;		// linger off
 	ling.l_linger = 0;	// timeout in seconds (ie close now)
-	setsockopt(s, SOL_SOCKET, SO_LINGER, (LPSTR)&ling, sizeof(ling));
+	setsockopt(s, SOL_SOCKET, SO_LINGER, (char *)&ling, sizeof(ling));
 	closesocket (s);
 }
 

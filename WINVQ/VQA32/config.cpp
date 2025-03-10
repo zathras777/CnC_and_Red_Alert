@@ -53,7 +53,7 @@
 #include <vqm32/all.h>
 
 #if PORTABLE
-#include "windows.h" // stricmp
+#include "ex_string.h"
 #endif
 
 /*---------------------------------------------------------------------------

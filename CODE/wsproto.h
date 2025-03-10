@@ -46,6 +46,8 @@
 #include	<winsock.h>
 #else
 typedef int SOCKET;
+typedef void *HANDLE;
+#define WM_USER 0x400
 #endif
 
 /*
@@ -121,10 +123,11 @@ class WinsockInterfaceClass {
 			return (false);
 		};
 
+#ifdef _WIN32
 	 	virtual long Message_Handler(HWND, UINT, UINT, LONG) {
 			return (1);
 		}
-
+#endif
 
 		typedef enum ConnectStatusEnum {
 			CONNECTED_OK = 0,

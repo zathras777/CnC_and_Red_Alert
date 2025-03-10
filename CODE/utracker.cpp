@@ -51,8 +51,13 @@
 /*
 ** Define host to network to host functions for DOS
 */
-#ifndef WIN32
-
+#ifdef WIN32
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include <arpa/inet.h>
+#endif
+#else
 #define htonl(val) 0
 #define ntohl(val) 0
 

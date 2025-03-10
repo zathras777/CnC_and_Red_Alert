@@ -126,8 +126,10 @@ UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
 
 
 #ifdef WIN32
+#ifndef PORTABLE
 //#define WIN32_LEAN_AND_MEAN
 #include	<windows.h>
+#endif
 #define WWFILE_H
 #define RAWFILE_H
 #define MONOC_H
@@ -240,7 +242,9 @@ typedef struct {
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<stddef.h>
-#ifndef PORTABLE
+#ifdef PORTABLE
+#include    "ex_string.h"
+#else
 #include	<mem.h>
 #include	<dos.h>
 #include	<direct.h>

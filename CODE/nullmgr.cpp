@@ -52,6 +52,7 @@
 
 #include "function.h"
 #ifdef WIN32
+#include <windows.h>
 #include "wincomm.h"
 #include "modemreg.h"
 extern ModemRegistryEntryClass *ModemRegistry;

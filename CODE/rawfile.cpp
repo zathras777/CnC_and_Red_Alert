@@ -60,7 +60,9 @@
 
 #include	"rawfile.h"
 
-#ifndef WIN32
+#ifdef WIN32
+#include	<windows.h>
+#else
 #include	<fcntl.h>
 #include	<io.h>
 #include	<dos.h>

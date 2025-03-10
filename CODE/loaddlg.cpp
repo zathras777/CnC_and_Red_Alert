@@ -48,6 +48,7 @@
 #else
 #include <unistd.h>
 #endif
+#include <dos.h>
 
 /***********************************************************************************************
  * LoadOptionsClass::LoadOptionsClass -- class constructor                                     *

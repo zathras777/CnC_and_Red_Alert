@@ -187,7 +187,9 @@ int						ScreenWidth=640;
 int						ScreenHeight=400;
 GraphicBufferClass	ModeXBuff;
 bool						InMovie = FALSE;	//Are we currently playing a VQ movie?
+#ifndef PORTABLE
 HANDLE					hInstance;
+#endif
 int						AllDone;
 
 

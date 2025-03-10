@@ -49,7 +49,11 @@
 ********************************* Includes **********************************
 */
 #include "connect.h"
-#ifndef WIN32
+#ifdef PORTABLE
+typedef void *HANDLE;
+#elif defined(WIN32)
+#include <windows.h>
+#else
 #include "commlib.h"
 #endif
 

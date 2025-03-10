@@ -116,10 +116,10 @@
 #include "ccdde.h"
 #else	//WIN32
 #include "fakesock.h"
+#include <dos.h>
 #endif	//WIN32
 
 #include <time.h>
-#include <dos.h>
 
 #include "woldebug.h"
 

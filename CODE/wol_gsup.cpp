@@ -3493,7 +3493,7 @@ int ScenarioIndex_From_Filename( const char* szScenarioFilename )
 	//	Returns the scenario index that matches the scenario filename, or -1 if no match found.
 	for( int index = 0; index < Session.Scenarios.Count(); index++ )
 	{
-		if( _stricmp( szScenarioFilename, Session.Scenarios[index]->Get_Filename() ) == 0 )
+		if( stricmp( szScenarioFilename, Session.Scenarios[index]->Get_Filename() ) == 0 )
 			return index;
 	}
 	return -1;

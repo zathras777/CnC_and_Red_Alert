@@ -38,6 +38,10 @@
 #ifndef COMPAT_H
 #define COMPAT_H
 
+#ifndef _WIN32
+typedef int BOOL;
+#endif
+
 
 #define	BuffType		BufferClass
 //#define movmem(a,b,c) memmove(b,a,c)
@@ -73,7 +77,9 @@
 
 //extern unsigned char *Palette;
 extern unsigned char MDisabled;			// Is mouse disabled?
+#ifndef WIN32
 extern WORD Hard_Error_Occured;
+#endif
 
 /*
 **	This is the menu control structures.

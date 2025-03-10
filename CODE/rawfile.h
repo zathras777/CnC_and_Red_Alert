@@ -47,7 +47,10 @@
 #include	<stddef.h>
 #include	<stdlib.h>
 
-#ifdef WIN32
+#ifdef PORTABLE
+#define NULL_HANDLE NULL
+#define HANDLE_TYPE void *
+#elif defined(WIN32)
 #include	<windows.h>
 
 #define	NULL_HANDLE		INVALID_HANDLE_VALUE
@@ -269,7 +272,7 @@ inline RawFileClass::RawFileClass(void) :
 	BiasStart(0),
 	BiasLength(-1),
 	#ifdef WIN32
-	Handle(INVALID_HANDLE_VALUE),
+	Handle(NULL_HANDLE),
 	#else
 	Handle(-1),
 	#endif
@@ -326,7 +329,7 @@ inline RawFileClass::~RawFileClass(void)
 inline int RawFileClass::Is_Open(void) const
 {
 #ifdef WIN32
-	return(Handle != INVALID_HANDLE_VALUE);
+	return(Handle != NULL_HANDLE);
 #else
 	return (Handle >= 0);
 #endif

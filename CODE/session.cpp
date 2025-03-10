@@ -50,8 +50,14 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "function.h"
+#ifndef PORTABLE
 #include <dos.h>			// for station ID computation
+#endif
 #include <time.h>			// for station ID computation
+
+#if WIN32
+#include <windows.h>
+#endif
 
 //#include "WolDebug.h"
 
@@ -1759,7 +1765,6 @@ unsigned long SessionClass::Compute_Unique_ID(void)
 {
 	time_t tm;
 	unsigned long id;
-	struct diskfree_t dtable;
 	char *path;
 	int i;
 
@@ -1769,6 +1774,8 @@ unsigned long SessionClass::Compute_Unique_ID(void)
 	time(&tm);
 	id = (unsigned long)tm;
 
+#ifndef PORTABLE
+	struct diskfree_t dtable;
 	//------------------------------------------------------------------------
 	// Now add in the free space on the hard drive
 	//------------------------------------------------------------------------
@@ -1778,6 +1785,7 @@ unsigned long SessionClass::Compute_Unique_ID(void)
 		Add_CRC(&id, (unsigned long)dtable.bytes_per_sector);
 		Add_CRC(&id, (unsigned long)dtable.sectors_per_cluster);
 	}
+#endif
 
 	//------------------------------------------------------------------------
 	// Add in every byte in the user's path environment variable

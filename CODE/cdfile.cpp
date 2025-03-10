@@ -46,6 +46,8 @@
 #include	"cdfile.h"
 #include	<stdio.h>
 #include	<string.h>
+#include	<dos.h>
+#include	"ex_string.h"
 
 #ifndef WIN32
 #include	<wwstd.h>
@@ -369,8 +371,8 @@ nextpath:
  *=============================================================================================*/
 int CDFileClass::Set_Search_Drives(char * pathlist)
 {
-	int found = FALSE;
-	int empty = FALSE;
+	int found = false;
+	int empty = false;
 
 	/*
 	**	If there is no pathlist to add, then just return.

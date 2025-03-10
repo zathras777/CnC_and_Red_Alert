@@ -327,7 +327,7 @@ int Test_Null_Modem( void )
 	commands->Draw_All();
 	while (Get_Mouse_State() > 0) Show_Mouse();
 
-#ifdef WIN32
+#ifdef _WIN32
 	/*
 	** This is supposed to be a direct connection so hang up any modem on this port
 	** just to annoy British Telecom

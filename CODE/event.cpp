@@ -48,7 +48,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "function.h"
-#ifdef WIN32
+#ifdef _WIN32
 #include "ccdde.h"
 #endif	//WIN32
 

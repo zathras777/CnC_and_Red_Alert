@@ -79,7 +79,9 @@ long PlanetWestwoodPortNumber = 1234;					//Port number to send to
 bool PlanetWestwoodIsHost = false;						//Flag true if player has control of game options
 unsigned long PlanetWestwoodGameID;						//Game ID
 unsigned long PlanetWestwoodStartTime;					//Time that game was started
+#ifdef _WIN32
 HWND	WChatHWND = 0;											//Handle to Wchat window.
+#endif
 bool	GameStatisticsPacketSent;							//Flag that game stats have been sent to wchat
 bool	ConnectionLost;										//Flag that the connection to the other player was lost
 int		WChatMaxAhead;
@@ -299,7 +301,9 @@ int Read_Game_Options(char *name)
 
 	PlanetWestwoodGameID = WWGetPrivateProfileInt("Internet", "GameID", 0, buffer);
 	PlanetWestwoodStartTime = WWGetPrivateProfileInt ("Internet", "StartTime", 0, buffer);
-	WChatHWND = NULL;//(HWND) WWGetPrivateProfileInt("Internet", "HWND", (int)FindWindow("OWL_Window", "Westwood Chat"), buffer); //FIXME
+#ifndef PORTABLE // this is even broken on 64-bit windows
+	WChatHWND = (HWND) WWGetPrivateProfileInt("Internet", "HWND", (int)FindWindow("OWL_Window", "Westwood Chat"), buffer);
+#endif
 
 	Session.Options.AIPlayers = WWGetPrivateProfileInt("Options", "AI", 0, buffer);		//Number of AI players
 	if (Session.Options.AIPlayers){

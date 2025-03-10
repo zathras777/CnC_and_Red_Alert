@@ -118,7 +118,6 @@ extern unsigned char 	*InterpolatedPalettes[100];
 extern BOOL					PalettesRead;
 extern unsigned			PaletteCounter;
 extern int 					AllDone;
-extern HANDLE 				hInstance;
 extern bool 				InMovie;
 extern WinTimerClass	*		WindowsTimer;
 extern WWMouseClass *		WWMouse;
@@ -128,6 +127,7 @@ extern GraphicBufferClass		VisiblePage;
 extern GraphicViewPortClass	SeenBuff;
 extern GraphicBufferClass		SysMemPage;
 #ifndef PORTABLE
+extern HANDLE 				hInstance;
 extern LPDIRECTSOUND				SoundObject;
 extern LPDIRECTSOUNDBUFFER		PrimaryBufferPtr;
 #endif
@@ -467,7 +467,9 @@ extern char PlanetWestwoodIPAddress[];		//IP of server or other player
 extern long PlanetWestwoodPortNumber;		//Port number to send to
 extern bool PlanetWestwoodIsHost;				//Flag true if player has control of game options
 extern unsigned long PlanetWestwoodGameID;	//Game ID
+#ifdef _WIN32
 extern HWND	WChatHWND;							//Handle to Wchat window.
+#endif
 extern bool	GameStatisticsPacketSent;
 extern bool	ConnectionLost;
 extern void *PacketLater;
