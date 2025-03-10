@@ -57,6 +57,7 @@ struct ChannelState
     int16_t volume = 32767;
 
     int raw_volume; // input local * global vol
+    int fade = 0;
     
     uint8_t channels = 0;
     uint8_t bits = 0;
@@ -73,6 +74,12 @@ struct ChannelState
     int8_t step = 0;
     int16_t predictor = 0;
 } Channels[MAX_SFX];
+
+static int Calculate_Volume(int vol)
+{
+    // TODO: improve?
+    return vol * (32767) / (255 * 255);
+}
 
 static uint8_t *DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in_ptr)
 {
@@ -197,6 +204,18 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
             continue;
         }
 
+        if(chan.fade)
+        {
+            // update fade
+            chan.raw_volume -= chan.fade;
+            if(chan.raw_volume <= 0)
+            {
+                chan.playing = false;
+                break;
+            }
+            chan.volume = Calculate_Volume(chan.raw_volume);
+        }
+
         int stream_len = SDL_AudioStreamGet(chan.stream, MixBuffer, len);
 
         // mix into buffer
@@ -204,12 +223,6 @@ static void SDL_Audio_Callback(void *userdata, Uint8 *stream, int len)
         for(int s = 0; s < stream_len / sizeof(int16_t); s++)
             stream16[s] += (mix16[s] * chan.volume) >> 15;
     }
-}
-
-int Calculate_Volume(int vol)
-{
-    // TODO: improve?
-    return vol * (32767) / (255 * 255);
 }
 
 int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_start)
@@ -252,6 +265,7 @@ int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_star
     chan.priority = 0xFF;
     chan.raw_volume = volume * ScoreVolume;
     chan.volume = Calculate_Volume(chan.raw_volume);
+    chan.fade = 0;
 
     ResetStream(chan, &header);
 
@@ -285,6 +299,15 @@ void Sound_Callback(void)
     {
         if(chan.file_handle == -1)
             continue;
+
+        if(!chan.playing)
+        {
+            // clean up file
+            // (may have stopped playing due to fade)
+            Close_File(chan.file_handle);
+            chan.file_handle = -1;
+            continue;
+        }
 
         // limit how much we buffer so we don't end up with the whole file
         // (not that it's a problem on any modern system, but still)
@@ -433,6 +456,7 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     chan.priority = priority;
     chan.raw_volume = volume * 255;
     chan.volume = Calculate_Volume(chan.raw_volume);
+    chan.fade = 0;
 
     ResetStream(chan, header);
 
@@ -476,7 +500,18 @@ int Set_Score_Vol(int volume)
 
 void Fade_Sample(int handle, int ticks)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    // recalse from game ticks, to audio callbacks
+    int fade_time = (1000 / 60) * ticks;
+    int callback_interval =  ObtainedSpec.samples * 1000 / ObtainedSpec.freq;
+
+    int num_steps = fade_time / callback_interval;
+
+    if(Sample_Status(handle))
+    {
+        SDL_LockAudioDevice(AudioDevice);
+        Channels[handle].fade = Channels[handle].raw_volume / num_steps;
+        SDL_UnlockAudioDevice(AudioDevice);
+    }
 }
 
 int Get_Free_Sample_Handle(int priority)
