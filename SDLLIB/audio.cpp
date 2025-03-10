@@ -557,13 +557,13 @@ bool Set_Primary_Buffer_Format(void)
 
 bool Start_Primary_Sound_Buffer(bool forced)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    SDL_PauseAudioDevice(AudioDevice, false);
     return true;
 }
 
 void Stop_Primary_Sound_Buffer(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    SDL_PauseAudioDevice(AudioDevice, true);
 }
 
 uint32_t Get_Audio_Device()
