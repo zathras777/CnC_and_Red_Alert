@@ -71,14 +71,6 @@ void _makepath(char *path, const char *drive, const char *dir, const char *fname
     sprintf(path, "%s%s%s%s%s%s", pre_sep, dir, post_sep, fname, dot, ext);
 }
 
-char *itoa(int value, char *buffer, int radix)
-{
-    // all the cases we care about
-    assert(radix == 10);
-    sprintf(buffer, "%i", value);
-    return buffer;
-}
-
 int stricmp(const char *string1, const char *string2)
 {
     while(*string1 && tolower(*string1) == tolower(*string2))

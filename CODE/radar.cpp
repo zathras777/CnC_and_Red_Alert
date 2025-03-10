@@ -2380,21 +2380,21 @@ bool RadarClass::Draw_House_Info(void)
 		y += (6 * RESFACTOR) + 1;
 
 // count & print buildings
-		itoa(ptr->CurBuildings, txt, 10);
+		snprintf(txt, sizeof(txt), "%i", ptr->CurBuildings);
 		Fancy_Text_Print(txt, RadX + RadOffX + (6 * RESFACTOR), y, color, BLACK, style);
 		y += (6 * RESFACTOR) + 1;
 
 		Fancy_Text_Print(TXT_UNITS, RadX + RadOffX + (6 * RESFACTOR), y, &ColorRemaps[PCOLOR_GREY], TBLACK, TPF_6PT_GRAD | TPF_NOSHADOW);
 		y += (6 * RESFACTOR) + 1;
 // count & print units
-		itoa(ptr->CurUnits, txt, 10);
+		snprintf(txt, sizeof(txt), "%i", ptr->CurUnits);
 		Fancy_Text_Print(txt, RadX + RadOffX + 6 * RESFACTOR, y, color, BLACK, style);
 		y += (6 * RESFACTOR) + 1;
 
 		Fancy_Text_Print(TXT_INFANTRY, RadX + RadOffX + (6 * RESFACTOR), y, &ColorRemaps[PCOLOR_GREY], TBLACK, TPF_6PT_GRAD | TPF_NOSHADOW);
 		y += (6 * RESFACTOR) + 1;
 // count & print infantry
-		itoa(ptr->CurInfantry, txt, 10);
+		snprintf(txt, sizeof(txt), "%i", ptr->CurInfantry);
 		Fancy_Text_Print(txt, RadX + RadOffX + (6 * RESFACTOR), y, color, BLACK, style);
 #if(0)
 		y += (6 * RESFACTOR) + 1;
