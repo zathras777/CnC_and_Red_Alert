@@ -500,7 +500,9 @@ void MPGSettings::Dialog(void)
 					Theme.Fade_Out();
 					Hide_Mouse();
 					VisiblePage.Clear();
+#ifdef MPEGMOVIE // why am I compiling this file even?
 					PlayMpegMovie("acrop");
+#endif
 					Keyboard->Clear();
 					Show_Mouse();
 					Theme.Queue_Song(THEME_CRUS);

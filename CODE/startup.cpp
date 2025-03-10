@@ -447,7 +447,7 @@ int main(int argc, char * argv[])
 
 
 #ifdef WIN32
-			#ifdef MPEGMOVIE // Denzil 6/10/98
+			#if defined(MPEGMOVIE) || defined(PORTABLE) // Denzil 6/10/98
 			if (!InitDDraw())
 				return (EXIT_FAILURE);
 			#else
