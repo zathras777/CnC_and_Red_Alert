@@ -1463,9 +1463,9 @@ int NullModemClass::Detect_Modem( SerialSettingsType *settings, bool reconnect )
 
 	Show_Mouse();
 
-
+#ifndef WIN32
 	HMWaitForOK( 0, NULL );
-
+#endif
 
 	/*
 	** OK, lets not mess about any more. Just turn on echo, verbose, and result codes
