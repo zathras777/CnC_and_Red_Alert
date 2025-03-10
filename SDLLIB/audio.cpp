@@ -156,8 +156,8 @@ static bool RefillStream(ChannelState &chan)
 
 static void ResetStream(ChannelState &chan, AUDHeaderType *header)
 {
-    int channels = header->Flags & 1 ? 2 : 1;
-    int bits = header->Flags & 2 ? 16 : 8;
+    int channels = header->Flags & AUD_FLAG_STEREO ? 2 : 1;
+    int bits = header->Flags & AUD_FLAG_16BIT ? 16 : 8;
 
     // re-allocate stream if needed
     if(channels != chan.channels || bits != chan.bits || header->Rate != chan.sample_rate)
@@ -442,8 +442,8 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
 
     // play it
     auto header = (AUDHeaderType *)sample;
-    int channels = header->Flags & 1 ? 2 : 1;
-    int bits = header->Flags & 2 ? 16 : 8;
+    int channels = header->Flags & AUD_FLAG_STEREO ? 2 : 1;
+    int bits = header->Flags & AUD_FLAG_16BIT ? 16 : 8;
 
     if(header->Compression != SCOMP_SOS || channels != 1 || bits != 16)
     {
