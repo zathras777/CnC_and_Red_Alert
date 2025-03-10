@@ -110,12 +110,14 @@ void *WWMouseClass::Set_Cursor(int xhotspot, int yhotspot, void *cursor)
 
 void WWMouseClass::Hide_Mouse(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(!State++)
+        SDL_ShowCursor(SDL_DISABLE);
 }
 
 void WWMouseClass::Show_Mouse(void)
 {
-    printf("%s\n", __PRETTY_FUNCTION__);
+    if(--State == 0)
+        SDL_ShowCursor(SDL_ENABLE);
 }
 
 void WWMouseClass::Conditional_Hide_Mouse(int x1, int y1, int x2, int y2)
