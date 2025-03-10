@@ -2953,7 +2953,9 @@ void Play_Movie(char const * name, ThemeType theme, bool clrscrn)
 				Free_Interpolated_Palettes();
 				#endif
 				IsVQ640 = false;
+				#ifndef PORTABLE
 				Set_Primary_Buffer_Format();
+				#endif
 				#endif	//WIN32
 
 				/*

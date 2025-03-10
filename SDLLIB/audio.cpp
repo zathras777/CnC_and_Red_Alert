@@ -549,12 +549,6 @@ int Get_Digi_Handle(void)
     return AudioDevice ? 1 : -1;
 }
 
-bool Set_Primary_Buffer_Format(void)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-    return true;
-}
-
 bool Start_Primary_Sound_Buffer(bool forced)
 {
     SDL_PauseAudioDevice(AudioDevice, false);
