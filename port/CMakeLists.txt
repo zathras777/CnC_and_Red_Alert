@@ -1,5 +1,4 @@
 add_library(port STATIC
-    ddraw.cpp
     dos.cpp
     string.cpp
     windows.cpp
