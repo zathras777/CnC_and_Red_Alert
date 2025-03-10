@@ -85,7 +85,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	int curbutton;
 	TextButtonClass * buttons[3];
 	char * back;
-	BOOL display;									// display level
+	bool display;									// display level
 	int  realval[5];
 
 #ifndef WIN32

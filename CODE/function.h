@@ -442,7 +442,7 @@ void Assert_Failure (char *expression, int line, char *file);
 
 
 extern void Free_Interpolated_Palettes(void);
-extern int Load_Interpolated_Palettes(char const *filename, BOOL add=FALSE);
+extern int Load_Interpolated_Palettes(char const *filename, bool add=FALSE);
 extern void Rebuild_Interpolated_Palette(unsigned char *interpal);
 extern void Interpolate_2X_Scale( GraphicBufferClass *source, GraphicViewPortClass *dest ,char const *palette_file_name);
 void Increase_Palette_Luminance (unsigned char *palette , int red_percentage , int green_percentage , int blue_percentage ,int cap);
@@ -652,7 +652,7 @@ void Parse_INI_File(void);
 */
 #define SIZE_OF_PALETTE 256
 extern	"C" unsigned char *InterpolationPalette;
-extern	BOOL	InterpolationPaletteChanged;
+extern	bool	InterpolationPaletteChanged;
 extern	void 	Interpolate_2X_Scale( GraphicBufferClass *source, GraphicViewPortClass *dest ,char const *palette_file_name);
 void Read_Interpolation_Palette (char const *palette_file_name);
 void Write_Interpolation_Palette (char const *palette_file_name);

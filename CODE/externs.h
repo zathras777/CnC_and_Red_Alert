@@ -115,7 +115,7 @@ extern int NameIDOverride[25];
 #ifdef WIN32
 extern bool					GameInFocus;
 extern unsigned char 	*InterpolatedPalettes[100];
-extern BOOL					PalettesRead;
+extern bool					PalettesRead;
 extern unsigned			PaletteCounter;
 extern int 					AllDone;
 extern bool 				InMovie;

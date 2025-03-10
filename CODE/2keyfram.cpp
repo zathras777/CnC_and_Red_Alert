@@ -65,7 +65,7 @@ unsigned	TheaterShapeBufferLength = THEATER_BIG_SHAPE_BUFFER_SIZE;
 extern "C"{
 	char		*BigShapeBufferStart = NULL;
 	char		*TheaterShapeBufferStart = NULL;
-	BOOL		UseBigShapeBuffer = FALSE;
+	bool		UseBigShapeBuffer = FALSE;
 	bool		IsTheaterShape = false;
 }
 #ifdef FIXIT_SCORE_CRASH
@@ -76,7 +76,7 @@ bool		OriginalUseBigShapeBuffer = false;
 #endif	//FIXIT
 char		*BigShapeBufferPtr = NULL;
 int			TotalBigShapes=0;
-BOOL		ReallocShapeBufferFlag = FALSE;
+bool		ReallocShapeBufferFlag = FALSE;
 
 char		*TheaterShapeBufferPtr = NULL;
 int			TotalTheaterShapes = 0;

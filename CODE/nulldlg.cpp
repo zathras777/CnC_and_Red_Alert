@@ -1435,7 +1435,7 @@ int Advanced_Modem_Settings (SerialSettingsType *settings)
 	** Misc. variables.
 	*/
 	RedrawType display = REDRAW_ALL;		// redraw level
-	BOOL process = true;						// process while true
+	bool process = true;						// process while true
 	KeyNumType input;
 	GadgetClass *commands;					// button list
 

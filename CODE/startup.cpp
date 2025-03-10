@@ -38,7 +38,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"function.h"
-#ifndef WIN32
+#ifdef WIN32
+#include 	<windows.h> // MessageBox
+#else
 #include	<conio.h>
 #include	<io.h>
 #endif
@@ -49,7 +51,7 @@
 #include <unistd.h>
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include  "ccdde.h"
 #include	"ipx95.h"
 #endif	//WIN32
@@ -70,7 +72,9 @@ void Print_Error_Exit(char * string);
 //WinTimerClass * WinTimer;
 extern void Create_Main_Window ( HANDLE instance , int command_show , int width , int height);
 extern bool RA95AlreadyRunning;
+#ifndef PORTABLE
 HINSTANCE	ProgramInstance;
+#endif
 void Check_Use_Compressed_Shapes (void);
 void Read_Setup_Options(RawFileClass *config_file);
 bool VideoBackBufferAllowed = true;
@@ -723,20 +727,20 @@ bool InitDDraw(void)
 #ifndef PORTABLE
 	DDSCAPS	surface_capabilities;
 #endif
-	BOOL video_success = FALSE;
+	bool video_success = false;
 
 	/* Set 640x400 video mode. If its not available then try for 640x480 */
 	if (ScreenHeight == 400)
 		{
 		if (Set_Video_Mode(MainWindow, ScreenWidth, ScreenHeight, 8))
 			{
-			video_success = TRUE;
+			video_success = true;
 			}
 		else
 			{
 			if (Set_Video_Mode(MainWindow, ScreenWidth, 480, 8))
 				{
-				video_success = TRUE;
+				video_success = true;
 				ScreenHeight = 480;
 				}
 			}
@@ -745,7 +749,7 @@ bool InitDDraw(void)
 		{
 		if (Set_Video_Mode(MainWindow, ScreenWidth, ScreenHeight, 8))
 			{
-			video_success = TRUE;
+			video_success = true;
 			}
 		}
 
@@ -1071,8 +1075,9 @@ void Read_Setup_Options( RawFileClass *config_file )
 
 void Get_OS_Version (void)
 {
-
+#ifdef _WIN32
 	WindowsNT = ((GetVersion() & 0x80000000) == 0) ? true : false;
+#endif
 
 #if (0)
 	OSVERSIONINFO	osversion;

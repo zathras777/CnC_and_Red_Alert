@@ -38,11 +38,6 @@
 #ifndef COMPAT_H
 #define COMPAT_H
 
-#ifndef _WIN32
-typedef int BOOL;
-#endif
-
-
 #define	BuffType		BufferClass
 //#define movmem(a,b,c) memmove(b,a,c)
 #define ShapeBufferSize	_ShapeBufferSize

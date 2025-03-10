@@ -2718,7 +2718,7 @@ void Rebuild_Interpolated_Palette(unsigned char * interpal)
 
 
 unsigned char 	* InterpolatedPalettes[100];
-BOOL				PalettesRead;
+bool				PalettesRead;
 unsigned			PaletteCounter;
 
 
@@ -2736,7 +2736,7 @@ unsigned			PaletteCounter;
  * HISTORY:                                                                                    *
  *    5/7/96 9:49AM ST : Created                                                               *
  *=============================================================================================*/
-int Load_Interpolated_Palettes(char const * filename, BOOL add)
+int Load_Interpolated_Palettes(char const * filename, bool add)
 {
 	int	num_palettes=0;
 	int	i;

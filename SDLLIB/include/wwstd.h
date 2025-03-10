@@ -48,8 +48,8 @@
 
 #define PRIVATE		static
 
-#define TRUE 1
-#define FALSE 0
+#define TRUE true
+#define FALSE false
 
 // Returns the absolute value of the number.
 #ifdef ABS

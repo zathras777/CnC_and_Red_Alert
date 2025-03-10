@@ -66,11 +66,11 @@ typedef struct {
 unsigned	BigShapeBufferLength = INITIAL_BIG_SHAPE_BUFFER_SIZE;
 extern "C"{
 	char		* BigShapeBufferStart = NULL;
-	BOOL		UseBigShapeBuffer = FALSE;
+	bool		UseBigShapeBuffer = FALSE;
 }
 char		* BigShapeBufferPtr = NULL;
 int			TotalBigShapes=0;
-BOOL		ReallocShapeBufferFlag = FALSE;
+bool		ReallocShapeBufferFlag = FALSE;
 
 
 

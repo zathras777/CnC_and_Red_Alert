@@ -33,7 +33,7 @@ inline constexpr BlitFlags operator |(BlitFlags t1, BlitFlags t2)
 extern "C" bool UseOldShapeDraw;
 extern "C" char *BigShapeBufferStart;
 extern "C" char	*TheaterShapeBufferStart;
-extern "C" BOOL	UseBigShapeBuffer;
+extern "C" bool	UseBigShapeBuffer;
 
 static int BFPredOffset;
 static int BFPartialCount;

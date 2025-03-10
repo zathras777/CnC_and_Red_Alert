@@ -64,7 +64,9 @@
 #include "ipx.h"
 
 #ifdef WIN32
+#ifndef PORTABLE
 #include "ipx95.h"
+#endif
 #else
 #include <i86.h>
 #endif	//WIN32
@@ -93,7 +95,7 @@ int IPX_SPX_Installed(void)
 {
 #ifdef WIN32
 
-#ifdef TIBERIAN_SUN
+#if defined(TIBERIAN_SUN) || defined(PORTABLE)
 	return(false);
 #else
 	if ( Load_IPX_Dll () ){

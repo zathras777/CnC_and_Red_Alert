@@ -205,7 +205,7 @@ void TcpipManagerClass::Close(void)
  *    3/20/96 2:54PM ST : Created                                                              *
  *=============================================================================================*/
 
-BOOL TcpipManagerClass::Init(void)
+bool TcpipManagerClass::Init(void)
 {
 	short version;
 	int 	rc;
@@ -213,7 +213,7 @@ BOOL TcpipManagerClass::Init(void)
 	/*
 	** Just return true if we are already set up
 	*/
-	if (WinsockInitialised) return (TRUE);
+	if (WinsockInitialised) return (true);
 
 #ifdef _WIN32
 	/*
@@ -229,7 +229,7 @@ BOOL TcpipManagerClass::Init(void)
 	version = (WINSOCK_MINOR_VER << 8) | WINSOCK_MAJOR_VER;
 	rc = WSAStartup(version, &WinsockInfo);
 	if (rc != 0) {
-		return (FALSE);
+		return (false);
 	}
 
 	/*
@@ -237,7 +237,7 @@ BOOL TcpipManagerClass::Init(void)
 	*/
 	if ((WinsockInfo.wVersion & 0x00ff) != (version & 0x00ff) ||
 		(WinsockInfo.wVersion >> 8) != (version >> 8)) {
-		return (FALSE);
+		return (false);
 	}
 #endif
 
@@ -245,7 +245,7 @@ BOOL TcpipManagerClass::Init(void)
 	** Everything is OK so return success
 	*/
 	WinsockInitialised = TRUE;
-	return (TRUE);
+	return (true);
 
 }
 
@@ -417,7 +417,7 @@ void TcpipManagerClass::Write(void *buffer, int buffer_len)
  *    3/20/96 3:02PM ST : Created                                                              *
  *=============================================================================================*/
 
-BOOL TcpipManagerClass::Add_Client(void)
+bool TcpipManagerClass::Add_Client(void)
 {
 	struct 	sockaddr_in addr;
 	socklen_t 		addrsize;
@@ -911,7 +911,7 @@ void TcpipManagerClass::Close_Socket(SOCKET s)
 }
 
 
-void TcpipManagerClass::Set_Protocol_UDP(BOOL state)
+void TcpipManagerClass::Set_Protocol_UDP(bool state)
 {
 	UseUDP = state;
 }

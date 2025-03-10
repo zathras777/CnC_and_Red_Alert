@@ -44,7 +44,7 @@
 
 #include "function.h"
 
-BOOL	InterpolationPaletteChanged = FALSE;
+bool	InterpolationPaletteChanged = FALSE;
 extern "C" {
 extern void __cdecl Asm_Interpolate (unsigned char* src_ptr ,
 						 						unsigned char* dest_ptr ,
@@ -331,8 +331,8 @@ void Interpolate_2X_Scale( GraphicBufferClass * source, GraphicViewPortClass * d
 	int	src_width;
 	int	dest_width;
 //	int	width_counter;
-	BOOL	source_locked = FALSE;
-	BOOL	dest_locked = FALSE;
+	bool	source_locked = false;
+	bool	dest_locked = false;
 
 
 	/*
