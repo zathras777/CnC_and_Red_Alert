@@ -43,7 +43,7 @@
  *                                                                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef _WIN32
+#ifndef __stdcall
 #define __stdcall
 #endif
 

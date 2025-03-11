@@ -43,6 +43,7 @@
 
 // htons/ntohs
 #ifdef _WIN32
+#define NOMINMAX
 #include <winsock.h>
 #else
 #include <arpa/inet.h>

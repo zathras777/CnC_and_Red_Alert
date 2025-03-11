@@ -128,7 +128,7 @@ template<class T> inline T operator --(T & a, int)
 	a = (T)((int)a - (int)1);
 	return(aa);
 }
-template<class T> inline T operator |(T t1, T t2)
+template<class T> inline constexpr T operator |(T t1, T t2)
 {
 	return((T)((int)t1 | (int)t2));
 }

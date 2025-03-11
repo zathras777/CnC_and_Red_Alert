@@ -62,7 +62,7 @@
 #include "tcpip.h"
 
 #ifdef _WIN32
-typedef int socklen_t
+typedef int socklen_t;
 #else
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -379,7 +379,7 @@ void TcpipManagerClass::Write(void *buffer, int buffer_len)
 		TXBufferHead &= WS_NUM_TX_BUFFERS-1;
 	}
 
-#ifdef _WIN32
+#ifndef PORTABLE
 	/*
 	** Send a message to ourselves to start off the event
 	*/
@@ -446,7 +446,7 @@ bool TcpipManagerClass::Add_Client(void)
 	memcpy(&ClientIPAddress, &addr.sin_addr.s_addr,4);
 	memcpy(&UDPIPAddress, &addr.sin_addr.s_addr,4);
 
-#ifdef _WIN32
+#ifndef PORTABLE
 	/*
 	** Initiate an asynchronous host lookup by address. Our window will receive notification
 	** when this is complete or when it times out.
@@ -493,7 +493,7 @@ bool TcpipManagerClass::Add_Client(void)
 	setsockopt (UDPSocket, SOL_SOCKET, SO_RCVBUF, (char*)&SocketReceiveBuffer, 4);
 	setsockopt (UDPSocket, SOL_SOCKET, SO_SNDBUF, (char*)&SocketSendBuffer, 4);
 
-#ifdef _WIN32
+#ifndef PORTABLE
 	/*
 	** Enable asynchronous events on this socket
 	*/
@@ -527,7 +527,7 @@ bool TcpipManagerClass::Add_Client(void)
  * HISTORY:                                                                                    *
  *    3/20/96 3:05PM ST : Created                                                              *
  *=============================================================================================*/
-#ifdef _WIN32
+#ifndef PORTABLE
 void TcpipManagerClass::Message_Handler(HWND, UINT message, UINT , LONG lParam)
 {
 
@@ -851,7 +851,7 @@ void TcpipManagerClass::Start_Client(void)
 	setsockopt (UDPSocket, SOL_SOCKET, SO_RCVBUF, (char*)&SocketReceiveBuffer, 4);
 	setsockopt (UDPSocket, SOL_SOCKET, SO_SNDBUF, (char*)&SocketSendBuffer, 4);
 
-#ifdef _WIN32
+#ifndef PORTABLE
 	/*
 	** Enable asynchronous events on the UDP socket
 	*/

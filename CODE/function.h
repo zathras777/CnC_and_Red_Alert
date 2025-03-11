@@ -126,8 +126,9 @@ UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
 
 
 #ifdef WIN32
-#ifndef PORTABLE
-//#define WIN32_LEAN_AND_MEAN
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include	<windows.h>
 #endif
 #define WWFILE_H
@@ -425,7 +426,7 @@ extern void Fatal(char const *message, ...);
 **  where we can see it.
 **
 */
-#if !defined(__BORLANDC__) && !defined(__GNUC__)
+#if !defined(__BORLANDC__) && !defined(__GNUC__) && !defined(_MSC_VER)
 #ifdef assert
 #undef assert
 #endif	//assert

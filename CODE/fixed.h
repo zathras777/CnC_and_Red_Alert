@@ -117,6 +117,9 @@ class fixed
 		const fixed operator - (fixed const & rvalue) const {fixed temp = *this;temp -= rvalue;return(temp);}
 		const int operator - (int rvalue) const {return((((unsigned)Data.Raw+(256/2))/256) - rvalue);}
 
+		// extra to help MSVC
+		const int operator * (unsigned short rvalue) const {return *this * int(rvalue);}
+
 		/*
 		**	The Shift operators are more efficient than using multiplies or divides by power-of-2 numbers.
 		*/
@@ -163,6 +166,9 @@ class fixed
 		friend int operator /= (int & lvalue, fixed const & rvalue) {lvalue = lvalue / rvalue;return(lvalue);}
 		friend int operator += (int & lvalue, fixed const & rvalue) {lvalue = lvalue + rvalue;return(lvalue);}
 		friend int operator -= (int & lvalue, fixed const & rvalue) {lvalue = lvalue - rvalue;return(lvalue);}
+
+		// extra to help MSVC
+		friend const int operator * (unsigned short lvalue, fixed const & rvalue) {return(rvalue * int(lvalue));}
 
 		/*
 		**	Helper functions to handle simple and common operations on fixed point numbers.

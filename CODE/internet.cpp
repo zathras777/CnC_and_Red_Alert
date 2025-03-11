@@ -481,7 +481,7 @@ void Just_Path(char *path, char *destpath)
  *=============================================================================================*/
 bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 {
-#ifdef _WIN32
+#ifndef PORTABLE // Get_Registry_Sub_Key is in WIN32LIB
 	HKEY	key;
 	char	user_handle[256];
 	DWORD	user_handle_size = sizeof (user_handle);
@@ -539,7 +539,7 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 	}
 
 	RegCloseKey(key);
-	memcpy (buffer, user_handle, min(buffer_len, user_handle_size));
+	memcpy (buffer, user_handle, min(buffer_len, int(user_handle_size)));
 
 	/*
 	** If the first char of the users name is non-numeric then return success
@@ -574,7 +574,7 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 bool Poke_WChat(void);
 bool Spawn_WChat(bool can_launch)
 {
-#ifdef _WIN32
+#ifndef PORTABLE // Get_Registry_Sub_Key is in WIN32LIB, also MainWindow is not a HWND
 	WWDebugString ("RA95 - In Spawn_WChat.\n");
 	char packet[10] = {"Hello"};
 	HWND chat_window = NULL;
@@ -720,7 +720,7 @@ bool Spawn_WChat(bool can_launch)
 #ifndef WOLAPI_INTEGRATION
 bool Spawn_Registration_App(void)
 {
-#ifdef _WIN32
+#ifndef PORTABLE // Get_Registry_Sub_Key is in WIN32LIB
 	/*
 	** Find where inetreg was installed to
 	*/

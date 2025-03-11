@@ -54,6 +54,10 @@
 #include	<playcd.h>
 #endif
 
+#ifndef PATH_MAX
+#define PATH_MAX _MAX_PATH
+#endif
+
 /*
 **	Pointer to the first search path record.
 */

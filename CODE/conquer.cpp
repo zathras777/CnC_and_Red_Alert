@@ -4161,7 +4161,7 @@ static int _Num_Volumes = ARRAY_SIZE(_CD_Volume_Label);
  *=============================================================================================*/
 int Get_CD_Index (int cd_drive, int timeout)
 	{
-#ifndef _WIN32
+#ifdef PORTABLE // below code might work on win32 if GetCDClass was implemented in SDLLIB
 	return 5; // we uh, magically have the DVD
 #else
 	char		volume_name[128];

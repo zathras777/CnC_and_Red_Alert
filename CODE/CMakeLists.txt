@@ -264,6 +264,14 @@ add_executable(rasdl
 	2keyfbuf.cpp
 )
 
+if(WIN32)
+	target_sources(rasdl PRIVATE
+		dde.cpp
+		ccdde.cpp
+	)
+	target_link_libraries(rasdl PRIVATE wsock32)
+endif()
+
 target_compile_definitions(rasdl PRIVATE
 	ENGLISH=1  # TODO: also french/german
 	PORTABLE=1 # to indicate not windows or dos sometimes
