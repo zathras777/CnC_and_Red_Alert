@@ -116,6 +116,8 @@ void WWMouseClass::Hide_Mouse(void)
 
 void WWMouseClass::Show_Mouse(void)
 {
+    if(!State)
+        return;
     if(--State == 0)
         SDL_ShowCursor(SDL_ENABLE);
 }
