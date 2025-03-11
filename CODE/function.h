@@ -685,7 +685,7 @@ extern "C" {
 /*
 **	KEYFRAME.CPP
 */
-unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr);
+void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr);
 unsigned short Get_Build_Frame_Count(void const *dataptr);
 unsigned short Get_Build_Frame_X(void const *dataptr);
 unsigned short Get_Build_Frame_Y(void const *dataptr);

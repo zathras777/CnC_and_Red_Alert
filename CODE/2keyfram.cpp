@@ -221,7 +221,7 @@ void Check_Use_Compressed_Shapes (void)
 
 
 
-unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr)
+void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr)
 {
 #ifdef FIXIT_SCORE_CRASH
 	char *ptr;
@@ -235,7 +235,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 	unsigned short buffsize, currframe, subframe;
 	unsigned long length = 0;
 	char frameflags;
-	unsigned long return_value;
+	void *return_value;
 	char *temp_shape_ptr;
 
 	//
@@ -308,9 +308,9 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 		*/
 		if (*(KeyFrameSlots[keyfr->y]+framenumber)) {
 			if (IsTheaterShape) {
-				return ((unsigned long)TheaterShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
+				return (TheaterShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
 			} else {
-				return ((unsigned long)BigShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
+				return (BigShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
 			}
 		}
 	}
@@ -428,7 +428,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 			/*
 			** Shape is a theater specific shape
 			*/
-			return_value = (unsigned long) TheaterShapeBufferPtr;
+			return_value = TheaterShapeBufferPtr;
 			temp_shape_ptr = TheaterShapeBufferPtr + keyfr->height+sizeof(ShapeHeaderType);
 			/*
 			** align the actual shape data
@@ -455,7 +455,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 		} else {
 
 
-			return_value=(unsigned long)BigShapeBufferPtr;
+			return_value=BigShapeBufferPtr;
 			temp_shape_ptr = BigShapeBufferPtr + keyfr->height+sizeof(ShapeHeaderType);
 			/*
 			** align the actual shape data
@@ -478,7 +478,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 		}
 
 	} else {
-		return ((unsigned long)buffptr);
+		return (buffptr);
 	}
 }
 
