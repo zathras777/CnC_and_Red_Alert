@@ -39,7 +39,9 @@
 
 #include	"function.h"
 #ifdef WIN32
-#include 	<windows.h> // MessageBox
+#ifndef PORTABLE
+#include 	<windows.h>
+#endif
 #else
 #include	<conio.h>
 #include	<io.h>
@@ -399,7 +401,15 @@ int main(int argc, char * argv[])
 		*/
 		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE) {
 
-#ifdef WIN32
+#ifdef PORTABLE
+			// pretty unlikely, but print something anyway
+			printf(TEXT_INSUFFICIENT);
+			printf(TEXT_MUST_HAVE, INIT_FREE_DISK_SPACE / (1024 * 1024));
+			printf("\n");
+			if ( WindowsTimer )
+				delete WindowsTimer;
+			return (EXIT_FAILURE);
+#elif defined(WIN32)
 			char	disk_space_message [512];
 			sprintf (disk_space_message, TEXT_CRITICALLY_LOW, (INIT_FREE_DISK_SPACE) / (1024 * 1024));
 			int reply = MessageBox(NULL, disk_space_message, TEXT_SHORT_TITLE, MB_ICONQUESTION|MB_YESNO);
@@ -755,8 +765,9 @@ bool InitDDraw(void)
 
 	if (!video_success)
 		{
+#ifndef PORTABLE // this can't fail in SDLLIB (because we don't do anything)
 		MessageBox(MainWindow, TEXT_VIDEO_ERROR, TEXT_SHORT_TITLE, MB_ICONEXCLAMATION|MB_OK);
-
+#endif
 		if (WindowsTimer)
 			delete WindowsTimer;
 
