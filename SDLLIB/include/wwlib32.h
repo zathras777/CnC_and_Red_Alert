@@ -38,6 +38,7 @@
 
 #include "audio.h"
 #include "dipthong.h"
+#include "file.h"
 #include "font.h"
 #include "iff.h"
 #include "misc.h"

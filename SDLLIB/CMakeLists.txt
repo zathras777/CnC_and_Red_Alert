@@ -3,6 +3,7 @@ add_library(sdllib STATIC
     buffer.cpp
     dipthong.cpp
     drawbuff.cpp
+    file.cpp
     font.cpp
     iconcach.cpp
     iff.cpp

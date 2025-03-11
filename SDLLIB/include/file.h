@@ -37,6 +37,8 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include <time.h>
+
 /*=========================================================================*/
 /* File IO system defines and enumerations											*/
 /*=========================================================================*/
@@ -57,10 +59,7 @@
 #endif
 
 
-/*========================================================================*/
-/* The following prototypes are for the file: FILE.CPP							*/
-/*=========================================================================*/
-
+// These are actually implemented in the game, but used by audio and WSA
 int Open_File(char const *file_name, int mode);
 void Close_File(int handle);
 long Read_File(int handle, void *buf, unsigned long bytes);
@@ -68,5 +67,20 @@ long Write_File(int handle, void const *buf, unsigned long bytes);
 unsigned long Seek_File(int handle, long offset, int starting);
 
 
+// file searching
+struct FindFileState
+{
+    const char *name;
+    time_t mod_time;
+
+    // internal state
+    void *data;
+    int off;
+};
+
+bool Find_First_File(const char *path_glob, FindFileState &state);
+bool Find_Next_File(FindFileState &state);
+// to clean up if not finishing the search
+void End_Find_File(FindFileState &state);
 
 #endif
