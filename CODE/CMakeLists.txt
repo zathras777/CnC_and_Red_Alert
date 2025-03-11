@@ -60,7 +60,7 @@ add_library(tech STATIC
 )
 target_link_libraries(tech sdllib port vqa32)
 
-add_executable(rasdl
+add_executable(rasdl WIN32
 	aadata.cpp
 	abstract.cpp
 	adata.cpp

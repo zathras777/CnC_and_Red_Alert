@@ -74,7 +74,7 @@ void Print_Error_Exit(char * string);
 //WinTimerClass * WinTimer;
 extern void Create_Main_Window ( HANDLE instance , int command_show , int width , int height);
 extern bool RA95AlreadyRunning;
-#ifndef PORTABLE
+#ifdef _WIN32
 HINSTANCE	ProgramInstance;
 #endif
 void Check_Use_Compressed_Shapes (void);
@@ -118,7 +118,7 @@ const char* Game_Registry_Key();
  * HISTORY:                                                                                    *
  *   03/20/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-#if defined(WIN32) && !defined(PORTABLE)
+#ifdef _WIN32
 //int PASCAL WinMain(HINSTANCE, HINSTANCE, char *, int )
 int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int command_show )
 #else	//WIN32
@@ -194,7 +194,7 @@ int main(int argc, char * argv[])
 		return(EXIT_FAILURE);
 	}
 
-#if defined(WIN32) && !defined(PORTABLE)
+#ifdef _WIN32
 
 	if (strstr(command_line, "f:\\projects\\c&c0") != NULL ||
 			strstr(command_line, "F:\\PROJECTS\\C&C0") != NULL) {
