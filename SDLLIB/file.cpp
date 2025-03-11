@@ -1,8 +1,12 @@
-#include <glob.h>
 #include <stdio.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <glob.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
+#endif
 
 #include "file.h"
 
@@ -68,6 +72,89 @@ bool IO_Delete_File(const char *filename)
     return unlink(filename) == 0;
 }
 
+#ifdef _WIN32
+static bool Update_Find_Result(FindFileState &state, WIN32_FIND_DATA &data)
+{
+    // skip hidden/system/dir
+
+    bool success = true;
+    while(success && (data.dwFileAttributes & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)))
+        success = FindNextFile((HANDLE)state.data, &data);
+
+    if(!success)
+        return false;
+
+    state.name = strdup(data.cFileName);
+
+    ULARGE_INTEGER big;
+    big.LowPart = data.ftLastWriteTime.dwLowDateTime;
+    big.HighPart = data.ftLastWriteTime.dwHighDateTime;
+    state.mod_time = big.QuadPart / 10000000ULL - 11644473600ULL;
+
+    return true;
+}
+
+bool Find_First_File(const char *path_glob, FindFileState &state)
+{
+    WIN32_FIND_DATA data;
+    auto handle = FindFirstFile(path_glob, &data);
+
+    if(handle == INVALID_HANDLE_VALUE)
+        return false;
+
+    state.data = handle;
+
+    if(!Update_Find_Result(state, data))
+    {
+        FindClose(handle);
+        state.data = NULL;
+        return false;
+    }
+
+    return true;
+}
+
+bool Find_Next_File(FindFileState &state)
+{
+    WIN32_FIND_DATA data;
+
+    // free old filename
+    free((char *)state.name);
+    state.name = NULL;
+
+    if(!FindNextFile((HANDLE)state.data, &data) || !Update_Find_Result(state, data))
+    {
+        FindClose((HANDLE)state.data);
+        state.data = NULL;
+        return false;
+    }
+    return true;
+}
+
+void End_Find_File(FindFileState &state)
+{
+    if(state.name)
+    {
+        free((char *)state.name);
+        state.name = NULL;
+    }
+
+    if(state.data)
+    {
+        FindClose((HANDLE)state.data);
+        state.data = NULL;
+    }
+}
+
+uint64_t Disk_Space_Available()
+{
+    ULARGE_INTEGER space;
+    if(GetDiskFreeSpaceEx(NULL, &space, NULL, NULL))
+        return space.QuadPart;
+
+    return 0;
+}
+#else
 static bool Update_Find_Result(FindFileState &state)
 {
     auto glob_buf = (glob_t *)state.data;
@@ -154,3 +241,4 @@ uint64_t Disk_Space_Available()
 
     return fsbuf.f_bavail * fsbuf.f_bsize;
 }
+#endif
