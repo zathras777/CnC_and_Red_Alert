@@ -3266,7 +3266,7 @@ static void Init_Mouse(void)
 	** Since there is no mouse shape currently available we need
 	** to set one of our own.
 	*/
-#ifdef WIN32
+#if defined(WIN32) && !defined(PORTABLE)
 	ShowCursor(false);
 #endif
 	if (MouseInstalled) {
