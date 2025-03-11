@@ -69,8 +69,9 @@ WinTimerClass::WinTimerClass(unsigned freq, bool partial)
     SDL_Init(SDL_INIT_TIMER);
     TimerHandle = SDL_AddTimer(1000 / freq, TimerCallback, this);
 
-    if(!partial)
-        TickCount.Start();
+    // TickCount is a completely different type to TimerClass (TTimerClass<SystemTimerClass>)
+    //if(!partial)
+    //    TickCount.Start();
 }
 
 WinTimerClass::~WinTimerClass()
