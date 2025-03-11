@@ -157,7 +157,9 @@ enum {
 
 
 extern unsigned long 	PlanetWestwoodGameID;
+#ifndef PORTABLE
 extern HINSTANCE		ProgramInstance;
+#endif
 extern unsigned long 	PlanetWestwoodStartTime;
 
 extern "C" char	CPUType;
