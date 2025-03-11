@@ -68,6 +68,18 @@ long Write_File(int handle, void const *buf, unsigned long bytes);
 unsigned long Seek_File(int handle, long offset, int starting);
 
 
+// low level IO implemented here
+void *IO_Open_File(const char *filename, int mode);
+void IO_Close_File(void *handle);
+
+bool IO_Read_File(void *handle, void *buffer, size_t count, size_t &actual_read);
+bool IO_Write_File(void *handle, const void *buffer, size_t count, size_t &actual_written);
+
+size_t IO_Seek_File(void *handle, size_t offset, int origin);
+size_t IO_Get_File_Size(void *handle);
+
+bool IO_Delete_File(const char *filename);
+
 // file searching
 struct FindFileState
 {

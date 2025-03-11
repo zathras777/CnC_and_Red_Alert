@@ -1,9 +1,72 @@
 #include <glob.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
 
 #include "file.h"
+
+void *IO_Open_File(const char *filename, int mode)
+{
+    const char *mode_str;
+
+    if(mode == READ)
+        mode_str = "rb";
+    else if(mode == WRITE)
+        mode_str = "wb";
+    else if(mode == READ | WRITE)
+        mode_str = "w+b";
+    else
+        return NULL;
+
+    return fopen(filename, mode_str);
+}
+
+void IO_Close_File(void *handle)
+{
+    auto file = (FILE *)handle;
+    fclose(file);
+}
+
+bool IO_Read_File(void *handle, void *buffer, size_t count, size_t &actual_read)
+{
+    auto file = (FILE *)handle;
+    actual_read = fread(buffer, 1, count, file);
+    return ferror(file) == 0;
+}
+
+bool IO_Write_File(void *handle, const void *buffer, size_t count, size_t &actual_written)
+{
+    auto file = (FILE *)handle;
+    actual_written = fwrite(buffer, 1, count, file);
+    return ferror(file) == 0;
+}
+
+size_t IO_Seek_File(void *handle, size_t offset, int origin)
+{
+    auto file = (FILE *)handle;
+    fseek(file, offset, origin);
+    return ftell(file);
+}
+
+size_t IO_Get_File_Size(void *handle)
+{
+    auto file = (FILE *)handle;
+    long pos = ftell(file);
+
+    fseek(file, 0, SEEK_END);
+
+    long length = ftell(file);
+
+    fseek(file, pos, SEEK_SET);
+
+    return length;
+}
+
+bool IO_Delete_File(const char *filename)
+{
+    return unlink(filename) == 0;
+}
 
 static bool Update_Find_Result(FindFileState &state)
 {
