@@ -72,7 +72,6 @@
 #endif	//WINSOCK_IPX
 
 #endif
-#include	<dos.h>
 #ifndef WIN32
 #include	<conio.h>
 #include	<sys\timeb.h>
@@ -2744,21 +2743,21 @@ static void Init_Expansion_Files(void)
 	/*
 	**	Before all else, cache any additional mixfiles.
 	*/
-	struct find_t ff;		// for _dos_findfirst
-	if (!_dos_findfirst("SC*.MIX", _A_NORMAL, &ff)) {
+	FindFileState state;
+	if (Find_First_File("SC*.MIX", state)) {
 		char * ptr;
 		do {
-			ptr = strdup(ff.name);
+			ptr = strdup(state.name);
 			new MFCD(ptr, &FastKey);
 			MFCD::Cache(ptr);
-		} while (!_dos_findnext(&ff));
+		} while (Find_Next_File(state));
 	}
-	if (!_dos_findfirst("SS*.MIX", _A_NORMAL, &ff)) {
+	if (Find_First_File("SS*.MIX", state)) {
 		char * ptr;
 		do {
-			ptr = strdup(ff.name);
+			ptr = strdup(state.name);
 			new MFCD(ptr, &FastKey);
-		} while (!_dos_findnext(&ff));
+		} while (Find_Next_File(state));
 	}
 }
 

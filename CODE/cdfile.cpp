@@ -46,7 +46,7 @@
 #include	"cdfile.h"
 #include	<stdio.h>
 #include	<string.h>
-#include	<dos.h>
+#include	"file.h"
 #include	"ex_string.h"
 
 #ifndef WIN32
@@ -120,7 +120,6 @@ int harderr_handler(unsigned int , unsigned int , unsigned int __far *)
 int cdecl Is_Disk_Inserted(int disk)
 {
 #ifndef OBSOLETE
-	struct find_t fb;
 	char	scan[] = "?:\\*.*";
 
 	#ifndef WIN32
@@ -128,7 +127,12 @@ int cdecl Is_Disk_Inserted(int disk)
 	#endif
 
 	scan[0] = (char)('A' + disk);
-	return(_dos_findfirst(scan, _A_SUBDIR, &fb) == 0);
+
+	// yeah this isn't going to work on non-windows...
+	FindFileState state;
+	bool ret = Find_First_File(scan, state);
+	End_Find_File(state);
+	return ret;
 #else
 	struct {
 		struct {

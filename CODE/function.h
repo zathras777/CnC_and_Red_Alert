@@ -185,7 +185,6 @@ struct NoInitClass {
 #endif
 
 
-#define FILE_H
 #define WWMEM_H
 
 #ifndef WIN32

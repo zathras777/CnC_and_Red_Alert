@@ -48,7 +48,6 @@
 #else
 #include <unistd.h>
 #endif
-#include <dos.h>
 
 /***********************************************************************************************
  * LoadOptionsClass::LoadOptionsClass -- class constructor                                     *
@@ -624,7 +623,7 @@ void LoadOptionsClass::Fill_List(ListClass * list)
 	char descr[DESCRIP_MAX+32];
 	unsigned scenario;			// scenario #
 	HousesType house;				// house
-	struct find_t ff;		// for _dos_findfirst
+	FindFileState find_state;
 	int id;
 
 	/*
@@ -645,16 +644,16 @@ void LoadOptionsClass::Fill_List(ListClass * list)
 	/*
 	** Find all savegame files
 	*/
-	int rc = _dos_findfirst("SAVEGAME.*", _A_NORMAL, &ff);
+	bool found = Find_First_File("SAVEGAME.*", find_state);
 
-	while (!rc) {
+	while (found) {
 
-		if (stricmp(ff.name, NET_SAVE_FILE_NAME) != 0) {
+		if (stricmp(find_state.name, NET_SAVE_FILE_NAME) != 0) {
 
 			/*
 			** Extract the game ID from the filename
 			*/
-			id = Num_From_Ext(ff.name);
+			id = Num_From_Ext(find_state.name);
 
 			/*
 			** get the game's info; if success, add it to the list
@@ -686,14 +685,14 @@ void LoadOptionsClass::Fill_List(ListClass * list)
 			fdata->Scenario = scenario;
 			fdata->House = house;
 			fdata->Num = id;
-			fdata->DateTime = (((unsigned long)ff.wr_date) << 16) | (unsigned long)ff.wr_time;
+			fdata->DateTime = find_state.mod_time;
 			Files.Add(fdata);
 		}
 
 		/*
 		** Find the next file
 		*/
-		rc = _dos_findnext(&ff);
+		found = Find_Next_File(find_state);
 	}
 
 	/*
