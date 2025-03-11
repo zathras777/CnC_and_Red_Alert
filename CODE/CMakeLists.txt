@@ -268,6 +268,7 @@ if(WIN32)
 	target_sources(rasdl PRIVATE
 		dde.cpp
 		ccdde.cpp
+		cc_icon.rc
 	)
 	target_link_libraries(rasdl PRIVATE wsock32)
 endif()
