@@ -129,7 +129,7 @@ static bool RefillStream(ChannelState &chan)
         // ADPCM
         int samples_to_gen = std::min(max_update, chan.length - chan.offset);
         // read blocks until we have enough samples
-        while(samples_to_gen)
+        while(samples_to_gen > 0)
         {
             // read a block
             uint16_t block_in_size = *(uint16_t *)chan.in_ptr;
