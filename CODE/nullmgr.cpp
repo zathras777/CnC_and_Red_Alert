@@ -52,7 +52,11 @@
 
 #include "function.h"
 #ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
+#else
+#define INVALID_HANDLE_VALUE NULL
+#endif
 #include "wincomm.h"
 #include "modemreg.h"
 extern ModemRegistryEntryClass *ModemRegistry;
@@ -227,10 +231,12 @@ int NullModemClass::Init (int port, int irq, char *dev_name, int baud, char pari
 	/*
 	** Make sure the port is closed before we start
 	*/
+#ifdef _WIN32
 	if (PortHandle) {
 		CloseHandle (PortHandle);
 		PortHandle = NULL;
 	}
+#endif
 
 	if (!Connection) {
 
