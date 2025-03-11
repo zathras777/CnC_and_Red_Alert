@@ -101,10 +101,10 @@ TcpipManagerClass	Winsock;
 #include	<string.h>
 #include	<fcntl.h>
 
-#include	<dos.h>
 #ifndef WIN32
 #include	<io.h>
 #include	<share.h>
+#include	<dos.h>
 #endif
 #include	"ccdde.h"
 #include	"vortex.h"
@@ -5063,28 +5063,6 @@ bool Force_CD_Available(int cd)
 
 
 #endif	//	FIXIT_VERSION_3
-
-/***************************************************************************
- * DISK_SPACE_AVAILABLE -- returns bytes of free disk space                *
- *                                                                         *
- * INPUT:		none                                                        *
- *                                                                         *
- * OUTPUT:     returns amount of free disk space                           *
- *                                                                         *
- * HISTORY:                                                                *
- *   08/11/1995 PWG : Created.                                             *
- *=========================================================================*/
-unsigned long Disk_Space_Available(void)
-{
-	struct diskfree_t diskdata;
-	unsigned drive;
-
-	_dos_getdrive(&drive);
-	_dos_getdiskfree(drive, &diskdata);
-
-	return(diskdata.avail_clusters * diskdata.sectors_per_cluster * diskdata.bytes_per_sector);
-}
-
 
 /***********************************************************************************************
  * Do_Record_Playback -- handles saving/loading map pos & current object                       *

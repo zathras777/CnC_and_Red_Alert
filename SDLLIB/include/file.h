@@ -37,6 +37,7 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include <stdint.h>
 #include <time.h>
 
 /*=========================================================================*/
@@ -82,5 +83,7 @@ bool Find_First_File(const char *path_glob, FindFileState &state);
 bool Find_Next_File(FindFileState &state);
 // to clean up if not finishing the search
 void End_Find_File(FindFileState &state);
+
+uint64_t Disk_Space_Available();
 
 #endif

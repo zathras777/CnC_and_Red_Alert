@@ -1764,18 +1764,13 @@ unsigned long SessionClass::Compute_Unique_ID(void)
 	time(&tm);
 	id = (unsigned long)tm;
 
-#ifndef PORTABLE
-	struct diskfree_t dtable;
 	//------------------------------------------------------------------------
 	// Now add in the free space on the hard drive
 	//------------------------------------------------------------------------
-	if (_dos_getdiskfree(3, &dtable) == 0) {
-		Add_CRC(&id, (unsigned long)dtable.avail_clusters);
-		Add_CRC(&id, (unsigned long)dtable.total_clusters);
-		Add_CRC(&id, (unsigned long)dtable.bytes_per_sector);
-		Add_CRC(&id, (unsigned long)dtable.sectors_per_cluster);
-	}
-#endif
+	uint64_t diskfree = Disk_Space_Available();
+	Add_CRC(&id, diskfree & 0xFFFFFFFF);
+	Add_CRC(&id, diskfree >> 32);
+
 
 	//------------------------------------------------------------------------
 	// Add in every byte in the user's path environment variable

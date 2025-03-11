@@ -1,5 +1,7 @@
 #include <glob.h>
+#include <unistd.h>
 #include <sys/stat.h>
+#include <sys/statvfs.h>
 
 #include "file.h"
 
@@ -75,4 +77,17 @@ void End_Find_File(FindFileState &state)
         delete glob_buf;
         state.data = NULL;
     }
+}
+
+uint64_t Disk_Space_Available()
+{
+    struct statvfs fsbuf;
+    char path[1024];
+    if(!getcwd(path, 1000))
+        return 0;
+
+    if(statvfs(path, &fsbuf) < 0)
+        return 0;
+
+    return fsbuf.f_bavail * fsbuf.f_bsize;
 }
