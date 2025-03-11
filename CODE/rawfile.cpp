@@ -60,7 +60,10 @@
 
 #include	"rawfile.h"
 
-#ifdef WIN32
+#ifdef PORTABLE
+#include "file.h"
+#include "ex_string.h"
+#elif defined(WIN32)
 #include	<windows.h>
 #else
 #include	<fcntl.h>
@@ -245,6 +248,10 @@ int RawFileClass::Open(int rights)
 		#ifndef WIN32
 			Hard_Error_Occured = 0;
 		#endif
+
+#ifdef PORTABLE
+		Handle = IO_Open_File(Filename, rights);
+#else
 		switch (rights) {
 
 			/*
@@ -282,7 +289,7 @@ int RawFileClass::Open(int rights)
 				#endif
 				break;
 		}
-
+#endif
 		/*
 		**	Biased files must be positioned past the bias start position.
 		*/
@@ -297,7 +304,9 @@ int RawFileClass::Open(int rights)
 		*/
 		if (Handle == NULL_HANDLE) {
 
-#ifdef WIN32
+#ifdef PORTABLE
+			// Error doesn't do anything...
+#elif defined(WIN32)
 //			return(false);
 			Error(GetLastError(), false, Filename);
 //			continue;
@@ -373,13 +382,12 @@ int RawFileClass::Is_Available(int forced)
 	*/
 	for (;;) {
 
-#ifdef WIN32
-		Handle = CreateFile(Filename, GENERIC_READ, FILE_SHARE_READ,
-											NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-		if (Handle == NULL_HANDLE) {
+#ifdef PORTABLE
+		Handle = IO_Open_File(Filename, READ);
+		if (!Handle) {
 			// retry with lowercase name for case-sensitive fs
 			char *lower_name = strlwr(strdup(Filename));
-			Handle = CreateFile(lower_name, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			Handle = IO_Open_File(lower_name, READ);
 
 			if(Handle) {
 				// if successful, replace the filename with the working one
@@ -390,6 +398,13 @@ int RawFileClass::Is_Available(int forced)
 			} else
 				free(lower_name);
 		}
+
+		if(!Handle)
+			return false;
+		break;
+#elif defined(WIN32)
+		Handle = CreateFile(Filename, GENERIC_READ, FILE_SHARE_READ,
+											NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (Handle == NULL_HANDLE) {
 			return(false);
 		}
@@ -439,7 +454,9 @@ int RawFileClass::Is_Available(int forced)
 	/*
 	**	Since the file could be opened, then close it and return that the file exists.
 	*/
-#ifdef WIN32
+#ifdef PORTABLE
+	IO_Close_File(Handle);
+#elif defined(WIN32)
 	if (!CloseHandle(Handle)) {
 		Error(GetLastError(), false, Filename);
 	}
@@ -476,7 +493,9 @@ void RawFileClass::Close(void)
 	*/
 	if (Is_Open()) {
 
-#ifdef WIN32
+#ifdef PORTABLE
+		IO_Close_File(Handle);
+#elif defined(WIN32)
 		/*
 		**	Try to close the file. If there was an error (who knows what that could be), then
 		**	call the error routine.
@@ -572,7 +591,12 @@ long RawFileClass::Read(void * buffer, long size)
 		size = size < remainder ? size : remainder;
 	}
 
-#ifdef WIN32
+#ifdef PORTABLE
+	size_t read_tmp = 0;
+	IO_Read_File(Handle, buffer, size, read_tmp);
+	bytesread = read_tmp;
+	// doesn't bother looping, the below code is broken anyway (buffer isn't incremented)
+#elif defined(WIN32)
 	long total = 0;
 	while (size > 0) {
 		bytesread = 0;
@@ -691,7 +715,11 @@ long RawFileClass::Write(void const * buffer, long size)
 		opened = true;
 	}
 
-#ifdef WIN32
+#ifdef PORTABLE
+	size_t write_tmp = 0;
+	IO_Write_File(Handle, buffer, size, write_tmp);
+	bytesread = write_tmp;
+#elif defined(WIN32)
 	if (!WriteFile(Handle, buffer, size, &(DWORD&)bytesread, NULL)) {
 		Error(GetLastError(), false, Filename);
 	}
@@ -879,7 +907,9 @@ long RawFileClass::Size(void)
 	*/
 	if (Is_Open()) {
 
-#ifdef WIN32
+#ifdef PORTABLE
+		size = IO_Get_File_Size(Handle);
+#elif defined(WIN32)
 		size = GetFileSize(Handle, NULL);
 
 		/*
@@ -1021,7 +1051,10 @@ int RawFileClass::Delete(void)
 			return(false);
 		}
 
-#ifdef WIN32
+#ifdef PORTABLE
+		if(!IO_Delete_File(Filename))
+			return false;
+#elif defined(WIN32)
 		if (!DeleteFile(Filename)) {
 			Error(GetLastError(), false, Filename);
 			return(false);
@@ -1082,7 +1115,10 @@ int RawFileClass::Delete(void)
  *=============================================================================================*/
 unsigned long RawFileClass::Get_Date_Time(void)
 {
-#ifdef WIN32
+#ifdef PORTABLE
+	// does not seem that this has any users
+	return 0;
+#elif defined(WIN32)
 	BY_HANDLE_FILE_INFORMATION info;
 
 	if (GetFileInformationByHandle(Handle, &info)) {
@@ -1160,7 +1196,10 @@ unsigned long RawFileClass::Get_Date_Time(void)
  *=============================================================================================*/
 bool RawFileClass::Set_Date_Time(unsigned long datetime)
 {
-#ifdef WIN32
+#ifdef PORTABLE
+	// does not seem that this has any users
+	return false;
+#elif defined(WIN32)
 	if (RawFileClass::Is_Open()) {
 		BY_HANDLE_FILE_INFORMATION info;
 
@@ -1298,7 +1337,9 @@ long RawFileClass::Raw_Seek(long pos, int dir)
 		Error(EBADF, false, Filename);
 	}
 
-#ifdef WIN32
+#ifdef PORTABLE
+	pos = IO_Seek_File(Handle, pos, dir);
+#elif defined(WIN32)
 	switch (dir) {
 		case SEEK_SET:
 			dir = FILE_BEGIN;
