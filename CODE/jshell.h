@@ -248,10 +248,15 @@ inline int First_True_Bit(void const * array)
     while(true)
     {
         uint32_t v = *array32++;
-        int pos = __builtin_ffs(v); // FIXME
+#ifdef _MSC_VER
+		DWORD pos;
+		if(_BitScanForward(&pos, v))
+			return off + pos;
+#else
+        int pos = __builtin_ffs(v);
         if(pos)
             return off + pos - 1;
-
+#endif
         off += 32;
     }
 }
@@ -276,10 +281,15 @@ inline int First_False_Bit(void const * array)
     while(true)
     {
         uint32_t v = *array32++;
-        int pos = __builtin_ffs(~v); // FIXME
+#ifdef _MSC_VER
+		DWORD pos;
+		if(_BitScanForward(&pos, ~v))
+			return off + pos;
+#else
+        int pos = __builtin_ffs(~v);
         if(pos)
             return off + pos - 1;
-
+#endif
         off += 32;
     }
 }
