@@ -165,7 +165,6 @@ bool WWKeyboardClass::Event_Handler(SDL_Event *event)
             break;
     }
 
-    SDL_SCANCODE_0;
     return false;
 }
 
