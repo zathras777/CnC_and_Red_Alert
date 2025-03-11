@@ -135,10 +135,10 @@ long Buffer_Frame_To_Page(int x, int y, int w, int h, void *src, GraphicViewPort
 	if(!src)
 		return 0;
 
-	uint8_t *IsTranslucent;
-	uint8_t *Translucent;
-	uint8_t *FadingTable;
-	int FadingNum;
+	uint8_t *IsTranslucent = NULL;
+	uint8_t *Translucent = NULL;
+	uint8_t *FadingTable = NULL;
+	int FadingNum = 0;
 	
 	ShapeHeaderType *header_pointer;
 	bool use_old_draw = true;

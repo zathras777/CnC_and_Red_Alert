@@ -78,14 +78,14 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 {
 #define BUFFSIZE (511)
 	char buffer[BUFFSIZE];
-	bool retval;
+	bool retval = -1;
 	bool process;								// loop while true
 	int selection;
 	bool pressed;
 	int curbutton;
 	TextButtonClass * buttons[3];
 	char * back;
-	bool display;									// display level
+	bool display = true;									// display level
 	int  realval[5];
 
 #ifndef WIN32
@@ -106,7 +106,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	**	Examine the optional button parameters. Fetch the width and starting
 	**	characters for each.
 	*/
-	int bwidth, bheight;				// button width and height
+	int bwidth = 0, bheight = 0;				// button width and height
 	int numbuttons = 0;
 	if (b1txt != NULL) {
 

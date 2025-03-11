@@ -452,7 +452,7 @@ PathType * FootClass::Find_Path(CELL dest, FacingType * final_moves, int maxlen,
 	PathType				pleft,pright;							// Path control structures.
 	PathType *			which;									// Which path to actually use.
 	int					threat;
-	int					threat_stage;
+	int					threat_stage = 0;
 
 	/*
 	** If we have been provided an illegal place to store our final moves
