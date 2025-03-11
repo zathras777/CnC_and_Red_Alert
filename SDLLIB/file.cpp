@@ -14,7 +14,7 @@ void *IO_Open_File(const char *filename, int mode)
         mode_str = "rb";
     else if(mode == WRITE)
         mode_str = "wb";
-    else if(mode == READ | WRITE)
+    else if(mode == (READ | WRITE))
         mode_str = "w+b";
     else
         return NULL;
