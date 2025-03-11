@@ -317,7 +317,7 @@ typedef struct _VQAStatistics {
  * VQAio - Something meaningful to the IO manager. (See DOCS)
  */
 typedef struct _VQAHandle {
-	unsigned long VQAio;
+	uintptr_t VQAio;
 } VQAHandle;
 
 /* Possible IO command values */
