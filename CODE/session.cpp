@@ -794,7 +794,7 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 
 		// find dial method
 		for (i = 0; i < DIAL_METHODS; i++) {
-			if ( !strcmpi( buf, DialMethodCheck[ i ]) ) {
+			if ( !stricmp( buf, DialMethodCheck[ i ]) ) {
 				SerialDefaults.DialMethod = (DialMethodType)i;
 				break;
 			}
@@ -896,7 +896,7 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 				// find dial method
 
 				for (i = 0; i < DIAL_METHODS; i++) {
-					if ( !strcmpi( buf, DialMethodCheck[ i ]) ) {
+					if ( !stricmp( buf, DialMethodCheck[ i ]) ) {
 						/*
 						** This must be an old phonebook entry
 						*/
@@ -933,7 +933,7 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 
 				//	find dial method
 				for (i = 0; i < DIAL_METHODS; i++) {
-					if ( !strcmpi( buf, DialMethodCheck[ i ]) ) {
+					if ( !stricmp( buf, DialMethodCheck[ i ]) ) {
 						phone->Settings.DialMethod = (DialMethodType)i;
 						break;
 					}
@@ -1220,7 +1220,7 @@ bool Is_Mission_Aftermath (char *file_name)
 	//	Must start with "scm".
 	char szCopy[ _MAX_PATH + 1 ];
 	strcpy( szCopy, file_name );
-	_strlwr( szCopy );
+	strlwr( szCopy );
 	if( strstr( szCopy, "scm" ) != szCopy )
 		return false;
 
