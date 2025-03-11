@@ -1011,12 +1011,13 @@ bool Select_Game(bool fade)
 						*/
 						case GAME_INTERNET:						//	ajw		No longer hit.
 							if (Special.IsFromWChat) {
+#ifndef PORTABLE
 								/*
 								** Give myself focus.
 								*/
 								SetForegroundWindow ( MainWindow );
 								ShowWindow ( MainWindow, ShowCommand );
-
+#endif
 #ifdef WINSOCK_IPX
 
 								if (PacketTransport ) delete PacketTransport;

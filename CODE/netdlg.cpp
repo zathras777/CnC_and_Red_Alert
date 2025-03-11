@@ -6303,17 +6303,21 @@ static int Net_Fake_New_Dialog(void)
 	focus_timer = 5*60;
 
 	WWDebugString ("RA95 - About to enter wait for focus loop.\n");
+#ifndef PORTABLE
 	SetForegroundWindow ( MainWindow );
 	ShowWindow ( MainWindow, SW_SHOWMAXIMIZED );
+#endif
 
 	if (!GameInFocus) {
 		do {
 			Keyboard->Check();
 			if (!focus_timer){
+#ifndef PORTABLE
 				WWDebugString ("RA95 - Calling SetForgroundWindow.\n");
 				SetForegroundWindow ( MainWindow );
 				WWDebugString ("RA95 - Calling ShowWindow.\n");
 				ShowWindow ( MainWindow, SW_SHOWMAXIMIZED );
+#endif
 				focus_timer = 5*60;
 			}
 		}while (!GameInFocus);
@@ -7098,17 +7102,21 @@ static int Net_Fake_Join_Dialog(void)
 	focus_timer = 5*60;
 
 	WWDebugString ("RA95 - About to enter wait for focus loop.\n");
+#ifndef PORTABLE
 	SetForegroundWindow ( MainWindow );
 	ShowWindow ( MainWindow, SW_SHOWMAXIMIZED );
+#endif
 
 	if (!GameInFocus) {
 		do {
 			Keyboard->Check();
 			if (!focus_timer){
+#ifndef PORTABLE
 				WWDebugString ("RA95 - Calling SetForgroundWindow.\n");
 				SetForegroundWindow ( MainWindow );
 				WWDebugString ("RA95 - Calling ShowWindow.\n");
 				ShowWindow ( MainWindow, SW_SHOWMAXIMIZED );
+#endif
 				focus_timer = 5*60;
 			}
 		}while (!GameInFocus);
