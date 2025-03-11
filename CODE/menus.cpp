@@ -819,7 +819,9 @@ int Main_Menu(unsigned long )
 		**	to the cryptographic random number generator.
 		*/
 		if (input != 0) {
-			#ifdef WIN32
+			#ifdef PORTABLE
+				CryptRandom.Seed_Byte(Get_Time_Ms());
+			#elif defined(WIN32)
 				SYSTEMTIME t;
 				GetSystemTime(&t);
 				CryptRandom.Seed_Byte(t.wMilliseconds);

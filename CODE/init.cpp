@@ -2413,7 +2413,11 @@ long Calculate_CRC(void * buffer, long len)
  *=========================================================================*/
 void Init_Random(void)
 {
-	#ifdef WIN32
+	#ifdef PORTABLE
+		int ms = Get_Time_Ms();
+		CryptRandom.Seed_Byte(ms);
+		// grab some more bits from somewhere?
+	#elif defined(WIN32)
 
 		/*
 		**	Gather some "random" bits from the system timer. Actually, only the

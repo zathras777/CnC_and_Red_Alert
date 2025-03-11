@@ -87,3 +87,8 @@ unsigned WinTimerClass::Get_System_Tick_Count(void)
 {
     return SysTicks;
 }
+
+uint32_t Get_Time_Ms()
+{
+    return SDL_GetTicks();
+}
