@@ -4,7 +4,13 @@ project(CnCRedAlert)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT MSVC)
+if(MSVC)
+    add_compile_options(
+        /wd4996 # yes, this code is old and uses "unsafe" functions
+        /wd4068 /wd4081 # old #pragmas for another compiler
+        /wd4661 # missing template definitions, 10000s of these
+    )
+else()
     # -Wno-changes-meaning/-Wnarrowing to compile, others for noise
     add_compile_options(-Wno-error=changes-meaning -Wno-error=narrowing -Wno-write-strings)
     # workarounds
