@@ -66,6 +66,7 @@ long CountDownTimerClass::Time(void)
 
 WinTimerClass::WinTimerClass(unsigned freq, bool partial)
 {
+    SDL_Init(SDL_INIT_TIMER);
     TimerHandle = SDL_AddTimer(1000 / freq, TimerCallback, this);
 
     if(!partial)
