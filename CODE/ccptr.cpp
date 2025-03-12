@@ -74,3 +74,31 @@ bool CCPtr<T>::operator > (CCPtr<T> const & rvalue) const
 {
 	return (stricmp((*this)->Name(), rvalue->Name()) > 0);
 }
+
+template class CCPtr<AircraftClass>;
+template class CCPtr<AnimClass>;
+template class CCPtr<BuildingClass>;
+template class CCPtr<BulletClass>;
+template class CCPtr<FactoryClass>;
+template class CCPtr<HouseClass>;
+template class CCPtr<InfantryClass>;
+template class CCPtr<OverlayClass>;
+template class CCPtr<SmudgeClass>;
+template class CCPtr<TeamClass>;
+template class CCPtr<TeamTypeClass>;
+template class CCPtr<TemplateClass>;
+template class CCPtr<TerrainClass>;
+template class CCPtr<TriggerClass>;
+template class CCPtr<TriggerTypeClass>;
+template class CCPtr<HouseTypeClass>;
+template class CCPtr<BuildingTypeClass>;
+template class CCPtr<AircraftTypeClass>;
+template class CCPtr<InfantryTypeClass>;
+template class CCPtr<BulletTypeClass>;
+template class CCPtr<AnimTypeClass>;
+template class CCPtr<UnitTypeClass>;
+template class CCPtr<VesselTypeClass>;
+template class CCPtr<TemplateTypeClass>;
+template class CCPtr<TerrainTypeClass>;
+template class CCPtr<OverlayTypeClass>;
+template class CCPtr<SmudgeTypeClass>;

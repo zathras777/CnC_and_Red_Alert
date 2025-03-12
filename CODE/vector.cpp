@@ -388,6 +388,25 @@ int VectorClass<T>::Resize(unsigned newsize, T const * array)
 	return(true);
 }
 
+template class VectorClass<CCPtr<TeamTypeClass> >;
+template class VectorClass<CCPtr<TriggerTypeClass> >;
+template class VectorClass<TeamMissionClass *>;
+template class VectorClass<EventChoiceClass *>;
+template class VectorClass<ActionChoiceClass *>;
+template class VectorClass<EgoClass *>;
+template class VectorClass<NodeNameTag *>;
+template class VectorClass<PhoneEntryClass *>;
+template class VectorClass<MultiMission *>;
+template class VectorClass<ObjectClass *>;
+template class VectorClass<TriggerClass *>;
+template class VectorClass<FileEntryClass *>;
+template class VectorClass<RemapControlType *>;
+template class VectorClass<BaseNodeClass>;
+template class VectorClass<CellClass>;
+template class VectorClass<char *>;
+template class VectorClass<char const*>;
+template class VectorClass<void *>;
+
 //----------------------------------------------------------------------------------------------
 
 /***********************************************************************************************

@@ -576,3 +576,4 @@ assert(1);//BG
 	return(false);
 }
 
+template class MixFileClass<CCFileClass>;

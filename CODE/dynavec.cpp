@@ -295,4 +295,22 @@ int DynamicVectorClass<T>::Delete(int index)
 	return(false);
 }
 
+template class DynamicVectorClass<CCPtr<TeamTypeClass> >;
+template class DynamicVectorClass<CCPtr<TriggerTypeClass> >;
+template class DynamicVectorClass<TeamMissionClass *>;
+template class DynamicVectorClass<EventChoiceClass *>;
+template class DynamicVectorClass<ActionChoiceClass *>;
+template class DynamicVectorClass<EgoClass *>;
+template class DynamicVectorClass<NodeNameTag *>;
+template class DynamicVectorClass<PhoneEntryClass *>;
+template class DynamicVectorClass<MultiMission *>;
+template class DynamicVectorClass<ObjectClass *>;
+template class DynamicVectorClass<TriggerClass *>;
+template class DynamicVectorClass<FileEntryClass *>;
+template class DynamicVectorClass<RemapControlType *>;
+template class DynamicVectorClass<BaseNodeClass>;
+template class DynamicVectorClass<char *>;
+template class DynamicVectorClass<char const*>;
+template class DynamicVectorClass<void *>;
+
 /************************** end of dynavec.cpp *****************************/
