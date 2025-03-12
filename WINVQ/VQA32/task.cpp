@@ -409,6 +409,13 @@ long VQA_Play(VQAHandle *vqa, long mode)
 						if ((vqabuf->Flags & VQADATF_LDONE)	&& (rc == VQAERR_NOBUFFER)) {
 							vqabuf->Flags |= VQADATF_DDONE;
 						}
+
+#ifdef PORTABLE
+						if(rc == VQAERR_NOT_TIME && config->EventHandler) {
+							//zzz
+							config->EventHandler(VQAEVENT_SYNC, NULL, 0);
+						}
+#endif
 					}
 				} else {
 					vqabuf->Flags |= VQADATF_DDONE;
