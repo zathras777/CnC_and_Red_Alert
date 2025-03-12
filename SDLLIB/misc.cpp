@@ -22,7 +22,7 @@ bool Set_Video_Mode(void *hwnd, int w, int h, int bits_per_pixel)
 
 void Wait_Blit(void)
 {
-    printf("%s\n", __func__);
+    // nothing to wait for
 }
 
 void Delay(int duration)
