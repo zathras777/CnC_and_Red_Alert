@@ -333,6 +333,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 	protected:
 		void *WindowTexture = NULL;
 		void *PaletteSurface = NULL;
+		int RedrawTimer = 0;
 };
 
 

@@ -10,6 +10,7 @@ unsigned int WinY;
 unsigned int Window;
 
 SDL_Renderer *SDLRenderer;
+Uint32 ForceRenderEventID;
 
 int Change_Window(int windnum)
 {
@@ -23,7 +24,9 @@ void SDL_Create_Main_Window(const char *title, int width, int height)
 
     MainWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
-    SDLRenderer = SDL_CreateRenderer((SDL_Window *)MainWindow, -1, 0);
+    ForceRenderEventID = SDL_RegisterEvents(1);
+
+    SDLRenderer = SDL_CreateRenderer((SDL_Window *)MainWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 
     SDL_RenderSetLogicalSize(SDLRenderer, width, height);
     SDL_RenderSetIntegerScale(SDLRenderer, SDL_TRUE);
@@ -37,7 +40,13 @@ void SDL_Create_Main_Window(const char *title, int width, int height)
 void SDL_Event_Loop()
 {
     SDL_Event event;
-	while(SDL_PollEvent(&event)) {
+	while(SDL_PollEvent(&event))
+    {
+        if(event.type == ForceRenderEventID)
+        {
+            Video_End_Frame();
+            continue;
+        }
 		SDL_Event_Handler(&event);
 	}
 }

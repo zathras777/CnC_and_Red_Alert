@@ -20,6 +20,18 @@ bool OverlappedVideoBlits = true;
 
 GraphicBufferClass *WindowBuffer = NULL;
 
+extern Uint32 ForceRenderEventID;
+static Uint32 Force_Redraw_Timer(Uint32 interval, void *)
+{
+    // something has been draw and not displayed for 33ms
+    // go tell the main thread it should probably display that
+    SDL_Event ev;
+    ev.type = ForceRenderEventID;
+    SDL_PushEvent(&ev);
+
+    return 0;
+}
+
 inline int Make_Code(int x, int y, int w, int h)
 {
     return (x < 0 ? 0b1000 : 0) | (x >= w ? 0b0100 : 0) | (y < 0 ? 0b0010 : 0) | (y >= h ? 0b0001 : 0);
@@ -971,14 +983,24 @@ void GraphicBufferClass::Update_Window_Surface(bool end_frame)
 {
     auto window_tex = (SDL_Texture *)WindowTexture;
 
+    if(!end_frame)
+    {
+        if(!RedrawTimer)
+            RedrawTimer = SDL_AddTimer(1000/30, Force_Redraw_Timer, NULL);
+        return;
+    }
+
+    if(RedrawTimer)
+    {
+        SDL_RemoveTimer(RedrawTimer);
+        RedrawTimer = 0;
+    }
+
     // blit from paletted surface
     SDL_Surface *tmp_surf;
     SDL_LockTextureToSurface(window_tex, NULL, &tmp_surf);
     SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, tmp_surf, NULL);
     SDL_UnlockTexture(window_tex);
-
-    // TODO: don't present when not frame end, set a timer to do it later if needed?
-    SDL_RenderSetVSync(SDLRenderer, end_frame ? 1 : 0);
 
     // copy to screen
     SDL_RenderClear(SDLRenderer);
