@@ -1690,6 +1690,10 @@ void Call_Back(void)
 		MPATH_Call_Back();
 	}
 #endif	// MPATH
+
+#ifdef PORTABLE
+	Video_End_Frame();
+#endif
 }
 
 
@@ -3772,6 +3776,9 @@ long VQ_Call_Back(unsigned char *, long )
 			Check_For_Focus_Loss();
 		}
 	}
+#ifdef PORTABLE
+	Video_End_Frame();
+#endif
 	return(false);
 }
 
@@ -3791,6 +3798,16 @@ long VQ_Call_Back(unsigned char *, long )
 	return(false);
 }
 #endif	//WIN32
+
+long VQ_Event_Handler(unsigned long event, void *buffer, long nbytes)
+{
+#ifdef PORTABLE
+	// vsync while waiting for frame
+	if(event == VQAEVENT_SYNC)
+		Video_End_Frame();
+#endif
+	return 0;
+}
 
 
 /***********************************************************************************************

@@ -961,13 +961,13 @@ bool GraphicBufferClass::Unlock(void)
     {
         SDL_UnlockSurface((SDL_Surface *)PaletteSurface);
         Offset = NULL;
-        Update_Window_Surface();
+        Update_Window_Surface(false);
     }
 
     return true;
 }
 
-void GraphicBufferClass::Update_Window_Surface()
+void GraphicBufferClass::Update_Window_Surface(bool end_frame)
 {
     auto window_tex = (SDL_Texture *)WindowTexture;
 
@@ -976,6 +976,9 @@ void GraphicBufferClass::Update_Window_Surface()
     SDL_LockTextureToSurface(window_tex, NULL, &tmp_surf);
     SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, tmp_surf, NULL);
     SDL_UnlockTexture(window_tex);
+
+    // TODO: don't present when not frame end, set a timer to do it later if needed?
+    SDL_RenderSetVSync(SDLRenderer, end_frame ? 1 : 0);
 
     // copy to screen
     SDL_RenderClear(SDLRenderer);
@@ -1012,10 +1015,16 @@ void GraphicBufferClass::Update_Palette(uint8_t *palette)
     // make sure it gets updated
     SDL_SetPaletteColors(sdl_pal, sdl_pal->colors, 0, sdl_pal->ncolors);
 
-    Update_Window_Surface();
+    Update_Window_Surface(false);
 }
 
 const void *GraphicBufferClass::Get_Palette() const
 {
     return ((SDL_Surface *)PaletteSurface)->format->palette;
+}
+
+void Video_End_Frame()
+{
+    if(WindowBuffer)
+        WindowBuffer->Update_Window_Surface(true);
 }

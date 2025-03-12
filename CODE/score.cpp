@@ -1720,7 +1720,12 @@ void Call_Back_Delay(int time)
 			Call_Back();
 			callbackcd = TIMER_SECOND/4;
 		}
+#ifdef PORTABLE
+		else
+			Video_End_Frame();
+#endif
 		Animate_Score_Objs();
+
 	} while (cd);
 	StreamLowImpact = false;
 }

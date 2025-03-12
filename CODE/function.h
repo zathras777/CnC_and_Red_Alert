@@ -530,6 +530,7 @@ bool Main_Loop(void);
 TheaterType Theater_From_Name(char const * name);
 void Main_Game(int argc, char * argv[]);
 long VQ_Call_Back(unsigned char * buffer=NULL, long frame=0);
+long VQ_Event_Handler(unsigned long event, void *buffer, long nbytes);
 void Call_Back(void);
 char const *Language_Name(char const * basename);
 SourceType Source_From_Name(char const * name);

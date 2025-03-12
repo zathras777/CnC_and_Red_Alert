@@ -1675,6 +1675,7 @@ void Anim_Init(void)
 	AnimControl.FrameRate = -1;
 	AnimControl.DrawRate = -1;
 	AnimControl.DrawerCallback = VQ_Call_Back;
+	AnimControl.EventHandler = VQ_Event_Handler;
 	AnimControl.ImageWidth = 320;
 	AnimControl.ImageHeight = 200;
 	AnimControl.ImageBuf = (unsigned char *)SysMemPage.Get_Offset();
