@@ -272,7 +272,7 @@ bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel,
         }
         if(code1 & 0b0100)
         {
-            src_x1 - (dst_x1 - vp_dst->Get_Width());
+            src_x1 = (dst_x1 - vp_dst->Get_Width());
             dst_x1 = vp_dst->Get_Width();
         }
         if(code0 & 0b0010)
@@ -282,7 +282,7 @@ bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel,
         }
         if(code1 & 0b0001)
         {
-            src_y1 - (dst_x1 - vp_dst->Get_Height());
+            src_y1 = (dst_x1 - vp_dst->Get_Height());
             dst_y1 = vp_dst->Get_Height();
         }
     }
