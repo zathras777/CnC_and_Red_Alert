@@ -9,6 +9,8 @@ unsigned int WinX;
 unsigned int WinY;
 unsigned int Window;
 
+SDL_Renderer *SDLRenderer;
+
 int Change_Window(int windnum)
 {
     printf("%s\n", __func__);
@@ -20,11 +22,13 @@ void SDL_Create_Main_Window(const char *title, int width, int height)
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
     MainWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
-    
+
+    SDLRenderer = SDL_CreateRenderer((SDL_Window *)MainWindow, -1, 0);
+
     // sometimes the window won't be created until it has content
     // so we get stuck waiting for focus, which it'll never get because it doesn't exist
-	SDL_GetWindowSurface((SDL_Window *)MainWindow);
-	SDL_UpdateWindowSurface((SDL_Window *)MainWindow);
+    SDL_RenderClear(SDLRenderer);
+    SDL_RenderPresent(SDLRenderer);
 }
 
 void SDL_Event_Loop()

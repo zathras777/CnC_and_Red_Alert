@@ -325,13 +325,13 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 
 		void Scale_Rotate(BitmapClass &bmp,TPoint2D const &pt,long scale,unsigned char angle);
 
-		bool Is_Window_Surface() const {return WindowSurface != NULL;}
+		bool Is_Window_Surface() const {return WindowTexture != NULL;}
 		void Update_Window_Surface();
 		void Update_Palette(uint8_t *palette);
 		const void *Get_Palette() const;
 
 	protected:
-		void *WindowSurface = NULL;
+		void *WindowTexture = NULL;
 		void *PaletteSurface = NULL;
 };
 

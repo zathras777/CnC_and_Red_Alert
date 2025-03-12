@@ -12,6 +12,8 @@
 
 void *MainWindow;
 
+extern SDL_Renderer *SDLRenderer;
+
 GraphicViewPortClass *LogicPage;
 bool AllowHardwareBlitFills = true;
 bool OverlappedVideoBlits = true;
@@ -909,7 +911,7 @@ void GraphicBufferClass::Init(int w, int h, void *buffer, long size, GBC_Enum fl
     XPos = YPos = 0;
 
     if(flags & GBC_VISIBLE) {
-        WindowSurface = SDL_GetWindowSurface((SDL_Window *)MainWindow);
+        WindowTexture = SDL_CreateTexture(SDLRenderer, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, Width, Height);
         PaletteSurface = SDL_CreateRGBSurface(0, Width, Height, 8, 0, 0, 0, 0);
 
         WindowBuffer = this;
@@ -935,7 +937,7 @@ void GraphicBufferClass::Un_Init(void)
 
 bool GraphicBufferClass::Lock(void)
 {
-    if(!WindowSurface)
+    if(!PaletteSurface)
         return true;
 
     if(!LockCount)
@@ -950,7 +952,7 @@ bool GraphicBufferClass::Lock(void)
 
 bool GraphicBufferClass::Unlock(void)
 {
-    if(!WindowSurface || !LockCount)
+    if(!PaletteSurface || !LockCount)
         return true;
 
     LockCount--;
@@ -967,8 +969,18 @@ bool GraphicBufferClass::Unlock(void)
 
 void GraphicBufferClass::Update_Window_Surface()
 {
-    SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, (SDL_Surface *)WindowSurface, NULL);
-    SDL_UpdateWindowSurface((SDL_Window*)MainWindow);
+    auto window_tex = (SDL_Texture *)WindowTexture;
+
+    // blit from paletted surface
+    SDL_Surface *tmp_surf;
+    SDL_LockTextureToSurface(window_tex, NULL, &tmp_surf);
+    SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, tmp_surf, NULL);
+    SDL_UnlockTexture(window_tex);
+
+    // copy to screen
+    SDL_RenderClear(SDLRenderer);
+    SDL_RenderCopy(SDLRenderer, window_tex, NULL, NULL);
+    SDL_RenderPresent(SDLRenderer);
 
     // update the event loop here too for now
     SDL_Event_Loop();
