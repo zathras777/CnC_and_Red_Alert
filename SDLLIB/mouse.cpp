@@ -119,7 +119,11 @@ void WWMouseClass::Show_Mouse(void)
     if(!State)
         return;
     if(--State == 0)
+    {
+        if(PaletteDirty)
+            Update_Palette();
         SDL_ShowCursor(SDL_ENABLE);
+    }
 }
 
 void WWMouseClass::Conditional_Hide_Mouse(int x1, int y1, int x2, int y2)
@@ -171,6 +175,15 @@ void WWMouseClass::Update_Palette()
 {
     if(!WindowBuffer | !SDLSurface)
         return;
+
+    if(State)
+    {
+        // don't do anything now if cursor is hidden anyway
+        PaletteDirty = true;
+        return;
+    }
+
+    PaletteDirty = false;
 
     auto sdl_surf = (SDL_Surface *)SDLSurface;
 

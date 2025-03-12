@@ -94,6 +94,7 @@ class WWMouseClass {
 		int						State;
 
 		int LastX = 0, LastY = 0;
+		bool PaletteDirty = false;
 };
 
 void Hide_Mouse(void);
