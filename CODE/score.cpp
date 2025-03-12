@@ -1722,7 +1722,10 @@ void Call_Back_Delay(int time)
 		}
 #ifdef PORTABLE
 		else
+		{
+			if(SoundType) Sound_Callback();
 			Video_End_Frame();
+		}
 #endif
 		Animate_Score_Objs();
 
