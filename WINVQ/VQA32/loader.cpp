@@ -75,7 +75,7 @@
 #else
 #include <unistd.h>
 #endif
-#include <malloc.h>
+#include <stdlib.h>
 #include "vq.h"
 #include "vqaplayp.h"
 #include <vqm32/all.h>
