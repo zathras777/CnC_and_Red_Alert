@@ -346,9 +346,232 @@ bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel,
     return true;
 }
 
-bool Linear_Scale_To_Linear(void *, void *, int, int, int, int, int, int, int, int, bool, char *)
+bool Linear_Scale_To_Linear(void *thisptr, void *dest, int src_x, int src_y, int dst_x, int dst_y, int src_w, int src_h, int dst_w, int dst_h, bool trans, char *remap)
 {
-    printf("%s\n", __func__);
+    // Check for scale error when to or from size 0,0
+    if(dst_w == 0 || dst_h == 0 || src_w == 0 || src_h == 0)
+        return true;
+
+    auto vp_src = (GraphicViewPortClass *)thisptr;
+    auto vp_dst = (GraphicViewPortClass *)dest;
+
+    int src_x0 = src_x;
+    int src_y0 = src_y;
+    int src_x1 = src_x + src_w;
+    int src_y1 = src_y + src_h;
+
+    int dst_x0 = dst_x;
+    int dst_y0 = dst_y;
+    int dst_x1 = dst_x + dst_w;
+    int dst_y1 = dst_y + dst_h;
+
+    // clip source
+    int code0 = Make_Code(src_x0, src_y0, vp_src->Get_Width(), vp_src->Get_Height());
+    int code1 = Make_Code(src_x1, src_y1, vp_src->Get_Width() + 1, vp_src->Get_Height() + 1);
+
+    // outside
+    if(code0 & code1)
+        return true;
+
+    if(code0 | code1)
+    {
+        // apply clip
+        if(code0 & 0b1000)
+        {
+            src_x0 = 0;
+            dst_x0 = dst_x + (src_x0 - src_x) * dst_w / src_w;
+        }
+        if(code1 & 0b0100)
+        {
+            src_x1 = vp_src->Get_Width();
+            dst_x1 = dst_x + (src_x1 - src_x) * dst_w / src_w;
+        }
+        if(code0 & 0b0010)
+        {
+            src_y0 = 0;
+            dst_y0 = dst_y + (src_y0 - src_y) * dst_h / src_h;
+        }
+        if(code1 & 0b0001)
+        {
+            src_y1 = vp_src->Get_Height();
+            dst_y1 = dst_y + (src_y1 - src_y) * dst_h / src_h;
+        }
+    }
+
+    // clip dest
+    code0 = Make_Code(dst_x0, dst_y0, vp_dst->Get_Width(), vp_dst->Get_Height());
+    code1 = Make_Code(dst_x1, dst_y1, vp_dst->Get_Width() + 1, vp_dst->Get_Height() + 1);
+
+    // outside
+    if(code0 & code1)
+        return true;
+
+    if(code0 | code1)
+    {
+        // apply clip
+        if(code0 & 0b1000)
+        {
+            dst_x0 = 0;
+            src_x0 = src_x + (dst_x0 - dst_x) * src_w / dst_w;
+        }
+        if(code1 & 0b0100)
+        {
+            dst_x1 = vp_dst->Get_Width();
+            src_x1 = src_x + (dst_x1 - dst_x) * src_w / dst_w;
+        }
+        if(code0 & 0b0010)
+        {
+            src_y0 -= dst_x0;
+            src_y0 = src_y + (dst_y0 - dst_y) * src_h / dst_h;
+        }
+        if(code1 & 0b0001)
+        {
+            dst_y1 = vp_dst->Get_Height();
+            src_y1 = src_y + (dst_y1 - dst_y) * src_h / dst_h;
+        }
+    }
+
+    // do scale
+    int src_win_width = vp_src->Get_XAdd() + vp_src->Get_Width() + vp_src->Get_Pitch();
+    auto src_offset = vp_src->Get_Offset() + src_x0 + src_y0 * src_win_width;
+
+    int dst_win_width = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
+    auto dst_offset = vp_dst->Get_Offset() + dst_x0 + dst_y0 * dst_win_width;
+
+    int dy_intr = src_h / dst_h * src_win_width;
+    int dy_frac = src_h % dst_h;
+    int dy_acc = -dst_h;
+
+    int dx_frac = (src_w << 16) / dst_w;
+
+    if(dst_x1 <= dst_x0 || dst_y1 <= dst_y0)
+        return true;
+
+    int counter_y = dst_y1 - dst_y0;
+    int pixel_count = dst_x1 - dst_x0;
+
+    if(trans && remap)
+    {
+        do
+        {
+            int counter_x = pixel_count;
+            int x = 0;
+            auto out = dst_offset;
+            do
+            {
+                uint8_t pixel = src_offset[x >> 16];
+
+                if(pixel)
+                    *out = remap[pixel];
+
+                x += dx_frac;
+                out++;
+            }
+            while (--counter_x);
+            
+            src_offset += dy_intr;
+            dst_offset += dst_win_width;
+
+            dy_acc += dy_frac;
+            if(dy_acc > 0)
+            {
+                src_offset += src_win_width;
+                dy_acc -= dst_h;
+            }
+        }
+        while(--counter_y);
+    }
+    else if(trans)
+    {
+        // normal scale with transparency
+        do
+        {
+            int counter_x = pixel_count;
+            int x = 0;
+            auto out = dst_offset;
+            do
+            {
+                uint8_t pixel = src_offset[x >> 16];
+
+                if(pixel)
+                    *out = pixel;
+
+                x += dx_frac;
+                out++;
+            }
+            while (--counter_x);
+            
+            src_offset += dy_intr;
+            dst_offset += dst_win_width;
+
+            dy_acc += dy_frac;
+            if(dy_acc > 0)
+            {
+                src_offset += src_win_width;
+                dy_acc -= dst_h;
+            }
+        }
+        while(--counter_y);
+    }
+    else if(remap)
+    {
+        // normal scale with remap
+        do
+        {
+            int counter_x = pixel_count;
+            int x = 0;
+            auto out = dst_offset;
+            do
+            {
+                *out++ = remap[src_offset[x >> 16]];
+
+                x += dx_frac;
+                out++;
+            }
+            while (--counter_x);
+            
+            src_offset += dy_intr;
+            dst_offset += dst_win_width;
+
+            dy_acc += dy_frac;
+            if(dy_acc > 0)
+            {
+                src_offset += src_win_width;
+                dy_acc -= dst_h;
+            }
+        }
+        while(--counter_y);
+    }
+    else
+    {
+        // normal scale
+        do
+        {
+            int counter_x = pixel_count;
+            int x = 0;
+            auto out = dst_offset;
+            do
+            {
+                *out++ = src_offset[x >> 16];
+
+                x += dx_frac;
+                out++;
+            }
+            while (--counter_x);
+            
+            src_offset += dy_intr;
+            dst_offset += dst_win_width;
+
+            dy_acc += dy_frac;
+            if(dy_acc > 0)
+            {
+                src_offset += src_win_width;
+                dy_acc -= dst_h;
+            }
+        }
+        while(--counter_y);
+    }
+
     return true;
 }
 
