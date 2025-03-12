@@ -108,7 +108,7 @@ void ScrollClass::AI(KeyNumType &input, int x, int y)
 		bool noscroll = false;
 
 		if (!noscroll) {
-			bool at_screen_edge = (y == 0 || x == 0 || x >= SeenBuff.Get_Width()-1 || y >= SeenBuff.Get_Height()-1);
+			bool at_screen_edge = (y <= 0 || x <= 0 || x >= SeenBuff.Get_Width()-1 || y >= SeenBuff.Get_Height()-1);
 
 			/*
 			**	Verify that the mouse is over a scroll region.
