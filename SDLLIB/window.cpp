@@ -21,9 +21,12 @@ void SDL_Create_Main_Window(const char *title, int width, int height)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
-    MainWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+    MainWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
     SDLRenderer = SDL_CreateRenderer((SDL_Window *)MainWindow, -1, 0);
+
+    SDL_RenderSetLogicalSize(SDLRenderer, width, height);
+    SDL_RenderSetIntegerScale(SDLRenderer, SDL_TRUE);
 
     // sometimes the window won't be created until it has content
     // so we get stuck waiting for focus, which it'll never get because it doesn't exist
