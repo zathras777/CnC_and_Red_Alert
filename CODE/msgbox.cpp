@@ -78,7 +78,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 {
 #define BUFFSIZE (511)
 	char buffer[BUFFSIZE];
-	bool retval = -1;
+	int retval = -1;
 	bool process;								// loop while true
 	int selection;
 	bool pressed;
