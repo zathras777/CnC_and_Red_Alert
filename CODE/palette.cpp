@@ -34,6 +34,9 @@ void PaletteClass::Set(int fade, void (*callback)())
         {
             int cur_time = TickCount.Value() - start_time;
 
+            if(cur_time > fade)
+                cur_time = fade;
+
             const unsigned char *old_ptr = CurrentPalette;
             const unsigned char *new_ptr = *this;
             unsigned char *out_ptr = fade_palette;
