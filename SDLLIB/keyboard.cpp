@@ -2,6 +2,7 @@
 #include <SDL.h>
 
 #include "keyboard.h"
+#include "mouse.h"
 #include "ww_win.h"
 
 WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0)
@@ -162,6 +163,10 @@ bool WWKeyboardClass::Event_Handler(SDL_Event *event)
         case SDL_KEYDOWN:
         case SDL_KEYUP:
             Put_Key_Message(event->key.keysym.scancode, event->key.state == SDL_RELEASED);
+            break;
+
+        case SDL_MOUSEMOTION:
+            Update_Mouse_Pos(event->motion.x, event->motion.y);
             break;
     }
 

@@ -64,6 +64,7 @@ class WWMouseClass {
 		void Clear_Cursor_Clip(void);
 
 		void Update_Palette();
+		void Update_Pos(int x, int y);
 
 	private:
 		enum 	{
@@ -91,6 +92,8 @@ class WWMouseClass {
 		char *					PrevCursor;		// pointer to previous cursor shape
 		int						MouseUpdate;
 		int						State;
+
+		int LastX = 0, LastY = 0;
 };
 
 void Hide_Mouse(void);
@@ -103,5 +106,6 @@ int Get_Mouse_X(void);
 int Get_Mouse_Y(void);
 
 void Update_Mouse_Palette();
+void Update_Mouse_Pos(int x, int y);
 
 #endif

@@ -139,16 +139,12 @@ int WWMouseClass::Get_Mouse_State(void)
 
 int WWMouseClass::Get_Mouse_X(void)
 {
-    int x;
-    SDL_GetMouseState(&x, NULL);
-    return x;
+    return LastX;
 }
 
 int WWMouseClass::Get_Mouse_Y(void)
 {
-    int y;
-    SDL_GetMouseState(NULL, &y);
-    return y;
+    return LastY;
 }
 
 void WWMouseClass::Draw_Mouse(GraphicViewPortClass *scr)
@@ -190,6 +186,12 @@ void WWMouseClass::Update_Palette()
     if(SDLCursor)
         SDL_FreeCursor((SDL_Cursor *)SDLCursor);
     SDLCursor = sdl_cursor;
+}
+
+void WWMouseClass::Update_Pos(int x, int y)
+{
+    LastX = x;
+    LastY = y;
 }
 
 void Hide_Mouse(void)
@@ -248,4 +250,10 @@ void Update_Mouse_Palette()
 {
     if(_Mouse)
         _Mouse->Update_Palette();
+}
+
+void Update_Mouse_Pos(int x, int y)
+{
+    if(_Mouse)
+        _Mouse->Update_Pos(x, y);
 }
