@@ -5375,7 +5375,12 @@ void Shake_The_Screen(int shakes)
 			case 1:
 				HidPage.Blit(SeenPage, 0,0, 0,2, 640,398);
 				break;
-		} while (x == TickCount);
+		}
+#ifdef PORTABLE
+		while (x == TickCount) Video_End_Frame();
+#else
+		while (x == TickCount);
+#endif
 //		} while (CountDownTimer != 0) ;
 	}
 	HidPage.Blit(SeenPage);
