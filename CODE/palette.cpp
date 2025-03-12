@@ -51,6 +51,10 @@ void PaletteClass::Set(int fade, void (*callback)())
             Set_Palette(fade_palette);
             if(callback)
                 callback();
+#ifdef PORTABLE
+            else // make sure we actually display the fade
+                Video_End_Frame();
+#endif
 
             if(cur_time == fade)
                 break;
