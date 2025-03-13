@@ -5,6 +5,10 @@
 #include "ww_win.h"
 #include "gbuffer.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
+
 unsigned int WinX;
 unsigned int WinY;
 unsigned int Window;
@@ -39,6 +43,12 @@ void SDL_Create_Main_Window(const char *title, int width, int height)
 
 void SDL_Event_Loop()
 {
+#ifdef __EMSCRIPTEN__
+    // sometimes we loop waiting for input
+    // which isn't going to happen if the browser never gets control
+    emscripten_sleep(0);
+#endif
+
     SDL_Event event;
 	while(SDL_PollEvent(&event))
     {
