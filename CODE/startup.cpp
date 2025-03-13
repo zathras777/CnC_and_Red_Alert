@@ -1084,6 +1084,7 @@ void Read_Setup_Options( RawFileClass *config_file )
 	}
 }
 
+#ifndef WINSOCK_IPX // this is only used by ipx95
 void Get_OS_Version (void)
 {
 #ifdef _WIN32
@@ -1105,6 +1106,7 @@ void Get_OS_Version (void)
 #endif	//(0)
 
 }
+#endif
 
 
 #endif	//WIN32
