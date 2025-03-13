@@ -87,9 +87,10 @@ HANDLE WinModemClass::Get_Port_Handle(void)
     return NULL;
 }
 
-ModemRegistryEntryClass::ModemRegistryEntryClass(int modem_number)
+ModemRegistryEntryClass::ModemRegistryEntryClass(int modem_number) :
+    ModemName(NULL), ModemDeviceName(NULL), ErrorCorrectionEnable(NULL), ErrorCorrectionDisable(NULL), CompressionEnable(NULL),
+    CompressionDisable(NULL), HardwareFlowControl(NULL), NoFlowControl(NULL)
 {
-
 }
 
 ModemRegistryEntryClass::~ModemRegistryEntryClass()
