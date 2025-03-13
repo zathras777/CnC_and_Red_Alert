@@ -97,7 +97,7 @@ class DropListClass : public EditClass {
 
 
 
-
+#ifdef NEVER
 template<class T>
 class TDropListClass : public EditClass {
 	public:
@@ -348,6 +348,6 @@ void TDropListClass<T>::Set_Selected_Index(T text)
 		}
 	}
 }
-
+#endif
 
 #endif

@@ -152,7 +152,7 @@ class ListClass : public ControlClass
 		int CurrentTopIndex;
 };
 
-
+#ifdef NEVER
 template<class T>
 class TListClass : public ControlClass
 {
@@ -800,6 +800,6 @@ void TListClass<T>::Set_Selected_Index(T text)
 		}
 	}
 }
-
+#endif
 
 #endif
