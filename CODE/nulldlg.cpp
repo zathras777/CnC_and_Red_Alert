@@ -2118,7 +2118,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 	cwaitstr_index = tempsettings.CallWaitStringIndex;
 	for (i = 0; i < CALL_WAIT_STRINGS_NUM; i++) {
 		if ( i == CALL_WAIT_CUSTOM ) {
-			item = Session.CallWaitStrings[ i ];
+			item = strdup(Session.CallWaitStrings[ i ]);
 			temp = strchr( item, '-' );
 			if ( temp ) {
 				pos = (int)(temp - item) + 2;
@@ -2129,6 +2129,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 					strncpy( cwaitstrbuf, item + pos, CWAITSTRBUF_MAX );
 				}
 			}
+			free(item);
 		} else if (i == cwaitstr_index) {
 			strncpy( cwaitstrbuf, Session.CallWaitStrings[ i ], CWAITSTRBUF_MAX );
 		}
