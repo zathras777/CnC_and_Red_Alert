@@ -3,6 +3,8 @@
 #include <stdint.h>
 
 #include "misc.h"
+#include "timer.h"
+#include "ww_win.h"
 
 SurfaceMonitorClass	AllSurfaces;
 
@@ -27,7 +29,10 @@ void Wait_Blit(void)
 
 void Delay(int duration)
 {
-    printf("%s\n", __func__);
+    auto target = WindowsTimer->Get_System_Tick_Count() + duration;
+
+	while(WindowsTimer->Get_System_Tick_Count() < target)
+		Video_End_Frame();
 }
 
 void *Build_Fading_Table(void const *palette, void *dest, long int color, long int frac)
