@@ -44,8 +44,8 @@
 #include	"function.h"
 #include "vector.h"
 #ifdef WINSOCK_IPX
-#include	"WSProto.h"
-#include	"WSPUDP.h"
+#include	"wsproto.h"
+#include	"wspudp.h"
 #endif	//WINSOCK_IPX
 #include	<stdio.h>
 
