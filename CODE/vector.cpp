@@ -406,6 +406,7 @@ template class VectorClass<CellClass>;
 template class VectorClass<char *>;
 template class VectorClass<char const*>;
 template class VectorClass<void *>;
+template class VectorClass<unsigned char>;
 
 //----------------------------------------------------------------------------------------------
 
