@@ -230,9 +230,9 @@ add_executable(rasdl WIN32
 	#dibutil.cpp #
 	wol_gsup.cpp
 	udpaddr.cpp
-	#wsproto.cpp #winsock
-	#wspudp.cpp #winsock
-	#wspipx.cpp #winsock
+	wsproto.cpp
+	wspudp.cpp
+	wspipx.cpp
 	_wsproto.cpp
 	#tooltip.cpp # requires WOLAPI_INTEGRATION
 	wol_opt.cpp
@@ -260,7 +260,6 @@ add_executable(rasdl WIN32
 	# new
 	nondosstub.cpp
 	sdlstub.cpp
-	ipxstub.cpp
 	2keyfbuf.cpp
 )
 
@@ -276,6 +275,7 @@ endif()
 target_compile_definitions(rasdl PRIVATE
 	ENGLISH=1  # TODO: also french/german
 	PORTABLE=1 # to indicate not windows or dos sometimes
+	WINSOCK_IPX=1
 )
 target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwipx32
 

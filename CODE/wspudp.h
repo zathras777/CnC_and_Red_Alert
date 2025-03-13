@@ -51,7 +51,7 @@ class UDPInterfaceClass : public WinsockInterfaceClass {
 
 		UDPInterfaceClass (void);
 		virtual ~UDPInterfaceClass(void);
-#ifdef _WIN32
+#ifndef PORTABLE
 	 	virtual long Message_Handler(HWND window, UINT message, UINT wParam, LONG lParam);
 #endif
 		virtual bool Open_Socket ( SOCKET socketnum );

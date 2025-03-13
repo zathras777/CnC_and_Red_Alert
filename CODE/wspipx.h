@@ -39,6 +39,15 @@
 
 #include	"wsproto.h"
 
+#ifdef _WIN32
+/*
+** Include Windows specific extensions for Winsock that allow IPX over winsock 1.1
+*/
+#include	<wsipx.h>
+#else
+#include <sys/socket.h>
+typedef sockaddr_storage SOCKADDR_IPX;
+#endif
 
 /*
 ** IPX interface class. This handles access to the IPX specific portions of the
@@ -52,7 +61,9 @@ class IPXInterfaceClass : public WinsockInterfaceClass {
 		IPXInterfaceClass (void);
 		//virtual ~IPXInterfaceClass(void){Close();};
 		bool Get_Network_Card_Address (int card_number, SOCKADDR_IPX *addr);
+#ifndef PORTABLE
 	 	virtual long Message_Handler(HWND window, UINT message, UINT wParam, LONG lParam);
+#endif
 		virtual bool Open_Socket ( SOCKET socketnum );
 
 		virtual ProtocolEnum Get_Protocol (void) {

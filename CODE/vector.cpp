@@ -404,9 +404,14 @@ template class VectorClass<RemapControlType *>;
 template class VectorClass<BaseNodeClass>;
 template class VectorClass<CellClass>;
 template class VectorClass<char *>;
+template class VectorClass<unsigned char *>;
 template class VectorClass<char const*>;
 template class VectorClass<void *>;
 template class VectorClass<unsigned char>;
+
+#ifdef WINSOCK_IPX
+template class VectorClass<WinsockInterfaceClass::WinsockBufferType *>;
+#endif
 
 //----------------------------------------------------------------------------------------------
 

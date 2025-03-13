@@ -50,8 +50,20 @@
 
 #include	<assert.h>
 #include	<stdio.h>
+
+#ifdef _WIN32
 #include	<svcguid.h>
 #include	<nspapi.h>
+#else
+#include <netdb.h>
+#include <unistd.h>
+#include <netinet/in.h>
+
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
+
+#define OutputDebugString(x) printf("%s", x)
+#endif
 
 /***********************************************************************************************
  * UDPInterfaceClass::UDPInterfaceClass -- Class constructor.                                  *
@@ -145,7 +157,7 @@ void UDPInterfaceClass::Set_Broadcast_Address (void *address)
  *=============================================================================================*/
 bool UDPInterfaceClass::Open_Socket ( SOCKET )
 {
-	LINGER ling;
+	linger ling;
 	struct 	sockaddr_in addr;
 
 	/*
@@ -170,7 +182,7 @@ bool UDPInterfaceClass::Open_Socket ( SOCKET )
 	addr.sin_port = (unsigned short) htons ( (unsigned short) PlanetWestwoodPortNumber);
 	addr.sin_addr.s_addr = htonl (INADDR_ANY);
 
-	if ( bind (Socket, (LPSOCKADDR)&addr, sizeof(addr) ) == SOCKET_ERROR) {
+	if ( bind (Socket, (sockaddr *)&addr, sizeof(addr) ) == SOCKET_ERROR) {
 		Close_Socket ();
 		return (false);
 	}
@@ -219,7 +231,7 @@ bool UDPInterfaceClass::Open_Socket ( SOCKET )
 	*/
 	ling.l_onoff = 0;		// linger off
 	ling.l_linger = 0;	// timeout in seconds (ie close now)
-	setsockopt (Socket, SOL_SOCKET, SO_LINGER, (LPSTR)&ling, sizeof(ling));
+	setsockopt (Socket, SOL_SOCKET, SO_LINGER, (char *)&ling, sizeof(ling));
 
 	WinsockInterfaceClass::Set_Socket_Options();
 
@@ -277,10 +289,12 @@ void UDPInterfaceClass::Broadcast (void *buffer, int buffer_len)
 		*/
 		OutBuffers.Add ( packet );
 
+#ifndef PORTABLE
 		/*
 		** Send a message to ourselves so that we can initiate a write if Winsock is idle.
 		*/
 		SendMessage ( MainWindow, Protocol_Event_Message(), 0, (LONG)FD_WRITE );
+#endif
 
 		/*
 		** Make sure the message loop gets called.
@@ -307,6 +321,7 @@ void UDPInterfaceClass::Broadcast (void *buffer, int buffer_len)
  * HISTORY:                                                                                    *
  *    3/20/96 3:05PM ST : Created                                                              *
  *=============================================================================================*/
+#ifndef PORTABLE
 long UDPInterfaceClass::Message_Handler(HWND, UINT message, UINT, LONG lParam)
 {
 	struct 	sockaddr_in addr;
@@ -429,3 +444,4 @@ long UDPInterfaceClass::Message_Handler(HWND, UINT message, UINT, LONG lParam)
 
 	return (0);
 }
+#endif

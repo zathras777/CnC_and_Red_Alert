@@ -46,17 +46,15 @@
 #include	<assert.h>
 #include	<stdio.h>
 
-/*
-** Include Windows specific extensions for Winsock that allow IPX over winsock 1.1
-*/
-#include	<wsipx.h>
-
+#ifdef _WIN32
 /*
 ** This file normally resides with the SDK. However, since it needs fixing up before watcom will
 ** compile it, it has been incorporated into the project.
 */
 #include	"wsnwlink.h"
+#else
 
+#endif
 
 /***********************************************************************************************
  * IPXInterfaceClass::IPXInterfaceClass -- Class constructor                                   *
@@ -100,6 +98,9 @@ IPXInterfaceClass::IPXInterfaceClass (void) : WinsockInterfaceClass()
  *=============================================================================================*/
 bool IPXInterfaceClass::Get_Network_Card_Address (int card_number, SOCKADDR_IPX *addr)
 {
+#ifdef PORTABLE
+	return false;
+#else
 	int            	cbOpt;
 	int					cbAddr = sizeof( SOCKADDR_IPX );
     SOCKET         	s;
@@ -159,6 +160,7 @@ bool IPXInterfaceClass::Get_Network_Card_Address (int card_number, SOCKADDR_IPX 
 
 	closesocket (s);
 	return (true);
+#endif
 }
 
 
@@ -182,6 +184,9 @@ bool IPXInterfaceClass::Get_Network_Card_Address (int card_number, SOCKADDR_IPX 
  *=============================================================================================*/
 bool IPXInterfaceClass::Open_Socket( SOCKET socketnum )
 {
+#ifdef PORTABLE
+	return false;
+#else
 	SOCKADDR_IPX 	addr;
 	bool				delay = true;
 	int				err;
@@ -286,6 +291,7 @@ bool IPXInterfaceClass::Open_Socket( SOCKET socketnum )
 	** Woohoo!
 	*/
 	return ( true );
+#endif
 }
 
 
@@ -310,6 +316,7 @@ bool IPXInterfaceClass::Open_Socket( SOCKET socketnum )
  * HISTORY:                                                                                    *
  *    8/4/97 5:55PM ST : Created                                                               *
  *=============================================================================================*/
+#ifndef PORTABLE
 long IPXInterfaceClass::Message_Handler(HWND , UINT message, UINT , LONG lParam)
 {
 
@@ -456,5 +463,5 @@ long IPXInterfaceClass::Message_Handler(HWND , UINT message, UINT , LONG lParam)
 
 	return (0);
 }
-
+#endif
 

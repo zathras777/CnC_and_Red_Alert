@@ -60,6 +60,21 @@
 
 #include	<stdio.h>
 
+#ifdef _WIN32
+typedef int socklen_t;
+#else
+#include <unistd.h>
+#include <sys/socket.h>
+
+#define INVALID_SOCKET -1
+#define INVALID_HANDLE_VALUE NULL
+
+#define closesocket close
+
+#define OutputDebugString(x) printf("%s", x)
+#define GetLastError() errno
+#endif
+
 
 /***********************************************************************************************
  * WIC::WinsockInterfaceClass -- constructor for the WinsockInterfaceClass                     *
@@ -134,10 +149,12 @@ void WinsockInterfaceClass::Close(void)
 	*/
 	Close_Socket();
 
+#ifdef _WIN32
 	/*
 	** Call the Winsock cleanup function to say we are finished using Winsock
 	*/
 	WSACleanup();
+#endif
 
 	WinsockInitialised = false;
 }
@@ -184,6 +201,10 @@ void WinsockInterfaceClass::Close_Socket (void)
  *=============================================================================================*/
 bool WinsockInterfaceClass::Start_Listening (void)
 {
+#ifdef PORTABLE
+	// TODO: WSAAsyncSelect replacement
+	return false;
+#else
 	/*
 	** Enable asynchronous events on the socket
 	*/
@@ -195,6 +216,7 @@ bool WinsockInterfaceClass::Start_Listening (void)
 		return (false);
 	}
 	return (true);
+#endif
 }
 
 
@@ -214,10 +236,12 @@ bool WinsockInterfaceClass::Start_Listening (void)
  *=============================================================================================*/
 void WinsockInterfaceClass::Stop_Listening (void)
 {
+#ifndef PORTABLE
 	if ( ASync != INVALID_HANDLE_VALUE ) {
 		WSACancelAsyncRequest ( ASync );
 		ASync = INVALID_HANDLE_VALUE;
 	}
+#endif
 }
 
 
@@ -299,12 +323,14 @@ bool WinsockInterfaceClass::Init(void)
 	*/
 	if (WinsockInitialised) return (true);
 
+#ifdef _WIN32
 	/*
 	** Create a buffer much larger than the sizeof (WSADATA) would indicate since Bounds Checker
 	** says that a buffer of that size gets overrun.
 	*/
 	char	*buffer = new char [sizeof (WSADATA) + 1024];
 	WSADATA *winsock_info = (WSADATA*) (&buffer[0]);
+#endif
 
 	/*
 	** Initialise socket and event handle to null
@@ -314,6 +340,7 @@ bool WinsockInterfaceClass::Init(void)
 	Discard_In_Buffers();
 	Discard_Out_Buffers();
 
+#ifdef _WIN32
 	/*
 	** Start WinSock, and fill in our Winsock info structure
 	*/
@@ -337,12 +364,14 @@ bool WinsockInterfaceClass::Init(void)
 		return (false);
 	}
 
+	delete [] buffer;
+#endif
+
 	/*
 	** Everything is OK so return success
 	*/
 	WinsockInitialised = true;
 
-	delete [] buffer;
 	return (true);
 
 }
@@ -450,10 +479,12 @@ void WinsockInterfaceClass::WriteTo(void *buffer, int buffer_len, void *address)
 	*/
 	OutBuffers.Add ( packet );
 
+#ifndef PORTABLE
 	/*
 	** Send a message to ourselves so that we can initiate a write if Winsock is idle.
 	*/
 	SendMessage ( MainWindow, Protocol_Event_Message(), 0, (LONG)FD_WRITE );
+#endif
 
 	/*
 	** Make sure the message loop gets called.
@@ -503,10 +534,12 @@ void WinsockInterfaceClass::Broadcast (void *buffer, int buffer_len)
 	*/
 	OutBuffers.Add ( packet );
 
+#ifndef PORTABLE
 	/*
 	** Send a message to ourselves so that we can initiate a write if Winsock is idle.
 	*/
 	SendMessage ( MainWindow, Protocol_Event_Message(), 0, (LONG)FD_WRITE );
+#endif
 
 	/*
 	** Make sure the message loop gets called.
@@ -534,7 +567,7 @@ void WinsockInterfaceClass::Broadcast (void *buffer, int buffer_len)
 void WinsockInterfaceClass::Clear_Socket_Error(SOCKET socket)
 {
 	unsigned long error_code;
-	int length = 4;
+	socklen_t length = 4;
 
 	getsockopt (socket, SOL_SOCKET, SO_ERROR, (char*)&error_code, &length);
 	error_code = 0;

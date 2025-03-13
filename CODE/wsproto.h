@@ -123,7 +123,7 @@ class WinsockInterfaceClass {
 			return (false);
 		};
 
-#ifdef _WIN32
+#ifndef PORTABLE
 	 	virtual long Message_Handler(HWND, UINT, UINT, LONG) {
 			return (1);
 		}
