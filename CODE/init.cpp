@@ -1259,6 +1259,11 @@ bool Select_Game(bool fade)
 							*/
 #ifdef WINSOCK_IPX
 							if (PacketTransport ) delete PacketTransport;
+#ifdef PORTABLE
+							// we don't even have IPX
+							PacketTransport = new UDPInterfaceClass;
+							PacketTransport->Set_Broadcast_Address((char *)"255.255.255.255");
+#else
 //							if (WWMessageBox().Process("Select a protocol to use for network play.", "UDP", "IPX")) {
 								PacketTransport = new IPXInterfaceClass;
 								assert ( PacketTransport != NULL);
@@ -1274,7 +1279,7 @@ bool Select_Game(bool fade)
 //									break;
 //								}
 //							}
-
+#endif
 #endif	//WINSOCK_IPX
 							WWDebugString ("RA95 - About to call Init_Network.\n");
 							if (Session.Type == GAME_IPX && Init_Network() && Remote_Connect()) {
