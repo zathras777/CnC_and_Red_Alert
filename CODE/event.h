@@ -191,7 +191,7 @@ class EventClass
 			** Delay: sender's propagation delay value for this frame
 			*/
 			struct {
-				unsigned long CRC;
+				uint32_t CRC;
 				unsigned short CommandCount;	// # commands sent so far
 				unsigned char Delay;				// propagation delay used this frame
 														// (Frame - Delay = sender's current frame #)
@@ -204,7 +204,7 @@ class EventClass
 			*/
 			struct {
 				void * Pointer;
-				unsigned long Size;
+				uint32_t Size;
 			} Variable;
 
 			//

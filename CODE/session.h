@@ -362,26 +362,26 @@ typedef struct GlobalPacketType {
 		struct {
 			HousesType House;						// player's House
 			PlayerColorType Color;				// player's color
-			unsigned long NameCRC;				// CRC of player's game's name
-			unsigned long MinVersion;			// game's min supported version
-			unsigned long MaxVersion;			// game's max supported version
+			uint32_t NameCRC;					// CRC of player's game's name
+			uint32_t MinVersion;				// game's min supported version
+			uint32_t MaxVersion;				// game's max supported version
 			int CheatCheck;						// Unique ID of "rules.ini" file.
 		} PlayerInfo;
 		struct {
 			char Scenario[DESCRIP_MAX];		// Scenario Name
 			unsigned int Credits;				// player's credits
-			unsigned int IsBases		: 1;		// 1 = bases are allowed
-			unsigned int IsTiberium	: 1;		// 1 = tiberium is allowed
-			unsigned int IsGoodies	: 1;		// 1 = goodies are allowed
-			unsigned int IsGhosties	: 1;		// 1 = ghosts are allowed
-			unsigned int OfficialScenario :1;// Is this scenario an official Westwood one?
+			uint8_t IsBases		: 1;			// 1 = bases are allowed
+			uint8_t IsTiberium	: 1;			// 1 = tiberium is allowed
+			uint8_t IsGoodies	: 1;			// 1 = goodies are allowed
+			uint8_t IsGhosties	: 1;			// 1 = ghosts are allowed
+			uint8_t OfficialScenario :1;// Is this scenario an official Westwood one?
 			unsigned char BuildLevel;			// buildable level
 			unsigned char UnitCount;			// max # units
 			unsigned char AIPlayers;			// # of AI players allowed
 			int Seed;								// random number seed
 			SpecialClass Special;				// command-line options
 			unsigned int GameSpeed;				// Game Speed
-			unsigned long Version;				// version # common to all players
+			uint32_t Version;					// version # common to all players
 			unsigned int FileLength;			// Length of scenario file to expect from host.
 #ifdef WOLAPI_INTEGRATION
 			char ShortFileName[13];				// Name of scenario file to expect from host
@@ -394,7 +394,7 @@ typedef struct GlobalPacketType {
 		struct {
 			char Buf[MAX_MESSAGE_LENGTH];		// inter-user message
 			PlayerColorType Color;					// color of sender of message
-			unsigned long NameCRC;				// CRC of sender's Game Name
+			uint32_t NameCRC;					// CRC of sender's Game Name
 		} Message;
 		struct {
 			int OneWay;								// one-way response time
@@ -403,7 +403,7 @@ typedef struct GlobalPacketType {
 			int Why;									// why were we rejected from the game?
 		} Reject;
 		struct {
-			unsigned long ID;						// unique ID for this chat node
+			uint32_t ID;						// unique ID for this chat node
 			PlayerColorType Color;				// my color
 		} Chat;
 	};
