@@ -98,8 +98,8 @@ bool bReconnectDialogCancelled;
 //	CRC[] is a record of our last 32 game CRC's.
 // ColorNames is for debug output in Print_CRCs
 //---------------------------------------------------------------------------
-static unsigned long GameCRC;
-static unsigned long CRC[32] =
+static uint32_t GameCRC;
+static uint32_t CRC[32] =
 	{0,0,0,0,0,0,0,0,0,0,
 	 0,0,0,0,0,0,0,0,0,0,
 	 0,0,0,0,0,0,0,0,0,0,
@@ -202,7 +202,7 @@ static void Queue_Playback(void);
 // Debugging:
 //...........................................................................
 static void Compute_Game_CRC(void);
-void Add_CRC(unsigned long *crc, unsigned long val);
+void Add_CRC(uint32_t *crc, uint32_t val);
 static void Print_CRCs(EventClass *ev);
 static void Init_Queue_Mono(ConnManClass *net);
 static void Update_Queue_Mono(ConnManClass *net, int flow_index);
@@ -3892,7 +3892,7 @@ static void Compute_Game_CRC(void)
  * HISTORY:                                                                *
  *   05/09/1995 BRR : Created.                                             *
  *=========================================================================*/
-void Add_CRC(unsigned long *crc, unsigned long val)
+void Add_CRC(uint32_t *crc, uint32_t val)
 {
 	int hibit;
 

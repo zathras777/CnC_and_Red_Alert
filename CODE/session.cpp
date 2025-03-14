@@ -1754,7 +1754,7 @@ void SessionClass::Trap_Object(void)
 unsigned long SessionClass::Compute_Unique_ID(void)
 {
 	time_t tm;
-	unsigned long id;
+	uint32_t id;
 	char *path;
 	int i;
 
@@ -1762,7 +1762,7 @@ unsigned long SessionClass::Compute_Unique_ID(void)
 	// Start with the seconds since Jan 1, 1970 (system local time)
 	//------------------------------------------------------------------------
 	time(&tm);
-	id = (unsigned long)tm;
+	id = (uint32_t)tm;
 
 	//------------------------------------------------------------------------
 	// Now add in the free space on the hard drive
@@ -1778,7 +1778,7 @@ unsigned long SessionClass::Compute_Unique_ID(void)
 	path = getenv("PATH");
 	if (path) {
 		for (i = 0; i < strlen(path); i++) {
-			Add_CRC(&id, (unsigned long)path[i]);
+			Add_CRC(&id, (uint32_t)path[i]);
 		}
 	}
 
