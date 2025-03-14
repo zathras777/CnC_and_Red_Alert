@@ -1325,7 +1325,7 @@ void Decode_All_Pointers(void)
 	**	Currently-selected objects.
 	*/
 	for (int index = 0; index < CurrentObject.Count(); index++) {
-		CurrentObject[index] = As_Object((TARGET)CurrentObject[index]);
+		CurrentObject[index] = As_Object((TARGET)(intptr_t)CurrentObject[index]);
 		assert(CurrentObject[index] != NULL);
 	}
 

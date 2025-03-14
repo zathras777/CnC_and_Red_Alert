@@ -124,7 +124,7 @@ void TeamTypeClass::Decode_Pointers(void)
 	**	Decode the Class array
 	*/
 	for (int i = 0; i < ClassCount; i++) {
-		Members[i].Class =  As_TechnoType((TARGET)Members[i].Class);
+		Members[i].Class =  As_TechnoType((TARGET)(intptr_t)Members[i].Class);
 		assert(Members[i].Class != NULL);
 	}
 }
@@ -305,7 +305,7 @@ void BulletClass::Decode_Pointers(void)
 	**	Decode 'Payback'
 	*/
 	if (Payback) {
-		Payback = As_Techno((TARGET)Payback);
+		Payback = As_Techno((TARGET)(intptr_t)Payback);
 		assert(Payback != NULL);
 	}
 
@@ -367,7 +367,7 @@ void FactoryClass::Code_Pointers(void)
 void FactoryClass::Decode_Pointers(void)
 {
 	if (Object) {
-		Object = As_Techno((TARGET)Object);
+		Object = As_Techno((TARGET)(intptr_t)Object);
 		assert(Object != NULL);
 	}
 
@@ -501,7 +501,7 @@ void LayerClass::Code_Pointers(void)
 void LayerClass::Decode_Pointers(void)
 {
 	for (int index = 0; index < Count(); index++) {
-		TARGET target = (TARGET)(*this)[index];
+		TARGET target = (TARGET)(intptr_t)(*this)[index];
 		(*this)[index] = (ObjectClass *)As_Object(target);
 		assert((*this)[index] != NULL);
 	}
@@ -656,8 +656,8 @@ void FootClass::Code_Pointers(void)
  *=============================================================================================*/
 void FootClass::Decode_Pointers(void)
 {
-	if ((TARGET)Member != TARGET_NONE) {
-		Member = (FootClass *)As_Techno((TARGET)Member);
+	if ((TARGET)(intptr_t)Member != TARGET_NONE) {
+		Member = (FootClass *)As_Techno((TARGET)(intptr_t)Member);
 		assert(Member != NULL);
 	}
 
@@ -722,7 +722,7 @@ void RadioClass::Decode_Pointers(void)
 	**	Decode 'Radio'
 	*/
 	if (Radio) {
-		Radio = As_Techno((TARGET)Radio);
+		Radio = As_Techno((TARGET)(intptr_t)Radio);
 		assert(Radio != NULL);
 	}
 
@@ -837,7 +837,7 @@ void CargoClass::Decode_Pointers(void)
 	**	Decode 'CargoHold'
 	*/
 	if (CargoHold) {
-		CargoHold = (FootClass *)As_Techno((TARGET)CargoHold);
+		CargoHold = (FootClass *)As_Techno((TARGET)(intptr_t)CargoHold);
 		assert(CargoHold != NULL);
 	}
 }
