@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "ww_win.h"
+#include "net_select.h"
 #include "gbuffer.h"
 
 #ifdef __EMSCRIPTEN__
@@ -48,6 +49,9 @@ void SDL_Event_Loop()
     // which isn't going to happen if the browser never gets control
     emscripten_sleep(0);
 #endif
+
+    // this is replacing WSAAsyncSelect, which would send through the windows event loop
+    Socket_Select();
 
     SDL_Event event;
 	while(SDL_PollEvent(&event))

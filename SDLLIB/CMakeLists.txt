@@ -11,6 +11,7 @@ add_library(sdllib STATIC
     mem.cpp
     misc.cpp
     mouse.cpp
+    net_select.cpp
     palette.cpp
     playcd.cpp
     shape.cpp
