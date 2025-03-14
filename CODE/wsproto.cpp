@@ -63,6 +63,7 @@
 #ifdef _WIN32
 typedef int socklen_t;
 #else
+#include <fcntl.h>
 #include <unistd.h>
 #include <sys/socket.h>
 
@@ -73,6 +74,13 @@ typedef int socklen_t;
 
 #define OutputDebugString(x) printf("%s", x)
 #define GetLastError() errno
+#endif
+
+#ifdef PORTABLE
+static void Socket_Event_Handler(int socket, SocketEvent event, void *data)
+{
+	((WinsockInterfaceClass *)data)->Event_Handler(socket, event);
+}
 #endif
 
 
@@ -202,8 +210,7 @@ void WinsockInterfaceClass::Close_Socket (void)
 bool WinsockInterfaceClass::Start_Listening (void)
 {
 #ifdef PORTABLE
-	// TODO: WSAAsyncSelect replacement
-	return false;
+	return Socket_Register_Select(Socket, Socket_Event_Handler, this);
 #else
 	/*
 	** Enable asynchronous events on the socket
@@ -236,7 +243,9 @@ bool WinsockInterfaceClass::Start_Listening (void)
  *=============================================================================================*/
 void WinsockInterfaceClass::Stop_Listening (void)
 {
-#ifndef PORTABLE
+#ifdef PORTABLE
+	Socket_Unregister_Select(Socket);
+#else
 	if ( ASync != INVALID_HANDLE_VALUE ) {
 		WSACancelAsyncRequest ( ASync );
 		ASync = INVALID_HANDLE_VALUE;
@@ -479,7 +488,10 @@ void WinsockInterfaceClass::WriteTo(void *buffer, int buffer_len, void *address)
 	*/
 	OutBuffers.Add ( packet );
 
-#ifndef PORTABLE
+#ifdef PORTABLE
+	// enable write events
+	Socket_Check_Write(Socket, true);
+#else
 	/*
 	** Send a message to ourselves so that we can initiate a write if Winsock is idle.
 	*/
@@ -621,7 +633,27 @@ bool WinsockInterfaceClass::Set_Socket_Options ( void )
 		assert ( err != INVALID_SOCKET );
 	}
 
+#ifdef PORTABLE
+	// setup for non-blocking io
+#ifdef _WIN32
+	u_long mode = 1;
+	ioctlsocket(Socket, FIONBIO, &mode);
+#else
+	int flags = fcntl(Socket, F_GETFL, 0);
+	fcntl(Socket, F_SETFL, flags | O_NONBLOCK);
+#endif
+#endif
+
 	return ( true );
+}
+
+int WinsockInterfaceClass::Get_Last_Error()
+{
+#ifdef _WIN32
+	return WSAGetLastError();
+#else
+	return errno;
+#endif
 }
 
 

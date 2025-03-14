@@ -50,6 +50,10 @@ typedef void *HANDLE;
 #define WM_USER 0x400
 #endif
 
+#ifdef PORTABLE
+#include "net_select.h"
+#endif
+
 /*
 ** Misc defines
 */
@@ -123,7 +127,10 @@ class WinsockInterfaceClass {
 			return (false);
 		};
 
-#ifndef PORTABLE
+#ifdef PORTABLE
+		virtual void Event_Handler(int, SocketEvent) {
+		}
+#else
 	 	virtual long Message_Handler(HWND, UINT, UINT, LONG) {
 			return (1);
 		}
@@ -145,6 +152,7 @@ class WinsockInterfaceClass {
 		inline ConnectStatusEnum Get_Connection_Status(void) {return (ConnectStatus);}
 
 	protected:
+		int Get_Last_Error();
 
 		/*
 		** This struct contains the information needed for each incoming and outgoing packet.

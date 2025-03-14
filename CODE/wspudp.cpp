@@ -54,6 +54,8 @@
 #ifdef _WIN32
 #include	<svcguid.h>
 #include	<nspapi.h>
+
+typedef int socklen_t;
 #else
 #include <netdb.h>
 #include <unistd.h>
@@ -233,6 +235,10 @@ bool UDPInterfaceClass::Open_Socket ( SOCKET )
 	ling.l_linger = 0;	// timeout in seconds (ie close now)
 	setsockopt (Socket, SOL_SOCKET, SO_LINGER, (char *)&ling, sizeof(ling));
 
+	// enable broadcast
+	int yes = 1;
+	setsockopt (Socket, SOL_SOCKET, SO_BROADCAST, (char *)&yes, sizeof(int));
+
 	WinsockInterfaceClass::Set_Socket_Options();
 
 	return (true);
@@ -289,7 +295,10 @@ void UDPInterfaceClass::Broadcast (void *buffer, int buffer_len)
 		*/
 		OutBuffers.Add ( packet );
 
-#ifndef PORTABLE
+#ifdef PORTABLE
+		// enable write events
+		Socket_Check_Write(Socket, true);
+#else
 		/*
 		** Send a message to ourselves so that we can initiate a write if Winsock is idle.
 		*/
@@ -306,7 +315,100 @@ void UDPInterfaceClass::Broadcast (void *buffer, int buffer_len)
 
 
 
+#ifdef PORTABLE
+// like below, but less windows-y
+void UDPInterfaceClass::Event_Handler(int socket, SocketEvent event)
+{
+	struct sockaddr_in addr;
+	WinsockBufferType *packet;
 
+	switch(event)
+	{
+		case SOCKEV_READ:
+		{
+			/*
+			** Call the recvfrom function to get the outstanding packet.
+			*/
+			socklen_t addr_len = sizeof(addr);
+			int rc = recvfrom ( Socket, (char*)ReceiveBuffer, sizeof (ReceiveBuffer), 0, (sockaddr *)&addr, &addr_len);
+			if (rc == SOCKET_ERROR) {
+				Clear_Socket_Error (Socket);
+				return;
+			}
+
+			/*
+			** rc is the number of bytes received
+			*/
+			if ( rc ) {
+
+				/*
+				** Make sure this packet didn't come from us. If it did then throw it away.
+				*/
+				for ( int i=0 ; i<LocalAddresses.Count() ; i++ ) {
+					if ( ! memcmp (LocalAddresses[i], &addr.sin_addr.s_addr, 4) ) return;
+				}
+
+				/*
+				** Create a new buffer and store this packet in it.
+				*/
+				packet = new WinsockBufferType;
+				packet->BufferLen = rc;
+				memcpy ( packet->Buffer, ReceiveBuffer, rc );
+				memset ( packet->Address, 0, sizeof (packet->Address) );
+				memcpy ( packet->Address+4, &addr.sin_addr.s_addr, 4 );
+				InBuffers.Add (packet);
+			}
+			break;
+		}
+		case SOCKEV_WRITE:
+		{
+			/*
+			** If there are no packets waiting to be sent then bail.
+			*/
+			if ( OutBuffers.Count() == 0 ) {
+				Socket_Check_Write(Socket, false); // don't need to be notified any more
+				return;
+			}
+			int packetnum = 0;
+
+			/*
+			** Get a pointer to the packet.
+			*/
+			packet = OutBuffers [ packetnum ];
+
+			/*
+			** Set up the address structure of the outgoing packet
+			*/
+			addr.sin_family = AF_INET;
+			addr.sin_port = (unsigned short) htons ((unsigned short)PlanetWestwoodPortNumber);
+			memcpy (&addr.sin_addr.s_addr, packet->Address+4, 4);
+
+			/*
+			** Send it.
+			** If we get a WSAWOULDBLOCK error it means that Winsock is unable to accept the packet
+			** at this time. In this case, we clear the socket error and just exit. Winsock will
+			** send us another WRITE message when it is ready to receive more data.
+			*/
+			int rc = sendto ( Socket, (const char*) packet->Buffer, packet->BufferLen, 0, (sockaddr *)&addr, sizeof (addr) );
+
+			if (rc == -1){
+				if (Get_Last_Error() == EWOULDBLOCK) {
+					Clear_Socket_Error (Socket);
+					return;
+				}
+			}
+
+			/*
+			** Delete the sent packet.
+			*/
+			OutBuffers.Delete ( packetnum );
+			delete packet;
+
+			break;
+		}
+	}
+}
+#else
 /***********************************************************************************************
  * TMC::Message_Handler -- Message handler function for Winsock related messages               *
  *                                                                                             *
@@ -321,7 +423,7 @@ void UDPInterfaceClass::Broadcast (void *buffer, int buffer_len)
  * HISTORY:                                                                                    *
  *    3/20/96 3:05PM ST : Created                                                              *
  *=============================================================================================*/
-#ifndef PORTABLE
+
 long UDPInterfaceClass::Message_Handler(HWND, UINT message, UINT, LONG lParam)
 {
 	struct 	sockaddr_in addr;
