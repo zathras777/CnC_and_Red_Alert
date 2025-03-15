@@ -1,5 +1,9 @@
 // re-implemented from assembly in 2keyfbuf.asm
-#include "function.h"
+#include <stdarg.h>
+#include <stdint.h>
+#include <string.h>
+
+#include "shape.h"
 
 // should match 2keyfram.cpp
 struct ShapeHeaderType
@@ -30,7 +34,12 @@ inline constexpr BlitFlags operator |(BlitFlags t1, BlitFlags t2)
 
 #define PRED_MASK 0xE
 
+#ifdef TD
+static bool UseOldShapeDraw = false;
+#else
 extern "C" bool UseOldShapeDraw;
+#endif
+
 extern "C" char *BigShapeBufferStart;
 extern "C" char	*TheaterShapeBufferStart;
 extern "C" bool	UseBigShapeBuffer;
@@ -130,7 +139,7 @@ inline void Do_Old_Blit(int line_count, int pixel_count, uint8_t *src_offset, ui
     while(--line_count);
 }
 
-long Buffer_Frame_To_Page(int x, int y, int w, int h, void *src, GraphicViewPortClass &dest, int flags, ...)
+extern "C" long Buffer_Frame_To_Page(int x, int y, int w, int h, void *src, GraphicViewPortClass &dest, int flags, ...)
 {
 	if(!src)
 		return 0;

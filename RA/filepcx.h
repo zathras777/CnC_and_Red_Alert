@@ -72,6 +72,8 @@ typedef	struct	{
 
 GraphicBufferClass* Read_PCX_File (char* name, char* palette= NULL,void *buff=NULL, long size=0);
 GraphicBufferClass* Read_PCX_File (char* name, BufferClass& Buff,char* palette= NULL) ;
-int Write_PCX_File(FileClass & file, GraphicBufferClass & pic, PaletteClass * palette);
 
+#ifndef TD
+int Write_PCX_File(FileClass & file, GraphicBufferClass & pic, PaletteClass * palette);
+#endif
 #endif
