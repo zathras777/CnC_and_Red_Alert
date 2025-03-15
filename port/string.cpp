@@ -89,6 +89,8 @@ int strnicmp(const char *string1, const char *string2, size_t count)
         string2++;
     }
 
+    count++;
+
     if(count == 0)
         return 0;
 
@@ -104,6 +106,8 @@ int memicmp(const void *buffer1, const void *buffer2, size_t count)
         cbuffer1++;
         cbuffer2++;
     }
+
+    count++;
 
     if(count == 0)
         return 0;
