@@ -578,3 +578,15 @@ AudioCallback *Get_Audio_Callback_Ptr()
 {
     return &ExtraCallback;
 }
+
+// TD
+void *Load_Sample(char const *filename)
+{
+    printf("%s\n", __func__);
+    return NULL;
+}
+
+void Free_Sample(void const *sample)
+{
+
+}

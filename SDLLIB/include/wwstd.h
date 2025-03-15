@@ -127,4 +127,16 @@ typedef enum {
 } ColorType;
 
 
+// for TD
+#ifdef TD
+// Returns the low word of a long
+#define	LOW_WORD(a)		((unsigned short)((int32_t)(a) & 0x0000FFFFL))
+
+// Returns the high word of a long
+#define	HIGH_WORD(a)	((uint32_t)(a) >> 16)
+
+// Merges to shorts to become a long
+#define	MAKE_LONG(a,b) (((int32_t)(a) << 16) | (int32_t)((b)&0x0000FFFFL))
+#endif
+
 #endif

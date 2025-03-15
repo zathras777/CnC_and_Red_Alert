@@ -82,6 +82,9 @@ extern "C" {
 
 void Set_Font_Palette_Range(void const *palette, int start_idx, int end_idx);
 
+#ifdef TD
+void *Get_Font_Palette_Ptr();
+#endif
 
 #ifdef __cplusplus
 }

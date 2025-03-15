@@ -47,6 +47,11 @@ long TimerClass::Get_Ticks(void)
     return 0;
 }
 
+CountDownTimerClass::CountDownTimerClass(BaseTimerEnum timer, long set, bool on) : TimerClass(timer, on)
+{
+	Set(set, on);
+}
+
 CountDownTimerClass::CountDownTimerClass(BaseTimerEnum timer, bool on) : TimerClass(timer, false), DelayTime(0)
 {
 	if(on)

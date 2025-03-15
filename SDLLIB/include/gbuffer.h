@@ -120,7 +120,7 @@
 #include "ww_win.h"
 #include "iconcach.h"
 
-#ifndef FUNCTION_H
+#if !defined(FUNCTION_H) || defined(TD)
 
 #ifndef BITMAPCLASS
 #define BITMAPCLASS

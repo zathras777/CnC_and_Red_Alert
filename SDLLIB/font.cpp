@@ -135,3 +135,8 @@ void Set_Font_Palette_Range(void const *palette, int start_idx, int end_idx)
     }
     while(--num_cols);
 }
+
+extern "C" void *Get_Font_Palette_Ptr()
+{
+    return ColorXlat;
+}
