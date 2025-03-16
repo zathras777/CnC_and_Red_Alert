@@ -319,6 +319,8 @@ void VQA_StopTimerInt(VQAHandleP *vqap)
 *
 ****************************************************************************/
 
+static int OpenCount = 0;
+
 long VQA_OpenAudio(VQAHandleP *vqap, void *window)
 {
 	VQAData       *vqabuf;
@@ -335,6 +337,14 @@ long VQA_OpenAudio(VQAHandleP *vqap, void *window)
 	/* Reset the buffer position to the beginning. */
 	audio->CurBlock = 0;
 
+	if(OpenCount)
+	{
+		// if we've already initialised make sure we're not in the callback
+		// (by unsetting it)
+		SDL_LockAudioDevice(config->AudioDeviceID);
+		*config->AudioCallback = NULL;
+		SDL_UnlockAudioDevice(config->AudioDeviceID);
+	}
 
 	// setup audio stream
 	if(SDLStream)
@@ -358,6 +368,8 @@ long VQA_OpenAudio(VQAHandleP *vqap, void *window)
 
 	audio->Flags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
 	AudioFlags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
+
+	OpenCount++;
 
 	return (0);
 }
@@ -400,6 +412,11 @@ void VQA_CloseAudio(VQAHandleP *vqap)
 
 	audio->Flags &= ~VQAAUDF_TIMERINIT;
 	AudioFlags &= ~VQAAUDF_TIMERINIT;
+
+	// don't remove the callback if open was called multiple times
+	OpenCount--;
+	if(OpenCount)
+		return;
 
 	// unregister our audio callback
 	// and make sure we're not in it
