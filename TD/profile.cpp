@@ -82,7 +82,7 @@ unsigned WWGetPrivateProfileHex (char const *section, char const *entry, char *p
 	unsigned card;
 
 	memset (buffer, '0', MAX_ENTRY_SIZE);		// MAX_ENTRY_SIZE = 15
-	buffer[MAX_ENTRY_SIZE] = '\0';
+	buffer[MAX_ENTRY_SIZE - 1] = '\0';
 
 	WWGetPrivateProfileString(section, entry, "0", buffer, MAX_ENTRY_SIZE, profile);
 
@@ -225,7 +225,7 @@ char * WWGetPrivateProfileString(char const *section, char const *entry, char co
 	**	Fill in the default value just in case the entry could not be found.
 	*/
 	if (retbuffer) {
-		if (def) {
+		if (def && retbuffer != def) {
 			strncpy(retbuffer, def, retlen);
 		}
 		retbuffer[retlen-1] = '\0';
