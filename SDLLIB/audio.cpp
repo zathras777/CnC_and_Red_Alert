@@ -439,7 +439,7 @@ int Play_Sample(void const *sample, int priority, int volume, signed short panlo
 
 int Play_Sample_Handle(void const *sample, int priority, int volume, signed short panloc, int id)
 {
-    if(id == -1)
+    if(id == -1 || !sample)
         return -1;
 
     // play it
