@@ -26,6 +26,7 @@ void output(short,short)
 
 
 ThemeType OldTheme = THEME_NONE;
+extern bool InMovie;
 
 /***********************************************************************************************
  * Focus_Loss -- this function is called when a library function detects focus loss            *
@@ -59,6 +60,12 @@ void Focus_Restore(void)
 	Restore_Cached_Icons();
 	Map.Flag_To_Redraw(true);
 	Start_Primary_Sound_Buffer(TRUE);
+
+	if (!InMovie){
+		Theme.Queue_Song(OldTheme);
+		OldTheme = THEME_NONE;
+	}
+
 	if (WWMouse) WWMouse->Set_Cursor_Clip();
 	VisiblePage.Clear();
 	HiddenPage.Clear();
