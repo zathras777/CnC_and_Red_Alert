@@ -50,6 +50,7 @@ class CargoClass {
 		**	Constructors, Destructors, and overloaded operators.
 		*/
 		CargoClass(void) {Quantity = 0;CargoHold = 0;};
+		CargoClass(NoInitClass const & ) {};
 
 		/*---------------------------------------------------------------------
 		**	Member function prototypes.

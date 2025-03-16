@@ -46,6 +46,8 @@
 class MapClass: public GScreenClass
 {
 	public:
+		MapClass(void) {};
+		MapClass(NoInitClass const & x) : GScreenClass(x) {};
 
 		/*
 		** Initialization

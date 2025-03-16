@@ -53,9 +53,11 @@ class OverlayClass : public ObjectClass
 		**	Constructors and destructors.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		OverlayClass(void);
 		OverlayClass(OverlayType type, CELL pos=-1, HousesType = HOUSE_NONE);
+		OverlayClass(NoInitClass const & x) : ObjectClass(x), Class(Class) {};
 		virtual ~OverlayClass(void) {if (GameActive) OverlayClass::Limbo();};
 		operator OverlayType(void) const {return Class->Type;};
 		virtual RTTIType What_Am_I(void) const {return RTTI_OVERLAY;};

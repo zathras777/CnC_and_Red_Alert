@@ -50,6 +50,7 @@ class TCountDownTimerClass {
 		TCountDownTimerClass(long set=0) {
 			Set(set);
 		};
+		TCountDownTimerClass(NoInitClass const & x) {}
 
 		// No destructor.
 		~TCountDownTimerClass(void) {}

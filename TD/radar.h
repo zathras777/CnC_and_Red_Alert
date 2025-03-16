@@ -55,6 +55,7 @@ class RadarClass: public DisplayClass
 		int	RadPHeight;
 
 		RadarClass(void);
+		RadarClass(NoInitClass const & x) : DisplayClass(x) {};
 
 		/*
 		** Initialization

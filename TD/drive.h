@@ -92,6 +92,7 @@ class DriveClass : public FootClass
 		*/
 		DriveClass(void);
 		DriveClass(UnitType classid, HousesType house);
+		DriveClass(NoInitClass const & x) : FootClass(x), Class(Class) {};
 		virtual ~DriveClass(void) {};
 		operator UnitType(void) const {return Class->Type;};
 

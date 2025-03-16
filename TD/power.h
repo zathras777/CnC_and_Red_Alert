@@ -52,6 +52,7 @@ class PowerClass : public RadarClass
 
 
 		PowerClass();
+		PowerClass(NoInitClass const & x) : RadarClass(x) {};
 
 		/*
 		** Initialization

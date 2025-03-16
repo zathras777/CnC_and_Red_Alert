@@ -194,6 +194,7 @@ class TechnoClass :	public RadioClass,
 		*/
 		TechnoClass(void);
 		TechnoClass(HousesType house);
+		TechnoClass(NoInitClass const & x) : RadioClass(x), FlasherClass(x), StageClass(x), CargoClass(x), DoorClass(x), CloakingDevice(x), PrimaryFacing(x) {};
 		virtual ~TechnoClass(void) {};
 
 		/*

@@ -374,9 +374,11 @@ class HouseClass {
 		**	Constructors, Destructors, and overloaded operators.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		HouseClass(void) : Class(0) {};
 		HouseClass(HousesType house);
+		HouseClass(NoInitClass const & x) : Class(Class), FreeHarvester(x), IonCannon(x), AirStrike(x), NukeStrike(x), AlertTime(x), BorrowedTime(x), DamageTime(x), TeamTime(x), TriggerTime(x), SpeakAttackDelay(x), SpeakPowerDelay(x), SpeakMoneyDelay(x), SpeakMaxedDelay(x) {};
 		~HouseClass(void);
 		operator HousesType(void) const;
 

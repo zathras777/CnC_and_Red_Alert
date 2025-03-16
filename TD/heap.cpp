@@ -496,9 +496,13 @@ int TFixedIHeapClass<T>::Load(FileClass &file)
 		/*
 		** Load the object
 		*/
-		if (!ptr->Load(file)) {
-			return(false);
-		}
+		int size;
+		file.Read(&size, sizeof(size));
+		file.Read(ptr, sizeof(T));
+		new(ptr) T(NoInitClass());
+		//		if (!ptr->Load(file)) {
+		//			return(false);
+		//		}
 	}
 
 	return(true);

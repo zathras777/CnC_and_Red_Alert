@@ -67,6 +67,7 @@ class AbstractClass
 		**	Constructor & destructors.
 		*/
 		AbstractClass(void) {Coord = 0L;};
+		AbstractClass(NoInitClass const & x) {x();};
 		virtual ~AbstractClass(void) {};
 
 		/*

@@ -80,6 +80,7 @@ class RadioClass : public MissionClass {
 		**	Constructors, Destructors, and overloaded operators.
 		*/
 		RadioClass(void) {Radio = 0;LastMessage = RADIO_STATIC;};
+		RadioClass(NoInitClass const & x) : MissionClass(x) {};
 		virtual ~RadioClass(void) {};
 
 		/*---------------------------------------------------------------------

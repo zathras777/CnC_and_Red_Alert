@@ -118,6 +118,7 @@ class TriggerClass {
 		**	Constructor/Destructor
 		*/
 		TriggerClass(void);
+		TriggerClass(NoInitClass const & x) {};
 		~TriggerClass(void);
 
 		/*
@@ -181,6 +182,7 @@ class TriggerClass {
 		**	Overloaded operators
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t, void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 
 		/*

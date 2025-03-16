@@ -71,9 +71,11 @@ class BulletClass :	public ObjectClass,
 		**	Constructors, Destructors, and overloaded operators.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		BulletClass(void);
 		BulletClass(BulletType id);
+		BulletClass(NoInitClass const & x) : ObjectClass(x), Class(Class), FlyClass(x), FuseClass(x), PrimaryFacing(x) {};
 		virtual ~BulletClass(void) {if (GameActive) BulletClass::Limbo();};
 		virtual RTTIType What_Am_I(void) const {return RTTI_BULLET;};
 

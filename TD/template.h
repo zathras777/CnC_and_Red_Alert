@@ -53,9 +53,11 @@ class TemplateClass : public ObjectClass
 		**	Constructors and destructors.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		TemplateClass(void);
 		TemplateClass(TemplateType type, CELL pos=-1);
+		TemplateClass(NoInitClass const & x) : ObjectClass(x), Class(Class) {};
 		virtual ~TemplateClass(void) {if (GameActive) TemplateClass::Limbo();};
 		operator TemplateType(void) const {return Class->Type;};
 		virtual RTTIType What_Am_I(void) const {return RTTI_TEMPLATE;};

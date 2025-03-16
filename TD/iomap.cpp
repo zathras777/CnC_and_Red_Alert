@@ -347,9 +347,14 @@ bool MouseClass::Load(FileClass & file)
 	** Read the entire map object in.  Only read in sizeof(MouseClass), so if we're
 	** in editor mode, none of the map editor object is read in.
 	*/
-	if (!Read_Object(this, sizeof(VectorClass<CellClass>), sizeof(MouseClass), file, VTable)) {
-		return(false);
-	}
+	int size;
+	file.Read(&size, sizeof(size));
+	file.Read(this, sizeof(*this));
+#ifdef SCENARIO_EDITOR
+	new(this) MapEditClass(NoInitClass());
+#else
+	new(this) MouseClass(NoInitClass());
+#endif
 
 	/*
 	** Reallocate the cell array

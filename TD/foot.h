@@ -123,7 +123,7 @@ class FootClass :	public TechnoClass
 		**	This is the "throttle setting" of the unit. It is a fractional value with 0 = stop
 		**	and 255 = full speed.
 		*/
-		unsigned char const Speed;
+		unsigned char Speed;
 
 		/*
 		**	For units in area guard mode, this is the recorded home position. The guarding
@@ -196,6 +196,7 @@ class FootClass :	public TechnoClass
 		*/
 		FootClass(void);
 		virtual ~FootClass(void);
+		FootClass(NoInitClass const & x) : TechnoClass(x), PathDelay(x), BaseAttackTimer(x) {};
 		FootClass(HousesType house);
 
 		/*---------------------------------------------------------------------

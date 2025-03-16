@@ -71,6 +71,7 @@ class DoorClass
 
 	public:
 		DoorClass(void);
+		DoorClass(NoInitClass const & x) : Control(x) {};
 
 		bool Time_To_Redraw(void) {return(IsToRedraw);};
 		void Clear_Redraw_Flag(void) {IsToRedraw = false;};

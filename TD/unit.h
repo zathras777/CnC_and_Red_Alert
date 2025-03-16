@@ -63,9 +63,11 @@ class UnitClass :	public TarComClass
 		**	Constructors, Destructors, and overloaded operators.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		UnitClass(void) {};
 		UnitClass(UnitType classid, HousesType house);
+		UnitClass(NoInitClass const & x) : TarComClass(x) {};
 		operator UnitType(void) const {return Class->Type;};
 		virtual ~UnitClass(void);
 		virtual RTTIType What_Am_I(void) const;

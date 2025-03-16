@@ -163,9 +163,11 @@ class BuildingClass : public TechnoClass
 		**	Constructors, Destructors, and overloaded operators.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		BuildingClass(void) : Class(0) {};
 		BuildingClass(StructType type, HousesType house);
+		BuildingClass(NoInitClass const & x) : TechnoClass(x), Class(Class), CountDown(x), PlacementDelay(x) {};
 		virtual ~BuildingClass(void);
 		virtual RTTIType What_Am_I(void) const {return RTTI_BUILDING;};
 

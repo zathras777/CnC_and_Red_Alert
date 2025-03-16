@@ -55,6 +55,7 @@ class FlasherClass {
 		unsigned IsBlushing:1;
 
 		FlasherClass(void) {FlashCount = 0; IsBlushing = false;};
+		FlasherClass(NoInitClass const & ) {};
 		#ifdef CHEAT_KEYS
 		void Debug_Dump(MonoClass *mono) const;
 		#endif

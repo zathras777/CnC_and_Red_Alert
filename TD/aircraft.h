@@ -53,9 +53,11 @@ class AircraftClass : public FootClass, public FlyClass
 
 		//-----------------------------------------------------------------------------
 		void * operator new(size_t) throw();
+		static void * operator new(size_t, void * ptr) throw() {return(ptr);};
 		void operator delete(void *);
 		operator AircraftType(void) const {return Class->Type;};
 		AircraftClass(void) : Class(0) {};
+		AircraftClass(NoInitClass const & x) : FootClass(x), FlyClass(x), Class(Class), SecondaryFacing(x), SightTimer(x) {};
 		AircraftClass(AircraftType classid, HousesType house);
 		virtual ~AircraftClass(void);
 		virtual RTTIType What_Am_I(void) const {return RTTI_AIRCRAFT;};

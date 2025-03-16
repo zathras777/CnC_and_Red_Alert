@@ -165,10 +165,12 @@ class TeamClass : public AbstractClass
 		//------------------------------------------------------------
 		TeamClass(void) : Class(0), House(0) {IsActive=false;Member=0;IsAltered=true;};
 		TeamClass(TeamTypeClass const * team, HouseClass * owner);
+		TeamClass(NoInitClass const & x) : AbstractClass(x), Class(Class), House(House), SuspendTimer(x), TimeOut(x) {};
 		virtual ~TeamClass(void);
 		virtual RTTIType What_Am_I(void) const {return RTTI_TEAM;};
 		static void operator delete(void *ptr);
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t, void * ptr) throw() {return(ptr);};
 		static void Init(void);
 		static void Suspend_Teams(int priority);
 

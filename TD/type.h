@@ -242,6 +242,7 @@ class AbstractTypeClass
 
 		AbstractTypeClass(void) {};
 		AbstractTypeClass(int name, char const * ini);
+		AbstractTypeClass(NoInitClass const & ) {};
 		virtual RTTIType  What_Am_I(void) const;
 
 		virtual COORDINATE  Coord_Fixup(COORDINATE coord) const;

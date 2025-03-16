@@ -54,8 +54,10 @@ class SmudgeClass : public ObjectClass
 		**	Constructors and destructors.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		SmudgeClass(SmudgeType type, COORDINATE pos=-1, HousesType house = HOUSE_NONE);
+		SmudgeClass(NoInitClass const & x) : ObjectClass(x), Class(Class) {};
 		SmudgeClass(void) : Class(0) {};
 		operator SmudgeType(void) const {return Class->Type;};
 		virtual ~SmudgeClass(void) {if (GameActive) SmudgeClass::Limbo();};

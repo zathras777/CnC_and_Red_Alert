@@ -45,6 +45,7 @@ class MouseClass: public ScrollClass
 {
 	public:
 		MouseClass(void);
+		MouseClass(NoInitClass const & x) : ScrollClass(x) {};
 
 		/*
 		** Initialization

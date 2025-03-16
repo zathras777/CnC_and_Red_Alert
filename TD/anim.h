@@ -49,9 +49,11 @@ class AnimClass : public ObjectClass, private StageClass {
 	public:
 
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		AnimClass(void) : Class(0) {Owner=HOUSE_NONE;Object=0;};		// Default constructor does nothing.
 		AnimClass(AnimType animnum, COORDINATE coord, unsigned char timedelay=0, unsigned char loop=1, bool alt=false);
+		AnimClass(NoInitClass const & x) : ObjectClass(x), Class(Class), StageClass(x) {};
 		virtual ~AnimClass(void);
 		operator AnimType(void) const {return Class->Type;};
 		virtual RTTIType What_Am_I(void) const {return RTTI_ANIM;};

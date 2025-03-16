@@ -54,6 +54,7 @@ class TarComClass : public TurretClass
 		*/
 		TarComClass(void) {};
 		TarComClass(UnitType classid, HousesType house) : TurretClass(classid, house) {};
+		TarComClass(NoInitClass const & x) : TurretClass(x) {}
 		virtual ~TarComClass(void);
 
 		/*---------------------------------------------------------------------

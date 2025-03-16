@@ -44,6 +44,7 @@ class HelpClass: public TabClass
 {
 	public:
 		HelpClass(void);
+		HelpClass(NoInitClass const & x) : TabClass(x) {};
 
 		/*
 		** Initialization

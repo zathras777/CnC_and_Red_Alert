@@ -93,6 +93,7 @@ class TeamTypeClass : public AbstractTypeClass
 		**	Constructor/Destructor
 		*/
 		TeamTypeClass(void);
+		TeamTypeClass(NoInitClass const & x) : AbstractTypeClass(x) {};
 		virtual ~TeamTypeClass(void) {};
 
 		/*
@@ -138,6 +139,7 @@ class TeamTypeClass : public AbstractTypeClass
 		**	Overloaded operators
 		*/
 		void * operator new(size_t ) throw();
+		static void * operator new(size_t, void * ptr) throw() {return(ptr);};
 		void operator delete(void *ptr);
 
 		/*

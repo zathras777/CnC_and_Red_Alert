@@ -56,9 +56,11 @@ class TerrainClass : public ObjectClass, public StageClass
 		**	Constructor for terrain object class.
 		*/
 		static void * operator new(size_t size) throw();
+		static void * operator new(size_t , void * ptr) throw() {return(ptr);};
 		static void operator delete(void *ptr);
 		TerrainClass(void);
 		TerrainClass(TerrainType id, CELL cell);
+		TerrainClass(NoInitClass const & x) : ObjectClass(x), Class(Class), StageClass(x) {};
 		virtual ~TerrainClass(void);
 		virtual RTTIType What_Am_I(void) const {return RTTI_TERRAIN;};
 

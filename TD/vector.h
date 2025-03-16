@@ -72,6 +72,7 @@ template<class T>
 class VectorClass
 {
 	public:
+		VectorClass(NoInitClass const & ) {};
 		VectorClass(unsigned size=0, T const * array=0);
 		VectorClass(VectorClass<T> const &);		// Copy constructor.
 		virtual ~VectorClass(void);
