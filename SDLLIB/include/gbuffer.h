@@ -656,7 +656,11 @@ inline unsigned long	GraphicViewPortClass::Print(int num, int x, int y, int fcol
 inline void GraphicViewPortClass::Draw_Stamp(void const * icondata, int icon, int x_pixel, int y_pixel, void const * remap, int clip_window)
 {
 	if (Lock()){
+#ifdef TD
+		Buffer_Draw_Stamp_Clip(this, icondata, icon, x_pixel, y_pixel, remap, WindowList[clip_window][WINDOWX] * 8, WindowList[clip_window][WINDOWY], WindowList[clip_window][WINDOWWIDTH] * 8, WindowList[clip_window][WINDOWHEIGHT]);
+#else
 		Buffer_Draw_Stamp_Clip(this, icondata, icon, x_pixel, y_pixel, remap, WindowList[clip_window][WINDOWX], WindowList[clip_window][WINDOWY], WindowList[clip_window][WINDOWWIDTH], WindowList[clip_window][WINDOWHEIGHT]);
+#endif
 	}
 	Unlock();
 }
