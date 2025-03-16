@@ -396,7 +396,7 @@ void CellClass::Redraw_Objects(bool forced)
 		**	Flag any overlapping object in this cell to be redrawn.
 		*/
 		for (int index = 0; index < sizeof(Overlapper)/sizeof(Overlapper[0]); index++) {
-			if (Overlapper[index]) {
+			if (Overlapper[index] && Overlapper[index]->IsActive) {
 				Overlapper[index]->Mark(MARK_CHANGE);
 			}
 		}
