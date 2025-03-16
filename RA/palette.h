@@ -33,4 +33,4 @@ public:
 
 void Set_Palette(void *palette);
 
-extern "C" unsigned char  CurrentPalette[];		/* in pal.asm */
+extern "C" unsigned char  *CurrentPalette;

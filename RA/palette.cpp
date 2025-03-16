@@ -3,12 +3,9 @@
 #include "palette.h"
 #include "function.h"
 
-// two current palettes?
-unsigned char CurrentPalette[3 * 256];
-
 PaletteClass PaletteClass::CurrentPalette;
 
-RGBClass ohno;
+unsigned char *CurrentPalette = PaletteClass::CurrentPalette;
 
 PaletteClass::PaletteClass()
 {
@@ -48,7 +45,7 @@ void PaletteClass::Set(int fade, void (*callback)())
                 *out_ptr++ = old_val + (new_val - old_val) * cur_time / fade;
             }
 
-            Set_Palette(fade_palette);
+            Do_Set_Palette(fade_palette);
             if(callback)
                 callback();
 #ifdef PORTABLE
@@ -62,7 +59,7 @@ void PaletteClass::Set(int fade, void (*callback)())
     }
 
     CurrentPalette = *this;
-    Set_Palette(*this);
+    Do_Set_Palette(*this);
 }
 
 // the only code that uses these two (Play_Movie and OptionsClass::Proccess)
@@ -128,4 +125,10 @@ PaletteClass::operator unsigned char *()
 PaletteClass::operator const unsigned char *() const
 {
     return (const unsigned char *)data;
+}
+
+void Set_Palette(void *palette)
+{
+    memcpy(&PaletteClass::CurrentPalette, palette, PaletteClass::COLOR_COUNT * 3);
+    Do_Set_Palette(palette);
 }

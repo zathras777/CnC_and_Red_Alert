@@ -336,7 +336,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 		int RedrawTimer = 0;
 };
 
-
+void Do_Set_Palette(void *palette);
 
 inline int GraphicViewPortClass::Get_LockCount(void)
 {
