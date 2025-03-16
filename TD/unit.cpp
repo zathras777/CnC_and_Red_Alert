@@ -389,6 +389,9 @@ void UnitClass::AI(void)
 
 	TarComClass::AI();
 
+	if(!IsActive)
+		return;
+
 	/*
 	**	Delete this unit if it finds itself off the edge of the map and it is in
 	**	guard or other static mission mode.

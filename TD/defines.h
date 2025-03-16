@@ -1029,7 +1029,7 @@ typedef enum AircraftType {
 **	terrain is broken up into icons, is not transparent, and is drawn
 **	as the bottom most layer, then it is a template.
 */
-typedef enum TemplateType : uint16_t {
+typedef enum TemplateType : uint8_t {
 	TEMPLATE_CLEAR1,
 	TEMPLATE_WATER,			// This must be the first non-clear template.
 	TEMPLATE_WATER2,

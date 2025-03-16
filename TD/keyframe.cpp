@@ -219,7 +219,7 @@ void Enable_Uncompressed_Shapes (void)
 void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr)
 {
 	char *ptr, *lockptr;//, *uncomp_ptr;
-	unsigned long offset[SUBFRAMEOFFS];
+	uint32_t offset[SUBFRAMEOFFS];
 	unsigned long offcurr, off16, offdiff;
 	KeyFrameHeaderType *keyfr;
 	unsigned short buffsize, currframe, subframe;
@@ -355,7 +355,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 			currframe = (unsigned short)offset[1];
 
 			ptr = (char *)Add_Long_To_Pointer( dataptr, (((unsigned long)currframe << 3) + sizeof(KeyFrameHeaderType)) );
-			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(unsigned long)) );
+			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(uint32_t)) );
 		}
 
 		// key frame
@@ -419,7 +419,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 					Mem_Copy( Add_Long_To_Pointer( dataptr,
 									(((unsigned long)currframe << 3) +
 									sizeof(KeyFrameHeaderType)) ),
-						&offset[0], (long)(SUBFRAMEOFFS * sizeof(unsigned long)) );
+						&offset[0], (long)(SUBFRAMEOFFS * sizeof(uint32_t)) );
 					subframe = 0;
 				}
 			}

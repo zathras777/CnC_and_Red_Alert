@@ -472,6 +472,9 @@ bool ThemeClass::Is_Allowed(ThemeType index) const
 	}
 #endif
 
+	if(index == THEME_NONE)
+		return true;
+
 	return(
 		_themes[index].Available &&
 		(_themes[index].Normal ||
