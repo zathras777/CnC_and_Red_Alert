@@ -11,6 +11,8 @@ static Uint32 TimerCallback(Uint32 interval, void *param)
     return interval;
 }
 
+// TimerClass/CountDownTimerClass are mostly used by TD
+// (RA has it's own impl)
 TimerClass::TimerClass(BaseTimerEnum timer, bool start) : Accumulated(0), Started(0), TickType(timer)
 {
 	if(start && TimerSystemOn)
@@ -19,8 +21,12 @@ TimerClass::TimerClass(BaseTimerEnum timer, bool start) : Accumulated(0), Starte
 
 long TimerClass::Set(long value, bool start)
 {
-    printf("TimerClass::%s\n", __func__);
-    return 0;
+	Started = 0;
+	Accumulated = value;
+	if(start)
+        return Start();
+
+	return Time();
 }
 
 long TimerClass::Start(void)
@@ -32,7 +38,7 @@ long TimerClass::Start(void)
 
 long TimerClass::Time(void)
 {
-	if (Started)
+	if(Started)
     {
 		long ticks = Get_Ticks();
 		Accumulated += ticks - (Started-1);
@@ -43,8 +49,10 @@ long TimerClass::Time(void)
 
 long TimerClass::Get_Ticks(void)
 {
-    printf("TimerClass::%s\n", __func__);
-    return 0;
+	if(WindowsTimer && TickType == BT_SYSTEM) // BT_USER seems unused
+		return WindowsTimer->Get_System_Tick_Count();
+
+	return 0;
 }
 
 CountDownTimerClass::CountDownTimerClass(BaseTimerEnum timer, long set, bool on) : TimerClass(timer, on)
@@ -58,18 +66,24 @@ CountDownTimerClass::CountDownTimerClass(BaseTimerEnum timer, bool on) : TimerCl
         Start();
 }
 
-long CountDownTimerClass::Set(long set, bool start)
+long CountDownTimerClass::Set(long value, bool start)
 {
-    printf("CountDownTimerClass::%s\n", __func__);
-    return 0;
+	DelayTime = value;
+	TimerClass::Reset(start);
+	return Time();
 }
 
 long CountDownTimerClass::Time(void)
 {
-    return 0;
+	long ticks = DelayTime - TimerClass::Time();
+
+	if(ticks < 0)
+		ticks = 0;
+
+	return ticks;
 }
 
-WinTimerClass::WinTimerClass(unsigned freq, bool partial)
+WinTimerClass::WinTimerClass(unsigned freq, bool partial) : SysTicks(0), UserTicks(0)
 {
     SDL_Init(SDL_INIT_TIMER);
     TimerHandle = SDL_AddTimer(1000 / freq, TimerCallback, this);
