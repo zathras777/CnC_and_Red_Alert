@@ -25,3 +25,4 @@ add_subdirectory(SDLLIB)
 add_subdirectory(WINVQ)
 
 add_subdirectory(RA)
+add_subdirectory(TD)
