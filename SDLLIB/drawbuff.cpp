@@ -218,7 +218,7 @@ long Buffer_To_Page(int dx_pixel, int dy_pixel, int pixel_width, int pixel_heigh
 bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel, int dx_pixel,
     int dy_pixel, int pixel_width, int pixel_height, bool trans)
 {
-    assert(!trans); // not seen a user
+    // trans seems to only be used by TD
 
     auto vp_src = (GraphicViewPortClass *)thisptr;
     auto vp_dst = (GraphicViewPortClass *)dest;
@@ -309,6 +309,20 @@ bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel,
         // backward (bottom -> top)
         if(trans)
         {
+            // copy transparent lines backwards
+            src_offset += src_area * (line_count - 1);
+            dst_offset += dst_area * (line_count - 1);
+            do
+            {
+                for(int x = 0; x < pixel_count; x++)
+                {
+                    if(src_offset[x])
+                        dst_offset[x] = src_offset[x];
+                }
+                src_offset -= src_area;
+                dst_offset -= dst_area;
+            }
+            while(--line_count);
         }
         else
         {
@@ -329,6 +343,18 @@ bool Linear_Blit_To_Linear(void *thisptr, void * dest, int x_pixel, int y_pixel,
         // forward (top-> bottom)
         if(trans)
         {
+            // copy transparent lines
+            do
+            {
+                for(int x = 0; x < pixel_count; x++)
+                {
+                    if(src_offset[x])
+                        dst_offset[x] = src_offset[x];
+                }
+                src_offset += src_area;
+                dst_offset += dst_area;
+            }
+            while(--line_count);
         }
         else
         {
