@@ -407,6 +407,8 @@ void Stop_Sample(int handle)
 
 bool Sample_Status(int handle)
 {
+    if(handle < 0)
+        return false;
     return Channels[handle].playing;
 }
 
