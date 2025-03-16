@@ -1919,6 +1919,7 @@ void Anim_Init(void)
 	AnimControl.DrawRate = -1;
 
 	AnimControl.DrawerCallback = VQ_Call_Back;
+	AnimControl.EventHandler = VQ_Event_Handler;
 	AnimControl.ImageWidth = 320;
 	AnimControl.ImageHeight = 200;
 	AnimControl.Vmode = 0;

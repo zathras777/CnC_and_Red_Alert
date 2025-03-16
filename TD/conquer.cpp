@@ -2994,9 +2994,22 @@ long VQ_Call_Back(unsigned char *, long )
 		}
 	}
 
+#ifdef PORTABLE
+	Video_End_Frame();
+#endif
+
 	return(false);
 }
 
+long VQ_Event_Handler(unsigned long event, void *buffer, long nbytes)
+{
+#ifdef PORTABLE
+	// vsync while waiting for frame
+	if(event == VQAEVENT_SYNC)
+		Video_End_Frame();
+#endif
+	return 0;
+}
 
 /***********************************************************************************************
  * Handle_Team -- Processes team selection command.                                            *
