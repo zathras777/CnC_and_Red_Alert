@@ -308,6 +308,7 @@ void Choose_Side(void)
 	} else {
 		PreserveVQAScreen = 1;
 	}
+	Stop_Sample(statichandle);
 	Free(staticaud);
 	Free(speechg);
 	Free(speechn);
