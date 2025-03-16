@@ -416,8 +416,8 @@ bool Is_Sample_Playing(void const * sample)
 {
     for(int i = 0; i < MAX_SFX; i++)
     {
-        if(Channels[i].sample == sample)
-            return Sample_Status(i);
+        if(Channels[i].sample == sample && Sample_Status(i))
+            return true;
     }
 
     return false;
