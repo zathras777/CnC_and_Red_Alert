@@ -1485,6 +1485,8 @@ int DisplayClass::Cell_Shadow(CELL cell)
 	*/
 	if ((unsigned)(Cell_Y(cell)-1) >= MAP_CELL_H-2) return(-2);
 
+	bool rightedge = Cell_X(cell) == MAP_CELL_W - 1;
+
 	cellptr = &(*this)[cell];
 	if (!cellptr->IsMapped) {
 
@@ -1514,7 +1516,7 @@ int DisplayClass::Cell_Shadow(CELL cell)
 			cellptr += MAP_CELL_W*2;
 			if (cellptr->IsMapped) index |= 0x04;
 			cellptr += 2;
-			if (cellptr->IsMapped) index |= 0x02;
+			if (!rightedge && cellptr->IsMapped) index |= 0x02;
 			cellptr -= MAP_CELL_W*2;
 			if (cellptr->IsMapped) index |= 0x01;
 			value = DiagShadow[index];
