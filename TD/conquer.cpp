@@ -2650,16 +2650,15 @@ void CC_Texture_Fill (void const *shapefile, int shapenum, int xpos, int ypos, i
 
 			//FIXME: can't find this one anywhere
 			// (this is the only user)
-			printf("Texture_Fill_Rect!\n");
 			//LogicPage->Texture_Fill_Rect (xpos, ypos, width, height, shape_pointer, source_width, source_height);
-#if (0)
+#if (1)
 			if (LogicPage->Lock()){
 
-				for (y = ypos ; y < ypos + MIN(source_height, height) ; y++ ){
+				for (int y = ypos ; y < ypos + MIN(source_height, height) ; y++ ){
 
-					shape_save = shape_pointer;
+					unsigned char *shape_save = shape_pointer;
 
-					for (x = xpos ; x < xpos + MIN(source_width, width) ; x++ ){
+					for (int x = xpos ; x < xpos + MIN(source_width, width) ; x++ ){
 						LogicPage->Put_Pixel (x, y, *shape_pointer++);
 					}
 
