@@ -133,15 +133,6 @@ void Buffer_Draw_Stamp_Clip(void const *thisptr, void const *icondata, int icon,
     int dst_area = vp_dst->Get_XAdd() + vp_dst->Get_Width() + vp_dst->Get_Pitch();
     auto dst_offset = vp_dst->Get_Offset() + x_pixel + y_pixel * dst_area;
 
-    if(x_pixel + iwidth > vp_dst->Get_Width())
-    {
-        printf("%i + %i > %i!!\n", x_pixel, iwidth, vp_dst->Get_Width());
-    }
-    if(y_pixel + iheight > vp_dst->Get_Height())
-    {
-        printf("%i + %i > %i!!\n", y_pixel, iheight, vp_dst->Get_Height());
-    }
-
     // Determine row modulo for advancing to next line.
     int modulo = vp_dst->Get_Width() - iwidth;
 
