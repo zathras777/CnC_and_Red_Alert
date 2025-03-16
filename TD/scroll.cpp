@@ -111,9 +111,9 @@ void ScrollClass::AI(KeyNumType &input, int x, int y)
 			/*
 			**	Verify that the mouse is over a scroll region.
 			*/
-			if (Inertia || y == 0 || x == 0 || x == (SeenBuff.Get_Width()-1) || y == (SeenBuff.Get_Height()-1)) {
+			if (Inertia || y <= 0 || x <= 0 || x >= (SeenBuff.Get_Width()-1) || y >= (SeenBuff.Get_Height()-1)) {
 
-				if (y == 0 || x == 0 || x == (SeenBuff.Get_Width()-1) || y == (SeenBuff.Get_Height()-1)) {
+				if (y <= 0 || x <= 0 || x >= (SeenBuff.Get_Width()-1) || y >= (SeenBuff.Get_Height()-1)) {
 
 					player_scrolled=true;
 					/*
