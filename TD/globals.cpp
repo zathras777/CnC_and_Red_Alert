@@ -1039,5 +1039,4 @@ TheaterType		LastTheater = THEATER_NONE;
 // extra glue to SDLLIB
 TimerClass TickCount;
 WWKeyboardClass *_Kbd = &Kbd;
-char *ShapeBuffer = _ShapeBuffer;
 #endif
