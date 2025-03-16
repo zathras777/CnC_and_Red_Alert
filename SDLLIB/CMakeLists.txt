@@ -15,7 +15,6 @@ add_library(sdllib STATIC
     palette.cpp
     playcd.cpp
     shape.cpp
-    tile.cpp
     timer.cpp
     wincomm.cpp
     window.cpp

@@ -17,6 +17,19 @@ static int IconHeight = 0;
 static int IconSize = 0;
 static int IconCount = 0;
 
+typedef struct {
+	short	Width;			// Width of icons (pixels).
+	short	Height;			// Height of icons (pixels).
+	short	Count;			// Number of (logical) icons in this set.
+	short	Allocated;		// Was this iconset allocated?
+	int32_t	Size;				// Size of entire iconset memory block.
+	int32_t	Icons;			// Offset from buffer start to icon data.
+	int32_t	Palettes;		// Offset from buffer start to palette data.
+	int32_t	Remaps;			// Offset from buffer start to remap index data.
+	int32_t	TransFlag;		// Offset for transparency flag table.
+	int32_t	Map;				// Icon map offset (if present).
+} IControl_Type_Old;
+
 void Init_Stamps(void const *icon_ptr)
 {
     // Verify legality of parameter.
@@ -42,14 +55,26 @@ void Init_Stamps(void const *icon_ptr)
     // Record size of icon (in bytes)
     IconSize = IconWidth * IconHeight;
 
-    // Record hard pointer to icon map data.
-    MapPtr = (uint8_t *)icon_ptr + control->Map;
+    // hack to detect old format
+    // (these fields are actually Size in that case)
+    if(!control->MapHeight || control->MapWidth > 256)
+    {
+        auto old = (IControl_Type_Old *)control;
+        MapPtr = (uint8_t *)icon_ptr + old->Map;
+        StampPtr = (uint8_t *)icon_ptr + old->Icons;
+        IsTrans = (uint8_t *)icon_ptr + old->TransFlag;
+    }
+    else
+    {
+        // Record hard pointer to icon map data.
+        MapPtr = (uint8_t *)icon_ptr + control->Map;
 
-    // Record hard pointer to icon data
-    StampPtr = (uint8_t *)icon_ptr + control->Icons;
+        // Record hard pointer to icon data
+        StampPtr = (uint8_t *)icon_ptr + control->Icons;
 
-    // Record the transparent table
-    IsTrans = (uint8_t *)icon_ptr + control->TransFlag;
+        // Record the transparent table
+        IsTrans = (uint8_t *)icon_ptr + control->TransFlag;
+    }
 }
 
 void Buffer_Draw_Stamp_Clip(void const *thisptr, void const *icondata, int icon, int x_pixel, int y_pixel, void const *remap, int min_x, int min_y, int max_x, int max_y)
