@@ -11,7 +11,7 @@ void Force_VM_Page_In(void *buffer, int length)
 
 void *Alloc(unsigned long bytes_to_alloc, MemoryFlagType flags)
 {
-	void *ptr = malloc(bytes_to_alloc);
+	void *ptr = new char[bytes_to_alloc];
 
 	if(!ptr && Memory_Error)
 		Memory_Error();
@@ -25,7 +25,7 @@ void *Alloc(unsigned long bytes_to_alloc, MemoryFlagType flags)
 void Free(void const *pointer)
 {
     if(pointer)
-        free((void *)pointer);
+        delete[] (char *)pointer;
 }
 
 void Mem_Copy(void const *source, void *dest, unsigned long bytes_to_copy)
