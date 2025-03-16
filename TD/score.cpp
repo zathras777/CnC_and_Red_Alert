@@ -654,7 +654,7 @@ void ScoreClass::Presentation(void)
 	}
 
 	HouseClass *houses[3];
-	for (index = 0; index < 3; index++) {
+	for (int index = 0; index < 3; index++) {
 		houses[index] =(HouseClass::As_Pointer((HousesType)(HOUSE_GOOD+index)));
 	}
 
@@ -899,6 +899,7 @@ void ScoreClass::Presentation(void)
 	*/
 	if(hallfame[NUMFAMENAMES-1].score >= total)
 								hallfame[NUMFAMENAMES-1].score = 0;
+	int index;
 	for (index = 0; index < NUMFAMENAMES; index++) {
 		if (total > hallfame[index].score) {
 			if (index < (NUMFAMENAMES-1)) for (i = (NUMFAMENAMES-1); i > index; i--) hallfame[i] = hallfame[i-1];
@@ -916,7 +917,7 @@ void ScoreClass::Presentation(void)
 	** Now display the hall of fame
 	*/
 	Set_Logic_Page(*PseudoSeenBuff);
-	for (i = 0; i < NUMFAMENAMES; i++) {
+	for (int i = 0; i < NUMFAMENAMES; i++) {
 		Alloc_Object(new ScorePrintClass(hallfame[i].name, HALLFAME_X, HALLFAME_Y + (i*8), _bluepal));
 		if (hallfame[i].score) {
 			char *str = (char *)(SysMemPage.Get_Buffer()) + i*32;
@@ -1157,7 +1158,7 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 		if (!Check_Key()) Call_Back_Delay(1);
 	}
 
-	i = MAX(GBKilled, NBKilled);
+	int i = MAX(GBKilled, NBKilled);
 	i = MAX(i, CBKilled);
 
 	for (int q = 0; q <= i; q++) {

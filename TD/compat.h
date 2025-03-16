@@ -39,8 +39,6 @@
 #define COMPAT_H
 
 
-#include "i86.h"
-
 #define  KeyNumType	int
 #define  KeyASCIIType	int
 
@@ -84,7 +82,9 @@ extern "C" {
 
 extern unsigned char *Palette;
 extern unsigned char MDisabled;			// Is mouse disabled?
+#ifndef PORTABLE
 extern WORD Hard_Error_Occured;
+#endif
 
 /*
 **	This is the menu control structures.

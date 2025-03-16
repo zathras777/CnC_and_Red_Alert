@@ -99,8 +99,5 @@ class EditClass : public ControlClass
 
 };
 
-inline EditClass::EditStyle operator |(EditClass::EditStyle, EditClass::EditStyle);
-inline EditClass::EditStyle operator &(EditClass::EditStyle, EditClass::EditStyle);
-inline EditClass::EditStyle operator ~(EditClass::EditStyle);
 
 #endif

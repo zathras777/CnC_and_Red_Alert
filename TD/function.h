@@ -38,7 +38,7 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-#ifdef NEVER
+/*
 Map (screen) class heirarchy.
 
  MapeditClass (most derived class) -- scenario editor
@@ -111,24 +111,13 @@ Map (screen) class heirarchy.
 UnitTypeClass      │   BuildingTypeClass      │
                    │                  InfantryTypeClass
            AircraftTypeClass
-#endif
-
-/*
-**	The "bool" integral type was defined by the C++ comittee in
-**	November of '94. Until the compiler supports this, use the following
-**	definition.
 */
-#ifndef TRUE_FALSE_DEFINED
-enum {false=0,true=1};
-typedef int bool;
-#define TRUE_FALSE_DEFINED
-#endif	//TRUE_FALSE_DEFINED
 
 
-#define _WIN32
-#define WIN32 =1	//_LEAN_AND_MEAN
+
+#ifdef _WIN32
 #include <windows.h>
-
+#endif
 
 /**********************************************************************
 **	If the following define is enabled, then the memory checking code
@@ -137,7 +126,11 @@ typedef int bool;
 #define NOMEMCHECK
 
 #include	"watcom.h"
-#define FILE_H
+
+#ifdef PORTABLE
+#include "keyboard.h"
+#endif
+
 #define WWMEM_H
 #include "compat.h"
 #include <wwlib32.h>
@@ -159,20 +152,24 @@ typedef struct {
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<stddef.h>
+#ifdef PORTABLE
+#include    "ex_string.h"
+#else
 #include	<mem.h>
 #include	<dos.h>
 #include	<direct.h>
+#include	<process.h>
+#endif
 #include	<stdarg.h>
 #include	<ctype.h>
 #include	<assert.h>
-#include	<process.h>
-#include	<new.h>
+#include	<new>
 
 /*
 **	VQ player specific includes.
 */
-#include <vqa32\vqaplay.h>
-#include <vqa32\vqafile.h>
+#include <vqa32/vqaplay.h>
+#include <vqa32/vqafile.h>
 
 extern bool GameActive;
 extern long LParam;
@@ -186,18 +183,21 @@ extern long LParam;
 #include "special.h"
 #include	"defines.h"
 
-
+#ifndef PORTABLE
 /*
 **	Greenleaf specific includes.
 */
 #include <modem.h>
 #include <fast.h>
+#endif
 
 
 extern long Frame;
 inline CELL Coord_XCell(COORDINATE coord) {return (CELL)(*(((unsigned char*)&coord)+1));}
 inline CELL Coord_YCell(COORDINATE coord) {return (CELL)(*(((unsigned char*)&coord)+3));}
-//inline CELL Coord_Cell(COORD coord){return (CELL)(((*(((unsigned short *)&coord)+1) & 0xFF00) >> 2) | *(((unsigned char *)&coord)+1));}
+#ifdef PORTABLE
+inline CELL Coord_Cell(COORDINATE coord){return (CELL)(((*(((unsigned short *)&coord)+1) & 0xFF00) >> 2) | *(((unsigned char *)&coord)+1));}
+#else
 CELL Coord_Cell(COORDINATE coord);
 #pragma aux Coord_Cell parm [eax] \
 	modify [ebx] \
@@ -207,9 +207,10 @@ CELL Coord_Cell(COORDINATE coord);
 	"xor	al,al"					\
 	"shr	eax,2"					\
 	"or	al,bh"
-
+#endif
 
 #include  "utracker.h"
+#include	"palette.h"
 #include	"facing.h"
 #include	"ftimer.h"
 #include	"theme.h"
@@ -375,7 +376,7 @@ int Get_Resolution_Factor(void);
 */
 #define SIZE_OF_PALETTE 256
 extern	"C" unsigned char *InterpolationPalette;
-extern	BOOL	InterpolationPaletteChanged;
+extern	bool	InterpolationPaletteChanged;
 extern	void 	Interpolate_2X_Scale( GraphicBufferClass *source, GraphicViewPortClass *dest ,char const *palette_file_name);
 void Read_Interpolation_Palette (char const *palette_file_name);
 void Write_Interpolation_Palette (char const *palette_file_name);
@@ -507,7 +508,7 @@ long __cdecl Buffer_Frame_To_Page(int x, int y, int w, int h, void *Buffer, Grap
 **	KEYFRAME.CPP
 */
 int Get_Last_Frame_Length(void);
-unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr);
+void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr);
 unsigned short Get_Build_Frame_Count(void const *dataptr);
 unsigned short Get_Build_Frame_X(void const *dataptr);
 unsigned short Get_Build_Frame_Y(void const *dataptr);
@@ -646,7 +647,9 @@ void Call_Back_Delay(int time);
 int Alloc_Object(ScoreAnimClass *obj);
 extern GraphicBufferClass *PseudoSeenBuff;
 
+#ifndef PORTABLE
 void Window_Dialog_Box(HANDLE  hinst, LPCTSTR  lpszTemplate, HWND  hwndOwner, DLGPROC  dlgprc);
+#endif
 
 /*
 **	SPECIAL.CPP
@@ -696,6 +699,11 @@ ObjectClass *  As_Object(TARGET target);
 ** ULOGIC.CPP
 */
 int Terrain_Cost(CELL cell, FacingType facing);
+
+//
+DirType Desired_Facing8(int x1, int y1, int x2, int y2);
+DirType Desired_Facing256(int srcx, int srcy, int dstx, int dsty);
+//
 
 /*
 **	Inline miscellaneous functions.
@@ -791,7 +799,7 @@ extern	void Colour_Debug (int call_number);
 
 
 extern	unsigned char 	*InterpolatedPalettes[100];
-extern BOOL				PalettesRead;
+extern bool				PalettesRead;
 extern unsigned			PaletteCounter;
 
 extern "C"{
@@ -800,7 +808,7 @@ extern "C"{
 }
 
 extern void Free_Interpolated_Palettes(void);
-extern int Load_Interpolated_Palettes(char const *filename, BOOL add=FALSE);
+extern int Load_Interpolated_Palettes(char const *filename, bool add=false);
 
 
 #define	CELL_BLIT_ONLY	1
@@ -847,7 +855,7 @@ int Distance_Coord(COORDINATE coord1, COORDINATE coord2);
 
 inline int Distance(COORDINATE coord1, COORDINATE coord2)
 {
-#ifdef NEVER
+#ifdef PORTABLE
 	int	diff1, diff2;
 
 	diff1 = Coord_Y(coord1) - Coord_Y(coord2);
@@ -923,4 +931,20 @@ inline CELL CellClass::Cell_Number(void) const
 
 void WWDOS_Shutdown(void);
 
+template class TFixedIHeapClass<AircraftClass>;
+template class TFixedIHeapClass<AnimClass>;
+template class TFixedIHeapClass<BuildingClass>;
+template class TFixedIHeapClass<BulletClass>;
+template class TFixedIHeapClass<FactoryClass>;
+template class TFixedIHeapClass<HouseClass>;
+template class TFixedIHeapClass<InfantryClass>;
+template class TFixedIHeapClass<OverlayClass>;
+template class TFixedIHeapClass<SmudgeClass>;
+template class TFixedIHeapClass<TeamClass>;
+template class TFixedIHeapClass<TemplateClass>;
+template class TFixedIHeapClass<TerrainClass>;
+template class TFixedIHeapClass<TriggerClass>;
+template class TFixedIHeapClass<UnitClass>;
+
+template class TFixedIHeapClass<TeamTypeClass>;
 #endif

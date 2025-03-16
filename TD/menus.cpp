@@ -799,7 +799,7 @@ int Main_Menu(unsigned long timeout)
 			display = false;
 		}
 
-#ifndef DEMO
+#if !defined(DEMO) && !defined(PORTABLE)
 		/*
 		** Check to see if WChat has told us to start playing an internet game
 		*/

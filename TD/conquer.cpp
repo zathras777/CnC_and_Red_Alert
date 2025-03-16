@@ -66,12 +66,13 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
-#include	<direct.h>
 #include	<fcntl.h>
+#ifndef PORTABLE
 #include	<io.h>
 #include	<dos.h>
 #include	<share.h>
-#include <malloc.h>
+#endif
+
 #include  "ccdde.h"
 
 #define SHAPE_TRANS		0x40
@@ -185,7 +186,9 @@ void Main_Game(int argc, char *argv[])
 			PacketLater = NULL;
 			ConnectionLost = false;
 		}else{
+#ifdef _WIN32
 			DDEServer.Disable();
+#endif
 		}
 
 		InMainLoop = true;
@@ -257,7 +260,9 @@ void Main_Game(int argc, char *argv[])
 			/*
 			**	Call the game's main loop
 			*/
+#ifndef PORTABLE
 			TotalLocks=0;
+#endif
 			if (Main_Loop()) {
 				break;
 			}
@@ -371,7 +376,9 @@ void Main_Game(int argc, char *argv[])
 			Winsock.Close();
 			Special.IsFromWChat = false;
 			SpawnedFromWChat = false;
+#ifdef _WIN32
 			DDEServer.Delete_MPlayer_Game_Info();	//Make sure we dont use the same start packet twice
+#endif
 			GameToPlay = GAME_NORMAL;			//Have to do this or we will got straight to the multiplayer menu
 			Spawn_WChat(false);		//Will switch back to Wchat. It must be there because its been poking us
 			//break;
@@ -1226,6 +1233,10 @@ void Call_Back(void)
 	//|| GameToPlay == GAME_INTERNET) {
 		NullModem.Service();
 	}
+#endif
+
+#ifdef PORTABLE
+	Video_End_Frame();
 #endif
 }
 
@@ -2164,7 +2175,7 @@ long MixFileHandler(VQAHandle *vqa, long action, void *buffer, long nbytes)
 				if (error != -1) {
 					vqa->VQAio = (unsigned long)file;
 					error = 0;
-					file->Set_Buffer_Size(8*1024);
+					//file->Set_Buffer_Size(8*1024); // missing?
 				} else {
 					delete file;
 					file = 0;
@@ -2218,11 +2229,11 @@ void Rebuild_Interpolated_Palette(unsigned char *interpal)
 
 
 unsigned char 	*InterpolatedPalettes[100];
-BOOL				PalettesRead;
+bool				PalettesRead;
 unsigned			PaletteCounter;
 
 
-int Load_Interpolated_Palettes(char const *filename, BOOL add)
+int Load_Interpolated_Palettes(char const *filename, bool add)
 {
 	int	num_palettes=0;
 	int	i;
@@ -2230,6 +2241,8 @@ int Load_Interpolated_Palettes(char const *filename, BOOL add)
 
 	PalettesRead = FALSE;
 	CCFileClass	file(filename);
+
+	
 
 //	RawFileClass	*palette_file;
 
@@ -2299,7 +2312,7 @@ void Free_Interpolated_Palettes(void)
  * HISTORY:                                                                                    *
  *   12/19/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-extern	BOOL	InMovie;
+extern	bool	InMovie;
 extern bool	VQPaletteChange;
 extern void Suspend_Audio_Thread(void);
 extern void Resume_Audio_Thread(void);
@@ -2414,8 +2427,9 @@ void Play_Movie(char const * name, ThemeType theme, bool clrscrn)
 				//Resume_Audio_Thread();
 				InMovie = FALSE;
 				Free_Interpolated_Palettes();
+#ifndef PORTABLE
 				Set_Primary_Buffer_Format();
-
+#endif
 				/*
 				**	Any movie that ends prematurely must have the screen
 				**	cleared to avoid any unexpected palette glitches.
@@ -2615,7 +2629,7 @@ void CC_Texture_Fill (void const *shapefile, int shapenum, int xpos, int ypos, i
 {
 	unsigned char	*shape_pointer;
 	//unsigned char	*shape_save;
-	unsigned	long	shape_size;
+	void	*shape_size;
 	//int x,y;
 
 	if (shapefile && shapenum != -1) {
@@ -2634,8 +2648,10 @@ void CC_Texture_Fill (void const *shapefile, int shapenum, int xpos, int ypos, i
 			int source_width = Get_Build_Frame_Width (shapefile);
 			int source_height = Get_Build_Frame_Height (shapefile);
 
-
-			LogicPage->Texture_Fill_Rect (xpos, ypos, width, height, shape_pointer, source_width, source_height);
+			//FIXME: can't find this one anywhere
+			// (this is the only user)
+			printf("Texture_Fill_Rect!\n");
+			//LogicPage->Texture_Fill_Rect (xpos, ypos, width, height, shape_pointer, source_width, source_height);
 #if (0)
 			if (LogicPage->Lock()){
 
@@ -2699,7 +2715,7 @@ void CC_Draw_Shape(void const * shapefile, int shapenum, int x, int y, WindowNum
 #if(TRUE)
 	int predoffset;
 	char				*shape_pointer;
-	unsigned	long	shape_size;
+	void				*shape_size;
 
 	if (shapefile && shapenum != -1) {
 
@@ -3501,6 +3517,9 @@ void Error_In_Heap_Pointers( char *string )
  *=============================================================================================*/
 int Get_CD_Index (int cd_drive, int timeout)
 {
+#ifdef PORTABLE
+	return -1; // this may be a problem
+#else
 	char		volume_name[128];
 	unsigned	filename_length;
 	unsigned	misc_dword;
@@ -3569,6 +3588,7 @@ int Get_CD_Index (int cd_drive, int timeout)
 			if (GetLastError() != ROR_NOT_READY || !timer.Time()) return (-1);
 		}
 	}while(true);
+#endif
 }
 
 
@@ -3804,28 +3824,6 @@ bool Force_CD_Available(int cd)
 	}
 
 	return(true);
-}
-
-
-/***************************************************************************
- * DISK_SPACE_AVAILABLE -- returns bytes of free disk space                *
- *                                                                         *
- * INPUT:		none                                                        *
- *                                                                         *
- * OUTPUT:     returns amount of free disk space                           *
- *                                                                         *
- * HISTORY:                                                                *
- *   08/11/1995 PWG : Created.                                             *
- *=========================================================================*/
-unsigned long Disk_Space_Available(void)
-{
-	struct diskfree_t diskdata;
-	unsigned drive;
-
-	_dos_getdrive(&drive);
-	_dos_getdiskfree(drive, &diskdata);
-
-	return(diskdata.avail_clusters * diskdata.sectors_per_cluster * diskdata.bytes_per_sector);
 }
 
 

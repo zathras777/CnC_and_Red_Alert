@@ -727,8 +727,10 @@ CCDebugString (flip);
 			** deliberately break the max ahead value
 			*/
 			if (Special.IsFromWChat){
+#ifdef _WIN32
 				MPlayerMaxAhead += DDEServer.Time_Since_Heartbeat()/(70*60);
 //if (DDEServer.Time_Since_Heartbeat() >= 70*60) CCDebugString ("C&C95 - Missed a heartbeat\n");
+#endif
 			}
 			break;
 

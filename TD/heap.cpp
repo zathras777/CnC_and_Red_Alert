@@ -52,10 +52,8 @@
 
 #include	"function.h"
 #include	"heap.h"
-#include	<mem.h>
 #include	<stdio.h>
 #include	<stddef.h>
-#include	<conio.h>
 #include	<string.h>
 
 
@@ -280,7 +278,7 @@ void FixedHeapClass::Clear(void)
 	**	Free the old buffer (if present).
 	*/
 	if (Buffer && IsAllocated) {
-		delete[] Buffer;
+		delete[] (char *)Buffer;
 	}
 	Buffer = 0;
 	IsAllocated = false;

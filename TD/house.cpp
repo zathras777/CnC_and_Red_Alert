@@ -249,7 +249,7 @@ void HouseClass::Debug_Dump(MonoClass *) const
  * HISTORY:                                                                                    *
  *   05/22/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * HouseClass::operator new(size_t)
+void * HouseClass::operator new(size_t) throw()
 {
 	void * ptr = Houses.Allocate();
 	if (ptr) {
@@ -3227,7 +3227,7 @@ TechnoTypeClass const * HouseClass::Suggest_New_Object(RTTIType objecttype) cons
 				**	to fill one team of this type regardless of whether there is a team active
 				**	of that type.
 				*/
-				for (index = 0; index < TeamTypes.Count(); index++) {
+				for (int index = 0; index < TeamTypes.Count(); index++) {
 					TeamTypeClass const * team = TeamTypes.Ptr(index);
 					if (team) {
 						if (team->House == Class->House && team->IsPrebuilt && (!team->IsAutocreate || IsAlerted)) {
@@ -3322,7 +3322,7 @@ TechnoTypeClass const * HouseClass::Suggest_New_Object(RTTIType objecttype) cons
 				**	to fill one team of this type regardless of whether there is a team active
 				**	of that type.
 				*/
-				for (index = 0; index < TeamTypes.Count(); index++) {
+				for (int index = 0; index < TeamTypes.Count(); index++) {
 					TeamTypeClass const * team = TeamTypes.Ptr(index);
 					if (team) {
 						if (team->House == Class->House && team->IsPrebuilt && (!team->IsAutocreate || IsAlerted)) {

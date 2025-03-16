@@ -300,7 +300,9 @@ void Clear_Scenario(void)
 
 	CurrentObject.Clear();
 
+#ifndef PORTABLE
 	Invalidate_Cached_Icons();
+#endif
 }
 
 
@@ -510,7 +512,7 @@ void Do_Win(void)
 		/*
 		**	Remove the building from the prebuild list.
 		*/
-		for (index = 0; index < Base.Nodes.Count(); index++) {
+		for (int index = 0; index < Base.Nodes.Count(); index++) {
 			BaseNodeClass * node = Base.Get_Node(index);
 
 			if (node && node->Type == SabotagedType) {

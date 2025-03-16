@@ -700,34 +700,34 @@ bool Client_Remote_Connect(void)
  *                                                                         						  *
  * Any game running in Stealth mode won't show up on this dialog.										  *
  *                                                                         						  *
- *    ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿                     					  *
- *    ³                 Network Games                     ³                     					  *
- *    ³                                                   ³                     					  *
- *    ³              Your Name: ____________              ³                     					  *
- *    ³                  House: [GDI] [NOD]               ³                     					  *
- *    ³          Desired Color: [ ][ ][ ][ ]              ³                     					  *
- *    ³                                                   ³                     					  *
- *    ³            Games                 Players          ³                     					  *
- *    ³ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄ¿ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄ¿ ³                     					  *
- *    ³ ³(Bill's Game         )³³ ³ Peter Parker GDI ³³ ³                     					  *
- *    ³ ³ Peter Parker's Game  ÃÄ´ ³ Mary Jane    GDI ÃÄ´ ³                     					  *
- *    ³ ³(Magnum PI's Game    )³ ³ ³ JJ Jameson   NOD ³ ³ ³                     					  *
- *    ³ ³                      ÃÄ´ ³                  ÃÄ´ ³                     					  *
- *    ³ ³                      ³³ ³                  ³³ ³                     					  *
- *    ³ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÙ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÙ ³                     					  *
- *    ³           Scenario: Big Long Description          ³                     					  *
- *    ³                Starting Credits: xxxx             ³                     					  *
- *    ³          Count: ---          Level: ---           ³                     					  *
- *    ³          Bases: ON          Crates: ON            ³                          					  *
- *    ³       Tiberium: ON      AI Players: ON            ³                           					  *
- *    ³                                                   ³                     					  *
- *    ³            [Join]  [Cancel]    [New]              ³                     					  *
- *    ³  ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿  ³                     					  *
- *    ³  ³                                             ³  ³                     					  *
- *    ³  ³                                             ³  ³                     					  *
- *    ³  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ  ³                     					  *
- *    ³                  [Send Message]                   ³                     					  *
- *    ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                     					  *
+ *    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                     					  *
+ *    â”‚                 Network Games                     â”‚                     					  *
+ *    â”‚                                                   â”‚                     					  *
+ *    â”‚              Your Name: ____________              â”‚                     					  *
+ *    â”‚                  House: [GDI] [NOD]               â”‚                     					  *
+ *    â”‚          Desired Color: [ ][ ][ ][ ]              â”‚                     					  *
+ *    â”‚                                                   â”‚                     					  *
+ *    â”‚            Games                 Players          â”‚                     					  *
+ *    â”‚ â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â” â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â” â”‚                     					  *
+ *    â”‚ â”‚(Bill's Game         )â”‚â†‘â”‚ â”‚ Peter Parker GDI â”‚â†‘â”‚ â”‚                     					  *
+ *    â”‚ â”‚ Peter Parker's Game  â”œâ”€â”¤ â”‚ Mary Jane    GDI â”œâ”€â”¤ â”‚                     					  *
+ *    â”‚ â”‚(Magnum PI's Game    )â”‚ â”‚ â”‚ JJ Jameson   NOD â”‚ â”‚ â”‚                     					  *
+ *    â”‚ â”‚                      â”œâ”€â”¤ â”‚                  â”œâ”€â”¤ â”‚                     					  *
+ *    â”‚ â”‚                      â”‚â†“â”‚ â”‚                  â”‚â†“â”‚ â”‚                     					  *
+ *    â”‚ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”˜ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”˜ â”‚                     					  *
+ *    â”‚           Scenario: Big Long Description          â”‚                     					  *
+ *    â”‚                Starting Credits: xxxx             â”‚                     					  *
+ *    â”‚          Count: ---          Level: ---           â”‚                     					  *
+ *    â”‚          Bases: ON          Crates: ON            â”‚                          					  *
+ *    â”‚       Tiberium: ON      AI Players: ON            â”‚                           					  *
+ *    â”‚                                                   â”‚                     					  *
+ *    â”‚            [Join]  [Cancel]    [New]              â”‚                     					  *
+ *    â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚                     					  *
+ *    â”‚  â”‚                                             â”‚  â”‚                     					  *
+ *    â”‚  â”‚                                             â”‚  â”‚                     					  *
+ *    â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â”‚                     					  *
+ *    â”‚                  [Send Message]                   â”‚                     					  *
+ *    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                     					  *
  *                                                                         						  *
  * INPUT:                                                                  						  *
  *		none.																												  *
@@ -2621,31 +2621,31 @@ CCDebugString ("C&C95 - Received the 'GO' packet\n");
  * This dialog shows a list of who's requesting to join this game, and lets						  *
  * the game initiator selectively approve each user.														  *
  *                                                                         						  *
- *    ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿                       						  *
- *    ³              New Network Game              ³                       						  *
- *    ³                                            ³                       						  *
- *    ³     Players               Scenario         ³   													  *
- *    ³ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄ¿   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄ¿ ³ 														  *
- *    ³ ³ Boffo       ³³   ³ Hell's Kitchen   ³³ ³ 														  *
- *    ³ ³ Bozo        ÃÄ´   ³ Heaven's Gate    ÃÄ´ ³														  *
- *    ³ ³ Bonzo       ³ ³   ³      ...         ³ ³ ³														  *
- *    ³ ³             ÃÄ´   ³                  ÃÄ´ ³ 														  *
- *    ³ ³             ³³   ³                  ³³ ³ 														  *
- *    ³ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÙ   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÙ ³ 														  *
- *    ³     [Reject]             Count:--- ##      ³														  *
- *    ³                          Level:--- ##      ³                       						  *
- *    ³                                            ³                       						  *
- *    ³               Credits: _____               ³                             				  *
- *    ³       [  Bases   ]   [   Crates   ]        ³                          					  *
- *    ³       [ Tiberium ]   [ AI Players ]        ³                           					  *
- *    ³                                            ³                       						  *
- *    ³              [OK]    [Cancel]              ³                       						  *
- *    ³  ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿   ³                       						  *
- *    ³  ³                                     ³   ³                       						  *
- *    ³  ³                                     ³   ³                       						  *
- *    ³  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ   ³                       						  *
- *    ³               [Send Message]               ³                       						  *
- *    ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                       						  *
+ *    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                       						  *
+ *    â”‚              New Network Game              â”‚                       						  *
+ *    â”‚                                            â”‚                       						  *
+ *    â”‚     Players               Scenario         â”‚   													  *
+ *    â”‚ â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â” â”‚ 														  *
+ *    â”‚ â”‚ Boffo       â”‚â†‘â”‚   â”‚ Hell's Kitchen   â”‚â†‘â”‚ â”‚ 														  *
+ *    â”‚ â”‚ Bozo        â”œâ”€â”¤   â”‚ Heaven's Gate    â”œâ”€â”¤ â”‚														  *
+ *    â”‚ â”‚ Bonzo       â”‚ â”‚   â”‚      ...         â”‚ â”‚ â”‚														  *
+ *    â”‚ â”‚             â”œâ”€â”¤   â”‚                  â”œâ”€â”¤ â”‚ 														  *
+ *    â”‚ â”‚             â”‚â†“â”‚   â”‚                  â”‚â†“â”‚ â”‚ 														  *
+ *    â”‚ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”˜ â”‚ 														  *
+ *    â”‚     [Reject]             Count:--- ##      â”‚														  *
+ *    â”‚                          Level:--- ##      â”‚                       						  *
+ *    â”‚                                            â”‚                       						  *
+ *    â”‚               Credits: _____               â”‚                             				  *
+ *    â”‚       [  Bases   ]   [   Crates   ]        â”‚                          					  *
+ *    â”‚       [ Tiberium ]   [ AI Players ]        â”‚                           					  *
+ *    â”‚                                            â”‚                       						  *
+ *    â”‚              [OK]    [Cancel]              â”‚                       						  *
+ *    â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚                       						  *
+ *    â”‚  â”‚                                     â”‚   â”‚                       						  *
+ *    â”‚  â”‚                                     â”‚   â”‚                       						  *
+ *    â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚                       						  *
+ *    â”‚               [Send Message]               â”‚                       						  *
+ *    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                       						  *
  *                                                                         						  *
  * INPUT:                                                                  						  *
  *		none.																												  *
@@ -4108,8 +4108,9 @@ void Wait_For_Focus (void)
 {
 	CountDownTimerClass focus_timer;
 	focus_timer.Set(5*60);
+#ifndef PORTABLE
 	ShowWindow ( MainWindow, SW_SHOWMAXIMIZED );
-
+#endif
 	/*
 	** Process the message loop until we are in focus.
 	*/
@@ -4119,10 +4120,12 @@ void Wait_For_Focus (void)
 			CCDebugString (".");
 			Keyboard::Check();
 			if (!focus_timer.Time()){
+#ifndef PORTABLE
 				CCDebugString ("C&C95 - Calling SetForgroundWindow.\n");
 				SetForegroundWindow ( MainWindow );
 				CCDebugString ("C&C95 - Calling ShowWindow.\n");
 				ShowWindow ( MainWindow, SW_SHOWMAXIMIZED );
+#endif
 				focus_timer.Set(5*60);
 			}
 
@@ -4462,7 +4465,9 @@ static int Net_Fake_New_Dialog(void)
 				MPlayerGameName[0] = 0;
 				process = false;
 				rc = false;
+#ifdef _WIN32
 				Send_Data_To_DDE_Server ("Hello", strlen("Hello"), DDEServerClass::DDE_CONNECTION_FAILED);
+#endif
 				GameStatisticsPacketSent = false;
 				Spawn_WChat(false);
 				break;
@@ -5050,7 +5055,9 @@ static int Net_Fake_Join_Dialog(void)
 
 				while (Ipx.Global_Num_Send() > 0 && Ipx.Service() != 0) ;
 
+#ifdef _WIN32
 				Send_Data_To_DDE_Server ("Hello", strlen("Hello"), DDEServerClass::DDE_CONNECTION_FAILED);
+#endif
 				GameStatisticsPacketSent = false;
 				Spawn_WChat(false);
 				process = false;

@@ -171,7 +171,7 @@ void Special_Dialog(void)
 			Dialog_Box(OPTION_X, OPTION_Y, OPTION_WIDTH, OPTION_HEIGHT);
 			Draw_Caption(TXT_SPECIAL_OPTIONS, OPTION_X, OPTION_Y, OPTION_WIDTH);
 
-			for (index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
+			for (int index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
 				Fancy_Text_Print(_options[index].Description, _options[index].Button->X+10, _options[index].Button->Y, CC_GREEN, TBLACK, TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_NOSHADOW);
 			}
 			buttons->Draw_All();
@@ -183,7 +183,7 @@ void Special_Dialog(void)
 			case KN_ESC:
 			case 200|KN_BUTTON:
 				process = false;
-				for (index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
+				for (int index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
 					switch (_options[index].Description) {
 						case TXT_SEPARATE_HELIPAD:
 							oldspecial.IsSeparate = _options[index].Setting;
@@ -249,7 +249,7 @@ void Special_Dialog(void)
 				break;
 
 			default:
-				index = (input & ~KN_BUTTON) - 100;
+				int index = (input & ~KN_BUTTON) - 100;
 				if ((unsigned)index < sizeof(_options)/sizeof(_options[0])) {
 					_options[index].Setting = (_options[index].Setting == false);
 					if (_options[index].Setting) {

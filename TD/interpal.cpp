@@ -43,7 +43,7 @@
 
 #include "function.h"
 
-BOOL	InterpolationPaletteChanged = FALSE;
+bool	InterpolationPaletteChanged = FALSE;
 extern "C" {
 extern void __cdecl Asm_Interpolate (unsigned char* src_ptr ,
 						 						unsigned char* dest_ptr ,
@@ -145,9 +145,9 @@ void Write_Interpolation_Palette (char const *palette_file_name)
 void Create_Palette_Interpolation_Table( void )
 {
 
-	Asm_Create_Palette_Interpolation_Table();
+//	Asm_Create_Palette_Interpolation_Table();
 
-	#if (0)
+	#if (1)
 
 	int 				i;
 	int 				j;
@@ -329,8 +329,8 @@ void Interpolate_2X_Scale( GraphicBufferClass *source, GraphicViewPortClass *des
 	int	src_width;
 	int	dest_width;
 //	int	width_counter;
-	BOOL	source_locked = FALSE;
-	BOOL	dest_locked = FALSE;
+	bool	source_locked = FALSE;
+	bool	dest_locked = FALSE;
 
 
 	/*

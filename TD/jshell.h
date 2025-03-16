@@ -38,6 +38,8 @@
 #ifndef JSHELL_H
 #define JSHELL_H
 
+#include <stdint.h>
+
 /*
 **	Interface class to the keyboard. This insulates the game from library vagaries. Most
 **	notable being the return values are declared as "int" in the library whereas C&C
@@ -111,16 +113,9 @@ template<class T> inline T operator ~(T t1)
 }
 
 
+inline void Set_Bit(void * array, int bit, int value)
+{
 /*
-**	The shape flags are likely to be "or"ed together and other such bitwise
-**	manipulations. These instatiated operator templates allow this.
-*/
-inline ShapeFlags_Type operator |(ShapeFlags_Type, ShapeFlags_Type);
-inline ShapeFlags_Type operator &(ShapeFlags_Type, ShapeFlags_Type);
-inline ShapeFlags_Type operator ~(ShapeFlags_Type);
-
-
-void Set_Bit(void * array, int bit, int value);
 #pragma aux Set_Bit parm [esi] [ecx] [eax] \
 	modify [esi ebx] = 			\
 	"mov	ebx,ecx"					\
@@ -131,18 +126,28 @@ void Set_Bit(void * array, int bit, int value);
 	"jz	ok"						\
 	"bts	[esi+ebx*4],ecx"		\
 	"ok:"
+*/
+    if(value)
+        ((uint32_t *)array)[(unsigned)bit >> 5] |= (1 << (bit & 0x1F));
+    else
+        ((uint32_t *)array)[(unsigned)bit >> 5] &= ~(1 << (bit & 0x1F));
+}
 
-int Get_Bit(void const * array, int bit);
-#pragma aux Get_Bit parm [esi] [eax] \
-	modify [esi ebx] \
-	value [eax]		= 				\
+inline int Get_Bit(void const * array, int bit)
+{
+/*
 	"mov	ebx,eax"					\
 	"shr	ebx,5"					\
 	"and	eax,01Fh"				\
 	"bt	[esi+ebx*4],eax"		\
 	"setc	al"
+*/
+    return !!(((const uint32_t *)array)[(unsigned)bit >> 5] & (1 << (bit & 0x1F)));
+}
 
-int First_True_Bit(void const * array);
+inline int First_True_Bit(void const * array)
+{
+/*
 #pragma aux First_True_Bit parm [esi] \
 	modify [esi ebx] \
 	value [eax]		= 				\
@@ -154,8 +159,27 @@ int First_True_Bit(void const * array);
 	"bsf	ebx,ebx"					\
 	"jz	again"					\
 	"add	eax,ebx"
-
-int First_False_Bit(void const * array);
+*/
+    const uint32_t *array32 = (const uint32_t *)array;
+    int off = 0;
+    while(true)
+    {
+        uint32_t v = *array32++;
+#ifdef _MSC_VER
+		DWORD pos;
+		if(_BitScanForward(&pos, v))
+			return off + pos;
+#else
+        int pos = __builtin_ffs(v);
+        if(pos)
+            return off + pos - 1;
+#endif
+        off += 32;
+    }
+}
+inline int First_False_Bit(void const * array)
+{
+/*
 #pragma aux First_False_Bit parm [esi] \
 	modify [esi ebx] \
 	value [eax]		= 				\
@@ -168,7 +192,33 @@ int First_False_Bit(void const * array);
 	"bsf	ebx,ebx"					\
 	"jz	again"					\
 	"add	eax,ebx"
+*/
+    const uint32_t *array32 = (const uint32_t *)array;
+    int off = 0;
+    while(true)
+    {
+        uint32_t v = *array32++;
+#ifdef _MSC_VER
+		DWORD pos;
+		if(_BitScanForward(&pos, ~v))
+			return off + pos;
+#else
+        int pos = __builtin_ffs(~v);
+        if(pos)
+            return off + pos - 1;
+#endif
+        off += 32;
+    }
+}
 
+#ifdef PORTABLE
+inline int Bound(int original, int minval, int maxval)
+{
+	if (original < minval) return(minval);
+	if (original > maxval) return(maxval);
+	return(original);
+};
+#else
 extern int Bound(int original, int min, int max);
 #pragma aux Bound parm [eax] [ebx] [ecx] \
 	modify [eax] \
@@ -183,6 +233,7 @@ extern int Bound(int original, int min, int max);
 	"jl	okmax"					\
 	"mov	eax,ecx"					\
 	"okmax:"
+#endif
 
 #ifdef NEVER
 extern unsigned Bound(unsigned original, unsigned min, unsigned max);

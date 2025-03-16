@@ -48,17 +48,17 @@ class PhoneEntryClass
 		PhoneEntryClass(void) {};
 		~PhoneEntryClass() {};
 
-		operator == (PhoneEntryClass &obj) 
+		bool operator == (PhoneEntryClass &obj) 
 			{ return (memcmp (Name,obj.Name,strlen(Name))==0);}
-		operator != (PhoneEntryClass &obj)
+		bool operator != (PhoneEntryClass &obj)
 			{ return (memcmp (Name,obj.Name,strlen(Name))!=0);}
-		operator > (PhoneEntryClass &obj)
+		bool operator > (PhoneEntryClass &obj)
 			{ return (memcmp(Name, obj.Name, strlen(Name)) > 0);}
-		operator < (PhoneEntryClass &obj)
+		bool operator < (PhoneEntryClass &obj)
 			{ return (memcmp(Name, obj.Name, strlen(Name)) < 0);}
-		operator >= (PhoneEntryClass &obj)
+		bool operator >= (PhoneEntryClass &obj)
 			{ return (memcmp(Name, obj.Name, strlen(Name)) >= 0);}
-		operator <= (PhoneEntryClass &obj)
+		bool operator <= (PhoneEntryClass &obj)
 			{ return (memcmp(Name, obj.Name, strlen(Name)) <= 0);}
 
 		SerialSettingsType Settings;

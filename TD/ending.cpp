@@ -68,7 +68,8 @@ void GDI_Ending(void)
 	CountDownTimerClass count;
 	if (CCFileClass("TRAILER.VQA").Is_Available()) {
 		Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
-		Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+		CCFileClass f("ATTRACT2.CPS");
+		Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 		SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 		Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 		Clear_KeyBuffer();
@@ -82,7 +83,8 @@ void GDI_Ending(void)
 	}
 
 	Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
-	Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+	CCFileClass f("ATTRACT2.CPS");
+	Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 	SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 	Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 	Clear_KeyBuffer();
@@ -134,8 +136,10 @@ void Nod_Ending(void)
 	HidPage.Clear();
 	PseudoSeenBuff->Clear();
 
-	void * localpal = Load_Alloc_Data(CCFileClass("SATSEL.PAL"));
-	Load_Uncompress(CCFileClass("SATSEL.CPS"), SysMemPage, SysMemPage);
+	CCFileClass f("SATSEL.PAL");
+	void * localpal = Load_Alloc_Data(f);
+	f.Open("SATSEL.CPS");
+	Load_Uncompress(f, SysMemPage, SysMemPage, NULL);
 #ifdef NOT_FOR_WIN95
 	memcpy(satpic, HidPage.Get_Buffer(), 64000);
 #else
@@ -227,7 +231,8 @@ void Nod_Ending(void)
 	CountDownTimerClass count;
 	if (CCFileClass("TRAILER.VQA").Is_Available()) {
 		Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
-		Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+		CCFileClass f("ATTRACT2.CPS");
+		Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 		SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 		Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 		Clear_KeyBuffer();
@@ -241,7 +246,8 @@ void Nod_Ending(void)
 	}
 
 	Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
-	Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+	CCFileClass f2("ATTRACT2.CPS");
+	Load_Uncompress(f2, SysMemPage, SysMemPage, Palette);
 	SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 	Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 	Clear_KeyBuffer();

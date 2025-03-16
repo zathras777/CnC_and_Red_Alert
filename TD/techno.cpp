@@ -1504,7 +1504,7 @@ TARGET TechnoClass::Greatest_Threat(ThreatType method) const
 		**	Now scan through the entire ground layer. This is painful, but what other
 		**	choice is there?
 		*/
-		for (index = 0; index < Map.Layer[LAYER_GROUND].Count(); index++) {
+		for (int index = 0; index < Map.Layer[LAYER_GROUND].Count(); index++) {
 			ObjectClass const * object = Map.Layer[LAYER_GROUND][index];
 
 			int value = 0;
@@ -3336,7 +3336,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const *enemy)
 	** Loop through the units looking for those who are capable of going
 	** on a rescue mission.
 	*/
-	for (index = 0; index < Units.Count() && desired > 0; index++) {
+	for (int index = 0; index < Units.Count() && desired > 0; index++) {
 	 	UnitClass * unit = Units.Ptr(index);
 		if (unit && unit->Owner() == Owner()) {
 
@@ -3415,7 +3415,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const *enemy)
 			}
 		}
 
-		for (lp = 0; lp < count; lp ++) {
+		for (int lp = 0; lp < count; lp ++) {
 			defender[lp]->Assign_Mission(MISSION_RESCUE);
 			defender[lp]->Assign_Target(enemy->As_Target());
 			risktotal += defender[lp]->Risk();

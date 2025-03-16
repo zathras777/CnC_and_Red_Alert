@@ -56,11 +56,14 @@ char CDFileClass::RawPath[512];
 
 int __cdecl Is_Disk_Inserted(int disk)
 {
-	struct find_t fb;
 	char	scan[] = "?:\\*.*";
 
 	scan[0] = 'A' + disk;
-	return(_dos_findfirst(scan, _A_SUBDIR, &fb) == 0);
+	// yeah this isn't going to work on non-windows...
+	FindFileState state;
+	bool ret = Find_First_File(scan, state);
+	End_Find_File(state);
+	return ret;
 }
 
 

@@ -80,7 +80,7 @@
 **	This define enables the full set of cheat keys and special
 **	command line options.
 */
-#define CHEAT_KEYS
+//#define CHEAT_KEYS
 
 
 /**********************************************************************
@@ -368,8 +368,6 @@ typedef enum ThemeType {
 	THEME_FIRST=0
 } ThemeType;
 
-inline ThemeType operator++(ThemeType &, int);
-
 
 /**********************************************************************
 **	This is the various threat scan methods that can be used when looking
@@ -388,9 +386,7 @@ typedef enum ThreatType {
 	THREAT_CIVILIANS=0x0100,	// Consider civilians to be primary target?
 	THREAT_CAPTURE=0x0200,		// Consider capturable buildings only?
 } ThreatType;
-inline ThreatType operator |(ThreatType, ThreatType);
-inline ThreatType operator &(ThreatType, ThreatType);
-inline ThreatType operator ~(ThreatType);
+
 
 #define THREAT_GROUND	(THREAT_VEHICLES|THREAT_BUILDINGS|THREAT_INFANTRY)
 
@@ -616,7 +612,7 @@ typedef enum VolType
 **	The houses that can be played are listed here. Each has their own
 **	personality and strengths.
 */
-typedef enum HousesType {
+typedef enum HousesType : int8_t {
 	HOUSE_NONE=-1,
 	HOUSE_GOOD,					// Global Defense Initiative
 	HOUSE_BAD,					// Brotherhood of Nod
@@ -632,8 +628,6 @@ typedef enum HousesType {
 	HOUSE_COUNT,
 	HOUSE_FIRST=HOUSE_GOOD
 } HousesType;
-
-inline HousesType operator++(HousesType &, int);
 
 #define	HOUSEF_GOOD		(1<<HOUSE_GOOD)
 #define	HOUSEF_BAD		(1<<HOUSE_BAD)
@@ -711,8 +705,6 @@ typedef enum ScenarioVarEnum
 	SCEN_VAR_FIRST = 0,
 } ScenarioVarType;
 
-inline ScenarioVarType operator++(ScenarioVarType &, int);
-
 
 /**********************************************************************
 **	The objects to be drawn on the map are grouped into layers. These
@@ -728,8 +720,6 @@ typedef enum LayerType {
 	LAYER_COUNT,
 	LAYER_FIRST=0
 } LayerType;
-
-inline LayerType operator++(LayerType &, int);
 
 
 /**********************************************************************
@@ -761,8 +751,6 @@ typedef enum BulletType {
 	BULLET_COUNT,
 	BULLET_FIRST=0
 } BulletType;
-
-inline BulletType operator++(BulletType &, int);
 
 
 /**********************************************************************
@@ -850,8 +838,6 @@ typedef enum StructType {
 	STRUCT_FIRST=0
 } StructType;
 
-inline StructType operator++(StructType &, int);
-
 #define	STRUCTF_NONE				0L
 #define	STRUCTF_ADVANCED_POWER	(1L << STRUCT_ADVANCED_POWER)
 #define	STRUCTF_REPAIR				(1L << STRUCT_REPAIR)
@@ -886,7 +872,7 @@ inline StructType operator++(StructType &, int);
 **	a transparent icon. It is placed over the terrain but usually falls
 **	"under" buildings, trees, and units.
 */
-typedef enum OverlayType {
+typedef enum OverlayType : int8_t {
 	OVERLAY_NONE=-1,
 	OVERLAY_CONCRETE,			// Concrete.
 	OVERLAY_SANDBAG_WALL,	// Piled sandbags.
@@ -923,8 +909,6 @@ typedef enum OverlayType {
 	OVERLAY_FIRST=0
 } OverlayType;
 
-inline OverlayType operator++(OverlayType &, int);
-
 
 /**********************************************************************
 **	This specifies the infantry in the game. The "E" designation is
@@ -957,8 +941,6 @@ typedef enum InfantryType{
 	INFANTRY_COUNT,
 	INFANTRY_FIRST=0
 } InfantryType;
-
-inline InfantryType operator++(InfantryType &, int);
 
 
 /**********************************************************************
@@ -993,8 +975,6 @@ typedef enum UnitType{
 	UNIT_COUNT,
 	UNIT_FIRST=0
 } UnitType;
-
-inline UnitType operator++(UnitType &, int);
 
 #define	UNITF_HTANK			(1L<<UNIT_HTANK)
 #define	UNITF_MTANK			(1L<<UNIT_MTANK)
@@ -1042,8 +1022,6 @@ typedef enum AircraftType {
 #define	AIRCRAFTF_CARGO		(1L << AIRCRAFT_CARGO)
 #define	AIRCRAFTF_ORCA			(1L << AIRCRAFT_ORCA)
 
-inline AircraftType operator++(AircraftType &, int);
-
 
 /**********************************************************************
 **	The game templates are enumerated here. These are the underlying
@@ -1051,7 +1029,7 @@ inline AircraftType operator++(AircraftType &, int);
 **	terrain is broken up into icons, is not transparent, and is drawn
 **	as the bottom most layer, then it is a template.
 */
-typedef enum TemplateType {
+typedef enum TemplateType : uint16_t {
 	TEMPLATE_CLEAR1,
 	TEMPLATE_WATER,			// This must be the first non-clear template.
 	TEMPLATE_WATER2,
@@ -1283,8 +1261,6 @@ typedef enum TemplateType {
 	TEMPLATE_FIRST=0
 } TemplateType;
 
-inline TemplateType operator++(TemplateType &, int);
-
 
 /**********************************************************************
 **	The three dimensional terrain objects are enumerated here. These
@@ -1330,8 +1306,6 @@ typedef enum TerrainType {
 	TERRAIN_FIRST=0
 } TerrainType;
 
-inline TerrainType operator++(TerrainType &, int);
-
 
 /**********************************************************************
 **	Smudges are enumerated here. Smudges are transparent icons that are
@@ -1359,8 +1333,6 @@ typedef enum SmudgeType {
 	SMUDGE_COUNT,
 	SMUDGE_FIRST=0
 } SmudgeType;
-
-inline SmudgeType operator++(SmudgeType &, int);
 
 
 /**********************************************************************
@@ -1469,8 +1441,6 @@ typedef enum AnimType {
 	ANIM_COUNT,
 	ANIM_FIRST=0
 } AnimType;
-
-inline AnimType operator++(AnimType &, int);
 
 
 /****************************************************************************
@@ -1590,7 +1560,7 @@ typedef enum RadioMessageType {
 **	with cell resolution. The COORD type is used for map coordinates that
 **	have a lepton resolution.
 */
-typedef unsigned long	COORDINATE;
+typedef uint32_t	COORDINATE;
 typedef signed short		CELL;
 
 typedef unsigned short	TARGET;
@@ -1843,10 +1813,6 @@ typedef enum TextPrintType {
 	TPF_USE_GRAD_PAL	=0x4000		// Use a gradient palette based on fore color
 } TextPrintType;
 
-inline TextPrintType operator |(TextPrintType, TextPrintType);
-inline TextPrintType operator &(TextPrintType, TextPrintType);
-inline TextPrintType operator ~(TextPrintType);
-
 
 /**********************************************************************
 **	These control the maximum number of objects in the game. Make sure that these
@@ -1914,8 +1880,6 @@ typedef enum TheaterType {
 	THEATER_COUNT,
 	THEATER_FIRST=0
 } TheaterType;
-
-inline TheaterType operator++(TheaterType &, int);
 
 #define	THEATERF_DESERT			(1<<THEATER_DESERT)
 #define	THEATERF_JUNGLE			(1<<THEATER_JUNGLE)
@@ -1988,7 +1952,7 @@ typedef enum WindowNumberType {
 **	when referring to adjacent cells. This comes into play when moving
 **	between cells and in the Desired_Facing() algorithm.
 */
-typedef enum FacingType {
+typedef enum FacingType : int8_t {
 	FACING_NONE=-1,
 	FACING_N,			// North
 	FACING_NE,			// North-East
@@ -2003,7 +1967,6 @@ typedef enum FacingType {
 	FACING_FIRST=0
 } FacingType;
 
-inline FacingType operator++(FacingType &, int);
 inline FacingType operator + (FacingType f1, FacingType f2)
 {
 	return (FacingType)(((int)f1 + (int)f2) & 0x07);
@@ -2034,7 +1997,7 @@ inline FacingType operator += (FacingType & f1, int f2)
 }
 
 
-typedef enum DirType {
+typedef enum DirType : uint8_t {
 	DIR_MIN=0,
 	DIR_N=0,
 	DIR_NE=1<<5,
@@ -2236,7 +2199,7 @@ typedef enum VocType{
 } VocType;
 
 
-typedef enum VoxType{
+typedef enum VoxType : int8_t {
 	VOX_NONE=-1,
 	VOX_ACCOMPLISHED,					//	mission accomplished
 	VOX_FAIL,							//	your mission has failed

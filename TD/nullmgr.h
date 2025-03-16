@@ -46,7 +46,9 @@
 */
 #include "nullconn.h"
 #include "connmgr.h"
+#ifndef PORTABLE
 #include "commlib.h"
+#endif
 
 /*
 ***************************** Class Declaration *****************************
@@ -183,7 +185,7 @@ class NullModemClass : public ConnManClass
 		/*
 		**	This is the Greenleaf port handle.
 		*/
-		PORT *Port;
+		//PORT *Port;
 		HANDLE	PortHandle;
 
 		int NumSend;

@@ -53,7 +53,7 @@ class SmudgeClass : public ObjectClass
 		/*-------------------------------------------------------------------
 		**	Constructors and destructors.
 		*/
-		static void * operator new(size_t size);
+		static void * operator new(size_t size) throw();
 		static void operator delete(void *ptr);
 		SmudgeClass(SmudgeType type, COORDINATE pos=-1, HousesType house = HOUSE_NONE);
 		SmudgeClass(void) : Class(0) {};

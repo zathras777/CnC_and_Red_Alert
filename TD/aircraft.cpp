@@ -170,7 +170,7 @@ TARGET AircraftClass::As_Target(void) const
  * HISTORY:                                                                                    *
  *   07/26/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * AircraftClass::operator new(size_t)
+void * AircraftClass::operator new(size_t) throw()
 {
 	void * ptr = Aircraft.Allocate();
 	if (ptr) {
@@ -1441,7 +1441,7 @@ int AircraftClass::Mission_Retreat(void)
  * HISTORY:                                                                                    *
  *   01/10/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-bool AircraftClass::Exit_Object(TechnoClass * unit)
+int AircraftClass::Exit_Object(TechnoClass * unit)
 {
 	Validate();
 	static FacingType _toface[FACING_COUNT] = {FACING_S, FACING_SW, FACING_SE, FACING_NW, FACING_NE, FACING_N, FACING_W, FACING_E};
@@ -1450,7 +1450,8 @@ bool AircraftClass::Exit_Object(TechnoClass * unit)
 	/*
 	**	Find a free cell to drop the unit off at.
 	*/
-	for (FacingType face = FACING_N; face < FACING_COUNT; face++) {
+	FacingType face;
+	for (face = FACING_N; face < FACING_COUNT; face++) {
 		cell = Adjacent_Cell(Coord_Cell(Coord), _toface[face]);
 		if (unit->Can_Enter_Cell(cell) == MOVE_OK) break;
 	}
@@ -1922,26 +1923,26 @@ void AircraftClass::Debug_Dump(MonoClass *mono) const
 	Validate();
 	mono->Set_Cursor(0, 0);
 	mono->Print(
-		"ÚName:ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂMission:ÄÄÄÂTarCom:ÂNavCom:ÂRadio:ÂCoord:ÄÄÂAltitudeÂSt:Ä¿\n"
-		"³                   ³           ³       ³       ³      ³        ³        ³    ³\n"
-		"ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂNÂYÂHealth:ÄÂFdir:ÂÄBdir:ÄÂSpeed:ÂÄÄÄÄÄÁÄÄÄÄÄÄÂCargo:ÄÄÄÄÁÄÄÄÄ´\n"
-		"³Active........³ ³ ³        ³     ³       ³      ³            ³               ³\n"
-		"³Limbo.........³ ³ ÃÄÄÄÄÄÄÄÄÁÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´\n"
-		"³Owned.........³ ³ ³Last Message:                                             ³\n"
-		"³Discovered....³ ³ ÃTimer:ÂArm:ÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÂFlash:ÂStage:ÂTeam:ÄÄÄÄÂArch:´\n"
-		"³Selected......³ ³ ³      ³    ³      ³         ³      ³      ³         ³     ³\n"
-		"³Teathered.....³ ³ ÃÄÄÄÄÄÄÁÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÙ\n"
-		"³Locked on Map.³ ³ ³                                                           \n"
-		"³              ³ ³ ³                                                           \n"
-		"³Is A Loaner...³ ³ ³                                                           \n"
-		"³Is Landing....³ ³ ³                                                           \n"
-		"³Is Taking Off.³ ³ ³                                                           \n"
-		"³              ³ ³ ³                                                           \n"
-		"³              ³ ³ ³                                                           \n"
-		"³              ³ ³ ³                                                           \n"
-		"³Recoiling.....³ ³ ³                                                           \n"
-		"³To Display....³ ³ ³                                                           \n"
-		"ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÁÄÙ                                                           \n");
+		"â”ŒName:â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬Mission:â”€â”€â”€â”¬TarCom:â”¬NavCom:â”¬Radio:â”¬Coord:â”€â”€â”¬Altitudeâ”¬St:â”€â”\n"
+		"â”‚                   â”‚           â”‚       â”‚       â”‚      â”‚        â”‚        â”‚    â”‚\n"
+		"â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬Nâ”¬Yâ”¬Health:â”€â”¬Fdir:â”¬â”€Bdir:â”€â”¬Speed:â”¬â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”¬Cargo:â”€â”€â”€â”€â”´â”€â”€â”€â”€â”¤\n"
+		"â”‚Active........â”‚ â”‚ â”‚        â”‚     â”‚       â”‚      â”‚            â”‚               â”‚\n"
+		"â”‚Limbo.........â”‚ â”‚ â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n"
+		"â”‚Owned.........â”‚ â”‚ â”‚Last Message:                                             â”‚\n"
+		"â”‚Discovered....â”‚ â”‚ â”œTimer:â”¬Arm:â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬Flash:â”¬Stage:â”¬Team:â”€â”€â”€â”€â”¬Arch:â”¤\n"
+		"â”‚Selected......â”‚ â”‚ â”‚      â”‚    â”‚      â”‚         â”‚      â”‚      â”‚         â”‚     â”‚\n"
+		"â”‚Teathered.....â”‚ â”‚ â”œâ”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”˜\n"
+		"â”‚Locked on Map.â”‚ â”‚ â”‚                                                           \n"
+		"â”‚              â”‚ â”‚ â”‚                                                           \n"
+		"â”‚Is A Loaner...â”‚ â”‚ â”‚                                                           \n"
+		"â”‚Is Landing....â”‚ â”‚ â”‚                                                           \n"
+		"â”‚Is Taking Off.â”‚ â”‚ â”‚                                                           \n"
+		"â”‚              â”‚ â”‚ â”‚                                                           \n"
+		"â”‚              â”‚ â”‚ â”‚                                                           \n"
+		"â”‚              â”‚ â”‚ â”‚                                                           \n"
+		"â”‚Recoiling.....â”‚ â”‚ â”‚                                                           \n"
+		"â”‚To Display....â”‚ â”‚ â”‚                                                           \n"
+		"â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”´â”€â”˜                                                           \n");
 	mono->Set_Cursor(1, 1);mono->Printf("%s:%s", House->Class->IniName, Class->IniName);
 	mono->Set_Cursor(36, 3);mono->Printf("%02X:%02X", SecondaryFacing.Current(), SecondaryFacing.Desired());
 	mono->Set_Cursor(42, 1);mono->Printf("%04X", NavCom);

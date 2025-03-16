@@ -841,7 +841,7 @@ void Decode_All_Pointers(void)
 	/*
 	**	PlayerPtr.
 	*/
-	PlayerPtr = HouseClass::As_Pointer((HousesType)PlayerPtr);
+	PlayerPtr = HouseClass::As_Pointer((HousesType)(intptr_t)PlayerPtr);
 	Whom = PlayerPtr->Class->House;
 	switch (PlayerPtr->Class->House) {
 		case HOUSE_GOOD:
@@ -864,7 +864,7 @@ void Decode_All_Pointers(void)
 	**	Currently-selected objects.
 	*/
 	for (i = 0; i < CurrentObject.Count(); i++) {
-		CurrentObject[i] = As_Object((TARGET)CurrentObject[i]);
+		CurrentObject[i] = As_Object((TARGET)(uintptr_t)CurrentObject[i]);
 		Check_Ptr(CurrentObject[i],__FILE__,__LINE__);
 	}
 

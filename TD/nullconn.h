@@ -49,7 +49,11 @@
 ********************************* Includes **********************************
 */
 #include "noseqcon.h"
+#ifdef PORTABLE
+typedef void *HANDLE;
+#else
 #include "commlib.h"
+#endif
 
 /*
 ********************************** Defines **********************************
@@ -120,7 +124,7 @@ class NullModemConnClass : public NonSequencedConnClass
 		This is the PORT value used by the GreenLeaf calls.
 		.....................................................................*/
 		HANDLE PortHandle;
-		PORT *Port;
+		//PORT *Port;
 
 		/*.....................................................................
 		This buffer is a staging area for data sent out; it includes the

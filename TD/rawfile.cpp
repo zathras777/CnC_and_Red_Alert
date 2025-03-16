@@ -53,18 +53,22 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
+#ifndef PORTABLE
 #include	<direct.h>
 #include	<fcntl.h>
 #include	<io.h>
 #include	<dos.h>
 #include	<share.h>
+#endif
 
 #include "wwlib32.h"
 #include	"compat.h"
 #include	"rawfile.h"
 
+#ifndef PORTABLE
 extern GraphicBufferClass	SeenBuff;
 extern GraphicBufferClass	HidPage;
+#endif
 
 /***********************************************************************************************
  * RawFileClass::Error -- Handles displaying a file error message.                             *
@@ -91,6 +95,7 @@ extern GraphicBufferClass	HidPage;
  *=============================================================================================*/
 void RawFileClass::Error(int error, int canretry, char const * filename)
 {
+#ifndef PORTABLE
 	char	message[256];				// Staging buffer for error message string.
 
 	/*
@@ -133,9 +138,9 @@ void RawFileClass::Error(int error, int canretry, char const * filename)
 	if (canretry) {
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
 #ifdef GERMAN
-		strcat(message, " Beliebige Taste drÅcken fÅr erneuten Versuch.");
+		strcat(message, " Beliebige Taste dr√ºcken f√ºr erneuten Versuch.");
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
-		strcat(message, " <ESC> drÅcken, um das Programm zu verlassen.");
+		strcat(message, " <ESC> dr√ºcken, um das Programm zu verlassen.");
 #else
 #ifdef FRENCH
 		strcat(message, " Appuyez sur une touche pour recommencer.");
@@ -151,7 +156,7 @@ void RawFileClass::Error(int error, int canretry, char const * filename)
 	} else {
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
 #ifdef GERMAN
-		strcat(message, " Beliebige Taste drÅcken, um das Programm zu verlassen.");
+		strcat(message, " Beliebige Taste drÔøΩcken, um das Programm zu verlassen.");
 #else
 #ifdef FRENCH
 		strcat(message, " Appuyez sur une touche pour quitter le programme.");
@@ -281,6 +286,7 @@ void RawFileClass::Error(int error, int canretry, char const * filename)
 		Set_Logic_Page(oldpage);
 		FontXSpacing = oldspacing;
 	}
+#endif
 }
 
 
@@ -302,7 +308,11 @@ void RawFileClass::Error(int error, int canretry, char const * filename)
  *   10/17/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
 RawFileClass::RawFileClass(char const *filename) : 
-	Handle(-1), 
+#ifdef PORTABLE
+	Handle(NULL),
+#else
+	Handle(-1),
+#endif
 	Filename(filename), 
 	Allocated(false)
 {
@@ -430,6 +440,11 @@ int RawFileClass::Open(int rights)
 		/*
 		**	Try to open the file according to the access rights specified.
 		*/
+#ifdef PORTABLE
+		Handle = IO_Open_File(Filename, rights);
+		if(!Handle)
+			return false;
+#else
 		Hard_Error_Occured = 0;
 		switch (rights) {
 
@@ -476,6 +491,7 @@ int RawFileClass::Open(int rights)
 			}
 			continue;
 		}
+#endif
 		break;
 	}
 	return(true);
@@ -501,7 +517,11 @@ int RawFileClass::Open(int rights)
  *=============================================================================================*/
 int RawFileClass::Is_Available(int forced)
 {
+#ifdef PORTABLE
+	void *file;
+#else
 	int	file;		// Working file handle.
+#endif
 	int	open_failed;
 
 	/*
@@ -528,7 +548,26 @@ int RawFileClass::Is_Available(int forced)
 	**	condition, go through the normal error recover channels.
 	*/
 	for (;;) {
+#ifdef PORTABLE
+		file = IO_Open_File(Filename, READ);
+		if (!file) {
+			// retry with lowercase name for case-sensitive fs
+			char *lower_name = strlwr(strdup(Filename));
+			file = IO_Open_File(lower_name, READ);
+		
+			if(file) {
+				// if successful, replace the filename with the working one
+				if(Allocated)
+					free((char *)Filename);
+		
+				((char *&)Filename) = lower_name;
+			} else
+				free(lower_name);
+		}
 
+		if(!file)
+			return false;
+#else
 		Hard_Error_Occured = 0;
 		open_failed = _dos_open(Filename, O_RDONLY|SH_DENYNO, &file);
 
@@ -570,15 +609,20 @@ int RawFileClass::Is_Available(int forced)
 				return(false);
 			}
 		}
+#endif
 		break;
 	}
 
 	/*
 	**	Since the file could be opened, then close it and return that the file exists.
 	*/
+#ifdef PORTABLE
+	IO_Close_File(file);
+#else
 	if (_dos_close(file)) {
 		Error(errno, false, Filename);
 	}
+#endif
 	return(true);
 }
 
@@ -610,6 +654,9 @@ void RawFileClass::Close(void)
 			/*
 			**	Close the file. If there was an error in the close operation -- abort.
 			*/
+#ifdef PORTABLE
+			IO_Close_File(Handle);
+#else
 			Hard_Error_Occured = 0;
 			if (_dos_close(Handle)) {
 
@@ -629,13 +676,18 @@ void RawFileClass::Close(void)
 				Error(Hard_Error_Occured, true, Filename);
 				continue;
 			}
+#endif
 			break;
 		}
 
 		/*
 		**	At this point the file must have been closed. Mark the file as empty and return.
 		*/
+#ifdef PORTABLE
+		Handle = NULL;
+#else
 		Handle = -1;
+#endif
 	}
 }
 
@@ -683,6 +735,11 @@ long RawFileClass::Read(void *buffer, long size)
 		opened = true;
 	}
 
+#ifdef PORTABLE
+	size_t actual = 0;
+	IO_Read_File(Handle, buffer, size, actual);
+	bytesread = actual;
+#else
 	/*
 	**	Read the file in convenient chunk sizes. When the actual number
 	**	of bytes read does not match the desired, then assume that the file
@@ -732,7 +789,7 @@ long RawFileClass::Read(void *buffer, long size)
 			}
 		}
 	}
-
+#endif
 	/*
 	**	Close the file if it was opened by this routine and return
 	**	the actual number of bytes read into the buffer.
@@ -778,6 +835,11 @@ long RawFileClass::Write(void const *buffer, long size)
 		opened = true;
 	}
 
+#ifdef PORTABLE
+	size_t actual = 0;
+	IO_Write_File(Handle, buffer, size, actual);
+	bytesread = actual;
+#else
 	/*
 	**	Write the data to the file in chunks no bigger than what the low level DOS write
 	**	can handle.
@@ -826,7 +888,7 @@ long RawFileClass::Write(void const *buffer, long size)
 			}
 		}
 	}
-
+#endif
 	/*
 	**	If this routine had to open the file, then close it before returning.
 	*/
@@ -872,6 +934,9 @@ long RawFileClass::Seek(long pos, int dir)
 		Error(EBADF, false, Filename);
 	}
 
+#ifdef PORTABLE
+	pos - IO_Seek_File(Handle, pos, dir);
+#else
 	/*
 	**	Keep trying to seek until a non-retry condition occurs.
 	*/
@@ -902,7 +967,7 @@ long RawFileClass::Seek(long pos, int dir)
 		}
 		break;
 	}
-
+#endif
 	/*
 	**	Return with the new position of the file. This will range between zero and the number of
 	**	bytes the file contains.
@@ -936,6 +1001,9 @@ long RawFileClass::Size(void)
 	*/
 	if (Is_Open()) {
 
+#ifdef PORTABLE
+		return IO_Get_File_Size(Handle);
+#else
 		/*
 		**	Repetitively try to determine the file size until a fatal error condition or success
 		**	is achieved.
@@ -958,6 +1026,7 @@ long RawFileClass::Size(void)
 			}
 			break;
 		}
+#endif
 	} else {
 
 		/*
@@ -1037,6 +1106,10 @@ int RawFileClass::Delete(void)
 		Error(ENOENT, false);
 	}
 
+#ifdef PORTABLE
+	if(!IO_Delete_File(Filename))
+		return false;
+#else
 	/*
 	**	Repetitively try to delete the file if possible. Either return with success, or
 	**	abort the program with an error.
@@ -1081,7 +1154,7 @@ int RawFileClass::Delete(void)
 		}
 		break;
 	}
-
+#endif
 	/*
 	**	DOS reports that the file was successfully deleted. Return with this fact.
 	*/

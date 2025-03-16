@@ -502,14 +502,14 @@ int __cdecl Open_File(char const *file_name, int mode)
 	return(WW_ERROR);
 }
 
-VOID __cdecl Close_File(int handle)
+void __cdecl Close_File(int handle)
 {
 	if (handle != WW_ERROR && Handles[handle].Is_Open()) {
 		Handles[handle].Close();
 	}
 }
 
-LONG __cdecl Read_File(int handle, VOID *buf, ULONG bytes)
+long __cdecl Read_File(int handle, void *buf, unsigned long bytes)
 {
 	if (handle != WW_ERROR && Handles[handle].Is_Open()) {
 		return(Handles[handle].Read(buf, bytes));
@@ -517,7 +517,7 @@ LONG __cdecl Read_File(int handle, VOID *buf, ULONG bytes)
 	return(0);
 }
 
-LONG __cdecl Write_File(int handle, VOID const *buf, ULONG bytes)
+long __cdecl Write_File(int handle, void const *buf, unsigned long bytes)
 {
 	if (handle != WW_ERROR && Handles[handle].Is_Open()) {
 		return(Handles[handle].Write(buf, bytes));
@@ -548,14 +548,14 @@ ULONG __cdecl Load_Data(char const *name, VOID *ptr, ULONG size)
 }
 #endif
 
-VOID * __cdecl Load_Alloc_Data(char const *name, int )
+void * __cdecl Load_Alloc_Data(char const *name, int )
 {
 	CCFileClass file(name);
 
 	return(Load_Alloc_Data(file));
 }
 
-ULONG __cdecl File_Size(int handle)
+unsigned long __cdecl File_Size(int handle)
 {
 	if (handle != WW_ERROR && Handles[handle].Is_Open()) {
 		return(Handles[handle].Size());
@@ -570,7 +570,7 @@ ULONG __cdecl Write_Data(char const *name, VOID const *ptr, ULONG size)
 }
 #endif
 
-ULONG __cdecl Seek_File(int handle, LONG offset, int starting)
+unsigned long __cdecl Seek_File(int handle, long offset, int starting)
 {
 	if (handle != WW_ERROR && Handles[handle].Is_Open()) {
 		return(Handles[handle].Seek(offset, starting));

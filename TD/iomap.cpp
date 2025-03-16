@@ -242,22 +242,22 @@ void CellClass::Code_Pointers(void)
 void CellClass::Decode_Pointers(void)
 {
 	if (OccupierPtr) {
-		OccupierPtr = As_Object((TARGET)OccupierPtr);
+		OccupierPtr = As_Object((TARGET)(uintptr_t)OccupierPtr);
 		Check_Ptr((void *)OccupierPtr,__FILE__,__LINE__);
 	}
 
 	if (Overlapper[0]) {
-		Overlapper[0] = As_Object((TARGET)Overlapper[0]);
+		Overlapper[0] = As_Object((TARGET)(uintptr_t)Overlapper[0]);
 		Check_Ptr((void *)Overlapper[0],__FILE__,__LINE__);
 	}
 
 	if (Overlapper[1]) {
-		Overlapper[1] = As_Object((TARGET)Overlapper[1]);
+		Overlapper[1] = As_Object((TARGET)(uintptr_t)Overlapper[1]);
 		Check_Ptr((void *)Overlapper[1],__FILE__,__LINE__);
 	}
 
 	if (Overlapper[2]) {
-		Overlapper[2] = As_Object((TARGET)Overlapper[2]);
+		Overlapper[2] = As_Object((TARGET)(uintptr_t)Overlapper[2]);
 		Check_Ptr((void *)Overlapper[2],__FILE__,__LINE__);
 	}
 
@@ -265,7 +265,7 @@ void CellClass::Decode_Pointers(void)
 	**	Convert trigger pointer.
 	*/
 	if (IsTrigger) {
-		CellTriggers[Cell_Number()] = As_Trigger( (TARGET)CellTriggers[Cell_Number()] );
+		CellTriggers[Cell_Number()] = As_Trigger( (TARGET)(uintptr_t)CellTriggers[Cell_Number()] );
 		Check_Ptr((void *)CellTriggers[Cell_Number()],__FILE__,__LINE__);
 	}
 }
@@ -924,7 +924,7 @@ void DisplayClass::Decode_Pointers(void)
 	**	either.  These have to be done as last-minute fixups.
 	*/
 	if (PendingObjectPtr) {
-		PendingObjectPtr = As_Object((TARGET)PendingObjectPtr);
+		PendingObjectPtr = As_Object((TARGET)(intptr_t)PendingObjectPtr);
 		Check_Ptr((void *)PendingObjectPtr,__FILE__,__LINE__);
 	}
 

@@ -521,7 +521,7 @@ ThemeType ThemeClass::From_Name(char const * name)
 		**	a substring within the full name of the score. This might
 		**	yeild a match, but is not guaranteed to be unique.
 		*/
-		for (theme = THEME_FIRST; theme < THEME_COUNT; theme++) {
+		for (ThemeType theme = THEME_FIRST; theme < THEME_COUNT; theme++) {
 			if (strstr(Text_String(_themes[theme].Fullname), name) != NULL) {
 				return(theme);
 			}

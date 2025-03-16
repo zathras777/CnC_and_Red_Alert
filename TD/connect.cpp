@@ -49,7 +49,7 @@
 /*
 ********************************* Globals ***********************************
 */
-static char *ConnectionClass::Commands[PACKET_COUNT] = {
+char *ConnectionClass::Commands[PACKET_COUNT] = {
 	"ADATA",
 	"NDATA",
 	"ACK"

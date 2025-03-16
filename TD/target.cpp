@@ -435,7 +435,7 @@ COORDINATE As_Coord(TARGET target)
 		*/
 		ObjectClass * obj = As_Object(target);
 		if (obj) {
-
+#ifndef PORTABLE
 			/*
 			** If this is invalid memory or the object is dead then return 0
 			** This is a kludge to fix the problem of team target objects being assigned after
@@ -445,7 +445,7 @@ COORDINATE As_Coord(TARGET target)
 //OutputDebugString ("C&C95 - As_Coord called for invalid target object\m");
 				return(0x00000000L);
 			}
-
+#endif
 			return(obj->Target_Coord());
 		}
 	}

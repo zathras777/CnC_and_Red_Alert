@@ -44,6 +44,18 @@
  *                                                                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include "compat.h"
+#include <netinet/in.h>
+typedef int SOCKET;
+typedef void *HANDLE;
+#define IN_ADDR in_addr
+#define MAXGETHOSTSTRUCT 1024
+#define WM_USER 0x400
+#endif
+
 extern bool Server;
 
 #define FORCE_WINSOCK				1
@@ -91,21 +103,23 @@ class TcpipManagerClass {
 		TcpipManagerClass(void);
 		~TcpipManagerClass(void);
 
-		BOOL Init(void);
+		bool Init(void);
 		void Start_Server(void);
 		void Start_Client(void);
 		void Close_Socket(SOCKET s);
+#ifdef _WIN32
 	 	void Message_Handler(HWND window, UINT message, UINT wParam, LONG lParam);
+#endif
 		void Copy_To_In_Buffer(int bytes);
 		int  Read(void *buffer, int buffer_len);
 		void Write(void *buffer, int buffer_len);
-		BOOL Add_Client(void);
+		bool Add_Client(void);
 		void Close(void);
 		void Set_Host_Address(char *address);
-		void Set_Protocol_UDP(BOOL state);
+		void Set_Protocol_UDP(bool state);
 		void Clear_Socket_Error(SOCKET socket);
 
-		inline BOOL Get_Connected(void) {return (Connected);}
+		inline bool Get_Connected(void) {return (Connected);}
 
 		typedef enum ConnectStatusEnum {
 			CONNECTED_OK = 0,
@@ -140,8 +154,10 @@ class TcpipManagerClass {
 		} InternetBufferType;
 
 
-		BOOL 					WinsockInitialised;
+		bool 					WinsockInitialised;
+#ifdef _WIN32
 		WSADATA				WinsockInfo;
+#endif
 		SOCKET				ListenSocket;
 		SOCKET				ConnectSocket;
 		SOCKET				UDPSocket;
@@ -156,12 +172,12 @@ class TcpipManagerClass {
 		//char					OutBuffer[WS_OUT_BUFFER_LEN];
 		//int					OutBufferHead;
 		//int					OutBufferTail;
-		BOOL					IsServer;
-		BOOL					Connected;
+		bool					IsServer;
+		bool					Connected;
 		HostType				Server;
 		char					HostAddress[IP_ADDRESS_MAX];
 		ConnectStatusEnum ConnectStatus;
-		BOOL					UseUDP;
+		bool					UseUDP;
 		IN_ADDR				UDPIPAddress;
 		int					SocketReceiveBuffer;
 		int					SocketSendBuffer;

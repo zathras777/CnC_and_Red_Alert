@@ -65,12 +65,12 @@ unsigned	TheaterShapeBufferLength = THEATER_BIG_SHAPE_BUFFER_SIZE;
 extern "C"{
 	char		*BigShapeBufferStart = NULL;
 	char		*TheaterShapeBufferStart = NULL;
-	BOOL		UseBigShapeBuffer = FALSE;
+	bool		UseBigShapeBuffer = FALSE;
 	bool		IsTheaterShape = false;
 }
 char		*BigShapeBufferPtr = NULL;
 int			TotalBigShapes=0;
-BOOL		ReallocShapeBufferFlag = FALSE;
+bool		ReallocShapeBufferFlag = FALSE;
 bool		OriginalUseBigShapeBuffer = false;
 
 char		*TheaterShapeBufferPtr = NULL;
@@ -133,7 +133,7 @@ void Reallocate_Big_Shape_Buffer(void)
 {
 	if (ReallocShapeBufferFlag){
 		BigShapeBufferLength += 200 * 1024;							//Extra 2 Mb of uncompressed shape space
-		BigShapeBufferPtr -= (unsigned)BigShapeBufferStart;
+		BigShapeBufferPtr -= (uintptr_t)BigShapeBufferStart;
 		Memory_Error = NULL;
 		BigShapeBufferStart = (char*)Resize_Alloc(BigShapeBufferStart, BigShapeBufferLength);
 		Memory_Error = &Memory_Error_Handler;
@@ -145,7 +145,7 @@ void Reallocate_Big_Shape_Buffer(void)
 			UseBigShapeBuffer = false;
 			return;
 		}
-		BigShapeBufferPtr += (unsigned)BigShapeBufferStart;
+		BigShapeBufferPtr += (uintptr_t)BigShapeBufferStart;
 		ReallocShapeBufferFlag = FALSE;
 	}
 }
@@ -155,6 +155,9 @@ void Reallocate_Big_Shape_Buffer(void)
 
 void Check_Use_Compressed_Shapes (void)
 {
+#ifdef PORTABLE
+	UseBigShapeBuffer = false; // haven't implemented the draw code that uses this
+#else
 	MEMORYSTATUS	mem_info;
 
 	mem_info.dwLength=sizeof(mem_info);
@@ -164,6 +167,7 @@ void Check_Use_Compressed_Shapes (void)
 	OriginalUseBigShapeBuffer = UseBigShapeBuffer;
 
 	// UseBigShapeBuffer = false;
+#endif
 }
 
 
@@ -212,7 +216,7 @@ void Enable_Uncompressed_Shapes (void)
 
 
 
-unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr)
+void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr)
 {
 	char *ptr, *lockptr;//, *uncomp_ptr;
 	unsigned long offset[SUBFRAMEOFFS];
@@ -221,7 +225,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 	unsigned short buffsize, currframe, subframe;
 	unsigned long length = 0;
 	char frameflags;
-	unsigned long return_value;
+	void *return_value;
 	char *temp_shape_ptr;
 
 	//
@@ -272,10 +276,10 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 				sprintf (crap, "C&C95 - Big shape buffer is now %d Kb.\n", BigShapeBufferLength / 1024);
 				CCDebugString (crap);
 
-				sprintf (crap, "C&C95 - %d Kb Used in big shape buffer.\n", (unsigned)((unsigned)BigShapeBufferPtr - (unsigned)BigShapeBufferStart)/1024);
+				sprintf (crap, "C&C95 - %d Kb Used in big shape buffer.\n", (unsigned)(BigShapeBufferPtr - BigShapeBufferStart)/1024);
 				CCDebugString (crap);
 
-				sprintf (crap, "C&C95 - %d Kb Used in theater shape buffer.\n", (unsigned)((unsigned)TheaterShapeBufferPtr - (unsigned)TheaterShapeBufferStart)/1024);
+				sprintf (crap, "C&C95 - %d Kb Used in theater shape buffer.\n", (unsigned)(TheaterShapeBufferPtr - TheaterShapeBufferStart)/1024);
 				CCDebugString (crap);
 				show_info = false;
 			}
@@ -290,7 +294,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 		** If we are running out of memory (<128k left) for uncompressed shapes
 		** then allocate some more.
 		*/
-		if (( (unsigned)BigShapeBufferStart + BigShapeBufferLength) - (unsigned)BigShapeBufferPtr < 128*1024){
+		if (( BigShapeBufferStart + BigShapeBufferLength) - BigShapeBufferPtr < 128*1024){
 			ReallocShapeBufferFlag = TRUE;
 		}
 
@@ -321,9 +325,9 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 		*/
 		if (*(KeyFrameSlots[keyfr->y]+framenumber)){
 			if (IsTheaterShape){
-				return ((unsigned long)TheaterShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
+				return (TheaterShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
 			}else{
-				return ((unsigned long)BigShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
+				return (BigShapeBufferStart + (unsigned long)*(KeyFrameSlots[keyfr->y]+framenumber));
 			}
 		}
 	}
@@ -434,26 +438,26 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 			/*
 			** Shape is a theater specific shape
 			*/
-			return_value = (unsigned long) TheaterShapeBufferPtr;
+			return_value = TheaterShapeBufferPtr;
 			temp_shape_ptr = TheaterShapeBufferPtr + keyfr->height+sizeof(ShapeHeaderType);
 			/*
 			** align the actual shape data
 			*/
-			if (3 & (unsigned)temp_shape_ptr){
-				temp_shape_ptr = (char *) ((unsigned)(temp_shape_ptr + 3) & 0xfffffffc);
+			if (3 & (uintptr_t)temp_shape_ptr) {
+				temp_shape_ptr = (char *) ((uintptr_t)(temp_shape_ptr + 3) & ~3);
 			}
 
 			memcpy (temp_shape_ptr , buffptr , length);
 			((ShapeHeaderType *)TheaterShapeBufferPtr)->draw_flags = -1;						//Flag that headers need to be generated
-			((ShapeHeaderType *)TheaterShapeBufferPtr)->shape_data = temp_shape_ptr - (unsigned)TheaterShapeBufferStart;		//pointer to old raw shape data
+			((ShapeHeaderType *)TheaterShapeBufferPtr)->shape_data = temp_shape_ptr - (uintptr_t)TheaterShapeBufferStart;		//pointer to old raw shape data
 			((ShapeHeaderType *)TheaterShapeBufferPtr)->shape_buffer = 1;	//Theater buffer
-			*(KeyFrameSlots[keyfr->y]+framenumber) = TheaterShapeBufferPtr - (unsigned)TheaterShapeBufferStart;
-			TheaterShapeBufferPtr = (char*)(length + (unsigned)temp_shape_ptr);
+			*(KeyFrameSlots[keyfr->y]+framenumber) = TheaterShapeBufferPtr - (uintptr_t)TheaterShapeBufferStart;
+			TheaterShapeBufferPtr = (char*)(length + (uintptr_t)temp_shape_ptr);
 			/*
 			** Align the next shape
 			*/
-			if (3 & (unsigned)TheaterShapeBufferPtr){
-				TheaterShapeBufferPtr = (char *)((unsigned)(TheaterShapeBufferPtr + 3) & 0xfffffffc);
+			if (3 & (uintptr_t)TheaterShapeBufferPtr) {
+				TheaterShapeBufferPtr = (char *)((uintptr_t)(TheaterShapeBufferPtr + 3) & ~3);
 			}
 			Length = length;
 			return (return_value);
@@ -461,30 +465,30 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 		}else{
 
 
-			return_value=(unsigned long)BigShapeBufferPtr;
+			return_value=BigShapeBufferPtr;
 			temp_shape_ptr = BigShapeBufferPtr + keyfr->height+sizeof(ShapeHeaderType);
 			/*
 			** align the actual shape data
 			*/
-			if (3 & (unsigned)temp_shape_ptr){
-				temp_shape_ptr = (char *) ((unsigned)(temp_shape_ptr + 3) & 0xfffffffc);
+			if (3 & (uintptr_t)temp_shape_ptr) {
+				temp_shape_ptr = (char *) ((uintptr_t)(temp_shape_ptr + 3) & ~3);
 			}
 			memcpy (temp_shape_ptr , buffptr , length);
 			((ShapeHeaderType *)BigShapeBufferPtr)->draw_flags = -1;						//Flag that headers need to be generated
-			((ShapeHeaderType *)BigShapeBufferPtr)->shape_data = temp_shape_ptr - (unsigned)BigShapeBufferStart;		//pointer to old raw shape data
+			((ShapeHeaderType *)BigShapeBufferPtr)->shape_data = temp_shape_ptr - (uintptr_t)BigShapeBufferStart;		//pointer to old raw shape data
 			((ShapeHeaderType *)BigShapeBufferPtr)->shape_buffer = 0;	//Normal Big Shape Buffer
-			*(KeyFrameSlots[keyfr->y]+framenumber) = BigShapeBufferPtr - (unsigned)BigShapeBufferStart;
-			BigShapeBufferPtr = (char*)(length + (unsigned)temp_shape_ptr);
+			*(KeyFrameSlots[keyfr->y]+framenumber) = BigShapeBufferPtr - (uintptr_t)BigShapeBufferStart;
+			BigShapeBufferPtr = (char*)(length + (uintptr_t)temp_shape_ptr);
 			// Align the next shape
-			if (3 & (unsigned)BigShapeBufferPtr){
-				BigShapeBufferPtr = (char *)((unsigned)(BigShapeBufferPtr + 3) & 0xfffffffc);
+			if (3 & (uintptr_t)BigShapeBufferPtr) {
+				BigShapeBufferPtr = (char *)((uintptr_t)(BigShapeBufferPtr + 3) & ~3);
 			}
 			Length = length;
 			return (return_value);
 		}
 
 	}else{
-		return ((unsigned long)buffptr);
+		return (buffptr);
 	}
 }
 

@@ -44,7 +44,7 @@
 #include	<wwlib32.h>
 #include	<limits.h>
 #include	<errno.h>
-#include	<wwfile.h>
+#include	"wwfile.h"
 
 #ifdef NEVER
 	/*
@@ -157,11 +157,14 @@ class RawFileClass : public FileClass
 
 	private:
 
+#ifdef PORTABLE
+		void *Handle;
+#else
 		/*
 		**	This is the low level DOS handle. A -1 indicates an empty condition.
 		*/
 		int Handle;
-
+#endif
 		/*
 		**	This points to the filename as a NULL terminated string. It may point to either a
 		**	constant or an allocated string as indicated by the "Allocated" flag.
@@ -216,7 +219,11 @@ inline char const * RawFileClass::File_Name(void) const
  * HISTORY:                                                                                    *
 ;*   10/18/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
+#ifdef PORTABLE
+inline RawFileClass::RawFileClass(void) : Handle(NULL), Filename(0), Allocated(false)
+#else
 inline RawFileClass::RawFileClass(void) : Handle(-1), Filename(0), Allocated(false)
+#endif
 {
 }
 
@@ -237,7 +244,11 @@ inline RawFileClass::RawFileClass(void) : Handle(-1), Filename(0), Allocated(fal
  *=============================================================================================*/
 inline int RawFileClass::Is_Open(void) const
 {
+#ifdef PORTABLE
+	return Handle != NULL;
+#else
 	return (Handle >= 0);
+#endif
 }
 
 #endif

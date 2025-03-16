@@ -46,11 +46,15 @@
 #include	"function.h"
 #include	"loaddlg.h"
 #include	"tcpip.h"
+#ifndef PORTABLE
 #include	<conio.h>
 #include	<dos.h>
+#endif
 #include  "ccdde.h"
 
+#ifndef PORTABLE
 static HANDLE			hCCLibrary;
+#endif
 
 /****************************************
 **	Function prototypes for this module **
@@ -111,8 +115,10 @@ bool Init_Game(int , char *[])
 {
 	void const *temp_mouse_shapes;
 
+#ifndef PORTABLE
 	CCDebugString ("C&C95 - About to load reslib.dll\n");
 	hCCLibrary = LoadLibrary("reslib.dll");
+#endif
 
 	/*
 	**	Initialize the game object heaps.
@@ -200,21 +206,27 @@ bool Init_Game(int , char *[])
 
 #endif
 	CCDebugString ("C&C95 - About to load fonts\n");
-	Green12FontPtr = Load_Alloc_Data(CCFileClass("12GREEN.FNT"));
-	Green12GradFontPtr = Load_Alloc_Data(CCFileClass("12GRNGRD.FNT"));
-	MapFontPtr = Load_Alloc_Data(CCFileClass("8FAT.FNT"));
+	CCFileClass f("12GREEN.FNT");
+	Green12FontPtr = Load_Alloc_Data(f);
+	f.Open("12GRNGRD.FNT");
+	Green12GradFontPtr = Load_Alloc_Data(f);
+	f.Open("8FAT.FNT");
+	MapFontPtr = Load_Alloc_Data(f);
 	Font8Ptr = MixFileClass::Retrieve(FONT8);
 	FontPtr = (char *)Font8Ptr;
 	Set_Font(FontPtr);
 	Font3Ptr = MixFileClass::Retrieve(FONT3);
 //	Font6Ptr = MixFileClass::Retrieve(FONT6);
-   	 Font6Ptr = Load_Alloc_Data(CCFileClass("6POINT.FNT"));
+	f.Open("6POINT.FNT");
+   	 Font6Ptr = Load_Alloc_Data(f);
 	//ScoreFontPtr = MixFileClass::Retrieve("12GRNGRD.FNT");	//GRAD12FN");	//("SCOREFNT.FNT");
-	ScoreFontPtr = Load_Alloc_Data(CCFileClass("12GRNGRD.FNT"));
+	f.Open("12GRNGRD.FNT");
+	ScoreFontPtr = Load_Alloc_Data(f);
 	FontLEDPtr = MixFileClass::Retrieve("LED.FNT");
 	VCRFontPtr = MixFileClass::Retrieve("VCR.FNT");
 //	GradFont6Ptr = MixFileClass::Retrieve("GRAD6FNT.FNT");
-	GradFont6Ptr = Load_Alloc_Data(CCFileClass("GRAD6FNT.FNT"));
+	f.Open("GRAD6FNT.FNT");
+	GradFont6Ptr = Load_Alloc_Data(f);
 	BlackPalette = new(MEM_CLEAR|MEM_REAL) unsigned char[768];
 	GamePalette = new(MEM_CLEAR|MEM_REAL) unsigned char[768];
 	OriginalPalette = new(MEM_CLEAR|MEM_REAL) unsigned char[768];
@@ -238,7 +250,9 @@ bool Init_Game(int , char *[])
 	** Since there is no mouse shape currently available we need'
 	** to set one of our own.
 	*/
+#ifndef PORTABLE
 	ShowCursor (FALSE);
+#endif
 	if (MouseInstalled) {
 		temp_mouse_shapes = MixFileClass::Retrieve("MOUSE.SHP");
 		if (temp_mouse_shapes) {
@@ -265,7 +279,8 @@ bool Init_Game(int , char *[])
 	**	found on the hard drive, then look for it in the mixfile.
 	*/
 	if (RawFileClass(Language_Name("CONQUER")).Is_Available()) {
-		SystemStrings = (char const *)Load_Alloc_Data(RawFileClass(Language_Name("CONQUER")));
+		RawFileClass rf(Language_Name("CONQUER"));
+		SystemStrings = (char const *)Load_Alloc_Data(rf);
 	} else {
 		SystemStrings = (char const *)MixFileClass::Retrieve(Language_Name("CONQUER"));
 	}
@@ -285,7 +300,7 @@ bool Init_Game(int , char *[])
 		sprintf(buffer, "Command & Conquer kann Ihren Maustreiber nicht finden..");
 #else
 #ifdef FRENCH
-		sprintf(buffer, "Command & Conquer ne peut pas dÇtecter votre gestionnaire de souris.");
+		sprintf(buffer, "Command & Conquer ne peut pas d√©tecter votre gestionnaire de souris.");
 #else
 		sprintf(buffer, "Command & Conquer is unable to detect your mouse driver.");
 #endif
@@ -374,23 +389,21 @@ bool Init_Game(int , char *[])
 	/*
 	**	Before all else, cache any additional mixfiles.
 	*/
-	struct find_t ff;		// for _dos_findfirst
-	if (!_dos_findfirst("SC*.MIX", _A_NORMAL, &ff)) {
+	FindFileState state;
+	if (Find_First_File("SC*.MIX", state)) {
 		char * ptr;
 		do {
-			ptr = strdup(ff.name);
+			ptr = strdup(state.name);
 			new MixFileClass(ptr);
 			MixFileClass::Cache(ptr);
-//			free(ptr);
-		} while(!_dos_findnext(&ff));
+		} while (Find_Next_File(state));
 	}
-	if (!_dos_findfirst("SS*.MIX", _A_NORMAL, &ff)) {
+	if (Find_First_File("SS*.MIX", state)) {
 		char * ptr;
 		do {
-			ptr = strdup(ff.name);
+			ptr = strdup(state.name);
 			new MixFileClass(ptr);
-//			free(ptr);
-		} while(!_dos_findnext(&ff));
+		} while (Find_Next_File(state));
 	}
 #endif	//DEMO
 
@@ -744,16 +757,21 @@ bool Select_Game(bool fade)
 	CountDownTimerClass count;
 	int cd_index;
 
+#ifndef PORTABLE
 	MEMORYSTATUS	mem_info;
 	mem_info.dwLength=sizeof(mem_info);
 	GlobalMemoryStatus(&mem_info);
+#endif
 
 	/*
 	** Enable the DDE Server so we can get internet start game packets from WChat
 	*/
+#ifdef _WIN32
 	DDEServer.Enable();
+#endif
 
 	if (Special.IsFromInstall) {
+#ifndef PORTABLE
 		/*
 		** Special case for machines with 12 megs or less - just play intro, no choose side screen
 		*/
@@ -764,7 +782,9 @@ bool Select_Game(bool fade)
 			Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 			fade = true;
 			VisiblePage.Clear();
-		}else{
+		}else
+#endif
+		{
 			display = false;
 			Show_Mouse();
 		}
@@ -918,11 +938,16 @@ bool Select_Game(bool fade)
 			/*
 			**	Display menu and fetch selection from player.
 			*/
+#ifdef PORTABLE
+			if (Special.IsFromInstall) {
+#else
 			if (Special.IsFromInstall && mem_info.dwTotalPhys >= 12*1024*1024){
+#endif
 				selection = SEL_START_NEW_GAME;
 				Theme.Queue_Song(THEME_NONE);
 			}
 
+#ifdef _WIN32
 			/*
 			** Handle case where we were spawned from Wchat
 			*/
@@ -946,6 +971,7 @@ bool Select_Game(bool fade)
 					}
 				}
 			}
+#endif
 
 			if (selection == SEL_NONE) {
 //				selection = Main_Menu(0);
@@ -961,6 +987,7 @@ bool Select_Game(bool fade)
 					/*
 					** Only call up the internet menu code if we dont already have connect info from WChat
 					*/
+#ifdef _WIN32
 					if (!DDEServer.Get_MPlayer_Game_Info()){
 						CCDebugString ("C&C95 - About to call Internet Menu.\n");
 						if (Do_The_Internet_Menu_Thang() && DDEServer.Get_MPlayer_Game_Info()){
@@ -980,6 +1007,7 @@ bool Select_Game(bool fade)
 						GameToPlay = GAME_INTERNET;
 						selection = SEL_MULTIPLAYER_GAME;
 					}
+#endif
 					break;
 
 
@@ -1187,8 +1215,10 @@ bool Select_Game(bool fade)
 							if (Special.IsFromWChat){
 								//MessageBox (NULL, "About to restore focus to C&C95", "C&C95", MB_OK);
 								CCDebugString ("C&C95 - About to give myself focus.\n");
+#ifndef PORTABLE
 								SetForegroundWindow ( MainWindow );
 								ShowWindow ( MainWindow, ShowCommand );
+#endif
 
 								CCDebugString ("C&C95 - About to initialise Winsock.\n");
 								if (Winsock.Init()){
@@ -1246,12 +1276,14 @@ bool Select_Game(bool fade)
 								CCDebugString ("C&C95 - About to call Init_Network.\n");
 								Init_Network();
 
+#ifdef _WIN32
 								if (DDEServer.Get_MPlayer_Game_Info()){
 									CCDebugString ("C&C95 - About to call Read_Game_Options.\n");
 									Read_Game_Options( NULL );
-								}else{
+								}else
+#endif
 									Read_Game_Options( "C&CSPAWN.INI" );
-								}
+
 
 								if (Server){
 
@@ -1269,7 +1301,9 @@ bool Select_Game(bool fade)
 										Winsock.Close();
 										GameToPlay = GAME_NORMAL;
 										selection = SEL_NONE;
+#ifdef _WIN32
 										DDEServer.Delete_MPlayer_Game_Info();	// Make sure we dont go round in an infinite loop
+#endif
 										//Special.IsFromWChat = false;
 										break;
 									}
@@ -1288,7 +1322,9 @@ bool Select_Game(bool fade)
 										Winsock.Close();
 										GameToPlay = GAME_NORMAL;
 										selection = SEL_NONE;
+#ifdef _WIN32
 										DDEServer.Delete_MPlayer_Game_Info();  // Make sure we dont go round in an infinite loop
+#endif
 										//Special.IsFromWChat = false;
 										break;
 									}
@@ -1377,7 +1413,8 @@ bool Select_Game(bool fade)
 						Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 						VisiblePage.Clear();
 						if (CCFileClass("ATTRACT2.CPS").Is_Available()){
-							Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+							CCFileClass f("ATTRACT2.CPS");
+							Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 							SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 							Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 						}
@@ -1395,7 +1432,8 @@ bool Select_Game(bool fade)
 						Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 						VisiblePage.Clear();
 						if (CCFileClass("ATTRACT2.CPS").Is_Available()){
-							Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+							CCFileClass f("ATTRACT2.CPS");
+							Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 							SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 							Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 						}
@@ -1413,7 +1451,8 @@ bool Select_Game(bool fade)
 						Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 						VisiblePage.Clear();
 						if (CCFileClass("ATTRACT2.CPS").Is_Available()){
-							Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+							CCFileClass f("ATTRACT2.CPS");
+							Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 							SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 							Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 						}
@@ -1430,7 +1469,8 @@ bool Select_Game(bool fade)
 					Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 					VisiblePage.Clear();
 					if (CCFileClass("ATTRACT2.CPS").Is_Available()){
-						Load_Uncompress(CCFileClass("ATTRACT2.CPS"), SysMemPage, SysMemPage, Palette);
+						CCFileClass f("ATTRACT2.CPS");
+						Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 						SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
 						Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 					}
@@ -1523,7 +1563,9 @@ bool Select_Game(bool fade)
 	**	the address of the random seed.  (Currently not used.)
 	*/
 	srand(0);
+#ifndef PORTABLE
 	RandSeedPtr = (long *)Get_EAX();
+#endif
 
 	/*
 	**	Initialize the random number Seed.  For multiplayer, this will have been done
@@ -1854,8 +1896,10 @@ static void Play_Intro(bool for_real)
  * HISTORY:                                                                                    *
  *   12/20/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
+#ifndef PORTABLE
 extern LPDIRECTSOUND			SoundObject;
 extern	LPDIRECTSOUNDBUFFER  PrimaryBufferPtr;
+#endif
 void Anim_Init(void)
 {
 	/* Configure player with INI file */
@@ -1895,8 +1939,14 @@ void Anim_Init(void)
 	//AnimControl.Volume = 0x00FF;
 	//AnimControl.AudioRate = 22050;
 //	if (NewConfig.Speed) AnimControl.AudioRate = 11025;
+#ifdef PORTABLE
+	AnimControl.AudioDeviceID = Get_Audio_Device();
+	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
+	AnimControl.AudioSpec = Get_Audio_Spec();
+#else
 	AnimControl.SoundObject = SoundObject;	//Get_Sound_Object();
 	AnimControl.PrimaryBufferPtr = PrimaryBufferPtr;	//Get_Primart_Buffer();
+#endif
 	//if (!Debug_Quiet && Get_Digi_Handle() != -1) {
 		//AnimControl.OptionFlags |= VQAOPTF_AUDIO;
 	//}
@@ -1962,25 +2012,25 @@ bool Parse_Command_Line(int argc, char *argv[])
 	#ifdef GERMAN
 			puts("Command & Conquer (c) 1995,1996 Westwood Studios\r\n"
 						"Parameter:\r\n"
-//						"  -CD<Pfad> = Suchpfad fÅr Daten-Dateien festlegen.\r\n"
+//						"  -CD<Pfad> = Suchpfad f√ºr Daten-Dateien festlegen.\r\n"
 						"  -DESTNET  = Netzwerkkennung des Zielrechners festlegen\r\n"
 						"              (Syntax: DESTNETxx.xx.xx.xx)\r\n"
 						"  -SOCKET   = Kennung des Netzwerk-Sockets (0 - 16383)\n"
 						"  -STEALTH  = Namen im Mehrspieler-Modus verstecken (\"Boss-Modus\")\r\n"
-						"  -MESSAGES = Mitteilungen von au·erhalb des Spiels zulassen\r\n"
+						"  -MESSAGES = Mitteilungen von au√üerhalb des Spiels zulassen\r\n"
 	//					"  -ELITE    = Fortgeschrittene KI und Gefechtstechniken.\r\n"
 						"\r\n");
 	#else
 	#ifdef FRENCH
 			puts("Command & Conquer (c) 1995, Westwood Studios\r\n"
-						"Paramätres:\r\n"
-//						"  -CD<chemin d'accäs> = Recherche des fichiers dans le\r\n"
-//						"                        rÇpertoire indiquÇ.\r\n"
-						"  -DESTNET  = SpÇcifier le numÇro de rÇseau du systäme de destination\r\n"
+						"Param√®tres:\r\n"
+//						"  -CD<chemin d'acc√®s> = Recherche des fichiers dans le\r\n"
+//						"                        r√©pertoire indiqu√©.\r\n"
+						"  -DESTNET  = Sp√©cifier le num√©ro de r√©seau du syst√®me de destination\r\n"
 						"              (Syntaxe: DESTNETxx.xx.xx.xx)\r\n"
-						"  -SOCKET   = ID poste rÇseau (0 Ö 16383)\r\n"
+						"  -SOCKET   = ID poste r√©seau (0 √† 16383)\r\n"
 						"  -STEALTH  = Cacher les noms en mode multijoueurs (\"Mode Boss\")\r\n"
-						"  -MESSAGES = Autorise les messages extÇrieurs Ö ce jeu.\r\n"
+						"  -MESSAGES = Autorise les messages ext√©rieurs √† ce jeu.\r\n"
 						"\r\n");
 	#else
 			puts("Command & Conquer (c) 1995, 1996 Westwood Studios\r\n"
@@ -2417,7 +2467,7 @@ bool Parse_Command_Line(int argc, char *argv[])
 
 					default:
 #ifdef GERMAN
-						puts("UngÅltiger Parameter.\n");
+						puts("Ung√ºltiger Parameter.\n");
 #else
 #ifdef FRENCH
 						puts("Commande d'option invalide.\n");
@@ -2469,9 +2519,9 @@ void Parse_INI_File(void)
 	/*
 	** These arrays store the coded version of the names Geologic, Period, & Jurassic.
 	** Decode them by subtracting 83.  For you curious types, the names look like:
-	** ö∏¬ø¬∫º∂
-	** £∏≈º¬∑
-	** ù»≈¥∆∆º∂
+	** ÔøΩÔøΩ¬ø¬∫ÔøΩÔøΩ
+	** ÔøΩÔøΩ≈º¬∑
+	** ÔøΩÔøΩ≈¥ÔøΩ∆ºÔøΩ
 	** If these INI entries aren't found, the IsJurassic flag does nothing.
 	*/
 	static char coded_section[] = {154,184,194,191,194,186,188,182,0};
@@ -2840,6 +2890,7 @@ long Obfuscate(char const * string)
 		if (((length+3) & 0x00FC) > maxlen) {
 			maxlen = ((length+3) & 0x00FC);
 		}
+		int index;
 		for (index = length; index < maxlen; index++) {
 			buffer[index] = 'A' + ((('?' ^ buffer[index-length]) + index) % 26);
 		}
@@ -2851,13 +2902,13 @@ long Obfuscate(char const * string)
 	**	Transform the buffer into a number. This transformation is character
 	**	order dependant.
 	*/
-	long code = Calculate_CRC(buffer, length);
+	int32_t code = Calculate_CRC(buffer, length);
 
 	/*
 	**	Record a copy of this initial transformation to be used in a later
 	**	self referential transformation.
 	*/
-	long copy = code;
+	int32_t copy = code;
 
 	/*
 	**	Reverse the character string and combine with the previous transformation.
@@ -2879,7 +2930,7 @@ long Obfuscate(char const * string)
 	**	cypher process occurs later.
 	*/
 	strrev(buffer);		// Restore original string order.
-	for (index = 0; index < length; index++) {
+	for (int index = 0; index < length; index++) {
 		code ^= (unsigned char)buffer[index];
 		unsigned char temp = (unsigned char)code;
 		buffer[index] ^= temp;
@@ -2892,7 +2943,7 @@ long Obfuscate(char const * string)
 	**	cryptographic attack engines. Since this also weakens the key against
 	**	unconventional attacks, the loss is limited to less than 10%.
 	*/
-	for (index = 0; index < length; index++) {
+	for (int index = 0; index < length; index++) {
 		static unsigned char _lossbits[] = {0x00,0x08,0x00,0x20,0x00,0x04,0x10,0x00};
 		static unsigned char _addbits[] = {0x10,0x00,0x00,0x80,0x40,0x00,0x00,0x04};
 
@@ -2909,7 +2960,7 @@ long Obfuscate(char const * string)
 	**	algorithm. The sheer workload of reversing this transformation should be enough
 	**	to discourage even the most determined hackers.
 	*/
-	for (index = 0; index < length; index += 4) {
+	for (int index = 0; index < length; index += 4) {
 		short key1 = buffer[index];
 		short key2 = buffer[index+1];
 		short key3 = buffer[index+2];
@@ -2954,5 +3005,5 @@ long Obfuscate(char const * string)
 	/*
 	**	Return the final code value.
 	*/
-	return(code);
+	return((uint32_t)code);
 }

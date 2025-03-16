@@ -135,7 +135,7 @@ void TeamClass::Init(void)
 }	
 
 
-void * TeamClass::operator new (size_t)
+void * TeamClass::operator new (size_t) throw()
 {
 	void * ptr = Teams.Allocate();
 	if (ptr) {

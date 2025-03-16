@@ -89,7 +89,7 @@ int CCMessageBox::Process(const char *msg, const char *b1txt, const char *b2txt,
 	int curbutton;
 	TextButtonClass *buttons[3];
 	void *back;
-	BOOL display;									// display level
+	bool display;									// display level
 	int  realval[5];
 
 	GraphicBufferClass seen_buff_save(VisiblePage.Get_Width(),VisiblePage.Get_Height(),(void*)NULL);
@@ -405,7 +405,7 @@ int CCMessageBox::Process(const char *msg, const char *b1txt, const char *b2txt,
 		**	Delay for a brief moment so that the dialog box will be visible long
 		**	enough to read the text.
 		*/
-		CountDownTimerClass timer(BT_SYSTEM, 0);
+		CountDownTimerClass timer(BT_SYSTEM, false);
 		timer.Start();
 		timer.Set(TICKS_PER_SECOND*4);
 		while (timer.Time() > 0) {

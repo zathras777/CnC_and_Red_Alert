@@ -287,6 +287,7 @@ int Test_Null_Modem( void )
 	commands->Draw_All();
 	while (Get_Mouse_State() > 0) Show_Mouse();
 
+#ifdef _WIN32
 	/*
 	** This is supposed to be a direct connection so hang up any modem on this port
 	** just to annoy British Telecom
@@ -313,7 +314,7 @@ int Test_Null_Modem( void )
 	** Drop DTR as well - just in case the modem still hasnt got the message
 	*/
 	EscapeCommFunction(SerialPort->Get_Port_Handle(), CLRDTR);
-
+#endif
 
 	/*------------------------------------------------------------------------
 	Check for a packet.  If we detect one, the other system has already been
@@ -348,7 +349,7 @@ int Test_Null_Modem( void )
 		// put time from start of game for determining the host in case of tie.
 		//
 		SendPacket.Seed = TickCount.Time();
-		SendPacket.ID = (int) buffer;		// address of buffer for more uniqueness.
+		SendPacket.ID = (intptr_t) buffer;		// address of buffer for more uniqueness.
 
  //Smart_Printf( "Sending SERIAL_CONNECT %d, ID %d \n", SendPacket.Seed, SendPacket.ID );
 		NullModem.Send_Message (&SendPacket, sizeof(SendPacket), 1);
@@ -1360,7 +1361,7 @@ Debug_Smart_Print = false;
  * HISTORY:                                                                                    *
  *    12/16/96 2:29PM ST : Created                                                             *
  *=============================================================================================*/
-Advanced_Modem_Settings (SerialSettingsType *settings)
+void Advanced_Modem_Settings (SerialSettingsType *settings)
 {
 
 	int factor			= (SeenBuff.Get_Width() == 320) ? 1 : 2;
@@ -1459,7 +1460,7 @@ Advanced_Modem_Settings (SerialSettingsType *settings)
 	** Misc. variables.
 	*/
 	RedrawType display = REDRAW_ALL;		// redraw level
-	BOOL process = true;						// process while true
+	bool process = true;						// process while true
 	KeyNumType input;
 	GadgetClass *commands;					// button list
 
@@ -1601,35 +1602,35 @@ Advanced_Modem_Settings (SerialSettingsType *settings)
 /***************************************************************************
  * Com_Settings_Dialog -- Lets user select serial port settings            *
  *                                                                         *
- *  ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿               *
- *  ³                    Settings                          ³               *
- *  ³                                                      ³               *
- *  ³     Port:____       IRQ:__        Baud:______        ³               *
- *  ³  ÚÄÄÄÄÄÄÄÄÄÄÄÄ¿  ÚÄÄÄÄÄÄÄÄÄÄÄÄ¿  ÚÄÄÄÄÄÄÄÄÄÄÄÄ¿      ³               *
- *  ³  ³            ³  ³            ³  ³            ³      ³               *
- *  ³  ³            ³  ³            ³  ³            ³      ³               *
- *  ³  ³            ³  ³            ³  ³            ³      ³               *
- *  ³  ³            ³  ³            ³  ³            ³      ³               *
- *  ³  ÀÄÄÄÄÄÄÄÄÄÄÄÄÙ  ÀÄÄÄÄÄÄÄÄÄÄÄÄÙ  ÀÄÄÄÄÄÄÄÄÄÄÄÄÙ      ³               *
- *  ³                                                      ³               *
- *  ³   Initialization:        [Add]   [Delete]            ³               *
- *  ³    _____________________________                     ³               *
- *  ³   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿     ³               *
- *  ³   ³                                            ³     ³               *
- *  ³   ³                                            ³     ³               *
- *  ³   ³                                            ³     ³               *
- *  ³   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ     ³               *
- *  ³                                                      ³               *
- *  ³   Call Waiting:                                      ³               *
- *  ³    _______________                                   ³               *
- *  ³   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿          [Tone Dialing]        ³               *
- *  ³   ³                 ³                                ³               *
- *  ³   ³                 ³          [Pulse Dialing]       ³               *
- *  ³   ³                 ³                                ³               *
- *  ³   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                                ³               *
- *  ³                                                      ³               *
- *  ³                   [OK]   [Cancel]                    ³               *
- *  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ               *
+ *  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”               *
+ *  â”‚                    Settings                          â”‚               *
+ *  â”‚                                                      â”‚               *
+ *  â”‚     Port:____       IRQ:__        Baud:______        â”‚               *
+ *  â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      â”‚               *
+ *  â”‚  â”‚            â”‚  â”‚            â”‚  â”‚            â”‚      â”‚               *
+ *  â”‚  â”‚            â”‚  â”‚            â”‚  â”‚            â”‚      â”‚               *
+ *  â”‚  â”‚            â”‚  â”‚            â”‚  â”‚            â”‚      â”‚               *
+ *  â”‚  â”‚            â”‚  â”‚            â”‚  â”‚            â”‚      â”‚               *
+ *  â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜      â”‚               *
+ *  â”‚                                                      â”‚               *
+ *  â”‚   Initialization:        [Add]   [Delete]            â”‚               *
+ *  â”‚    _____________________________                     â”‚               *
+ *  â”‚   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”     â”‚               *
+ *  â”‚   â”‚                                            â”‚     â”‚               *
+ *  â”‚   â”‚                                            â”‚     â”‚               *
+ *  â”‚   â”‚                                            â”‚     â”‚               *
+ *  â”‚   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜     â”‚               *
+ *  â”‚                                                      â”‚               *
+ *  â”‚   Call Waiting:                                      â”‚               *
+ *  â”‚    _______________                                   â”‚               *
+ *  â”‚   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”          [Tone Dialing]        â”‚               *
+ *  â”‚   â”‚                 â”‚                                â”‚               *
+ *  â”‚   â”‚                 â”‚          [Pulse Dialing]       â”‚               *
+ *  â”‚   â”‚                 â”‚                                â”‚               *
+ *  â”‚   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                                â”‚               *
+ *  â”‚                                                      â”‚               *
+ *  â”‚                   [OK]   [Cancel]                    â”‚               *
+ *  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜               *
  *                                                                         *
  * INPUT:                                                                  *
  *		settings		ptr to SerialSettingsType structure								*
@@ -1877,7 +1878,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 	Dialog variables
 	........................................................................*/
 	RedrawType display = REDRAW_ALL;		// redraw level
-	BOOL process = true;						// process while true
+	bool process = true;						// process while true
 	KeyNumType input;
 	char * item;								// general-purpose string
 	char * temp;								// general-purpose string
@@ -3050,31 +3051,31 @@ static int Init_String_Compare (const void *p1, const void *p2)
  * Com_Scenario_Dialog -- Serial game scenario selection dialog										  *
  *                                                                         						  *
  *                                                                         						  *
- *    ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿                      	  *
- *    ³                        Serial Game                         ³                       	  *
- *    ³                                                            ³                      	  *
- *    ³     Your Name: __________          House: [GDI] [NOD]      ³                    	 	  *
- *    ³       Credits: ______      Desired Color: [ ][ ][ ][ ]     ³ 	   						  *
- *    ³      Opponent: Name                                        ³                    	 	  *
- *    ³                                                            ³                    	 	  *
- *    ³                         Scenario                           ³   								  *
- *    ³                  ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄ¿                    ³ 								  *
- *    ³                  ³ Hell's Kitchen   ³³                    ³ 								  *
- *    ³                  ³ Heaven's Gate    ÃÄ´                    ³									  *
- *    ³                  ³      ...         ³ ³                    ³									  *
- *    ³                  ³                  ÃÄ´                    ³ 								  *
- *    ³                  ³                  ³³                    ³ 								  *
- *    ³                  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÙ                    ³ 								  *
- *    ³                 [  Bases   ] [ Crates     ]                ³                           *
- *    ³                 [ Tiberium ] [ AI Players ]                ³           					  *
- *    ³                                                            ³                   	 	  *
- *    ³                      [OK]    [Cancel]                      ³                    	 	  *
- *    ³   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿   ³                   	 	  *
- *    ³   ³                                                    ³   ³                   	 	  *
- *    ³   ³                                                    ³   ³                   	 	  *
- *    ³   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ   ³                   	 	  *
- *    ³                       [Send Message]                       ³                   	 	  *
- *    ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                      	  *
+ *    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                      	  *
+ *    â”‚                        Serial Game                         â”‚                       	  *
+ *    â”‚                                                            â”‚                      	  *
+ *    â”‚     Your Name: __________          House: [GDI] [NOD]      â”‚                    	 	  *
+ *    â”‚       Credits: ______      Desired Color: [ ][ ][ ][ ]     â”‚ 	   						  *
+ *    â”‚      Opponent: Name                                        â”‚                    	 	  *
+ *    â”‚                                                            â”‚                    	 	  *
+ *    â”‚                         Scenario                           â”‚   								  *
+ *    â”‚                  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”                    â”‚ 								  *
+ *    â”‚                  â”‚ Hell's Kitchen   â”‚â†‘â”‚                    â”‚ 								  *
+ *    â”‚                  â”‚ Heaven's Gate    â”œâ”€â”¤                    â”‚									  *
+ *    â”‚                  â”‚      ...         â”‚ â”‚                    â”‚									  *
+ *    â”‚                  â”‚                  â”œâ”€â”¤                    â”‚ 								  *
+ *    â”‚                  â”‚                  â”‚â†“â”‚                    â”‚ 								  *
+ *    â”‚                  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”˜                    â”‚ 								  *
+ *    â”‚                 [  Bases   ] [ Crates     ]                â”‚                           *
+ *    â”‚                 [ Tiberium ] [ AI Players ]                â”‚           					  *
+ *    â”‚                                                            â”‚                   	 	  *
+ *    â”‚                      [OK]    [Cancel]                      â”‚                    	 	  *
+ *    â”‚   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚                   	 	  *
+ *    â”‚   â”‚                                                    â”‚   â”‚                   	 	  *
+ *    â”‚   â”‚                                                    â”‚   â”‚                   	 	  *
+ *    â”‚   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚                   	 	  *
+ *    â”‚                       [Send Message]                       â”‚                   	 	  *
+ *    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                      	  *
  *                                                                         						  *
  * INPUT:                                                                  						  *
  *		none.																												  *
@@ -4517,29 +4518,29 @@ CCDebugString (flip);
  * Com_Show_Scenario_Dialog -- Serial game scenario selection dialog									  *
  *                                                                         						  *
  *                                                                         						  *
- *    ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿                      	  *
- *    ³                        Serial Game                         ³                       	  *
- *    ³                                                            ³                      	  *
- *    ³                   Your Name: __________                    ³     							  *
- *    ³                       House: [GDI] [NOD]                   ³									  *
- *    ³               Desired Color: [ ][ ][ ][ ]                  ³ 	   						  *
- *    ³                                                            ³                    	 	  *
- *    ³                     Opponent: Name                         ³                    	 	  *
- *    ³                     Scenario: Description                  ³   								  *
- *    ³                      Credits: xxxx                         ³   								  *
- *    ³                        Bases: ON                           ³                   	 	  *
- *    ³                       Crates: ON                           ³                   	 	  *
- *    ³                     Tiberium: ON                           ³                   	 	  *
- *    ³                       Ghosts: ON                           ³                   	 	  *
- *    ³                                                            ³                   	 	  *
- *    ³                         [Cancel]                           ³                    	 	  *
- *    ³                                                            ³                   	 	  *
- *    ³   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿   ³                   	 	  *
- *    ³   ³                                                    ³   ³                   	 	  *
- *    ³   ³                                                    ³   ³                   	 	  *
- *    ³   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ   ³                   	 	  *
- *    ³                       [Send Message]                       ³                   	 	  *
- *    ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                      	  *
+ *    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                      	  *
+ *    â”‚                        Serial Game                         â”‚                       	  *
+ *    â”‚                                                            â”‚                      	  *
+ *    â”‚                   Your Name: __________                    â”‚     							  *
+ *    â”‚                       House: [GDI] [NOD]                   â”‚									  *
+ *    â”‚               Desired Color: [ ][ ][ ][ ]                  â”‚ 	   						  *
+ *    â”‚                                                            â”‚                    	 	  *
+ *    â”‚                     Opponent: Name                         â”‚                    	 	  *
+ *    â”‚                     Scenario: Description                  â”‚   								  *
+ *    â”‚                      Credits: xxxx                         â”‚   								  *
+ *    â”‚                        Bases: ON                           â”‚                   	 	  *
+ *    â”‚                       Crates: ON                           â”‚                   	 	  *
+ *    â”‚                     Tiberium: ON                           â”‚                   	 	  *
+ *    â”‚                       Ghosts: ON                           â”‚                   	 	  *
+ *    â”‚                                                            â”‚                   	 	  *
+ *    â”‚                         [Cancel]                           â”‚                    	 	  *
+ *    â”‚                                                            â”‚                   	 	  *
+ *    â”‚   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚                   	 	  *
+ *    â”‚   â”‚                                                    â”‚   â”‚                   	 	  *
+ *    â”‚   â”‚                                                    â”‚   â”‚                   	 	  *
+ *    â”‚   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚                   	 	  *
+ *    â”‚                       [Send Message]                       â”‚                   	 	  *
+ *    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                      	  *
  *                                                                         						  *
  * INPUT:                                                                  						  *
  *		none.																												  *
@@ -4640,7 +4641,7 @@ int Com_Show_Scenario_Dialog(void)
 	Dialog variables
 	........................................................................*/
 	RedrawType display = REDRAW_ALL;		// redraw level
-	BOOL process = true;						// process while true
+	bool process = true;						// process while true
 	KeyNumType input;
 
 	char namebuf[MPLAYER_NAME_MAX] = {0};		// buffer for player's name
@@ -5774,7 +5775,7 @@ static int Phone_Dialog (void)
 	Dialog variables
 	........................................................................*/
 	RedrawType display = REDRAW_ALL;		// redraw level
-	BOOL process = true;						// process while true
+	bool process = true;						// process while true
 	KeyNumType input;
 
 	char phone_num[ PhoneEntryClass::PHONE_MAX_NUM ] = { 0 }; // buffer for editing phone #
@@ -6401,7 +6402,7 @@ static int Edit_Phone_Dialog (PhoneEntryClass *phone)
 	Dialog variables
 	........................................................................*/
 	RedrawType display = REDRAW_ALL;		// redraw level
-	BOOL process = true;						// process while true
+	bool process = true;						// process while true
 	KeyNumType input;
 
 	char namebuf[PhoneEntryClass::PHONE_MAX_NAME] = { 0 };	// buffer for editing name
@@ -7042,7 +7043,7 @@ void Hex_Dump_Data( char *buffer, int length )
 			itoh(c, buff);
 
 			if (!(i & 0x3) && i) {
-				Smart_Printf("³ ");
+				Smart_Printf("â”‚ ");
 			}
 
 			Smart_Printf("%s ", buff);
@@ -7076,7 +7077,7 @@ void Hex_Dump_Data( char *buffer, int length )
 				c = ptr[i];
 				itoh(c, buff);
 				if (!(i & 0x3) && i) {
-					Smart_Printf("³ ");
+					Smart_Printf("â”‚ ");
 				}
 				Smart_Printf("%s ", buff);
 			} else {

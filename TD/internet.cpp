@@ -65,7 +65,9 @@ long PlanetWestwoodPortNumber = 1234;					//Port number to send to
 bool PlanetWestwoodIsHost = false;                  //Flag true if player has control of game options
 unsigned long PlanetWestwoodGameID;                 //Game ID
 unsigned long PlanetWestwoodStartTime;              //Time that game was started
+#ifdef _WIN32
 HWND	WChatHWND = 0;                               //Handle to Wchat window.
+#endif
 bool UseVirtualSubnetServer;
 int  InternetMaxPlayers;
 int WChatMaxAhead;
@@ -112,7 +114,9 @@ void Check_From_WChat(char *wchat_name)
 	if (wchat_name){
 		ini_file = new char [8192];
 	}else{
+#ifdef _WIN32
 		ini_file = DDEServer.Get_MPlayer_Game_Info();
+#endif
 #if (0)
 		/*
 		** Save it to disk as well so I can see it
@@ -260,7 +264,9 @@ int Read_Game_Options(char *name)
 			file.Read(buffer, 8192-1);
 			file.Close();
 		}else{
+#ifdef _WIN32
 			buffer = DDEServer.Get_MPlayer_Game_Info();
+#endif
 		}
 	}
 
@@ -286,7 +292,9 @@ int Read_Game_Options(char *name)
 	Special.IsCaptureTheFlag = WWGetPrivateProfileInt("Options", "CaptureTheFlag", 0, buffer);
 	PlanetWestwoodGameID = WWGetPrivateProfileInt("Internet", "GameID", 0, buffer);
 	PlanetWestwoodStartTime = WWGetPrivateProfileInt ("Internet", "StartTime", 0, buffer);
+#ifndef PORTABLE // this is even broken on 64-bit windows
 	WChatHWND = (HWND) WWGetPrivateProfileInt("Internet", "HWND", (int)FindWindow("OWL_Window", "Westwood Chat"), buffer);
+#endif
 
 	InternetMaxPlayers = WWGetPrivateProfileInt("Internet", "MaxPlayers", 2, buffer);
 
@@ -332,9 +340,9 @@ int Read_Game_Options(char *name)
  * HISTORY:                                                                                    *
  *    1/12/96 2:11PM ST : Created                                                              *
  *=============================================================================================*/
-
+#ifdef _WIN32
 extern HKEY Get_Registry_Sub_Key (HKEY base_key, char *search_key, BOOL close);
-
+#endif
 
 
 void Just_Path(char *path, char *destpath)
@@ -368,6 +376,7 @@ void Just_Path(char *path, char *destpath)
  *=============================================================================================*/
 bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 {
+#ifndef PORTABLE // Get_Registry_Sub_Key is in WIN32LIB
 	HKEY	key;
 	char	user_handle[256];
 	DWORD	user_handle_size = sizeof (user_handle);
@@ -441,6 +450,9 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 	}else{
 		return (FALSE);
 	}
+#else
+	return false;
+#endif
 }
 
 
@@ -462,6 +474,7 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 bool Poke_WChat(void);
 bool Spawn_WChat(bool can_launch)
 {
+#ifndef PORTABLE // Get_Registry_Sub_Key is in WIN32LIB, also MainWindow is not a HWND
 	CCDebugString ("C&C95 - In Spawn_WChat.\n");
 	char packet[10] = {"Hello"};
 	HWND chat_window = NULL;
@@ -580,6 +593,9 @@ bool Spawn_WChat(bool can_launch)
 		while ( Keyboard::Check() ) {};
 		return (false);
 	}
+#else
+	return false;
+#endif
 }
 
 
@@ -601,7 +617,7 @@ bool Spawn_WChat(bool can_launch)
  *=============================================================================================*/
 bool Spawn_Registration_App(void)
 {
-
+#ifndef PORTABLE // Get_Registry_Sub_Key is in WIN32LIB
 	/*
 	** Find where inetreg was installed to
 	*/
@@ -640,7 +656,9 @@ bool Spawn_Registration_App(void)
 		//ShowWindow ( MainWindow, SW_RESTORE );
 	}
 	return (success);
-
+#else
+	return false;
+#endif
 }
 
 
@@ -826,8 +844,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			display = false;
 		}
 
-
-
+#ifdef _WIN32
 		/*
 		** See if the game start packet has arrived from wchat yet.
 		*/
@@ -837,6 +854,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			//ShowWindow ( MainWindow, SW_SHOWMAXIMIZED	);
 			return(true);
 		}
+#endif
 
 		//input = buttons->Input();
 		input = cancelbtn.Input();
@@ -852,7 +870,9 @@ bool Do_The_Internet_Menu_Thang(void)
 			case (KN_ESC):
 			case (BUTTON_CANCEL | KN_BUTTON):
 				process = false;
+#ifdef _WIN32
 				Send_Data_To_DDE_Server (packet, strlen(packet), DDEServerClass::DDE_CONNECTION_FAILED);
+#endif
 				GameStatisticsPacketSent = false;
 				Spawn_WChat(false);
 				break;

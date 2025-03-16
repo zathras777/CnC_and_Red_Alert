@@ -153,7 +153,7 @@ GameType Select_MPlayer_Game (void)
 	//
 	// If neither IPX or winsock are active then do only the modem serial dialog
 	//
-	if (Ipx.Is_IPX){
+	if (Ipx.Is_IPX()){
 		ipx_avail = TRUE;
 	}
 
@@ -580,7 +580,7 @@ void Read_MultiPlayer_Settings (void)
 	// find dial method
 
 	for (i = 0; i < DIAL_METHODS; i++) {
-		if ( !strcmpi( buf, DialMethodCheck[ i ]) ) {
+		if ( !stricmp( buf, DialMethodCheck[ i ]) ) {
 			SerialDefaults.DialMethod = (DialMethodType)i;
 			break;
 		}
@@ -749,7 +749,7 @@ void Read_MultiPlayer_Settings (void)
 			// find dial method
 
 			for (i = 0; i < DIAL_METHODS; i++) {
-				if ( !strcmpi( buf, DialMethodCheck[ i ]) ) {
+				if ( !stricmp( buf, DialMethodCheck[ i ]) ) {
 					phone->Settings.DialMethod = (DialMethodType)i;
 					break;
 				}

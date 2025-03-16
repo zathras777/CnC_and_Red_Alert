@@ -352,7 +352,7 @@ void Map_Selection(void)
 	Set_Palette(grey2palette);
 	SysMemPage.Blit(*PseudoSeenBuff);
 	Call_Back_Delay(4);
-	for (i = 1; i < Get_Animation_Frame_Count(greyearth2); i++) {
+	for (int i = 1; i < Get_Animation_Frame_Count(greyearth2); i++) {
 		Animate_Frame(greyearth2,*PseudoSeenBuff,i);
 		Call_Back_Delay(4);
 	}
@@ -468,7 +468,7 @@ void Map_Selection(void)
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_PROG.PAL");
 
-	GraphicBufferClass *europe = new GraphicBufferClass(SysMemPage.Get_Width(),SysMemPage.Get_Height(),(GBC_Enum)0);
+	GraphicBufferClass *europe = new GraphicBufferClass(SysMemPage.Get_Width(),SysMemPage.Get_Height());
 	SysMemPage.Blit(*europe);
 
 	/*
@@ -672,9 +672,11 @@ void Map_Selection(void)
 	int framecounter = 0;
 
 	if (house == HOUSE_GOOD) {
-		Load_Uncompress(CCFileClass(lastscenario ? "CLICK_EB.CPS" : "CLICK_E.CPS"), SysMemPage, SysMemPage);
+		CCFileClass f(lastscenario ? "CLICK_EB.CPS" : "CLICK_E.CPS");
+		Load_Uncompress(f, SysMemPage, SysMemPage, NULL);
 	} else {
-		Load_Uncompress(CCFileClass(lastscenario ? "CLICK_SA.CPS" : "CLICK_A.CPS"), SysMemPage, SysMemPage);
+		CCFileClass f(lastscenario ? "CLICK_SA.CPS" : "CLICK_A.CPS");
+		Load_Uncompress(f, SysMemPage, SysMemPage, NULL);
 		if (lastscenario) attackxcoord = 200;
 	}
 

@@ -46,7 +46,6 @@
 
 #include	"function.h"
 #include "vector.h"
-#include	<mem.h>
 #include	<stdio.h>
 
 /*
@@ -375,6 +374,19 @@ int VectorClass<T>::Resize(unsigned newsize, T const * array)
 	return(true);
 }
 
+template class VectorClass<NodeNameTag *>;
+template class VectorClass<PhoneEntryClass *>;
+template class VectorClass<ObjectClass *>;
+template class VectorClass<TriggerClass *>;
+template class VectorClass<FileEntryClass *>;
+template class VectorClass<BaseNodeClass>;
+template class VectorClass<CellClass>;
+template class VectorClass<int>;
+template class VectorClass<char *>;
+template class VectorClass<unsigned char *>;
+template class VectorClass<char const*>;
+template class VectorClass<void *>;
+template class VectorClass<unsigned char>;
 
 /***********************************************************************************************
  * DynamicVectorClass<T>::DynamicVectorClass -- Constructor for dynamic vector.                *
@@ -428,7 +440,7 @@ template<class T>
 int DynamicVectorClass<T>::Resize(unsigned newsize, T const * array)
 {
 	if (VectorClass<T>::Resize(newsize, array)) {
-		if (Length() < ActiveCount) ActiveCount = Length();
+		if (this->Length() < ActiveCount) ActiveCount = this->Length();
 		return(true);
 	}
 	return(false);
@@ -483,9 +495,9 @@ int DynamicVectorClass<T>::ID(T const & object)
 template<class T>
 int DynamicVectorClass<T>::Add(T const & object)
 {
-	if (ActiveCount >= Length()) {
-		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
-			if (!Resize(Length() + GrowthStep)) {
+	if (ActiveCount >= this->Length()) {
+		if ((this->IsAllocated || !this->VectorMax) && GrowthStep > 0) {
+			if (!Resize(this->Length() + GrowthStep)) {
 
 				/*
 				**	Failure to increase the size of the vector is an error condition.
@@ -514,9 +526,9 @@ int DynamicVectorClass<T>::Add(T const & object)
 template<class T>
 int DynamicVectorClass<T>::Add_Head(T const & object)
 {
-	if (ActiveCount >= Length()) {
-		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
-			if (!Resize(Length() + GrowthStep)) {
+	if (ActiveCount >= this->Length()) {
+		if ((this->IsAllocated || !this->VectorMax) && GrowthStep > 0) {
+			if (!Resize(this->Length() + GrowthStep)) {
 
 				/*
 				**	Failure to increase the size of the vector is an error condition.
@@ -574,6 +586,13 @@ int DynamicVectorClass<T>::Delete(T const & object)
 	}
 }
 
+// workaround for DynamicVectorClass<int>, nobody call this please
+template<>
+int DynamicVectorClass<int>::Delete(int const & object)
+{
+	return false;
+}
+//
 
 /***********************************************************************************************
  * DynamicVectorClass<T>::Delete -- Deletes the specified index from the vector.               *
@@ -611,6 +630,19 @@ int DynamicVectorClass<T>::Delete(int index)
 	}
 	return(false);
 }
+
+template class DynamicVectorClass<NodeNameTag *>;
+template class DynamicVectorClass<PhoneEntryClass *>;
+template class DynamicVectorClass<ObjectClass *>;
+template class DynamicVectorClass<TriggerClass *>;
+template class DynamicVectorClass<FileEntryClass *>;
+template class DynamicVectorClass<BaseNodeClass>;
+template class DynamicVectorClass<char>;
+template class DynamicVectorClass<int>;
+template class DynamicVectorClass<char *>;
+template class DynamicVectorClass<unsigned char *>;
+template class DynamicVectorClass<char const*>;
+template class DynamicVectorClass<void *>;
 
 //----------------------------------------------------------------------------------------------
 
@@ -743,7 +775,7 @@ int BooleanVectorClass::Resize(unsigned size)
 		**	Actually resize the bit array. Since this is a bit packed array,
 		**	there are 8 elements per byte (rounded up).
 		*/
-		int success = BitArray.Resize(((size + (8-1)) / 8));
+		int success = BitArray.Resize(((size + (32-1)) / 32) * 4);
 
 		/*
 		**	Since there is no default constructor for bit packed integers, a manual

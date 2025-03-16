@@ -127,7 +127,9 @@ enum {
 
 
 extern unsigned long 	PlanetWestwoodGameID;
+#ifndef PORTABLE
 extern HINSTANCE		ProgramInstance;
+#endif
 extern unsigned long 	PlanetWestwoodStartTime;
 
 extern "C" char	CPUType;
@@ -373,7 +375,7 @@ void Send_Statistics_Packet(void)
 			stats.Add_Field (FIELD_FRAME_RATE, (long) Frame / (GameEndTime/60) );
 		}
 
-
+#ifndef PORTABLE
 		CCDebugString ("C&C95 - Adding hardware info stats.\n");
 		/*
 		** CPU type
@@ -403,13 +405,14 @@ void Send_Statistics_Packet(void)
 				stats.Add_Field (FIELD_VIDEO_MEMORY, (long) video_memory);
 			}
 		}
-
+#endif
 		CCDebugString ("C&C95 - Adding game info stats.\n");
 		/*
 		** Game speed setting.
 		*/
 		stats.Add_Field (FIELD_SPEED_SETTING, (char)Options.GameSpeed);
 
+#ifndef PORTABLE
 		/*
 		** C&C 95 version/build date
 		*/
@@ -433,6 +436,7 @@ void Send_Statistics_Packet(void)
 				stats.Add_Field (FIELD_GAME_BUILD_DATE, (void*)&write_time, sizeof (write_time));
 			}
 		}
+#endif
 
 		/*
 		** Covert installed? (Yes/No)
@@ -625,13 +629,14 @@ void Send_Statistics_Packet(void)
 	int times = 100;		//100 times max
 	CountDownTimerClass	send_timer;
 
+#ifdef _WIN32
 	CCDebugString ("C&C95 - About to send stats packet to DDE server.\n");
 	while ( ! Send_Data_To_DDE_Server ((char*)packet, packet_size, DDEServerClass::DDE_PACKET_GAME_RESULTS)){
 		CCDebugString ("C&C95 - Stats packet send failed.\n");
 		send_timer.Set (60, true);
 		while (send_timer.Time()){};
 	}
-
+#endif
 
 	/*
 	** Save it to disk as well so I can see it

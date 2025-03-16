@@ -94,7 +94,7 @@ SliderClass::SliderClass(unsigned id, int x, int y, int w, int h, int belong_to_
 }
 
 
-virtual SliderClass::~SliderClass(void)
+SliderClass::~SliderClass(void)
 {
 	if (PlusGadget) {
 		delete PlusGadget;

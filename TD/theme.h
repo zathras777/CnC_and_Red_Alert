@@ -81,7 +81,7 @@ class ThemeClass
 		int  Still_Playing(void);
 		ThemeType  Next_Song(ThemeType index);
 		bool  Is_Allowed(ThemeType index) const;
-		static void _pascal Scan(void);
+		static void Scan(void);
 };
 
 #endif

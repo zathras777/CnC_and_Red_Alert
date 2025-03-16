@@ -92,7 +92,7 @@ class FootClass :	public TechnoClass
 		**	This flag tells the system that the unit is doing a firing animation. This is
 		**	critical to the firing logic.
 		*/
-		unsigned IsFiring:1;
+		mutable unsigned IsFiring:1;
 
 		/*
 		**	This unit could be either rotating its body or rotating its turret. During the

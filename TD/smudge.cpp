@@ -104,7 +104,7 @@ int SmudgeClass::Validate(void) const
  * HISTORY:                                                                                    *
  *   09/01/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * SmudgeClass::operator new(size_t )
+void * SmudgeClass::operator new(size_t ) throw()
 {
 	void * ptr = Smudges.Allocate();
 	if (ptr) {

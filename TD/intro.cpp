@@ -94,9 +94,11 @@ void Choose_Side(void)
 	int setpalette = 0;
 	int	gdi_start_palette;
 
+#ifndef PORTABLE
 	MEMORYSTATUS	mem_info;
 	mem_info.dwLength=sizeof(mem_info);
 	GlobalMemoryStatus(&mem_info);
+#endif
 
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
 	TextPrintBuffer->Clear();
@@ -110,16 +112,22 @@ void Choose_Side(void)
 
 	Call_Back();
 
-	staticaud = Load_Alloc_Data(CCFileClass("STRUGGLE.AUD"));
-	speechg = Load_Alloc_Data(CCFileClass("GDI_SLCT.AUD"));
-	speechn = Load_Alloc_Data(CCFileClass("NOD_SLCT.AUD"));
+	CCFileClass f("STRUGGLE.AUD");
+	staticaud = Load_Alloc_Data(f);
+	f.Open("GDI_SLCT.AUD");
+	speechg = Load_Alloc_Data(f);
+	f.Open("NOD_SLCT.AUD");
+	speechn = Load_Alloc_Data(f);
 
 //	staticaud = MixFileClass::Retrieve("STRUGGLE.AUD");
 //	speechg = MixFileClass::Retrieve("GDI_SLCT.AUD");
 //	speechn = MixFileClass::Retrieve("NOD_SLCT.AUD");
 
 	if (Special.IsFromInstall){
-		if (mem_info.dwTotalPhys >= 12*1024*1024){
+#ifndef PORTABLE
+		if (mem_info.dwTotalPhys >= 12*1024*1024)
+#endif
+		{
 			VisiblePage.Clear();
 			PreserveVQAScreen = 1;
 			Play_Movie("INTRO2", THEME_NONE, false);
@@ -280,7 +288,9 @@ void Choose_Side(void)
 	}
 
 	Free_Interpolated_Palettes();
+#ifndef PORTABLE
 	Set_Primary_Buffer_Format();
+#endif
 /* get rid of all the animating objects */
 	for (int i = 0; i < MAXSCOREOBJS; i++) if (ScoreObjs[i]) {
 		delete ScoreObjs[i];

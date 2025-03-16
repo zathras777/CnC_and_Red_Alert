@@ -320,7 +320,7 @@ char ScenarioName[_MAX_FNAME+_MAX_EXT];	// name of scenario
 int CarryOverMoney;						// Carry over money from last scenario.
 int CarryOverPercent;					// Carry over money percentage control.
 int CarryOverCap;							// Maxmimum carry over money allowed.
-bool ScenarioInit;
+int ScenarioInit;
 bool SpecialFlag = false;
 
 
@@ -1023,9 +1023,11 @@ WWKeyboardClass	Kbd;
 int					ScreenWidth=640;
 int					ScreenHeight=400;
 WWMouseClass		*WWMouse = NULL;
+#ifndef PORTABLE
 HANDLE hInstance;
+#endif
 int AllDone;
-BOOL				InMovie = FALSE;	//Are we currently playing a VQ movie?
+bool				InMovie = FALSE;	//Are we currently playing a VQ movie?
 bool				MMXAvailable = false;	//Does this CPU support MMX extensions?
 GetCDClass		CDList;
 bool				GameStatisticsPacketSent;
@@ -1033,3 +1035,9 @@ bool				ConnectionLost;
 
 TheaterType		LastTheater = THEATER_NONE;
 
+#ifdef PORTABLE
+// extra glue to SDLLIB
+TimerClass TickCount;
+WWKeyboardClass *_Kbd = &Kbd;
+char *ShapeBuffer = _ShapeBuffer;
+#endif

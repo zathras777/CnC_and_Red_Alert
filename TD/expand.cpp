@@ -138,7 +138,7 @@ bool Expansion_Dialog(void)
 		}
 	}
 
-	for (index = 20; index < 60; index++) {
+	for (int index = 20; index < 60; index++) {
 		char buffer[128];
 		CCFileClass file;
 
@@ -229,7 +229,7 @@ bool Expansion_Dialog(void)
 	/*
 	**	Free up the allocations for the text lines in the list box.
 	*/
-	for (index = 0; index < list.Count(); index++) {
+	for (int index = 0; index < list.Count(); index++) {
 		delete [] (char *)list.Get_Item(index);
 	}
 
@@ -325,7 +325,7 @@ bool Bonus_Dialog(void)
 		}
 	}
 
-	for (index = 60; index < 62; index++) {
+	for (int index = 60; index < 62; index++) {
 		char buffer[128];
 		CCFileClass file;
 
@@ -411,7 +411,7 @@ bool Bonus_Dialog(void)
 	/*
 	**	Free up the allocations for the text lines in the list box.
 	*/
-	for (index = 0; index < list.Count(); index++) {
+	for (int index = 0; index < list.Count(); index++) {
 		delete [] (char *)list.Get_Item(index);
 	}
 

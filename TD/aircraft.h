@@ -52,7 +52,7 @@ class AircraftClass : public FootClass, public FlyClass
 		AircraftTypeClass const * const Class;
 
 		//-----------------------------------------------------------------------------
-		void * operator new(size_t);
+		void * operator new(size_t) throw();
 		void operator delete(void *);
 		operator AircraftType(void) const {return Class->Type;};
 		AircraftClass(void) : Class(0) {};
@@ -120,7 +120,7 @@ class AircraftClass : public FootClass, public FlyClass
 		**	Display and rendering support functionality. Supports imagery and how
 		**	object interacts with the map and thus indirectly controls rendering.
 		*/
-		virtual bool Exit_Object(TechnoClass *);
+		virtual int Exit_Object(TechnoClass *);
 		virtual bool Mark(MarkType mark=MARK_CHANGE);
 		virtual short const * Overlap_List(void) const;
 		virtual void Draw_It(int x, int y, WindowNumberType window);

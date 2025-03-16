@@ -474,7 +474,7 @@ void AnimClass::Init(void)
  * HISTORY:                                                                                    *
  *   05/31/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-void *AnimClass::operator new(size_t)
+void *AnimClass::operator new(size_t) throw()
 {
 	void * ptr = Anims.Allocate();
 	if (ptr) {
@@ -619,7 +619,8 @@ AnimClass::~AnimClass(void)
 			**	this animation is attached to. If there are no others, then inform the
 			**	attached object of this fact.
 			*/
-			for (int index = 0; index < Anims.Count(); index++) {
+			int index;
+			for (index = 0; index < Anims.Count(); index++) {
 				if (Anims.Ptr(index)->Object == to) break;
 			}
 

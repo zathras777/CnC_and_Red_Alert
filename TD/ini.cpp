@@ -540,7 +540,7 @@ bool Read_Scenario_Ini(char *root, bool fresh)
 					rndmin = 4000;
 				}
 
-				for (i = 0; i < MPlayerMax; i++) {
+				for (int i = 0; i < MPlayerMax; i++) {
 					HousesType house = (HousesType)(i + (int)HOUSE_MULTI1);
 					HouseClass *housep = HouseClass::As_Pointer (house);
 					housep->BlitzTime = IRandom (rndmin,rndmax);

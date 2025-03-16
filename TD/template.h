@@ -52,7 +52,7 @@ class TemplateClass : public ObjectClass
 		/*-------------------------------------------------------------------
 		**	Constructors and destructors.
 		*/
-		static void * operator new(size_t size);
+		static void * operator new(size_t size) throw();
 		static void operator delete(void *ptr);
 		TemplateClass(void);
 		TemplateClass(TemplateType type, CELL pos=-1);

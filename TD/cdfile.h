@@ -38,7 +38,6 @@
 #ifndef CDFILE_H
 #define CDFILE_H
 
-#include	<dos.h>
 #include	"rawfile.h"
 
 /*

@@ -72,8 +72,8 @@ void * Small_Icon(void const * iconptr, int iconnum)
 	unsigned char * data;
 
 	if (iconptr) {
-		iconnum = iptr->Map[iconnum];
-		data = &iptr->Icons[iconnum*(24*24)];
+		iconnum = ((char *)((char *)iptr + iptr->Map))[iconnum];
+		data = &((unsigned char *)((unsigned char *)iptr + iptr->Icons))[iconnum*(24*24)];
 
 		for (int index = 0; index < 9; index++) {
 			int _offsets[9] = {
@@ -288,9 +288,10 @@ void * Load_Alloc_Data(FileClass &file)
 	void *ptr = 0;
 	long size = file.Size();
 
-	ptr = new char [size];
+	ptr = new char [size + 1];
 	if (ptr) {
 		file.Read(ptr, size);
+		((char *)ptr)[size] = 0; // workaround scanning past the end of text files
 	}
 	return(ptr);
 }

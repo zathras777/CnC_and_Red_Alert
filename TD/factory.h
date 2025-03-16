@@ -45,7 +45,7 @@ class FactoryClass : private StageClass
 	public:
 		FactoryClass(void);
 		~FactoryClass(void);
-		static void * operator new(size_t size);
+		static void * operator new(size_t size) throw();
 		static void operator delete(void *ptr);
 
 		static void Init(void);

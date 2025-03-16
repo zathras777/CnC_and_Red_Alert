@@ -43,7 +43,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "function.h"
+#ifdef _WIN32
 #include <io.h>				// for unlink
+#else
+#include <unistd.h>
+#endif
 
 
 /***********************************************************************************************
@@ -562,7 +566,7 @@ void LoadOptionsClass::Clear_List(ListClass *list)
 	/*
 	** Clear the array of game numbers
 	*/
-	for (i = 0; i < Files.Count(); i++) {
+	for (int i = 0; i < Files.Count(); i++) {
 		delete Files[i];
 	}
 	Files.Clear();
@@ -591,7 +595,7 @@ void LoadOptionsClass::Fill_List(ListClass *list)
 	char descr[DESCRIP_MAX];
 	unsigned scenario;			// scenario #
 	HousesType house;				// house
-	struct find_t ff;		// for _dos_findfirst
+	FindFileState find_state;
 	int id;
 
 	/*
@@ -612,13 +616,13 @@ void LoadOptionsClass::Fill_List(ListClass *list)
 	/*
 	** Find all savegame files
 	*/
-	int rc = _dos_findfirst("SAVEGAME.*", _A_NORMAL, &ff);
+	bool found = Find_First_File("SAVEGAME.*", find_state);
 
-	while (!rc) {
+	while (found) {
 		/*
 		** Extract the game ID from the filename
 		*/
-		id = Num_From_Ext(ff.name);
+		id = Num_From_Ext(find_state.name);
 
 		/*
 		** get the game's info; if success, add it to the list
@@ -634,13 +638,13 @@ void LoadOptionsClass::Fill_List(ListClass *list)
 		fdata->Scenario = scenario;
 		fdata->House = house;
 		fdata->Num = id;
-		fdata->DateTime = (((unsigned long)ff.wr_date) << 16) | (unsigned long)ff.wr_time;
+		fdata->DateTime = find_state.mod_time;
 		Files.Add(fdata);
 
 		/*
 		** Find the next file
 		*/
-		rc = _dos_findnext(&ff);
+		found = Find_Next_File(find_state);
 	}
 
 	/*
@@ -653,7 +657,8 @@ void LoadOptionsClass::Fill_List(ListClass *list)
 		** in the list; if any number isn't found, use that number; otherwise,
 		** use 'N + 1'.
 		*/
-		for (int i = 0; i < Files.Count(); i++) {		// i = the # we're searching for
+		int i;
+		for (i = 0; i < Files.Count(); i++) {		// i = the # we're searching for
 			id = -1;											// mark as 'not found'
 			for (int j = 0; j < Files.Count(); j++) {	// loop through all game ID's
 				if (Files[j]->Num==i) {					// if found, mark as found
@@ -696,7 +701,7 @@ void LoadOptionsClass::Fill_List(ListClass *list)
  * HISTORY:                                                                                    *
  *   02/14/1995 BR : Created.                                                                  *
  *=============================================================================================*/
-int LoadOptionsClass::Num_From_Ext(char *fname)
+int LoadOptionsClass::Num_From_Ext(const char *fname)
 {
 	char ext[_MAX_EXT];
 

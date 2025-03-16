@@ -507,7 +507,7 @@ void GScreenClass::Blit_Display(void)
 		}else{
 #else	//(0)
 			WWMouse->Draw_Mouse(&HidPage);
-			HidPage.Blit ( SeenBuff , 0 , 0 , 0 , 0 , HidPage.Get_Width() , HidPage.Get_Height() , (BOOL) FALSE );
+			HidPage.Blit ( SeenBuff , 0 , 0 , 0 , 0 , HidPage.Get_Width() , HidPage.Get_Height() , FALSE );
 #ifdef CHEAT_KEYS
 			Add_Current_Screen();
 #endif

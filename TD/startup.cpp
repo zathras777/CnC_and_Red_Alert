@@ -39,8 +39,20 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"function.h"
+#ifdef WIN32
+#ifndef PORTABLE
+#include 	<windows.h>
+#endif
+#else
 #include	<conio.h>
 #include	<io.h>
+#endif
+
+#ifdef _WIN32
+#include <direct.h> //chdir
+#else
+#include <unistd.h>
+#endif
 #include  "ccdde.h"
 
 bool Read_Private_Config_Struct(char *profile, NewConfigType *config);
@@ -111,13 +123,19 @@ void CD_Test(void)
  *   03/20/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
 
+#ifdef _WIN32
 HINSTANCE	ProgramInstance;
-extern BOOL CC95AlreadyRunning;
+#endif
+extern bool CC95AlreadyRunning;
 void Move_Point(short &x, short &y, register DirType dir, unsigned short distance);
 
 void Check_Use_Compressed_Shapes (void);
 
+#ifdef _WIN32
 int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int command_show )
+#else	//WIN32
+int main(int argc, char * argv[])
+#endif	//WIN32
 {
 // Heap_Dump_Check( "first thing in main" );
 //	malloc(1);
@@ -136,7 +154,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 //	int temp = Desired_Facing256 (1070, 5419, 1408, 5504);
 
 
-
+#ifndef PORTABLE
 	/*
 	** If we are already running then switch to the existing process and exit
 	*/
@@ -157,13 +175,13 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 
 
 	DDSCAPS	surface_capabilities;
-
+#endif
 	if (Ram_Free(MEM_NORMAL) < 5000000) {
 #ifdef GERMAN
-		printf("Zuwenig Hauptspeicher verfÅgbar.\n");
+		printf("Zuwenig Hauptspeicher verf√ºgbar.\n");
 #else
 #ifdef FRENCH
-		printf("MÇmoire vive (RAM) insuffisante.\n");
+		printf("M√©moire vive (RAM) insuffisante.\n");
 #else
 		printf("Insufficient RAM available.\n");
 #endif
@@ -178,7 +196,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 
 	//Free(test_buffer);
 
-
+#ifdef _WIN32
 	int		argc;				//Command line argument count
 	unsigned	command_scan;
 	char		command_char;
@@ -198,6 +216,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 	*/
 	argc=1;							//Set argument count to 1
 	argv[0]=&path_to_exe[0];	//Set 1st command line argument to point to full path
+
 
 	/*
 	** Get pointers to command line arguments just like if we were in DOS
@@ -229,16 +248,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 		}
 
 	} while ( command_char != 0 && command_char != 13 && argc<20 );
-
-
-
-	/*
-	**	Remember the current working directory and drive.
-	*/
-	unsigned olddrive;
-	char oldpath[PATH_MAX];
-	getcwd(oldpath, sizeof(oldpath));
-	_dos_getdrive(&olddrive);
+#endif
 
 
 	/*
@@ -249,13 +259,18 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 	char path[_MAX_PATH];
 	unsigned drivecount;
 	_splitpath(argv[0], drive, path, NULL, NULL);
+#ifndef PORTABLE
 	if (!drive[0]) {
+		unsigned olddrive;
+		_dos_getdrive(&olddrive);
 		drive[0] = ('A' + olddrive)-1;
 	}
+	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
+#endif
 	if (!path[0]) {
 		strcpy(path, ".");
 	}
-	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
+
 	if (path[strlen(path)-1] == '\\') {
 		path[strlen(path)-1] = '\0';
 	}
@@ -266,23 +281,26 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 #endif
 	if (Parse_Command_Line(argc, argv)) {
 
-
+#ifdef PORTABLE
+		WindowsTimer = new WinTimerClass(60, FALSE);
+#else
 		WindowsTimer = new WinTimerClass(60,FALSE);
 
 		int time_test = WindowsTimer->Get_System_Tick_Count();
 		Sleep (1000);
 		if (WindowsTimer->Get_System_Tick_Count() == time_test){
 #ifdef FRENCH
-			MessageBox(0, "Error - L'horloge systäme n'a pas pu s'initialiser en raison de l'instabilitÇ du sytäme. Vous devez redÇmarrer Windows.",  "Command & Conquer" , MB_OK|MB_ICONSTOP);
+			MessageBox(0, "Error - L'horloge syst√®me n'a pas pu s'initialiser en raison de l'instabilit√© du syt√®me. Vous devez red√©marrer Windows.",  "Command & Conquer" , MB_OK|MB_ICONSTOP);
 #else
 #ifdef	GERMAN
-			MessageBox(0, "Fehler - das Timer-System konnte aufgrund einer InstabilitÑt des Systems nicht initialisiert werden. Bitte starten Sie Windows neu.", "Command & Conquer", MB_OK|MB_ICONSTOP);
+			MessageBox(0, "Fehler - das Timer-System konnte aufgrund einer Instabilit√§t des Systems nicht initialisiert werden. Bitte starten Sie Windows neu.", "Command & Conquer", MB_OK|MB_ICONSTOP);
 #else
 			MessageBox(0, "Error - Timer system failed to start due to system instability. You need to restart Windows.", "Command & Conquer", MB_OK|MB_ICONSTOP);
 #endif	//GERMAN
 #endif	//FRENCH
 			return(EXIT_FAILURE);
 		}
+#endif
 
 		RawFileClass cfile("CONQUER.INI");
 
@@ -290,7 +308,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 	//////////////////////////////////////if(!ForceEnglish) KBLanguage = 1;
 #endif
 
-
+#ifndef PORTABLE
 		/*
 		** Check for existance of MMX support on the processor
 		*/
@@ -298,6 +316,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 			//MessageBox(NULL, "MMX extensions detected - enabling MMX support.", "Command & Conquer",MB_ICONEXCLAMATION|MB_OK);
 			MMXAvailable = true;
 		}
+#endif
 
 		/*
 		** If there is loads of memory then use uncompressed shapes
@@ -307,10 +326,17 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 		/*
 		** If there is not enough disk space free, dont allow the product to run.
 		*/
+
 		if (Disk_Space_Available() < INIT_FREE_DISK_SPACE) {
+#ifdef PORTABLE
+			// pretty unlikely
+			if ( WindowsTimer )
+				delete WindowsTimer;
+			return (EXIT_FAILURE);
+#else
 #ifdef GERMAN
 			char	disk_space_message [512];
-			sprintf (disk_space_message, "Nicht genug Festplattenplatz fÅr Command & Conquer.\nSie brauchen %d MByte freien Platz auf der Festplatte.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
+			sprintf (disk_space_message, "Nicht genug Festplattenplatz f√ºr Command & Conquer.\nSie brauchen %d MByte freien Platz auf der Festplatte.", (INIT_FREE_DISK_SPACE) / (1024 * 1024));
 			MessageBox(NULL, disk_space_message, "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
 			if ( WindowsTimer )
 				delete WindowsTimer;
@@ -334,6 +360,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 			}
 
 #endif
+#endif
 		}
 
 		CDFileClass::Set_CD_Drive (CDList.Get_First_CD_Drive());
@@ -351,15 +378,18 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 
 			CCDebugString ("C&C95 - Creating main window.\n");
 
+#ifdef PORTABLE
+			Create_Main_Window( NULL , 0 , ScreenWidth , ScreenHeight );
+#else
 			Create_Main_Window( instance , command_show , ScreenWidth , ScreenHeight );
-
+#endif
 			CCDebugString ("C&C95 - Initialising audio.\n");
 
 			SoundOn = Audio_Init ( MainWindow , 16 , false , 11025*2 , 0 );
 
 			Palette = new(MEM_CLEAR) unsigned char[768];
 
-			BOOL video_success = FALSE;
+			bool video_success = FALSE;
 			CCDebugString ("C&C95 - Setting video mode.\n");
 			/*
 			** Set 640x400 video mode. If its not available then try for 640x480
@@ -381,7 +411,9 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 
 			if (!video_success){
 				CCDebugString ("C&C95 - Failed to set video mode.\n");
+#ifndef PORTABLE // this can't fail in SDLLIB (because we don't do anything)
 				MessageBox(MainWindow, Text_String(TXT_UNABLE_TO_SET_VIDEO_MODE), "Command & Conquer", MB_ICONEXCLAMATION|MB_OK);
+#endif
 				if (WindowsTimer) delete WindowsTimer;
 				if (Palette) delete [] Palette;
 				return (EXIT_FAILURE);
@@ -394,7 +426,9 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 				ModeXBuff.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)(GBC_VISIBLE | GBC_VIDEOMEM));
 			} else {
 				VisiblePage.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)(GBC_VISIBLE | GBC_VIDEOMEM));
-
+#ifdef PORTABLE
+				HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
+#else
 				/*
 				** Check that we really got a video memory page. Failure is fatal.
 				*/
@@ -451,6 +485,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 						VisiblePage.Attach_DD_Surface(&HiddenPage);
 					}
 				}
+#endif
 			}
 
 			ScreenHeight = 400;
@@ -476,6 +511,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 			*/
 			Memory_Error = &Memory_Error_Handler;
 
+#ifndef PORTABLE
 			/*
 			** Initialise MMX support if its available
 			*/
@@ -483,6 +519,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 			if (MMXAvailable){
 				Init_MMX();
 			}
+#endif
 
 			CCDebugString ("C&C95 - Creating mouse class.\n");
 			WWMouse = new WWMouseClass(&SeenBuff, 32, 32);
@@ -526,6 +563,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 
 			Free(buffer);
 
+#ifdef _WIN32
 			CCDebugString ("C&C95 - Checking availability of C&CSPAWN.INI packet from WChat.\n");
 			if (DDEServer.Get_MPlayer_Game_Info()){
 				CCDebugString ("C&C95 - C&CSPAWN.INI packet available.\n");
@@ -537,6 +575,7 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 				//	DDEServer.Disable();
 				//}
 			}
+#endif
 
 			/*
 			**	If the intro is being run for the first time, then don't
@@ -559,8 +598,11 @@ int PASCAL WinMain ( HINSTANCE instance , HINSTANCE , char * command_line , int 
 
 			CCDebugString ("C&C95 - About to exit.\n");
 			ReadyToQuit = 1;
-
+#ifdef PORTABLE
+			SDL_Send_Quit();
+#else
 			PostMessage(MainWindow, WM_DESTROY, 0, 0);
+#endif
 			do
 			{
 				Keyboard::Check();
@@ -658,6 +700,7 @@ void __cdecl Prog_End(void)
 }
 
 
+#ifndef PORTABLE
 /***********************************************************************************************
  * Delete_Swap_Files -- Deletes previously existing swap files.                                *
  *                                                                                             *
@@ -685,6 +728,7 @@ void Delete_Swap_Files(void)
 		} while(!_dos_findnext(&ff));
 	}
 }
+#endif
 
 
 void Print_Error_End_Exit(char *string)
@@ -726,7 +770,8 @@ void Print_Error_Exit(char *string)
  *=============================================================================================*/
 void Read_Setup_Options( RawFileClass *config_file )
 {
-	char *buffer = new char [config_file->Size()];
+	char *buffer = new char [config_file->Size() + 1];
+	buffer[config_file->Size()] = 0;
 
 	if (config_file->Is_Available()){
 

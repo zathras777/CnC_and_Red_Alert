@@ -51,9 +51,14 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "function.h"
+#ifdef _WIN32
+#include <windows.h>
+#else
+#define INVALID_HANDLE_VALUE NULL
+#endif
 #include "wincomm.h"
 #include "modemreg.h"
-#include "i86.h"
+//#include "i86.h"
 #include "tcpip.h"
 
 
@@ -79,10 +84,10 @@ extern "C" {
 	extern void (*_AbortModemFunctionPtr)(int);
 }
 
-static void (*NullModemClass::OrigAbortModemFunc)(int);
+void (*NullModemClass::OrigAbortModemFunc)(int);
 
-static KeyNumType NullModemClass::Input;
-static GadgetClass *NullModemClass::Commands;		// button list
+KeyNumType NullModemClass::Input;
+GadgetClass *NullModemClass::Commands;		// button list
 
 /*
 ** Ugly hack: this string stores the string received from the modem
@@ -207,11 +212,12 @@ int NullModemClass::Init (int port, int ,char *dev_name, int baud, char parity, 
 	//int address;
 	//int status;
 
-
+#ifdef _WIN32
 	if (PortHandle) {
 		CloseHandle(PortHandle);
 		PortHandle = NULL;
 	}
+#endif
 
 	if (!Connection){
 		/*------------------------------------------------------------------------
@@ -241,31 +247,6 @@ int NullModemClass::Init (int port, int ,char *dev_name, int baud, char parity, 
 	RXCount = 0;
 	EchoCount = 0;
 
-
-	/*------------------------------------------------------------------------
-	This call allocates all necessary queue buffers
-	------------------------------------------------------------------------*/
-	switch (port) {
-		case 0x3f8:
-			com = COM1;
-			break;
-
-		case 0x2f8:
-			com = COM2;
-			break;
-
-		case 0x3e8:
-			com = COM3;
-			break;
-
-		case 0x2e8:
-			com = COM4;
-			break;
-
-		default:
-			com = COM5;
-			break;
-	}
 
 	int	i;
 
@@ -759,7 +740,7 @@ int NullModemClass::Service (void)
 //CCDebugString (port);
 //	}
 
-BOOL enabled = FALSE;
+bool enabled = FALSE;
 
 #if (0)
 if (SerialPort->FramingErrors ||
@@ -1257,7 +1238,9 @@ int NullModemClass::Detect_Modem( SerialSettingsType *settings, bool reconnect )
 
 	Show_Mouse();
 
+#ifndef WIN32
 	HMWaitForOK( 0, NULL );
+#endif
 
 
 

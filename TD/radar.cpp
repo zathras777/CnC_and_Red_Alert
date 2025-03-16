@@ -1114,8 +1114,8 @@ void RadarClass::Cell_XY_To_Radar_Pixel(int cellx, int celly, int &x, int &y)
 #pragma argsused
 void RadarClass::Radar_Cursor(int forced)
 {
-	static 					_last_pos = -1;
-	static 					_last_frame = -1;
+	static int				_last_pos = -1;
+	static int				_last_frame = -1;
 	GraphicViewPortClass 	*oldpage;
 	int						x1, y1, x2, y2;
 	/*

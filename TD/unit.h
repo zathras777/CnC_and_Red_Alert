@@ -62,7 +62,7 @@ class UnitClass :	public TarComClass
 		/*---------------------------------------------------------------------
 		**	Constructors, Destructors, and overloaded operators.
 		*/
-		static void * operator new(size_t size);
+		static void * operator new(size_t size) throw();
 		static void operator delete(void *ptr);
 		UnitClass(void) {};
 		UnitClass(UnitType classid, HousesType house);
@@ -153,7 +153,7 @@ class UnitClass :	public TarComClass
 		virtual int Mission_Guard(void);
 		virtual int Mission_Harvest(void);
 		virtual int Mission_Hunt(void);
-		virtual int UnitClass::Mission_Move(void);
+		virtual int Mission_Move(void);
 		virtual FireErrorType Can_Fire(TARGET, int which) const;
 
 		/*

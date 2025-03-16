@@ -50,7 +50,7 @@
 #include	"credits.h"
 #include	"goptions.h"
 #include	"options.h"
-#include	"infantry.H"
+#include	"infantry.h"
 
 #ifdef JAPANESE
 extern bool ForceEnglish;
@@ -188,7 +188,7 @@ extern unsigned char *		OriginalPalette;
 extern int						EndCountDown;
 extern bool						GameActive;
 extern bool						SpecialFlag;
-extern bool						ScenarioInit;
+extern int						ScenarioInit;
 extern long						TutorFlags[2];
 extern HouseClass *			PlayerPtr;
 extern unsigned char *		BlackPalette;

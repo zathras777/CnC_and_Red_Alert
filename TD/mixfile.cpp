@@ -48,12 +48,6 @@
 
 
 #include	"function.h"
-#include	<direct.h>
-#include	<fcntl.h>
-#include	<io.h>
-#include	<dos.h>
-#include	<errno.h>
-#include	<share.h>
 #include	"mixfile.h"
 
 
@@ -427,8 +421,8 @@ int compfunc(void const *ptr1, void const *ptr2)
 //	long diff = *(long const *)ptr1 - *(long const *)ptr2;
 //	return FP_SEG(diff);
 
-	if (*(long const *)ptr1 < *(long const *)ptr2) return(-1);
-	if (*(long const *)ptr1 > *(long const *)ptr2) return(1);
+	if (*(int32_t const *)ptr1 < *(int32_t const *)ptr2) return(-1);
+	if (*(int32_t const *)ptr1 > *(int32_t const *)ptr2) return(1);
 	return(0);
 }
 
@@ -472,7 +466,9 @@ bool MixFileClass::Offset(char const *filename, void ** realptr, MixFileClass **
 	/*
 	**	Create the key block that will be used to binary search for the file.
 	*/
-	long crc = Calculate_CRC(strupr((char *)filename), strlen(filename));
+	char *upperFilename = strupr(strdup(filename));
+	long crc = Calculate_CRC(upperFilename, strlen(filename));
+	free(upperFilename);
 	SubBlock key;
 	key.CRC = crc;
 
