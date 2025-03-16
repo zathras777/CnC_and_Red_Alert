@@ -935,7 +935,7 @@ long RawFileClass::Seek(long pos, int dir)
 	}
 
 #ifdef PORTABLE
-	pos - IO_Seek_File(Handle, pos, dir);
+	pos = IO_Seek_File(Handle, pos, dir);
 #else
 	/*
 	**	Keep trying to seek until a non-retry condition occurs.
