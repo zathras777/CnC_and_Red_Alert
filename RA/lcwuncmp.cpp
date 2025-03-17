@@ -93,11 +93,16 @@ unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long 
 
 			/* Do a short copy from destination. */
 			count	 = (op_code >> 4) + 3;
-			copy_ptr = dest_ptr - ((unsigned) *source_ptr++ + (((unsigned) op_code & 0x0f) << 8));
 
 			// clamp to decompressed size
 			if(count > dest_end - dest_ptr)
 				count = dest_end - dest_ptr;
+
+			// not possible to write any more, and if we try to read more we might fault
+			if(!count)
+				return ((unsigned long) (dest_ptr - (unsigned char*) dest));
+
+			copy_ptr = dest_ptr - ((unsigned) *source_ptr++ + (((unsigned) op_code & 0x0f) << 8));
 
 			while (count--) *dest_ptr++ = *copy_ptr++;
 
