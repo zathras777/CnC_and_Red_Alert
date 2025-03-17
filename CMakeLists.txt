@@ -24,4 +24,4 @@ add_subdirectory(port)
 add_subdirectory(SDLLIB)
 add_subdirectory(WINVQ)
 
-add_subdirectory(CODE)
+add_subdirectory(RA)
