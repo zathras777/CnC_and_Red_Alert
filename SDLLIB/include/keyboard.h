@@ -206,8 +206,8 @@ inline int KN_To_VK(int key) {return key;}
 #define	VK_NEXT             	78
 #define	VK_RIGHT            	79
 #define	VK_LEFT             	80
-#define	VK_UP               	81
-#define	VK_DOWN             	82
+#define	VK_DOWN             	81
+#define	VK_UP               	82
 
 #define	VK_NUMLOCK          	83
 
