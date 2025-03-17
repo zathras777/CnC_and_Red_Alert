@@ -59,6 +59,7 @@ typedef int socklen_t;
 #else
 #include <netdb.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
 
 #define INVALID_SOCKET -1
@@ -137,7 +138,8 @@ void UDPInterfaceClass::Set_Broadcast_Address (void *address)
 
 	unsigned char *baddr = new unsigned char[4];
 
-	sscanf ( ip_addr, "%d.%d.%d.%d", &baddr[0], &baddr[1], &baddr[2], &baddr[3] );
+	uint32_t addr = inet_addr(ip_addr);
+	memcpy(baddr, &addr, 4);
 	BroadcastAddresses.Add (baddr);
 }
 
