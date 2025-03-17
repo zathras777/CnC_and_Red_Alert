@@ -109,7 +109,7 @@ extern WWKeyboardClass *_Kbd;
 
 inline int Check_Key() {return _Kbd->Check();}
 inline int Check_Key_Num() {return _Kbd->Check();}
-inline int Get_Key() {return _Kbd->Get();} // this one needs to return KA_*?
+inline int Get_Key() {return _Kbd->To_ASCII(_Kbd->Get());}
 inline int Get_Key_Num() {return _Kbd->Get();}
 inline bool Key_Down(int key) {return _Kbd->Down(key);}
 inline void Clear_KeyBuffer() {_Kbd->Clear();}
