@@ -102,7 +102,7 @@ void *Conquer_Build_Fading_Table(void const *palette, void *dest, int color, int
 
 void Fat_Put_Pixel(int x, int y, int color, int size, GraphicViewPortClass &gpage)
 {
-	gpage.Fill_Rect(x, y, x + size, y + size, color);
+	gpage.Fill_Rect(x, y, x + size - 1, y + size - 1, color);
 }
 
 // from RA readline.cpp
