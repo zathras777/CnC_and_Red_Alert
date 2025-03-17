@@ -43,6 +43,10 @@
 #include	"function.h"
 //#include	"cdfile.h"
 
+#ifndef PATH_MAX
+#define PATH_MAX MAX_PATH
+#endif
+
 /*
 **	Pointer to the first search path record.
 */

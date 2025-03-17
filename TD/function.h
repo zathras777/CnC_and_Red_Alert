@@ -382,7 +382,6 @@ void Bubba_Print(char *format,...);
 
 void Heap_Dump_Check( char *string );
 void Dump_Heap_Pointers( void );
-unsigned long Disk_Space_Available(void);
 
 void Validate_Error(char *name);
 void const * Hires_Retrieve(char *name);

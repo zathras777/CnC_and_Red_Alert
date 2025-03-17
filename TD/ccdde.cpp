@@ -63,11 +63,11 @@ DDEServerClass	DDEServer;				//Instance of the DDE Server class
 Instance_Class	*DDE_Class = NULL;	// pointer for client callback
 												// this *must* be called DDE_Class
 
-BOOL CC95AlreadyRunning = FALSE;		//Was there an instance of C&C 95 already running when we started?
+bool CC95AlreadyRunning = FALSE;		//Was there an instance of C&C 95 already running when we started?
 
 extern HWND 			MainWindow;
 extern TimerClass	GameTimer;
-extern BOOL			GameTimerInUse;
+extern bool			GameTimerInUse;
 extern void 			CCDebugString (char *string);
 
 

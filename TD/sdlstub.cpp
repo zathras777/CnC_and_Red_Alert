@@ -7,7 +7,7 @@
 #undef WIN32
 #include <SDL.h> // sdl includes leaking into the rest of the code is bad
 
-int ReadyToQuit = 0;
+bool ReadyToQuit = 0;
 
 void Focus_Loss(void);
 void Focus_Restore(void);
