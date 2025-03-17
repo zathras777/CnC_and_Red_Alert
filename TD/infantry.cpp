@@ -2425,7 +2425,7 @@ TARGET InfantryClass::Greatest_Threat(ThreatType threat) const
 		**	they will consider aircraft a legal target.
 		*/
 		default:
-			if (BulletTypeClass::As_Reference(Weapons[Class->Primary].Fires).IsAntiAircraft) {
+			if (Class->Primary != WEAPON_NONE && BulletTypeClass::As_Reference(Weapons[Class->Primary].Fires).IsAntiAircraft) {
 				threat = threat | THREAT_AIR;
 			}
 			break;
