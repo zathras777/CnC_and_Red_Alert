@@ -319,6 +319,10 @@ bool Init_Game(int , char *[])
 	}
 #endif
 
+#ifdef PORTABLE
+	CCFileClass::Set_Search_Drives("."); // allow running without CD
+#endif
+
 	CCDebugString ("C&C95 - About to search for CD drives\n");
 	/*
 	**	Always try to look at the CD-ROM for data files.
