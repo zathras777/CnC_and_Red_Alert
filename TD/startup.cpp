@@ -283,6 +283,7 @@ int main(int argc, char * argv[])
 
 #ifdef PORTABLE
 		WindowsTimer = new WinTimerClass(60, FALSE);
+		TickCount.Start();
 #else
 		WindowsTimer = new WinTimerClass(60,FALSE);
 
