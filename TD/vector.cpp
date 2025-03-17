@@ -381,6 +381,7 @@ template class VectorClass<TriggerClass *>;
 template class VectorClass<FileEntryClass *>;
 template class VectorClass<BaseNodeClass>;
 template class VectorClass<CellClass>;
+template class VectorClass<char>;
 template class VectorClass<int>;
 template class VectorClass<char *>;
 template class VectorClass<unsigned char *>;
