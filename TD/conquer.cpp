@@ -2654,15 +2654,24 @@ void CC_Texture_Fill (void const *shapefile, int shapenum, int xpos, int ypos, i
 #if (1)
 			if (LogicPage->Lock()){
 
-				for (int y = ypos ; y < ypos + MIN(source_height, height) ; y++ ){
+				unsigned char	* shape_end = shape_pointer + source_width * source_height;
+
+				for (int y = ypos ; y < ypos + height ; y++ ){
 
 					unsigned char *shape_save = shape_pointer;
+					unsigned char *line_end = shape_save + source_width;
 
-					for (int x = xpos ; x < xpos + MIN(source_width, width) ; x++ ){
+					for (int x = xpos ; x < xpos + width ; x++ ){
 						LogicPage->Put_Pixel (x, y, *shape_pointer++);
+
+						if(shape_pointer == line_end)
+							shape_pointer = shape_save;
 					}
 
-					shape_pointer = shape_save + source_width;
+					shape_pointer = line_end;
+
+					if(shape_pointer == shape_end)
+						shape_pointer -= source_width * source_height;
 				}
 
 				LogicPage->Unlock();
