@@ -200,17 +200,20 @@ void CellClass::Code_Pointers(void)
 		OccupierPtr = (ObjectClass *)OccupierPtr->As_Target();
 	}
 
-	if (Overlapper[0]) {
+	if (Overlapper[0] && Overlapper[0]->IsActive) {
 		Overlapper[0] = (ObjectClass *)Overlapper[0]->As_Target();
-	}
+	} else
+		Overlapper[0] = NULL;
 
-	if (Overlapper[1]) {
+	if (Overlapper[1] && Overlapper[1]->IsActive) {
 		Overlapper[1] = (ObjectClass *)Overlapper[1]->As_Target();
-	}
+	} else
+		Overlapper[1] = NULL;
 
-	if (Overlapper[2]) {
+	if (Overlapper[2] && Overlapper[2]->IsActive) {
 		Overlapper[2] = (ObjectClass *)Overlapper[2]->As_Target();
-	}
+	} else
+		Overlapper[2] = NULL;
 
 	/*
 	------------------------ Convert trigger pointer -------------------------
