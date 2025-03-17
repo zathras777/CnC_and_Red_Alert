@@ -537,8 +537,8 @@ void OptionsClass::Load_Settings (void)
 	GameSpeed = WWGetPrivateProfileInt("Options", "GameSpeed", 4, buffer);
 	ScrollRate = WWGetPrivateProfileInt("Options", "ScrollRate", 4, buffer);
 	Set_Brightness(WWGetPrivateProfileInt("Options", "Brightness", 0x80, buffer));
-	Set_Sound_Volume(WWGetPrivateProfileInt("Options", "Volume", 0xA0, buffer),false);
-	Set_Score_Volume(WWGetPrivateProfileInt("Options", "ScoreVolume", 0xFF, buffer));
+	Set_Sound_Volume(WWGetPrivateProfileInt("Options", "Volume", 0x66, buffer),false);
+	Set_Score_Volume(WWGetPrivateProfileInt("Options", "ScoreVolume", 0x40, buffer));
 	Set_Contrast(WWGetPrivateProfileInt("Options", "Contrast", 0x80, buffer));
 	Set_Color(WWGetPrivateProfileInt("Options", "Color", 0x80, buffer));
 	Set_Tint(WWGetPrivateProfileInt("Options", "Tint", 0x80, buffer));
