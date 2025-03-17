@@ -449,6 +449,13 @@ bool Load_Game(int id)
 		return(false);
 	}
 
+	// add triggers
+	for(int i = 0; i < Triggers.Count(); i++) {
+		TriggerClass *trig = Triggers.Ptr(i);
+		if(trig->House != HOUSE_NONE)
+			HouseTriggers[trig->House].Add(trig);
+	}	
+
 	Call_Back();
 	/*
 	**	Load the Logic & Map Layers
