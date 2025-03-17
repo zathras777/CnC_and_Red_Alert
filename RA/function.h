@@ -976,47 +976,5 @@ void Show_Who_Was_Responsible (void);
 
 #include	"inline.h"
 
-/*
-**	These declarations ensure that the templates will be expanded for these specified
-**	types. Doing this is required because some of the body functions for this template class
-**	are located in a .CPP module. Doing so results in faster compilation but requires declarations
-**	such as this for all types that will be required. There are no actual objects of with these
-**	names ever created, however there are other objects of this type (with different names) that
-**	are created.
-*/
-
-
-
-template class TFixedIHeapClass<AircraftClass>;
-template class TFixedIHeapClass<AnimClass>;
-template class TFixedIHeapClass<BuildingClass>;
-template class TFixedIHeapClass<BulletClass>;
-template class TFixedIHeapClass<FactoryClass>;
-template class TFixedIHeapClass<HouseClass>;
-template class TFixedIHeapClass<InfantryClass>;
-template class TFixedIHeapClass<OverlayClass>;
-template class TFixedIHeapClass<SmudgeClass>;
-template class TFixedIHeapClass<TeamClass>;
-template class TFixedIHeapClass<TemplateClass>;
-template class TFixedIHeapClass<TerrainClass>;
-template class TFixedIHeapClass<TriggerClass>;
-template class TFixedIHeapClass<UnitClass>;
-template class TFixedIHeapClass<VesselClass>;
-template class TFixedIHeapClass<AircraftTypeClass>;
-template class TFixedIHeapClass<AnimTypeClass>;
-template class TFixedIHeapClass<BuildingTypeClass>;
-template class TFixedIHeapClass<BulletTypeClass>;
-template class TFixedIHeapClass<HouseTypeClass>;
-template class TFixedIHeapClass<InfantryTypeClass>;
-template class TFixedIHeapClass<OverlayTypeClass>;
-template class TFixedIHeapClass<SmudgeTypeClass>;
-template class TFixedIHeapClass<TeamTypeClass>;
-template class TFixedIHeapClass<TemplateTypeClass>;
-template class TFixedIHeapClass<TerrainTypeClass>;
-template class TFixedIHeapClass<TriggerTypeClass>;
-template class TFixedIHeapClass<UnitTypeClass>;
-template class TFixedIHeapClass<VesselTypeClass>;
-template class TFixedIHeapClass<WarheadTypeClass>;
-template class TFixedIHeapClass<WeaponTypeClass>;
 
 #endif
