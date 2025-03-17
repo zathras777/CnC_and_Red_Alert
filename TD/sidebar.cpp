@@ -153,6 +153,8 @@ SidebarClass::SidebarClass(void)
 	IsDemolishActive = false;
 	IsToRedraw = true;
 
+	new (&Column[0]) StripClass(InitClass());
+	new (&Column[1]) StripClass(InitClass());
 }
 
 
@@ -1042,7 +1044,7 @@ bool SidebarClass::Activate(int control)
  * HISTORY:                                                                                    *
  *   12/31/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-SidebarClass::StripClass::StripClass(void)
+SidebarClass::StripClass::StripClass(InitClass const & )
 {
 	IsScrollingDown = false;
 	IsScrolling = false;

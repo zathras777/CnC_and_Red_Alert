@@ -42,6 +42,8 @@
 #include	"power.h"
 #include	"factory.h"
 
+class InitClass {};
+
 class SidebarClass: public PowerClass
 {
 	public:
@@ -161,7 +163,9 @@ class SidebarClass: public PowerClass
 				int ButtonSpacingOffset;
 
 
-				StripClass(void);
+				StripClass(void) {}
+				StripClass(InitClass const &);
+
 				bool  Add(RTTIType type, int ID);
 				bool  Abandon_Production(int factory);
 				bool  Scroll(bool up);
