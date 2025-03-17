@@ -1168,7 +1168,7 @@ ResultType FootClass::Take_Damage(int & damage, int distance, WarheadType warhea
 			**	it try to do so. This prevents it from just sitting there and taking damage.
 			*/
 			if (
-				source &&
+				source && source->IsActive &&
 				!House->Is_Ally(source) &&
 				Techno_Type_Class()->Primary != WEAPON_NONE &&
 				(source->What_Am_I() != RTTI_AIRCRAFT || BulletTypeClass::As_Reference(Weapons[Techno_Type_Class()->Primary].Fires).IsAntiAircraft) &&

@@ -1591,6 +1591,9 @@ void TechnoClass::AI(void)
 	RadioClass::AI();
 	DoorClass::AI();
 
+	if(!IsActive)
+		return;
+
 	/*
 	** Handle decision to re-cloak here. Process the cloaking/decloaking operation.
 	*/
