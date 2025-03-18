@@ -261,6 +261,7 @@ add_executable(rasdl WIN32
 	nondosstub.cpp
 	sdlstub.cpp
 	2keyfbuf.cpp
+	winasm.cpp
 )
 
 if(WIN32)

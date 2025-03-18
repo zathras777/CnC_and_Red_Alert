@@ -159,6 +159,7 @@ add_executable(tdsdl WIN32
     # also need these
     ../RA/lcwuncmp.cpp
     ../RA/2keyfbuf.cpp
+	../RA/winasm.cpp
 
     ipxstub.cpp
     nondosstub.cpp
