@@ -5,8 +5,8 @@ long _ShapeBufferSize;
 
 int Extract_Shape_Count(void const *buffer)
 {
-    printf("%s\n", __func__);
-    return 0;
+	ShapeBlock_Type *block = (ShapeBlock_Type *)buffer;
+	return block->NumShapes;
 }
 
 void * Extract_Shape(void const *buffer, int shape)
