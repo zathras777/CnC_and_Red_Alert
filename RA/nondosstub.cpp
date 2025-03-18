@@ -54,8 +54,10 @@ void Focus_Restore(void)
 	Map.Flag_To_Redraw(true);
 	Start_Primary_Sound_Buffer(TRUE);
 	if (WWMouse) WWMouse->Set_Cursor_Clip();
+#ifndef PORTABLE
 	VisiblePage.Clear();
 	HiddenPage.Clear();
+#endif
 }
 
 unsigned char	*VQPalette;

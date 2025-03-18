@@ -77,7 +77,6 @@ void SDL_Event_Handler(SDL_Event *event)
 			{
 				case SDL_WINDOWEVENT_FOCUS_GAINED:
 					GameInFocus = true;
-					AllSurfaces.SurfacesRestored = true; // this is used to force redraws
 					Focus_Restore();
 					break;
 				case SDL_WINDOWEVENT_FOCUS_LOST:
