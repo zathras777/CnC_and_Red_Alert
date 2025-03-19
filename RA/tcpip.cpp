@@ -80,6 +80,8 @@ typedef int socklen_t;
 #ifndef WOLAPI_INTEGRATION
 bool					Server;			//Is this player acting as client or server
 #endif
+
+#ifndef WINSOCK_IPX
 TcpipManagerClass	Winsock;			//The object for interfacing with Winsock
 
 
@@ -929,6 +931,6 @@ void TcpipManagerClass::Clear_Socket_Error(SOCKET socket)
 }
 
 
-
+#endif
 
 #endif	//WIN32
