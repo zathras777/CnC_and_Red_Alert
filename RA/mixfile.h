@@ -22,9 +22,9 @@
 #define MIXFILE_H
 
 
-#include	<stdlib.h>
-#include	"listnode.h"
-#include	"pk.h"
+#include <stdlib.h>
+#include "listnode.h"
+#include "pk.h"
 #include "buff.h"
 
 template<class T>
@@ -45,9 +45,9 @@ class MixFileClass : public Node<MixFileClass<T> >
 		static void const * Retrieve(char const *filename);
 
 		struct SubBlock {
-			int32_t CRC;				// CRC code for embedded file.
-			int32_t Offset;			// Offset from start of data section.
-			int32_t Size;				// Size of data subfile.
+			uint32_t CRC;				// CRC code for embedded file.
+			uint32_t Offset;			// Offset from start of data section.
+			uint32_t Size;				// Size of data subfile.
 
 			int operator < (SubBlock & two) const {return (CRC < two.CRC);};
 			int operator > (SubBlock & two) const {return (CRC > two.CRC);};
@@ -84,8 +84,8 @@ class MixFileClass : public Node<MixFileClass<T> >
 		*/
 #pragma pack(push, 1)
 		typedef struct {
-			int16_t	count;
-			int32_t	size;
+			uint16_t	count;
+			uint32_t	size;
 		} FileHeader;
 #pragma pack(pop)
 
