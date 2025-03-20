@@ -11,8 +11,12 @@ if(MSVC)
         /wd4661 # missing template definitions, 10000s of these
     )
 else()
-    # -Wno-changes-meaning/-Wnarrowing to compile, others for noise
-    add_compile_options(-Wno-error=changes-meaning -Wno-error=narrowing -Wno-write-strings)
+    # -Wnarrowing to compile, others for noise
+    add_compile_options(-Wno-error=narrowing -Wno-write-strings)
+    if(!APPLE)
+        # -Wno-changes-meaning generates warnings on Mac
+        add_compile_options(-Wno-error=changes-meaning)
+    endif()
     # workarounds
     add_compile_definitions(-D__cdecl= -D__far= -D__stdcall= -Dcdecl= -Dfar=)
 endif()
