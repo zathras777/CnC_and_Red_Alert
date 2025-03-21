@@ -331,6 +331,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 		const void *Get_Palette() const;
 
 	protected:
+		void Init_Display_Surface();
 		void *WindowTexture = NULL;
 		void *PaletteSurface = NULL;
 		int RedrawTimer = 0;

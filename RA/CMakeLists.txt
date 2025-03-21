@@ -59,6 +59,7 @@ add_library(tech STATIC
 	lcwuncmp.cpp
 )
 target_link_libraries(tech sdllib port vqa32)
+target_compile_definitions(tech PUBLIC WINSOCK_IPX=1)
 
 add_executable(rasdl WIN32
 	aadata.cpp
@@ -276,7 +277,6 @@ endif()
 target_compile_definitions(rasdl PRIVATE
 	ENGLISH=1  # TODO: also french/german
 	PORTABLE=1 # to indicate not windows or dos sometimes
-	WINSOCK_IPX=1
 )
 target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwipx32
 

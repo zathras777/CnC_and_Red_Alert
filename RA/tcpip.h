@@ -79,6 +79,8 @@ extern bool Server;
 #define IP_ADDRESS_MAX 40
 #define PORT_NUMBER_MAX 6
 
+#ifndef WINSOCK_IPX
+
 //...........................................................................
 // Custom messages: WM_USER + 1 to WM_USER + 100
 // These will be sent to the dialog procedure, for display only.
@@ -210,6 +212,6 @@ extern int Read_Game_Options(char *);
 #define TXT_WINSOCK_CONNECTION_LOST					4567+20
 #define TXT_WINSOCK_RESOLVING_HOST_ADDRESS			4567+21
 
-
+#endif
 
 #endif	//WIN32
