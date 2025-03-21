@@ -45,7 +45,7 @@ class MixFileClass : public Node<MixFileClass<T> >
 		static void const * Retrieve(char const *filename);
 
 		struct SubBlock {
-			uint32_t CRC;				// CRC code for embedded file.
+			int32_t CRC;				// CRC code for embedded file.
 			uint32_t Offset;			// Offset from start of data section.
 			uint32_t Size;				// Size of data subfile.
 

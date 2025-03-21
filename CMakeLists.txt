@@ -13,7 +13,7 @@ if(MSVC)
 else()
     # -Wnarrowing to compile, others for noise
     add_compile_options(-Wno-error=narrowing -Wno-write-strings)
-    if(!APPLE)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         # -Wno-changes-meaning generates warnings on Mac
         add_compile_options(-Wno-error=changes-meaning)
     endif()
