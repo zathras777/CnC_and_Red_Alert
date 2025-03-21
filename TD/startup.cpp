@@ -629,7 +629,9 @@ int main(int argc, char * argv[])
 			puts("Run SETUP program first.");
 			puts("\n");
 #endif
+#ifndef PORTABLE
 			Kbd.Get();
+#endif
 #endif
 		}
 

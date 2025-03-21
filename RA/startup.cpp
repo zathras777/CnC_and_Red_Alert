@@ -706,7 +706,9 @@ int main(int argc, char * argv[])
 #endif	//WIN32
 		} else {
 			puts(TEXT_SETUP_FIRST);
+#ifndef PORTABLE
 			Keyboard->Get();
+#endif
 		}
 
 #ifdef WIN32
