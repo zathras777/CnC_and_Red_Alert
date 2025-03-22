@@ -89,7 +89,7 @@ MonoClass::BoxDataType const MonoClass::CharData[MonoClass::COUNT] = {
 	{0xDA,0xC4,0xBF,0xB3,0xD9,0xC4,0xC0,0xB3},	// Single line
 	{0xD5,0xCD,0xB8,0xB3,0xBE,0xCD,0xD4,0xB3},	// Double horz.
 	{0xD6,0xC4,0xB7,0xBA,0xBD,0xC4,0xD3,0xBA},	// Double vert.
-	{0xC9,0xCD,0xBB,0xBA,0xBC,0xCD,0xC8,0xBA}		// Double horz and vert.
+	{0xC9,0xCD,0xBB,0xBA,0xBC,0xCD,0xC8,0xBA}	// Double horz and vert.
 };
 
 
@@ -550,7 +550,7 @@ void MonoClass::Printf(char const *text, ...)
 	if (!Enabled) return;
 
 	va_start(va, text);
-	vsprintf(buffer, text, va);
+	vsnprintf(buffer, 256, text, va);
 	buffer[sizeof(buffer)-1] = '\0';
 
 	Print(buffer);
@@ -590,7 +590,7 @@ void MonoClass::Printf(int text, ...)
 	if (!Enabled) return;
 
 	va_start(va, text);
-	vsprintf(buffer, Text_String(text), va);
+	vsnprintf(buffer, 256, Text_String(text), va);
 	buffer[sizeof(buffer)-1] = '\0';
 
 	Print(buffer);
@@ -906,7 +906,7 @@ int Mono_Printf(char const * string, ...)
 		}
 
 		va_start(va, string);
-		vsprintf(buffer, string, va);
+		vsnprintf(buffer, 256, string, va);
 
 		mono->Print(buffer);
 
@@ -1118,7 +1118,7 @@ int Mono_Printf(int string, ...)
 		}
 
 		va_start(va, string);
-		vsprintf(buffer, Text_String(string), va);
+		vsnprintf(buffer, 256, Text_String(string), va);
 
 		mono->Print(buffer);
 
