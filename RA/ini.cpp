@@ -560,7 +560,7 @@ bool INIClass::Put_UUBlock(char const * section, void const * block, int len)
 		buffer[length] = '\0';
 		if (length == 0) break;
 
-		sprintf(sbuffer, "%d", counter);
+		snprintf(sbuffer, 32, "%d", counter);
 		Put_String(section, sbuffer, buffer);
 		counter++;
 	}
@@ -643,7 +643,7 @@ bool INIClass::Put_TextBlock(char const * section, char const * text)
 	Clear(section);
 
 	int index = 1;
-	while (text != NULL && *text != NULL) {
+	while (text != NULL && *text != 0) {
 
 		char buffer[128];
 
@@ -651,7 +651,7 @@ bool INIClass::Put_TextBlock(char const * section, char const * text)
 		buffer[75] = '\0';
 
 		char b[32];
-		sprintf(b, "%d", index);
+		snprintf(b, 32, "%d", index);
 
 		/*
 		**	Scan backward looking for a good break position.
@@ -774,15 +774,15 @@ bool INIClass::Put_Int(char const * section, char const * entry, int number, int
 	switch (format) {
 		default:
 		case 0:
-			sprintf(buffer, "%d", number);
+			snprintf(buffer, MAX_LINE_LENGTH, "%d", number);
 			break;
 
 		case 1:
-			sprintf(buffer, "%Xh", number);
+			snprintf(buffer, MAX_LINE_LENGTH, "%Xh", number);
 			break;
 
 		case 2:
-			sprintf(buffer, "$%X", number);
+			snprintf(buffer, MAX_LINE_LENGTH, "$%X", number);
 			break;
 	}
 	return(Put_String(section, entry, buffer));
@@ -858,7 +858,7 @@ bool INIClass::Put_Hex(char const * section, char const * entry, int number)
 {
 	char buffer[MAX_LINE_LENGTH];
 
-	sprintf(buffer, "%X", number);
+	snprintf(buffer, MAX_LINE_LENGTH, "%X", number);
 	return(Put_String(section, entry, buffer));
 }
 
