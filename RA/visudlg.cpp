@@ -237,7 +237,7 @@ void VisualControlsClass::Process(void)
 		/*
 		**	Get and process player input.
 		*/
-		KeyNumType input = optionsbtn.Input();
+		int input = static_cast<int>(optionsbtn.Input());
 		switch (input) {
 			case (BUTTON_BRIGHTNESS | KN_BUTTON):
 				Options.Set_Brightness(fixed(brightness.Get_Value(), 256));

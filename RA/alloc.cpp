@@ -402,7 +402,7 @@ void Free(void const *pointer)
 		//
 		if ( *byteptr != ((*(byteptr + 1)) ^ 0xff) ) {
 			if (Memory_Error_Exit != NULL) {
-				sprintf( string, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
+				snprintf( string, 80, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
 				Memory_Error_Exit( string );
 			}
 		}
@@ -418,14 +418,14 @@ void Free(void const *pointer)
 				//
 				if ( *wordptr != ((*(wordptr + 2)) ^ 0xffff) ) {
 					if (Memory_Error_Exit != NULL) {
-						sprintf( string, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
+						snprintf( string, 80, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
 						Memory_Error_Exit( string );
 					}
 				}
 			}
 			else if ( *(byteptr + 2) || *(byteptr + 3) ) {
 				if (Memory_Error_Exit != NULL) {
-					sprintf( string, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
+					snprintf( string, 80, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
 					Memory_Error_Exit( string );
 				}
 			}
@@ -442,7 +442,7 @@ void Free(void const *pointer)
 
 		if ( (*byteptr & 0xe0) != (((*byteptr ^ 0x07) & 0x07) << 5) ) {
 			if (Memory_Error_Exit != NULL) {
-				sprintf( string, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
+				snprintf( string, 80, "Error freeing pointer %p.  Header invalid!!!\n", pointer );
 				Memory_Error_Exit( string );
 			}
 		}

@@ -38,6 +38,9 @@
 #ifndef TARGET_H
 #define TARGET_H
 
+#include "defines.h"
+#include "abstract.h"
+#include "function.h"
 
 inline RTTIType Target_Kind(TARGET a)
 {
@@ -118,7 +121,7 @@ class xTargetClass
 
 		unsigned Value(void) const {return(Target.Sub.Mantissa);};
 
-		void Invalidate(void) {Target.Sub.Exponent = RTTI_NONE;Target.Sub.Mantissa = -1;}
+		void Invalidate(void) {Target.Sub.Exponent = RTTI_NONE;Target.Sub.Mantissa = 0xFFFFFF;}
 		bool Is_Valid(void) const {return (Target.Sub.Exponent != RTTI_NONE);}
 
 		TARGET As_Target(void) const {return(Target.Target);}

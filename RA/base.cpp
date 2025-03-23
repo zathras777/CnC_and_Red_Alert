@@ -450,7 +450,7 @@ BaseNodeClass * BaseClass::Next_Buildable(StructType type)
 void BaseClass::Read_INI(CCINIClass & ini)
 {
 	char buf[128];
-	char uname[10];
+	char uname[12];
 	BaseNodeClass node;						// node to add to list
 	
 	Mono_Clear_Screen();
@@ -473,7 +473,7 @@ void BaseClass::Read_INI(CCINIClass & ini)
 		/*
 		** Get an INI entry
 		*/
-		sprintf(uname,"%03d",i);
+		snprintf(uname, 12, "%03d",i);
 		ini.Get_String(INI_Name(), uname, NULL, buf, sizeof(buf));
 
 		/*
@@ -535,10 +535,10 @@ void BaseClass::Write_INI(CCINIClass & ini)
 		*/
 		for (int i = 0; i < Nodes.Count(); i++) {
 			char buf[128];
-			char uname[10];
+			char uname[12];
 
-			sprintf(uname,"%03d",i);
-			sprintf(buf,"%s,%d",
+			snprintf(uname, 12, "%03d",i);
+			snprintf(buf, 128, "%s,%d",
 				BuildingTypeClass::As_Reference(Nodes[i].Type).IniName,
 				Nodes[i].Cell);
 

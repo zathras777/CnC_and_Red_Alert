@@ -80,7 +80,7 @@ bool Get_Broadcast_Addresses (void)
 	//------------------------------------------------------------------------
 	RedrawType display = REDRAW_ALL;		// redraw level
 	bool process = true;						// process while true
-	KeyNumType input;
+	int input;
 
 	int	width;
 	int	height;
@@ -119,12 +119,12 @@ bool Get_Broadcast_Addresses (void)
 		do {
 			entry++;
 			char *temp = new char [128];
-			sprintf (entry_name, "%d", entry);
+			snprintf (entry_name, 16, "%d", entry);
 			res = ip_ini.Get_String("IP_ADDRESSES", entry_name, "", temp, 128);
 			if ( res ) {
 				ip_address_list.Add_Item (temp);
 char debug[128];
-sprintf (debug, "RA95 - Adding address %s\n", temp);
+snprintf (debug, 128, "RA95 - Adding address %s\n", temp);
 WWDebugString (debug);
 			}
 		}while (res);
@@ -191,7 +191,7 @@ WWDebugString (debug);
 		//.....................................................................
 		//	Get user input
 		//.....................................................................
-		input = commands->Input();
+		input = static_cast<int>(commands->Input());
 
 		//.....................................................................
 		//	Process input
@@ -210,6 +210,8 @@ WWDebugString (debug);
 			case (BUTTON_OK | KN_BUTTON):
 				process = false;
 				break;
+			//default:
+			//	break;
 		}
 	}
 

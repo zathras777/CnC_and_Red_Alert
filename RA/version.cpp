@@ -436,7 +436,8 @@ char * VersionClass::Version_Name(void)
 		adjusted_minor >>= 4;
 	}
 
-	sprintf(VersionName, "%x.%x", VerNum.Major_Version(), adjusted_minor);
+	// Size from class definition.
+	snprintf(VersionName, 30, "%x.%x", VerNum.Major_Version(), adjusted_minor);
 #endif
 
 	return (VersionName);

@@ -705,7 +705,7 @@ void VesselClass::Per_Cell_Process(PCPType why)
 				CELL cell = Coord_Cell(Adjacent_Cell(Center_Coord(), face));
 				SmartPtr<BuildingClass> whom;
 				whom = Map[cell].Cell_Building();
-				if (whom != NULL && ((*whom == STRUCT_SHIP_YARD) || (*whom == STRUCT_SUB_PEN)) ) {
+				if (whom != 0/*NULL*/ && ((*whom == STRUCT_SHIP_YARD) || (*whom == STRUCT_SUB_PEN)) ) {
 					if (IsOwnedByPlayer) Speak(VOX_REPAIRING);
 					IsSelfRepairing = true;
 					IsToSelfRepair = false;
@@ -1527,6 +1527,8 @@ RadioMessageType VesselClass::Receive_Message(RadioClass * from, RadioMessageTyp
 			}
 			DriveClass::Receive_Message(from, message, param);
 			return(RADIO_ROGER);
+		default:
+			break;
 
 	}
 	return(DriveClass::Receive_Message(from, message, param));
@@ -2067,11 +2069,11 @@ void VesselClass::Write_INI(CCINIClass & ini)
 	for (int index = 0; index < Vessels.Count(); index++) {
 		VesselClass * vessel = Vessels.Ptr(index);
 		if (vessel != NULL && !vessel->IsInLimbo && vessel->IsActive) {
-			char	uname[10];
+			char	uname[12];
 			char	buf[128];
 
-			sprintf(uname, "%d", index);
-			sprintf(buf, "%s,%s,%d,%u,%d,%s,%s",
+			snprintf(uname, 12, "%d", index);
+			snprintf(buf, 128, "%s,%s,%d,%u,%d,%s,%s",
 				vessel->House->Class->IniName,
 				vessel->Class->IniName,
 				vessel->Health_Ratio()*256,
@@ -2237,6 +2239,8 @@ void VesselClass::Combat_AI(void)
 				IsFiring = false;
 				Mark(MARK_OVERLAP_DOWN);
 				Do_Uncloak();
+				break;
+			default:
 				break;
 		}
 	}

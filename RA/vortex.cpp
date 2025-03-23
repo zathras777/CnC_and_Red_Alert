@@ -868,7 +868,7 @@ void ChronalVortexClass::Render (void)
 
 		frame += AnimateFrame;
 
-		sprintf (fname, "HOLE%04d.lut", frame);
+		snprintf (fname, 80, "HOLE%04d.lut", frame);
 
 		void const *lut_ptr = MFCD::Retrieve(fname);
 		if (lut_ptr) {

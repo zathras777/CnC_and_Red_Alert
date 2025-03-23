@@ -420,7 +420,7 @@ void AircraftTypeClass::One_Time(void)
 		**	Fetch the supporting data files for the unit.
 		*/
 		char buffer[_MAX_FNAME];
-		sprintf(buffer, "%sICON", uclass.Graphic_Name());
+		snprintf(buffer, _MAX_FNAME, "%sICON", uclass.Graphic_Name());
 		_makepath(fullname, NULL, NULL, buffer, ".SHP");
 		((void const *&)uclass.CameoData) = MFCD::Retrieve(fullname);
 

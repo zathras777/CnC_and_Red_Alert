@@ -617,7 +617,7 @@ bool WinsockInterfaceClass::Set_Socket_Options ( void )
 	int err = setsockopt ( Socket, SOL_SOCKET, SO_RCVBUF, (char*)&socket_receive_buffer_size, 4);
 	if ( err == INVALID_SOCKET ) {
 		char out[128];
-		sprintf (out, "TS: Failed to set IPX socket option SO_RCVBUF - error code %d.\n", GetLastError() );
+		snprintf (out, 128, "TS: Failed to set IPX socket option SO_RCVBUF - error code %d.\n", GetLastError() );
 		OutputDebugString (out);
 		assert ( err != INVALID_SOCKET );
 	}
@@ -628,7 +628,7 @@ bool WinsockInterfaceClass::Set_Socket_Options ( void )
 	err = setsockopt ( Socket, SOL_SOCKET, SO_SNDBUF, (char*)&socket_transmit_buffer_size, 4);
 	if ( err == INVALID_SOCKET ) {
 		char out[128];
-		sprintf (out, "TS: Failed to set IPX socket option SO_SNDBUF - error code %d.\n", GetLastError() );
+		snprintf (out, 128, "TS: Failed to set IPX socket option SO_SNDBUF - error code %d.\n", GetLastError() );
 		OutputDebugString (out);
 		assert ( err != INVALID_SOCKET );
 	}

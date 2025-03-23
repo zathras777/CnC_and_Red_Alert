@@ -614,7 +614,7 @@ void Send_Statistics_Packet(void)
 		** Red Alert version/build date
 		*/
 		char	version[128];
-		sprintf (version, "V%s", VerNum.Version_Name() );
+		snprintf (version, 128, "V%s", VerNum.Version_Name() );
 		stats.Add_Field (FIELD_GAME_VERSION, (char*)version);
 
 #ifndef PORTABLE
@@ -897,13 +897,11 @@ void Send_Statistics_Packet(void)
 	/*
 	** Tidy up
 	*/
-	delete [] packet;
+	delete [] static_cast<char *>(packet);
 
 	GameStatisticsPacketSent = true;
 #endif // INTERNET_OFF
 }
-
-
 
 void Register_Game_Start_Time(void)
 {

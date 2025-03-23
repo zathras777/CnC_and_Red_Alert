@@ -286,7 +286,7 @@ void MPGSettings::Dialog(void)
 		} RedrawType;
 
 	//	Dialog variables:
-	KeyNumType input;								// input from user
+	int input;								// input from user
 	bool process;									// loop while true
 	RedrawType display;							// true = re-draw everything
 	int selection;
@@ -415,7 +415,7 @@ void MPGSettings::Dialog(void)
 			}
 
 		//	Get user input
-		input = commands->Input();
+		input = static_cast<int>(commands->Input());
 
 		//	Process input
 		switch (input)

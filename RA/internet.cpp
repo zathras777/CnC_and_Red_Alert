@@ -848,7 +848,7 @@ bool Do_The_Internet_Menu_Thang(void)
 	int  buffer_len = sizeof (users_name);
 	bool process;
 	bool display;
-	KeyNumType input;
+	int input;
 
 
 	if (!Special.IsFromWChat && !SpawnedFromWChat){
@@ -950,7 +950,7 @@ bool Do_The_Internet_Menu_Thang(void)
 #endif
 
 		//input = buttons->Input();
-		input = cancelbtn.Input();
+		input = static_cast<int>(cancelbtn.Input());
 
 		/*
 		---------------------------- Process input ----------------------------

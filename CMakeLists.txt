@@ -17,6 +17,9 @@ else()
         # -Wno-changes-meaning generates warnings on Mac
         add_compile_options(-Wno-error=changes-meaning)
     endif()
+    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+        add_compile_options(-Wno-undefined-var-template)
+    endif()
     # workarounds
     add_compile_definitions(-D__cdecl= -D__far= -D__stdcall= -Dcdecl= -Dfar=)
 endif()

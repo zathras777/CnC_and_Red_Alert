@@ -222,7 +222,11 @@ bool UDPInterfaceClass::Open_Socket ( SOCKET )
 		//address = ntohl (address);
 
 		char temp[128];
-		sprintf (temp, "RA95: Found local address: %d.%d.%d.%d\n", address & 0xff, (address & 0xff00) >> 8, (address & 0xff0000) >> 16, (address & 0xff000000) >> 24);
+		snprintf (temp, 128, "RA95: Found local address: %d.%d.%d.%d\n", 
+			uint8_t(address & 0xff), 
+			uint8_t((address & 0xff00) >> 8), 
+			uint8_t((address & 0xff0000) >> 16), 
+			uint8_t((address & 0xff000000) >> 24));
 		OutputDebugString (temp);
 
 		unsigned char *a = new unsigned char [4];
@@ -406,6 +410,10 @@ void UDPInterfaceClass::Event_Handler(int socket, SocketEvent event)
 			OutBuffers.Delete ( packetnum );
 			delete packet;
 
+			break;
+		}
+		case SOCKEV_ERROR:
+		{
 			break;
 		}
 	}

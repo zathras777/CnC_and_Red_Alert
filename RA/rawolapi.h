@@ -19,7 +19,7 @@
 #ifdef WOLAPI_INTEGRATION
 
 #ifndef WIN32
-#error WOLAPI_INTEGRATION can't be specified for non WIN32 version!
+#error WOLAPI_INTEGRATION cannot be specified for non WIN32 version!
 #endif
 
 //	rawolapi.h - WOLAPI sinks declarations.
