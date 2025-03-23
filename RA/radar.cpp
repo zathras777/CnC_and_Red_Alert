@@ -2363,7 +2363,7 @@ bool RadarClass::Draw_House_Info(void)
 		** Print house's name below 'spy report'
 		*/
 		txt[0] = 0;
-		sprintf(txt, "%s", ptr->IniName);//Text_String(ptr->Class->FullName));
+		snprintf(txt, 40, "%s", ptr->IniName);//Text_String(ptr->Class->FullName));
 //		sprintf(txt, "%s", ptr->Name());//Text_String(ptr->Class->FullName));
 		if (strlen(txt)) {
 			if (strlen(txt) > 9) {
@@ -2488,7 +2488,7 @@ void RadarClass::Draw_Names(void)
 		*/
 		txt[0] = 0;
 //		sprintf(txt, "%s", ptr->Name());
-		sprintf(txt, "%s", ptr->IsHuman ? ptr->IniName : Text_String(TXT_COMPUTER));
+		snprintf(txt, 40, "%s", ptr->IsHuman ? ptr->IniName : Text_String(TXT_COMPUTER));
 
 		if (strlen(txt) == 0) {
 			strcpy(txt,"________");
@@ -2515,7 +2515,7 @@ void RadarClass::Draw_Names(void)
 			kills += ptr->UnitsKilled[h];
 			kills += ptr->BuildingsKilled[h];
 		}
-		sprintf(txt, "%2d", kills);
+		snprintf(txt, 40, "%2d", kills);
 		Fancy_Text_Print (txt, RadX + RadOffX + RadIWidth - 2, y, color, TBLACK, style | TPF_RIGHT);
 
 		y += 6*RESFACTOR+1;

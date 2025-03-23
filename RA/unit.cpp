@@ -683,6 +683,9 @@ void UnitClass::Firing_AI(void)
 				Mark(MARK_OVERLAP_DOWN);
 				Do_Uncloak();
 				break;
+			// Catch all unhandled cases
+			default:
+				break;
 		}
 	}
 }
@@ -891,6 +894,9 @@ RadioMessageType UnitClass::Receive_Message(RadioClass * from, RadioMessageType 
 			}
 			DriveClass::Receive_Message(from, message, param);
 			return(RADIO_ROGER);
+		// Catch all unhandled cases
+		default:
+			break;
 
 	}
 	return(DriveClass::Receive_Message(from, message, param));
@@ -4753,11 +4759,11 @@ void UnitClass::Write_INI(CCINIClass & ini)
 	for (int index = 0; index < Units.Count(); index++) {
 		UnitClass * unit = Units.Ptr(index);
 		if (unit != NULL && !unit->IsInLimbo && unit->IsActive) {
-			char	uname[10];
-			char	buf[128];
+			char uname[12];
+			char buf[128];
 
-			sprintf(uname, "%d", index);
-			sprintf(buf, "%s,%s,%d,%u,%d,%s,%s",
+			snprintf(uname, 12, "%d", index);
+			snprintf(buf, 128, "%s,%s,%d,%u,%d,%s,%s",
 				unit->House->Class->IniName,
 				unit->Class->IniName,
 				unit->Health_Ratio()*256,

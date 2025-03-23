@@ -1674,7 +1674,7 @@ bool TechnoClass::Evaluate_Object(ThreatType method, int mask, int range, Techno
 	**	the fake building's value.
 	*/
 	if ((method & THREAT_FAKES) && otype == RTTI_BUILDING) {
-		switch (!((BuildingTypeClass const *)tclass)->Type) {
+		switch (((BuildingTypeClass const *)tclass)->Type) {
 			case STRUCT_FAKECONST:
 			case STRUCT_FAKEWEAP:
 			case STRUCT_FAKE_YARD:
@@ -2518,6 +2518,8 @@ void TechnoClass::Cloaking_AI(void)
 								Scatter(0, true);
 							}
 							break;
+						default:
+							break;
 					}
 					break;
 
@@ -2531,6 +2533,8 @@ void TechnoClass::Cloaking_AI(void)
 						Mark(MARK_CHANGE);
 					}
 #endif
+					break;
+				case UNCLOAKED:
 					break;
 			}
 		}
@@ -3132,6 +3136,8 @@ BulletClass * TechnoClass::Fire_At(TARGET target, int which)
 
 			case ANIM_SAM_N:
 				a = AnimType(ANIM_SAM_N + Dir_Facing(PrimaryFacing.Current()));
+				break;
+			default:
 				break;
 		}
 
@@ -5567,7 +5573,7 @@ void TechnoClass::Draw_Pips(int x, int y, WindowNumberType window) const
 		** If this unit is part of a formation, draw an 'F' after the group
 		** number.
 		*/
-		if ( ((FootClass *)this)->XFormOffset != 0x80000000UL) {
+		if ( ((FootClass *)this)->XFormOffset != 0x80000000L) {
 			CC_Draw_Shape(Class_Of().PipShapes, PIP_LETTERF, x+8, y+yval, window, SHAPE_CENTER|SHAPE_WIN_REL);
 		}
 	}

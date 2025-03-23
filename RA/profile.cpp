@@ -148,7 +148,7 @@ int WWGetPrivateProfileInt(char const * section, char const * entry, int def, ch
 	/*
 	**	Store the default in the buffer.
 	*/
-	sprintf(buffer, "%d", def);
+	snprintf(buffer, 16, "%d", def);
 
 	/*
 	**	Get the buffer; use itself as the default.
@@ -197,7 +197,7 @@ bool WWWritePrivateProfileInt(char const * section, char const * entry, int valu
 	/*
 	**	Generate string to save.
 	*/
-	sprintf(buffer, "%d", value);
+	snprintf(buffer, 250, "%d", value);
 
 	/*
 	**	Save the string.
@@ -270,7 +270,7 @@ char * WWGetPrivateProfileString(char const * section, char const * entry, char 
 	/*
 	**	Build section string to match file image.
 	*/
-	sprintf(sec, "[%s]", section);	// sec = section name including []'s
+	snprintf(sec, 50, "[%s]", section);	// sec = section name including []'s
 	strupr(sec);
 	len = strlen(sec);					// len = section name length, incl []'s
 
@@ -575,7 +575,7 @@ bool WWWritePrivateProfileString(char const * section, char const * entry, char 
 	**	non-existent). Make sure two newlines precede the section name.
 	*/
 	if (!offset && entry) {
-		sprintf(buffer, "\r\n[%s]\r\n", section);
+		snprintf(buffer, 250, "\r\n[%s]\r\n", section);
 		strcat(profile, buffer);
 	}
 
@@ -667,7 +667,7 @@ bool WWWritePrivateProfileString(char const * section, char const * entry, char 
 		/*
 		**	Generate entry string.
 		*/
-		sprintf(buffer, "%s=%s\r\n", entry, string);
+		snprintf(buffer, 250, "%s=%s\r\n", entry, string);
 
 		/*
 		**	Make room for new entry.

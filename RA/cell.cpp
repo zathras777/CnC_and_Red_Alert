@@ -395,7 +395,7 @@ void CellClass::Redraw_Objects(bool forced)
 #else
 				optr->Mark(MARK_CHANGE);
 #endif
-				if (optr->Next != NULL && !optr->Next->IsActive) {
+				if (optr->Next != 0/*NULL*/ && !optr->Next->IsActive) {
 					optr->Next = NULL;
 				}
 				optr = optr->Next;
@@ -601,7 +601,7 @@ void CellClass::Occupy_Down(ObjectClass * object)
 	*/
 	if (object->What_Am_I() == RTTI_BUILDING && Cell_Occupier()) {
 		optr = Cell_Occupier();
-		while (optr->Next != NULL) {
+		while (optr->Next != 0/*NULL*/) {
 			assert(optr != object);
 			assert(optr->What_Am_I() != RTTI_BUILDING);
 			optr = optr->Next;
@@ -2256,6 +2256,8 @@ bool CellClass::Goodie_Check(FootClass * object)
 						}
 					}
 					break;
+				default:
+					break;
 			}
 			/*
 			**	Possibly force it to be an MCV if there is
@@ -2845,6 +2847,8 @@ bool CellClass::Is_Bridge_Here(void) const
 		case TEMPLATE_BRIDGE_3E:
 		case TEMPLATE_BRIDGE_3F:
 			return(true);
+		default:
+			break;
 	}
 	return(false);
 }

@@ -119,7 +119,7 @@ class TriggerTypeClass : public AbstractTypeClass
 		static void Read_INI(CCINIClass & ini);
 		static void Write_INI(CCINIClass & ini);
 		void Fill_In(char * name, char * entry);
-		void Build_INI_Entry(char * buf) const;
+		void Build_INI_Entry(char * buf, size_t bufLen) const;
 
 		static char * INI_Name(void) {return "Trigs";};
 		bool Load(Straw & file);

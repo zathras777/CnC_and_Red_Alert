@@ -228,7 +228,7 @@ COORDINATE ObjectClass::Exit_Coord(void) const
  *=============================================================================================*/
 void ObjectClass::AI(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	/*
@@ -290,7 +290,7 @@ void ObjectClass::AI(void)
  *=============================================================================================*/
 ActionType ObjectClass::What_Action(ObjectClass const *) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(ACTION_NONE);
@@ -318,7 +318,7 @@ ActionType ObjectClass::What_Action(ObjectClass const *) const
  *=============================================================================================*/
 ActionType ObjectClass::What_Action(CELL) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(ACTION_NONE);
@@ -342,7 +342,7 @@ ActionType ObjectClass::What_Action(CELL) const
  *=============================================================================================*/
 LayerType ObjectClass::In_Which_Layer(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (Height < (FLIGHT_LEVEL - (FLIGHT_LEVEL/3))) {
@@ -369,7 +369,7 @@ LayerType ObjectClass::In_Which_Layer(void) const
  *=============================================================================================*/
 int ObjectClass::Get_Ownable(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(HOUSEF_ALLIES | HOUSEF_SOVIET | HOUSEF_OTHERS);
@@ -393,7 +393,7 @@ int ObjectClass::Get_Ownable(void) const
  *=============================================================================================*/
 bool ObjectClass::Can_Repair(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(false);
@@ -417,7 +417,7 @@ bool ObjectClass::Can_Repair(void) const
  *=============================================================================================*/
 bool ObjectClass::Can_Demolish(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(false);
@@ -442,7 +442,7 @@ bool ObjectClass::Can_Demolish(void) const
  *=============================================================================================*/
 bool ObjectClass::Can_Player_Fire(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(false);
@@ -467,7 +467,7 @@ bool ObjectClass::Can_Player_Fire(void) const
  *=============================================================================================*/
 bool ObjectClass::Can_Player_Move(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(false);
@@ -492,7 +492,7 @@ bool ObjectClass::Can_Player_Move(void) const
  *=============================================================================================*/
 COORDINATE ObjectClass::Target_Coord(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Coord_Add(XY_Coord(0, -Height), Center_Coord()));
@@ -518,7 +518,7 @@ COORDINATE ObjectClass::Target_Coord(void) const
  *=============================================================================================*/
 COORDINATE ObjectClass::Center_Coord(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Coord);
@@ -543,7 +543,7 @@ COORDINATE ObjectClass::Center_Coord(void) const
  *=============================================================================================*/
 COORDINATE ObjectClass::Render_Coord(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Center_Coord());
@@ -568,7 +568,7 @@ COORDINATE ObjectClass::Render_Coord(void) const
  *=============================================================================================*/
 COORDINATE ObjectClass::Docking_Coord(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Center_Coord());
@@ -594,7 +594,7 @@ COORDINATE ObjectClass::Docking_Coord(void) const
  *=============================================================================================*/
 COORDINATE ObjectClass::Sort_Y(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Coord);
@@ -621,7 +621,7 @@ COORDINATE ObjectClass::Sort_Y(void) const
  *=============================================================================================*/
 COORDINATE ObjectClass::Fire_Coord(int ) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Coord);
@@ -645,7 +645,7 @@ COORDINATE ObjectClass::Fire_Coord(int ) const
  *=============================================================================================*/
 void ObjectClass::Record_The_Kill(TechnoClass * )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -669,7 +669,7 @@ void ObjectClass::Record_The_Kill(TechnoClass * )
  *=============================================================================================*/
 void ObjectClass::Do_Shimmer(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -695,7 +695,7 @@ void ObjectClass::Do_Shimmer(void)
  *=============================================================================================*/
 int ObjectClass::Exit_Object(TechnoClass *)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 	return(0);
 }
@@ -718,7 +718,7 @@ int ObjectClass::Exit_Object(TechnoClass *)
  *=============================================================================================*/
 void ObjectClass::Hidden(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -743,7 +743,7 @@ void ObjectClass::Hidden(void)
  *=============================================================================================*/
 void ObjectClass::Look(bool )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -769,7 +769,7 @@ void ObjectClass::Look(bool )
  *=============================================================================================*/
 void ObjectClass::Active_Click_With(ActionType , ObjectClass *)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -793,7 +793,7 @@ void ObjectClass::Active_Click_With(ActionType , ObjectClass *)
  *=============================================================================================*/
 void ObjectClass::Active_Click_With(ActionType , CELL )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -816,7 +816,7 @@ void ObjectClass::Active_Click_With(ActionType , CELL )
  *=============================================================================================*/
 void ObjectClass::Clicked_As_Target(int)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -842,7 +842,7 @@ void ObjectClass::Clicked_As_Target(int)
  *=============================================================================================*/
 bool ObjectClass::In_Range(COORDINATE , int) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(false);
@@ -867,7 +867,7 @@ bool ObjectClass::In_Range(COORDINATE , int) const
  *=============================================================================================*/
 int ObjectClass::Weapon_Range(int) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(0);
@@ -895,7 +895,7 @@ int ObjectClass::Weapon_Range(int) const
  *=============================================================================================*/
 void ObjectClass::Scatter(COORDINATE , bool, bool)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -920,7 +920,7 @@ void ObjectClass::Scatter(COORDINATE , bool, bool)
  *=============================================================================================*/
 bool ObjectClass::Catch_Fire(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return false;
@@ -944,7 +944,7 @@ bool ObjectClass::Catch_Fire(void)
  *=============================================================================================*/
 void ObjectClass::Fire_Out(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -970,7 +970,7 @@ void ObjectClass::Fire_Out(void)
  *=============================================================================================*/
 int ObjectClass::Value(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(0);
@@ -995,7 +995,7 @@ int ObjectClass::Value(void) const
  *=============================================================================================*/
 MissionType ObjectClass::Get_Mission(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(MISSION_NONE);
@@ -1023,7 +1023,7 @@ MissionType ObjectClass::Get_Mission(void) const
  *=============================================================================================*/
 void ObjectClass::Repair(int )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -1049,7 +1049,7 @@ void ObjectClass::Repair(int )
  *=============================================================================================*/
 void ObjectClass::Sell_Back(int )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 }
 
@@ -1072,7 +1072,7 @@ void ObjectClass::Sell_Back(int )
  *=============================================================================================*/
 void ObjectClass::Move(FacingType facing)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	COORDINATE	coord;
@@ -1103,7 +1103,7 @@ void ObjectClass::Move(FacingType facing)
  *=============================================================================================*/
 void ObjectClass::Unselect(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (IsSelected) {
@@ -1135,7 +1135,7 @@ void ObjectClass::Unselect(void)
  *=============================================================================================*/
 bool ObjectClass::Select(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (!Debug_Map && (IsSelected || !Class_Of().IsSelectable)) {
@@ -1204,7 +1204,7 @@ bool ObjectClass::Select(void)
  *=============================================================================================*/
 bool ObjectClass::Render(bool forced)// const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	int	x, y;
@@ -1305,7 +1305,7 @@ void ObjectClass::Debug_Dump(MonoClass * mono) const
  *=============================================================================================*/
 void ObjectClass::Mark_For_Redraw(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (!IsToDisplay) {
@@ -1339,7 +1339,7 @@ void ObjectClass::Mark_For_Redraw(void)
  *=============================================================================================*/
 bool ObjectClass::Limbo(void)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (GameActive && !IsInLimbo) {
@@ -1390,7 +1390,7 @@ bool ObjectClass::Limbo(void)
  *=============================================================================================*/
 bool ObjectClass::Unlimbo(COORDINATE coord, DirType )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 	if (GameActive && IsInLimbo && !IsDown) {
 		if (ScenarioInit || Can_Enter_Cell(Coord_Cell(coord), FACING_NONE) == MOVE_OK) {
@@ -1465,7 +1465,7 @@ void ObjectClass::Detach(TARGET target, bool )
  *=============================================================================================*/
 void ObjectClass::Detach_All(bool all)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	/*
@@ -1503,7 +1503,7 @@ void ObjectClass::Detach_All(bool all)
  *=============================================================================================*/
 RadioMessageType ObjectClass::Receive_Message(RadioClass *, RadioMessageType message, long & )
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	switch (message) {
@@ -1558,7 +1558,7 @@ RadioMessageType ObjectClass::Receive_Message(RadioClass *, RadioMessageType mes
  *=============================================================================================*/
 ResultType ObjectClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, bool forced)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	ResultType result = RESULT_NONE;
@@ -1702,7 +1702,7 @@ ResultType ObjectClass::Take_Damage(int & damage, int distance, WarheadType warh
  *=============================================================================================*/
 bool ObjectClass::Mark(MarkType mark)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (!IsInLimbo && IsActive) {
@@ -1827,7 +1827,7 @@ void ObjectClass::Init(void)
  *=============================================================================================*/
 bool ObjectClass::Revealed(HouseClass * house)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(house != NULL);
@@ -1852,7 +1852,7 @@ bool ObjectClass::Revealed(HouseClass * house)
  *=============================================================================================*/
 bool ObjectClass::Paradrop(COORDINATE coord)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	Height = FLIGHT_LEVEL;

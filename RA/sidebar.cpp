@@ -1100,7 +1100,7 @@ void SidebarClass::StripClass::One_Time(int )
 
 	for (SpecialWeaponType lp = SPC_FIRST; lp < SPC_COUNT; lp++) {
 		char buffer[_MAX_FNAME];
-		sprintf(buffer, "%sICON", SpecialWeaponFile[lp]);
+		snprintf(buffer, _MAX_FNAME, "%sICON", SpecialWeaponFile[lp]);
 
 		char	fullname[_MAX_FNAME+_MAX_EXT];
 		_makepath(fullname, NULL, NULL, buffer, ".SHP");
@@ -1598,6 +1598,8 @@ bool SidebarClass::StripClass::AI(KeyNumType & input, int , int )
 								case RTTI_INFANTRY:
 									OutList.Add(EventClass(EventClass::PLACE, pending->What_Am_I(), -1));
 									Speak(VOX_UNIT_READY);
+									break;
+								default:
 									break;
 							}
 						}

@@ -251,6 +251,8 @@ bool TEventClass::operator () (TDEventClass & td, TEventType event, HousesType h
 		case TEVENT_TIME:
 			if (td.Timer != 0) return(false);
 			return(true);
+		default:
+			break;
 	}
 
 	/*
@@ -483,9 +485,9 @@ bool TEventClass::operator () (TDEventClass & td, TEventType event, HousesType h
  * HISTORY:                                                                                    *
  *   11/28/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-void TEventClass::Build_INI_Entry(char * ptr) const
+void TEventClass::Build_INI_Entry(char * ptr, size_t bufLen) const
 {
-	sprintf(ptr, "%d,%d,%d", Event, TeamTypes.Logical_ID(Team), Data.Value);
+	snprintf(ptr, bufLen, "%d,%d,%ld", Event, TeamTypes.Logical_ID(Team), Data.Value);
 }
 
 

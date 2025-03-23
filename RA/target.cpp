@@ -841,7 +841,8 @@ TechnoTypeClass const * As_TechnoType(TARGET target)
 
 		case RTTI_BUILDINGTYPE:
 			return(&BuildingTypeClass::As_Reference(StructType(val)));
-
+		default:
+			break;
 	}
 	return(NULL);
 }

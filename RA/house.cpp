@@ -2166,7 +2166,7 @@ void HouseClass::Make_Ally(HousesType house)
 			}
 
 			if (IsHuman) {
-				sprintf(buffer, Text_String(TXT_HAS_ALLIED), IniName, HouseClass::As_Pointer(house)->IniName);
+				snprintf(buffer, 80, Text_String(TXT_HAS_ALLIED), IniName, HouseClass::As_Pointer(house)->IniName);
 //				sprintf(buffer, Text_String(TXT_HAS_ALLIED), Session.Players[Class->House - HOUSE_MULTI1]->Name, Session.Players[((HouseClass::As_Pointer(house))->Class->House) - HOUSE_MULTI1]->Name);
 				Session.Messages.Add_Message(NULL, 0, buffer, RemapColor, TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_FULLSHADOW, TICKS_PER_MINUTE * Rule.MessageDelay);
 			}
@@ -2237,7 +2237,7 @@ void HouseClass::Make_Enemy(HousesType house)
 		if ((Debug_Flag || Session.Type != GAME_NORMAL) && !ScenarioInit && IsHuman) {
 			char buffer[80];
 
-			sprintf(buffer, Text_String(TXT_AT_WAR), IniName, HouseClass::As_Pointer(house)->IniName);
+			snprintf(buffer, 80, Text_String(TXT_AT_WAR), IniName, HouseClass::As_Pointer(house)->IniName);
 //			sprintf(buffer, Text_String(TXT_AT_WAR), Session.Players[Class->House - HOUSE_MULTI1]->Name, Session.Players[enemy->Class->House - HOUSE_MULTI1]->Name);
 			Session.Messages.Add_Message(NULL, 0, buffer, RemapColor, TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_FULLSHADOW, TICKS_PER_MINUTE * Rule.MessageDelay);
 			Map.Flag_To_Redraw(false);
@@ -2895,6 +2895,8 @@ bool HouseClass::Place_Special_Blast(SpecialWeaponType id, CELL cell)
 
 				break;
 			}
+		default:
+			break;
 	}
 	return(true);
 }
@@ -3000,6 +3002,8 @@ bool HouseClass::Place_Object(RTTIType type, CELL cell)
 						case RTTI_AIRCRAFT:
 							JustBuiltAircraft = ((AircraftClass*)pending)->Class->Type;
 							IsBuiltSomething = true;
+							break;
+						default:
 							break;
 					}
 				} else {
@@ -3308,6 +3312,8 @@ TechnoTypeClass const * HouseClass::Suggest_New_Object(RTTIType objecttype, bool
 				return(&BuildingTypeClass::As_Reference(BuildStructure));
 			}
 			return(NULL);
+		default:
+			break;
 	}
 	return(techno);
 }
@@ -3611,7 +3617,7 @@ void HouseClass::MPlayer_Defeated(void)
 		/*
 		**	Pop up a message showing that I was defeated
 		*/
-		sprintf(txt, Text_String(TXT_PLAYER_DEFEATED), IniName);
+		snprintf(txt, 80, Text_String(TXT_PLAYER_DEFEATED), IniName);
 		Session.Messages.Add_Message(NULL, 0, txt, Session.ColorIdx,
 			TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_FULLSHADOW, Rule.MessageDelay * TICKS_PER_MINUTE);
 		Map.Flag_To_Redraw(false);
@@ -3622,7 +3628,7 @@ void HouseClass::MPlayer_Defeated(void)
 		**	If it wasn't me, find out who was defeated
 		*/
 		if (IsHuman) {
-			sprintf (txt, Text_String(TXT_PLAYER_DEFEATED), IniName);
+			snprintf (txt, 80, Text_String(TXT_PLAYER_DEFEATED), IniName);
 
 			Session.Messages.Add_Message(NULL, 0, txt, RemapColor,
 				TPF_6PT_GRAD | TPF_USE_GRAD_PAL | TPF_FULLSHADOW, Rule.MessageDelay * TICKS_PER_MINUTE);
@@ -7042,6 +7048,8 @@ void HouseClass::Set_Factory(RTTIType rtti, FactoryClass * factory)
 		case RTTI_AIRCRAFTTYPE:
 			factory_index = &AircraftFactory;
 			break;
+		default:
+			break;
 	}
 
 	assert(factory_index != NULL);
@@ -7724,6 +7732,10 @@ CELL HouseClass::Random_Cell_In_Zone(ZoneType zone) const
 			maxdist = min(Radius*3, (Coord_X(Center) - Cell_To_Lepton(Map.MapCellX)) - CELL_LEPTON_W);
 			if (maxdist < 0) break;
 			coord = Coord_Move(Center, Random_Pick(DIR_SW, DIR_NW), Random_Pick(min(Radius*2, maxdist), min(Radius*3, maxdist)));
+			break;
+
+		case ZONE_NONE:
+		case ZONE_COUNT:
 			break;
 	}
 

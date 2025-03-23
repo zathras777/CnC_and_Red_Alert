@@ -451,7 +451,7 @@ int Test_Null_Modem( void )
 		/*
 		** Get user input
 		*/
-		KeyNumType input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		/*
 		** Process input
@@ -463,8 +463,8 @@ int Test_Null_Modem( void )
 				process = false;
 				break;
 
-			default:
-				break;
+			//default:
+			//	break;
 		}
 		/*
 		** Service the connection.
@@ -682,7 +682,7 @@ static int Reconnect_Null_Modem( void )
 		/*
 		** Get user input
 		*/
-		input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		/*
 		** Process input
@@ -692,9 +692,6 @@ static int Reconnect_Null_Modem( void )
 			case (BUTTON_CANCEL | KN_BUTTON):
 				retval = false;
 				process = false;
-				break;
-
-			default:
 				break;
 		}
 		/*
@@ -805,11 +802,11 @@ void Destroy_Null_Connection(int id, int error)
 	txt[0] = '\0';
 	switch (error) {
 		case 1:
-			sprintf(txt,Text_String(TXT_CONNECTION_LOST), housep->IniName);
+			snprintf(txt,80,Text_String(TXT_CONNECTION_LOST), housep->IniName);
 			break;
 
 		case 0:
-			sprintf(txt,Text_String(TXT_LEFT_GAME), housep->IniName);
+			snprintf(txt,80,Text_String(TXT_LEFT_GAME), housep->IniName);
 			break;
 
 		case -1:
@@ -849,7 +846,7 @@ void Destroy_Null_Connection(int id, int error)
 	**	If we're the last player left, tell the user.
 	*/
 	if (Session.NumPlayers == 1) {
-		sprintf(txt,"%s",Text_String(TXT_JUST_YOU_AND_ME));
+		snprintf(txt,80,"%s",Text_String(TXT_JUST_YOU_AND_ME));
 		Session.Messages.Add_Message (NULL, 0, txt,
 			(housep->RemapColor == PCOLOR_DIALOG_BLUE) ? PCOLOR_REALLY_BLUE : housep->RemapColor,
 			TPF_TEXT, Rule.MessageDelay * TICKS_PER_MINUTE);
@@ -949,7 +946,7 @@ GameType Select_Serial_Dialog( void )
 	*/
 	RedrawType display = REDRAW_ALL;		// redraw level
 	bool process = true;						// process while true
-	KeyNumType input;
+	//KeyNumType input;
 	char namebuf[MPLAYER_NAME_MAX] = {0};		// buffer for player's name
 	int tabs[] = {77*RESFACTOR};				// tabs for player list box
 	GameType retval;							// return value
@@ -1063,7 +1060,7 @@ GameType Select_Serial_Dialog( void )
 		/*
 		** Get user input
 		*/
-		input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		/*
 		** Process input
@@ -1518,7 +1515,7 @@ void Advanced_Modem_Settings (SerialSettingsType *settings)
 		/*
 		........................... Get user input ............................
 		*/
-		input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		/*
 		---------------------------- Process input ----------------------------
@@ -1838,7 +1835,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 	*/
 	RedrawType display = REDRAW_ALL;		// redraw level
 	bool process = true;						// process while true
-	KeyNumType input;
+	//KeyNumType input;
 	char * item;								// general-purpose string
 	char * temp;								// general-purpose string
 	RemapControlType * scheme = GadgetClass::Get_Color_Scheme();
@@ -1980,7 +1977,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 		baud_index = 4;
 	}
 #endif	//WIN32
-	sprintf (baudbuf, "%d", tempsettings.Baud);
+	snprintf (baudbuf, 7, "%d", tempsettings.Baud);
 
 	/*
 	** Set up the port list box & edit box
@@ -2068,7 +2065,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 
 			default:
 				port_index = port_custom_index;
-				sprintf (portbuf, "%x", tempsettings.Port);
+				snprintf (portbuf, 64, "%x", tempsettings.Port);
 				temp = strchr( custom_port, '-' );
 				if ( temp ) {
 					pos = (int)(temp - custom_port) + 2;
@@ -2268,7 +2265,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 		/*
 		** Get user input
 		*/
-		input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		if ( firsttime ) {
 //			port_edt.Set_Focus();
@@ -3550,26 +3547,26 @@ oh_dear_its_a_label:
 
 //				LogicPage->Fill_Rect(d_count_x + d_count_w + 2, d_count_y, d_count_x + d_count_w + 35 * RESFACTOR, d_aiplayers_y + d_aiplayers_h+RESFACTOR, BLACK);
 
-				sprintf(staticcountbuff, "%d", Session.Options.UnitCount);
+				snprintf(staticcountbuff, 35, "%d", Session.Options.UnitCount);
 				staticcount.Set_Text(staticcountbuff);
 				staticcount.Draw_Me();
 //				Fancy_Text_Print("%d ", d_count_x + d_count_w + 3 * RESFACTOR, d_count_y, scheme, BLACK, TPF_TEXT, Session.Options.UnitCount);
 
 				if (BuildLevel <= MPLAYER_BUILD_LEVEL_MAX) {
-					sprintf(staticlevelbuff, "%d ", BuildLevel);
+					snprintf(staticlevelbuff, 35, "%d ", BuildLevel);
 				} else {
-					sprintf(staticlevelbuff, "**");
+					snprintf(staticlevelbuff, 35, "**");
 				}
 				staticlevel.Set_Text(staticlevelbuff);
 				staticlevel.Draw_Me();
 //				Fancy_Text_Print(txt, d_level_x + d_level_w + 3 * RESFACTOR, d_level_y, scheme, BLACK, TPF_TEXT);
 
-				sprintf(staticcreditsbuff, "%d", Session.Options.Credits);
+				snprintf(staticcreditsbuff, 35, "%d", Session.Options.Credits);
 				staticcredits.Set_Text(staticcreditsbuff);
 				staticcredits.Draw_Me();
 //				Fancy_Text_Print("%d", d_credits_x + d_credits_w + 2 * RESFACTOR, d_credits_y, scheme, BLACK, TPF_TEXT, Session.Options.Credits);
 
-				sprintf(staticaibuff, "%d", Session.Options.AIPlayers);
+				snprintf(staticaibuff, 35, "%d", Session.Options.AIPlayers);
 				staticai.Set_Text(staticaibuff);
 				staticai.Draw_Me();
 //				Fancy_Text_Print("%d", d_aiplayers_x + d_aiplayers_w + 2*RESFACTOR, d_aiplayers_y, scheme, BLACK, TPF_TEXT, Session.Options.AIPlayers);
@@ -3592,7 +3589,7 @@ oh_dear_its_a_label:
 		*/
 		messages_have_focus = Session.Messages.Has_Edit_Focus();
 		bool droplist_is_dropped = housebtn.IsDropped;
-		input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		/*
 		** Sort out the input focus between the name edit box and the message system
@@ -3903,7 +3900,7 @@ oh_dear_its_a_label:
 					transmit = true;
 					transmittime = 0;
 				} else {
-					WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+					WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS); //,NULL);
 					display = REDRAW_ALL;
 				}
 				if (input==(BUTTON_LOAD | KN_BUTTON))
@@ -3935,7 +3932,8 @@ oh_dear_its_a_label:
 					/*...............................................................
 					Service keyboard input for any message being edited.
 					...............................................................*/
-					i = Session.Messages.Input(input);
+					KeyNumType knt = static_cast<KeyNumType>(input);
+					i = Session.Messages.Input(knt);
 
 					/*...............................................................
 					If 'Input' returned 1, it means refresh the message display.
@@ -5256,7 +5254,7 @@ int Com_Show_Scenario_Dialog(void)
 			//..................................................................
 			if (display >= REDRAW_PARMS && parms_received) {
 					if (oppscorescreen) {
-						sprintf(txt,"%s",Text_String(TXT_WAITING_FOR_OPPONENT));
+						snprintf(txt,80,"%s",Text_String(TXT_WAITING_FOR_OPPONENT));
 
 						int txtwidth = String_Pixel_Width( txt );
 
@@ -5279,18 +5277,18 @@ int Com_Show_Scenario_Dialog(void)
 #if defined(GERMAN) || defined(FRENCH)
 									sprintf(txt, "%s %s", p, EngMisStr[i+1]);
 #else
-									sprintf(txt, "%s %s", p, Session.Options.ScenarioDescription);
+									snprintf(txt, 80, "%s %s", p, Session.Options.ScenarioDescription);
 #endif
 									break;
 								}
 							}
 							if (EngMisStr[i] == NULL) {
-								sprintf(txt, "%s %s", p, Session.Options.ScenarioDescription);
+								snprintf(txt, 80, "%s %s", p, Session.Options.ScenarioDescription);
 							}
 							Fancy_Text_Print (txt, d_dialog_cx, d_scenario_y, scheme, TBLACK, TPF_TEXT | TPF_CENTER);
 
 						} else {
-							sprintf(txt,"%s %s",p,Text_String(TXT_NOT_FOUND));
+							snprintf(txt, 80, "%s %s",p,Text_String(TXT_NOT_FOUND));
 
 							Fancy_Text_Print (txt, d_dialog_cx, d_scenario_y, &ColorRemaps[PCOLOR_RED], TBLACK, TPF_TEXT | TPF_CENTER);
 						}
@@ -5302,22 +5300,22 @@ int Com_Show_Scenario_Dialog(void)
 						//	d_count_x + d_count_w + 35 * RESFACTOR, d_aiplayers_y + d_aiplayers_h+RESFACTOR,
 						//	BLACK);
 
-						sprintf(staticcountbuff, "%d", Session.Options.UnitCount);
+						snprintf(staticcountbuff, 35, "%d", Session.Options.UnitCount);
 						staticcount.Set_Text(staticcountbuff);
 						staticcount.Draw_Me();
 						if (BuildLevel <= MPLAYER_BUILD_LEVEL_MAX) {
-							sprintf(staticlevelbuff, "%d ", BuildLevel);
+							snprintf(staticlevelbuff, 35, "%d ", BuildLevel);
 						} else {
-							sprintf(staticlevelbuff, "**");
+							snprintf(staticlevelbuff, 35, "**");
 						}
 						staticlevel.Set_Text(staticlevelbuff);
 						staticlevel.Draw_Me();
 
-						sprintf(staticcreditsbuff, "%d", Session.Options.Credits);
+						snprintf(staticcreditsbuff, 35, "%d", Session.Options.Credits);
 						staticcredits.Set_Text(staticcreditsbuff);
 						staticcredits.Draw_Me();
 
-						sprintf(staticaibuff, "%d", Session.Options.AIPlayers);
+						snprintf(staticaibuff, 35, "%d", Session.Options.AIPlayers);
 						staticai.Set_Text(staticaibuff);
 						staticai.Draw_Me();
 					}
@@ -5339,8 +5337,8 @@ int Com_Show_Scenario_Dialog(void)
 		*/
 		messages_have_focus = Session.Messages.Has_Edit_Focus();
 		bool droplist_is_dropped = housebtn.IsDropped;
-		KeyNumType input = commands->Input();
-
+//		KeyNumType input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 		/*
 		** Sort out the input focus between the name edit box and the message system
 		*/
@@ -5481,7 +5479,8 @@ int Com_Show_Scenario_Dialog(void)
 				/*...............................................................
 				Service keyboard input for any message being edited.
 				...............................................................*/
-				i = Session.Messages.Input(input);
+				KeyNumType knt = static_cast<KeyNumType>(input);
+				i = Session.Messages.Input(knt);
 
 				/*...............................................................
 				If 'Input' returned 1, it means refresh the message display.
@@ -6401,7 +6400,7 @@ static int Phone_Dialog (void)
 	........................................................................*/
 	RedrawType display = REDRAW_ALL;		// redraw level
 	bool process = true;						// process while true
-	KeyNumType input;
+	//KeyNumType input;
 
 	char phone_num[ PhoneEntryClass::PHONE_MAX_NUM ] = { 0 }; // buffer for editing phone #
 	int rc;
@@ -6511,7 +6510,7 @@ static int Phone_Dialog (void)
 		/*
 		........................... Get user input ............................
 		*/
-		input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		if ( firsttime ) {
 			numedit.Set_Focus();
@@ -6796,8 +6795,9 @@ static void Build_Phone_Listbox (ListClass *list, EditClass *edit, char *buf)
 		if ( !(strlen( Session.PhoneBook[i]->Name )) ) {
 			strcpy( phonename, " " );
 		} else {
+			// phonename is defined as char[21] ?
 			strncpy( phonename, Session.PhoneBook[i]->Name, 20 );
-			phonename[21] = 0;
+			phonename[20] = 0;
 		}
 
 		if ( !(strlen( Session.PhoneBook[i]->Number )) ) {
@@ -6813,10 +6813,10 @@ static void Build_Phone_Listbox (ListClass *list, EditClass *edit, char *buf)
 		}
 
 		if (Session.PhoneBook[i]->Settings.Baud != -1) {
-			sprintf(item,"%s\t%s\t%d", phonename, phonenum,
+			snprintf(item, 80,"%s\t%s\t%d", phonename, phonenum,
 				Session.PhoneBook[i]->Settings.Baud);
 		} else {
-			sprintf(item,"%s\t%s\t[%s]", phonename, phonenum,
+			snprintf(item, 80, "%s\t%s\t[%s]", phonename, phonenum,
 				Text_String(TXT_DEFAULT));
 		}
 		list->Add_Item(item);
@@ -7075,7 +7075,7 @@ static int Edit_Phone_Dialog (PhoneEntryClass *phone)
 		/*
 		........................... Get user input ............................
 		*/
-		KeyNumType input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		if ( firsttime ) {
 			nameedit.Set_Focus();
@@ -7507,6 +7507,9 @@ static bool Answer_Modem( SerialSettingsType *settings, bool reconnect )
 			WWMessageBox().Process(TXT_ANSWERING_CANCELED);
 			connected = false;
 			break;
+		case DIAL_BUSY:
+		case DIAL_NO_DIAL_TONE:
+			break;
 	}
 
 	NullModem.Remove_Modem_Echo();
@@ -7549,7 +7552,7 @@ void Smart_Printf( char *format, ... )
 
 
 	va_start(arglist,format);
-	vsprintf(buf,format,arglist);
+	vsnprintf(buf,501,format,arglist);
 	va_end(arglist);
 
 	if (Debug_Smart_Print) {

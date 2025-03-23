@@ -280,7 +280,7 @@ void HelpClass::Draw_It(bool forced)
 
 			if (Cost) {
 				char buffer[15];
-				sprintf(buffer, "$%d", Cost);
+				snprintf(buffer, 15, "$%d", Cost);
 				int width = String_Pixel_Width(buffer);
 
 				Plain_Text_Print(buffer, DrawX, DrawY+FontHeight, Color, BLACK, TPF_MAP|TPF_NOSHADOW);

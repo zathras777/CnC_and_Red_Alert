@@ -172,7 +172,7 @@ void Special_Dialog(bool simple)
 			Show_Mouse();
 		}
 
-		KeyNumType input = buttons->Input();
+		int input = static_cast<int>(buttons->Input());
 		switch (input) {
 			case KN_ESC:
 			case 200|KN_BUTTON:
@@ -420,7 +420,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 		/*
 		**	Fetch and process input.
 		*/
-		input = buttonlist->Input();
+		int input = static_cast<int>(buttonlist->Input());
 		if (first) {
 			button2.Set_Focus();
 			button2.Flag_To_Redraw();
@@ -438,9 +438,6 @@ char const * Fetch_Password(int caption, int message, int btext)
 
 			case (KN_RETURN):
 				process = false;
-				break;
-
-			default:
 				break;
 		}
 	}
@@ -575,15 +572,12 @@ int Fetch_Difficulty(void)
 		/*
 		**	Fetch and process input.
 		*/
-		KeyNumType input = buttonlist->Input();
+		int input = static_cast<int>(buttonlist->Input());
 
 		switch (input) {
 			case KN_RETURN:
 			case (1|BUTTON_FLAG):
 				process = false;
-				break;
-
-			default:
 				break;
 		}
 	}

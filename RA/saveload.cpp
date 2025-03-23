@@ -333,7 +333,7 @@ bool Save_Game(int id, char const * descr, bool )
 		strcpy(name, NET_SAVE_FILE_NAME);
 		save_net = 1;
 	} else {
-		sprintf(name, "SAVEGAME.%03d", id);
+		snprintf(name, _MAX_FNAME+_MAX_EXT, "SAVEGAME.%03d", id);
 	}
 
 	/*
@@ -359,7 +359,7 @@ bool Save_Game(int id, char const * descr, bool )
 	*/
 	char descr_buf[DESCRIP_MAX];
 	memset(descr_buf, '\0', sizeof(descr_buf));
-	sprintf(descr_buf, "%s\r\n", descr);			// put CR-LF after text
+	snprintf(descr_buf, DESCRIP_MAX, "%s\r\n", descr);			// put CR-LF after text
 	descr_buf[strlen(descr_buf) + 1] = 26;		// put CTRL-Z after NULL
 	fpipe.Put(descr_buf, DESCRIP_MAX);
 
@@ -477,7 +477,7 @@ bool Load_Game(int id)
 		strcpy(name, NET_SAVE_FILE_NAME);
 		load_net = 1;
 	} else {
-		sprintf(name, "SAVEGAME.%03d", id);
+		snprintf(name, _MAX_FNAME+_MAX_EXT, "SAVEGAME.%03d", id);
 	}
 
 	/*
@@ -1374,7 +1374,7 @@ bool Get_Savefile_Info(int id, char * buf, unsigned * scenp, HousesType * housep
 	/*
 	**	Generate the filename to load
 	*/
-	sprintf(name, "SAVEGAME.%03d", id);
+	snprintf(name, _MAX_FNAME+_MAX_EXT,  "SAVEGAME.%03d", id);
 	BufferIOFileClass file(name);
 
 	FileStraw straw(file);

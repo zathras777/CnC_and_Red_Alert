@@ -246,7 +246,7 @@ void SoundControlsClass::Process(void)
 
 			void * ptr = new char [sizeof(buffer)];
 			if (ptr) {
-				sprintf((char *)ptr, "%cTrack %d\t%d:%02d\t%s", index, listbox.Count()+1, length / 60, length % 60, fullname);
+				snprintf((char *)ptr, 100, "%cTrack %d\t%d:%02d\t%s", index, listbox.Count()+1, length / 60, length % 60, fullname);
 				listbox.Add_Item((char const *)ptr);
 			}
 
@@ -324,7 +324,7 @@ void SoundControlsClass::Process(void)
 		/*
 		**	Get user input.
 		*/
-		KeyNumType input = optionsbtn->Input();
+		int input = static_cast<int>(optionsbtn->Input());
 
 		/*
 		**	Process Input.

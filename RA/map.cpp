@@ -1883,6 +1883,8 @@ bool MapClass::Destroy_Bridge_At(CELL cell)
 						ttype++;
 						new TemplateClass(TemplateType(ttype), cell);
 						break;
+					default:
+						break;
 		 		}
 
 				/*
@@ -1933,6 +1935,8 @@ bool MapClass::Destroy_Bridge_At(CELL cell)
 						case TEMPLATE_BRIDGE_3D:
 							new TemplateClass(TemplateType(TEMPLATE_BRIDGE_3F), cell2);
 							break;
+						default:
+							break;
 					}
 				} else {
 					if (cellptr->TType == TEMPLATE_BRIDGE_2C) {
@@ -1946,6 +1950,8 @@ bool MapClass::Destroy_Bridge_At(CELL cell)
 								break;
 							case TEMPLATE_BRIDGE_3E:
 								new TemplateClass(TemplateType(TEMPLATE_BRIDGE_3F), cell2);
+								break;
+							default:
 								break;
 						}
 					}

@@ -850,7 +850,7 @@ COORDINATE BulletClass::Target_Coord(void) const
  *=============================================================================================*/
 COORDINATE BulletClass::Sort_Y(void) const
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	return(Coord_Move(Coord, DIR_S, CELL_LEPTON_H/2));

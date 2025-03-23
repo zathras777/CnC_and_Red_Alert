@@ -254,7 +254,7 @@ void FootClass::Set_Speed(int speed)
  *=============================================================================================*/
 bool FootClass::Mark(MarkType mark)
 {
-	assert(this != 0);
+	//assert(this != 0);
 	assert(IsActive);
 
 	if (TechnoClass::Mark(mark)) {
@@ -1330,6 +1330,8 @@ void FootClass::Active_Click_With(ActionType action, CELL cell)
 		case ACTION_SABOTAGE:
 			Player_Assign_Mission(MISSION_SABOTAGE, TARGET_NONE, ::As_Target(cell) );
 			break;
+		default:
+			break;
 	}
 }
 
@@ -1641,6 +1643,8 @@ RadioMessageType FootClass::Receive_Message(RadioClass * from, RadioMessageType 
 				TechnoClass::Receive_Message(from, message, param);
 				return(RADIO_ROGER);
 			}
+			break;
+		default:
 			break;
 	}
 	return(TechnoClass::Receive_Message(from, message, param));

@@ -377,7 +377,7 @@ void DisplayClass::Init_Theater(TheaterType theater)
 	/*
 	** Unload old mixfiles, and cache the new ones
 	*/
-	sprintf(fullname, "%s.MIX", Theaters[theater].Root);
+	snprintf(fullname, 16, "%s.MIX", Theaters[theater].Root);
 
 #ifndef WIN32
 LastTheater = THEATER_NONE;
@@ -399,7 +399,7 @@ LastTheater = THEATER_NONE;
 	**	Load the custom palette associated with this theater.
 	**	The fading palettes will have to be generated as well.
 	*/
-	sprintf(fullname, "%s.PAL", Theaters[theater].Root);
+	snprintf(fullname, 16, "%s.PAL", Theaters[theater].Root);
 	PaletteClass const * ptr = (PaletteClass *)MFCD::Retrieve(fullname);
 	GamePalette = * ptr;
 
@@ -3338,6 +3338,9 @@ void DisplayClass::Mouse_Left_Up(CELL cell, bool shadow, ObjectClass * object, A
 						case RTTI_BUILDING:
 							text = TXT_ENEMY_STRUCTURE;
 							break;
+						
+						default:
+							break;
 					}
 				}
 			}
@@ -3967,7 +3970,7 @@ void DisplayClass::Repair_Mode_Control(int control)
  *   04/30/1994 JLB : Created.                                                                 *
  *   04/30/1994 JLB : Converted to member function.                                            *
  *=============================================================================================*/
-bool DisplayClass::In_View(register CELL cell) const
+bool DisplayClass::In_View(CELL cell) const
 {
 	if (cell & 0xC000) return(false);
 
@@ -4294,7 +4297,7 @@ void DisplayClass::Read_INI(CCINIClass & ini)
 	*/
 	for (int i = 0; i < WAYPT_COUNT; i++) {
 		char buf[20];
-		sprintf(buf, "%d", i);
+		snprintf(buf, 20, "%d", i);
 		Scen.Waypoint[i] = ini.Get_Int("Waypoints", buf, -1);
 
 		if (Scen.Waypoint[i] != -1) {
@@ -4384,7 +4387,7 @@ void DisplayClass::Write_INI(CCINIClass & ini)
 	ini.Clear(WAYNAME);
 	for (int i = 0; i < WAYPT_COUNT; i++) {
 		if (Scen.Waypoint[i] != -1) {
-			sprintf(entry, "%d", i);
+			snprintf(entry, 20, "%d", i);
 			ini.Put_Int(WAYNAME, entry, Scen.Waypoint[i]);
 		}
 	}
@@ -4402,7 +4405,7 @@ void DisplayClass::Write_INI(CCINIClass & ini)
 				/*
 				**	Generate entry name.
 				*/
-				sprintf(entry, "%d", cell);
+				snprintf(entry, 20, "%d", cell);
 
 				/*
 				**	Save entry.

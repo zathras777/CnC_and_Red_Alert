@@ -337,7 +337,7 @@ TextLabelClass * MessageListClass::Add_Message(char const * name, int id, char c
 	// Combine the name & message text, if there's a name given
 	//------------------------------------------------------------------------
 	if (name) {
-		sprintf(message, "%s:%s", name, txt);
+		snprintf(message, 150, "%s:%s", name, txt);
 	} else {
 		strcpy(message, txt);
 	}
@@ -354,7 +354,7 @@ TextLabelClass * MessageListClass::Add_Message(char const * name, int id, char c
 		//	Bugger. Its too long. Loop through and find out how many chars we can print
 		//------------------------------------------------------------------------
 		if (name) {
-			sprintf (temp, "%s:", name);
+			snprintf (temp, 150, "%s:", name);
 			mess_start = strlen (name)+1;
 		} else {
 			mess_start = 0;

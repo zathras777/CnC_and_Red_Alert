@@ -1809,7 +1809,7 @@ void TeamTypeClass::Write_INI(CCINIClass & ini)
 		char buf[256];
 
 		buf[0] = 0;
-		team->Build_INI_Entry(buf);
+		team->Build_INI_Entry(buf, 256);
 		ini.Put_String(INI_Name(), team->IniName, buf);
 	}
 }
@@ -1832,9 +1832,11 @@ void TeamTypeClass::Write_INI(CCINIClass & ini)
  * HISTORY:                                                                                    *
  *   07/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void TeamTypeClass::Build_INI_Entry(char * buf)
+void TeamTypeClass::Build_INI_Entry(char * buf, size_t bufLen)
 {
 	int code = 0;
+	size_t remainingBuffer = bufLen;
+
 	code |= IsRoundAbout ? 0x0001 : 0;
 	code |= IsSuicide ? 0x0002 : 0;
 	code |= IsAutocreate ? 0x0004 : 0;
@@ -1844,7 +1846,7 @@ void TeamTypeClass::Build_INI_Entry(char * buf)
 	/*
 	**	Output the general data for this team type.
 	*/
-	sprintf(buf, "%d,%d,%d,%d,%d,%d,%d",
+	snprintf(buf, bufLen, "%d,%d,%d,%d,%d,%d,%d",
 		House,
 		code,
 		RecruitPriority,
@@ -1853,26 +1855,39 @@ void TeamTypeClass::Build_INI_Entry(char * buf)
 		Origin,
 		TriggerTypes.Logical_ID(Trigger)
 		);
-	buf += strlen(buf);
-
+	size_t used = strlen(buf);
+	buf += used; //strlen(buf);
+	remainingBuffer -= used;
+	
 	/*
 	**	For every class in the team, record the class's name & desired count
 	*/
-	sprintf (buf, ",%d", ClassCount);
-	buf += strlen(buf);
+	snprintf (buf, remainingBuffer, ",%d", ClassCount);
+	used = strlen(buf);
+	remainingBuffer -= used;
+	buf += used;
 	for (int i = 0; i < ClassCount; i++) {
-		sprintf (buf, ",%s:%d", Members[i].Class->IniName, Members[i].Quantity);
-		buf += strlen(buf);
+		snprintf (buf, remainingBuffer, ",%s:%d", Members[i].Class->IniName, Members[i].Quantity);
+		used = strlen(buf);
+		buf += used;
+		remainingBuffer -= used;
+//		buf += strlen(buf);
 	}
 
 	/*
 	**	Record the # of missions, and each mission name & argument value.
 	*/
-	sprintf(buf, ",%d", MissionCount);
-	buf += strlen(buf);
+	snprintf(buf, remainingBuffer, ",%d", MissionCount);
+	used = strlen(buf);
+	buf += used;
+	remainingBuffer -= used;
+	//buf += strlen(buf);
 	for (int i = 0; i < MissionCount; i++) {
-		sprintf (buf, ",%d:%d", MissionList[i].Mission, MissionList[i].Data.Value);
-		buf += strlen(buf);
+		snprintf (buf, remainingBuffer, ",%d:%d", MissionList[i].Mission, MissionList[i].Data.Value);
+		used = strlen(buf);
+		buf += used;
+		remainingBuffer -= used;
+		//		buf += strlen(buf);
 	}
 }
 

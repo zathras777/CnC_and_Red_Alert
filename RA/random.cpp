@@ -102,7 +102,7 @@ int RandomClass::operator ()(void)
 	**	Extract the 'random' bits from the seed and return that value as the
 	**	random number result.
 	*/
-	return((Seed >> THROW_AWAY_BITS) & (~((~0) << SIGNIFICANT_BITS)));
+	return((Seed >> THROW_AWAY_BITS) & (~(static_cast<unsigned>(~0) << SIGNIFICANT_BITS)));
 }
 
 

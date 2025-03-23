@@ -317,7 +317,7 @@ void GameControlsClass::Process(void)
 		/*
 		**	Process input.
 		*/
-		switch (input) {
+		switch (static_cast<int>(input)) {
 			case (BUTTON_SPEED | KN_BUTTON):
 				curbutton = (BUTTON_SPEED - BUTTON_FIRST);
 				refresh = true;
@@ -425,9 +425,6 @@ void GameControlsClass::Process(void)
 			case (KN_RETURN):
 				selection = curbutton + BUTTON_FIRST;
 				pressed = true;
-				break;
-
-			default:
 				break;
 		}
 

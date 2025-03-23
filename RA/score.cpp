@@ -115,7 +115,7 @@ char *ScreenNames[2]={"ALI-TRAN.WSA", "SOV-TRAN.WSA"};
 
 
 struct Fame {
-	char	name[MAX_FAMENAME_LENGTH];
+	char name[MAX_FAMENAME_LENGTH];
 	int	score;
 	int	level;
 	int	side;
@@ -268,7 +268,7 @@ void ScorePrintClass::Update(void)
 }
 
 
-ScoreScaleClass::ScoreScaleClass(void const * string, int xpos, int ypos, char const palette[]) :
+ScoreScaleClass::ScoreScaleClass(void const * string, int xpos, int ypos, unsigned char const palette[]) :
 	ScoreAnimClass(xpos, ypos, string)
 {
 	Palette = &palette[0];
@@ -351,10 +351,10 @@ int Alloc_Object(ScoreAnimClass *obj)
  * HISTORY:                                                                                    *
  *   05/02/1994     : Created.                                                                 *
  *=============================================================================================*/
-static char const  _bluepal[]={0xC0,0xC1,0xC1,0xC3,0xC2,0xC5,0xC3,0xC7,0xC4,0xC9,0xCA,0xCB,0xCC,0xCD,0xC0,0xCF};
-static char const _greenpal[]={0x70,0x71,0x7C,0x73,0x7D,0x75,0x7E,0x77,0x7F,0x79,0x7A,0x7B,0x7C,0x7D,0x7C,0x7F};
-static char const   _redpal[]={0xD0,0xD1,0xD7,0xD3,0xD9,0xD5,0xDA,0xD7,0xDB,0xD9,0xDA,0xDB,0xDC,0xDD,0xD6,0xDF};
-static char const _yellowpal[]={0x0,0x0,0xEC,0x0,0xEB,0x0,0xEA,0x0,0xE9,0x0,0x0,0x0,0x0,0x0,0xED,0x0};
+static unsigned char const _bluepal[]={0xC0,0xC1,0xC1,0xC3,0xC2,0xC5,0xC3,0xC7,0xC4,0xC9,0xCA,0xCB,0xCC,0xCD,0xC0,0xCF};
+static unsigned char const _greenpal[]={0x70,0x71,0x7C,0x73,0x7D,0x75,0x7E,0x77,0x7F,0x79,0x7A,0x7B,0x7C,0x7D,0x7C,0x7F};
+static unsigned char const   _redpal[]={0xD0,0xD1,0xD7,0xD3,0xD9,0xD5,0xDA,0xD7,0xDB,0xD9,0xDA,0xDB,0xDC,0xDD,0xD6,0xDF};
+static unsigned char const _yellowpal[]={0x0,0x0,0xEC,0x0,0xEB,0x0,0xEA,0x0,0xE9,0x0,0x0,0x0,0x0,0x0,0xED,0x0};
 void ScoreClass::Presentation(void)
 {
 #ifdef WIN32
@@ -394,7 +394,7 @@ void ScoreClass::Presentation(void)
 	int house = (PlayerPtr->Class->House == HOUSE_USSR || PlayerPtr->Class->House == HOUSE_UKRAINE);		// 0 or 1
 #ifdef WIN32
 	char inter_pal[15];
-	sprintf(inter_pal, "SCORPAL1.PAL");
+	snprintf(inter_pal, 15, "SCORPAL1.PAL");
 #endif
 
 	ControlQ = 0;
@@ -565,6 +565,8 @@ void ScoreClass::Presentation(void)
 		case DIFF_HARD:
 			uspoints += 3500;
 			break;
+		default:
+			break;
 	}
 
 
@@ -608,7 +610,7 @@ Keyboard->Clear();
 	Count_Up_Print("%3d%%", economy,    economy,    244, 38);
 
 	char buffer[16];
-	sprintf(buffer, "x %5d",uspoints);
+	snprintf(buffer, 16, "x %5d",uspoints);
 	Alloc_Object(new ScorePrintClass(buffer, 274,  26, _greenpal));
 	Alloc_Object(new ScorePrintClass(buffer, 274,  38, _greenpal));
 	Call_Back_Delay(8);
@@ -616,7 +618,7 @@ Keyboard->Clear();
 	Call_Back_Delay(1);
 	SeenBuff.Draw_Line(274*RESFACTOR, 48*RESFACTOR, 313*RESFACTOR, 48*RESFACTOR, GREEN);
 
-	sprintf(buffer,"%5d", total);
+	snprintf(buffer, 16, "%5d", total);
 	Alloc_Object(new ScorePrintClass(buffer, 286,  50, _greenpal));
 
 //BG	if (!Keyboard->Check()) {
@@ -779,7 +781,7 @@ Keyboard->Clear();
 #ifdef WIN32
 	char maststr[NUMFAMENAMES*32];
 #endif
-	char const *pal;
+	unsigned char const *pal;
 	for (i = 0; i < NUMFAMENAMES; i++) {
 		pal = hallfame[i].side ? _redpal : _bluepal;
 		Alloc_Object(new ScorePrintClass(hallfame[i].name, HALLFAME_X, HALLFAME_Y + (i*8), pal));
@@ -789,10 +791,11 @@ Keyboard->Clear();
 #else
 			char *str = (char *)(HidPage.Get_Buffer()) + i*32;
 #endif
-			sprintf(str, "%d", hallfame[i].score);
+			// size of score element
+			snprintf(str, 32, "%d", hallfame[i].score);
 			Alloc_Object(new ScorePrintClass(str, HALLFAME_X+(6*14), HALLFAME_Y + (i*8), pal, BLACK));
 			if (hallfame[i].level < 20) {
-				sprintf(str+16, "%d", hallfame[i].level);
+				snprintf(str+16, 16, "%d", hallfame[i].level);
 			} else {
 				strcpy(str+16, "**");
 			}
@@ -1265,7 +1268,7 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 }
 
 
-void ScoreClass::Show_Credits(int house, char const pal[])
+void ScoreClass::Show_Credits(int house, char unsigned const pal[])
 {
 	static int _credsx[2]={276,276};
 	static int _credsy[2]={173,58};
@@ -1344,9 +1347,9 @@ void ScoreClass::Print_Minutes(int minutes)
 	char str[20];
 	if (minutes >= 60) {
 		if ((minutes/60) > 9) minutes = (9*60 + 59);
-		sprintf(str, Text_String(TXT_SCORE_TIMEFORMAT1), (minutes / 60), (minutes % 60));
+		snprintf(str, 20, Text_String(TXT_SCORE_TIMEFORMAT1), (minutes / 60), (minutes % 60));
 	} else {
-		sprintf(str, Text_String(TXT_SCORE_TIMEFORMAT2), minutes);
+		snprintf(str, 20, Text_String(TXT_SCORE_TIMEFORMAT2), minutes);
 	}
 	SeenPage.Print(str, 275*RESFACTOR, 9*RESFACTOR, TBLACK, TBLACK);
 #ifdef WIN32
@@ -1379,7 +1382,7 @@ void ScoreClass::Count_Up_Print(char *str, int percent, int maxval, int xpos, in
 {
 	char destbuf[64];
 
-	sprintf(destbuf, str, percent <= maxval ? percent : maxval);
+	snprintf(destbuf, 64, str, percent <= maxval ? percent : maxval);
 	SeenPage.Print(	destbuf, xpos * RESFACTOR, ypos * RESFACTOR, TBLACK, BLACK);
 #ifdef WIN32
 	PseudoSeenBuff->Print(	destbuf, xpos * RESFACTOR, ypos * RESFACTOR, TBLACK, BLACK);
@@ -1404,7 +1407,7 @@ void ScoreClass::Count_Up_Print(char *str, int percent, int maxval, int xpos, in
  * HISTORY:                                                                                    *
  *   05/15/1995 BWG : Created.                                                                 *
  *=============================================================================================*/
-void ScoreClass::Input_Name(char str[], int xpos, int ypos, char const pal[])
+void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const pal[])
 {
 	int key = 0;
 	int ascii, index=0;
@@ -1756,9 +1759,9 @@ void Animate_Score_Objs()
 
 char *Int_Print(int a)
 {
-	static char str[10];
+	static char str[12];
 
-	sprintf(str, "%d", a);
+	snprintf(str,12,  "%d", a);
 	return str;
 }
 

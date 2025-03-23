@@ -375,6 +375,8 @@ int LoadOptionsClass::Process(void)
 						toggle->IsPressed = true;
 					}
 					break;
+				default:
+					break;
 			}
 			Hide_Mouse();
 			commands->Draw_All(true);
@@ -384,7 +386,7 @@ int LoadOptionsClass::Process(void)
 		/*
 		**	Process input.
 		*/
-		switch (input) {
+		switch (static_cast<int>(input)) {
 			/*
 			** Load: if load fails, present a message, and stay in the dialog
 			** to allow the user to try another game
@@ -485,7 +487,7 @@ int LoadOptionsClass::Process(void)
 				game_idx = listbtn.Current_Index();
 				game_num = Files[game_idx]->Num;
 				if (WWMessageBox().Process(TXT_DELETE_FILE_QUERY, TXT_YES, TXT_NO)==0) {
-					sprintf(fname, "SAVEGAME.%03d", game_num);
+					snprintf(fname, 512, "SAVEGAME.%03d", game_num);
 					unlink(fname);
 					Clear_List(&listbtn);
 					Fill_List(&listbtn);
@@ -549,9 +551,6 @@ int LoadOptionsClass::Process(void)
 			case (BUTTON_CANCEL | KN_BUTTON):
 				cancel = true;
 				process = false;
-				break;
-
-			default:
 				break;
 		}
 	}
@@ -668,15 +667,15 @@ void LoadOptionsClass::Fill_List(ListClass * list)
 			} else {
 				if (house == HOUSE_USSR || house == HOUSE_UKRAINE) {
 #ifdef WIN32
-					sprintf(fdata->Descr, "(%s) ", Text_String(TXT_SOVIET));
+					snprintf(fdata->Descr, 80, "(%s) ", Text_String(TXT_SOVIET));
 #else
-					sprintf(fdata->Descr, "(%c) ", *Text_String(TXT_SOVIET));
+					snprintf(fdata->Descr, 80, "(%c) ", *Text_String(TXT_SOVIET));
 #endif
 				} else {
 #ifdef WIN32
-					sprintf(fdata->Descr, "(%s) ", Text_String(TXT_ALLIES));
+					snprintf(fdata->Descr, 80, "(%s) ", Text_String(TXT_ALLIES));
 #else
-					sprintf(fdata->Descr, "(%c) ", *Text_String(TXT_ALLIES));
+					sprintf(fdata->Descr, 80, "(%c) ", *Text_String(TXT_ALLIES));
 #endif
 				}
 			}

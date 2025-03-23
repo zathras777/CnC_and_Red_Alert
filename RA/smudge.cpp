@@ -352,11 +352,11 @@ void SmudgeClass::Write_INI(CCINIClass & ini)
 		if (ptr->Smudge != SMUDGE_NONE) {
 			SmudgeTypeClass const * stype = &SmudgeTypeClass::As_Reference(ptr->Smudge);
 			if (!stype->IsBib) {
-				char	uname[10];
+				char	uname[12];
 				char	buf[127];
 
-				sprintf(uname, "%d", index);
-				sprintf(buf, "%s,%d,%d", stype->IniName, index, ptr->SmudgeData);
+				snprintf(uname, 12, "%d", index);
+				snprintf(buf, 127, "%s,%d,%d", stype->IniName, index, ptr->SmudgeData);
 				ini.Put_String(INI_Name(), uname, buf);
 			}
 		}

@@ -147,7 +147,7 @@ struct TEventClass {
 	void Reset(TDEventClass & td) const;
 	bool operator () (TDEventClass & td, TEventType event, HousesType house, ObjectClass const * object, bool forced);
 	void Read_INI(void);
-	void Build_INI_Entry(char * buffer) const;
+	void Build_INI_Entry(char * buffer, size_t bufLen) const;
 };
 
 

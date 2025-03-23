@@ -345,7 +345,7 @@ void EListClass::Draw_Entry(int index, int x, int y, int width, int selected)
 	} else {
 		text = TXT_SOVIET;
 	}
-	sprintf(buffer, "%s: %s", Text_String(text), Get_Object(index)->Name);
+	snprintf(buffer, 128, "%s: %s", Text_String(text), Get_Object(index)->Name);
 
 	TextPrintType flags = TextFlags;
 
@@ -410,7 +410,7 @@ bool Expansion_Dialog(void)
 		strcpy(buffer, TestNames2[index]);
 		strcpy(buffer2, TestNames2[index]);
 #endif
-		if(buffer[0] == NULL)
+		if(buffer[0] == 0/*NULL*/)
 		   break;
 
      	strcat(buffer, ".INI");
@@ -524,7 +524,7 @@ bool Expansion_Dialog(void)
 			Show_Mouse();
 		}
 
-		KeyNumType input = buttons->Input();
+		int input = static_cast<int>(buttons->Input());
 		switch (input) {
 			case 200|KN_BUTTON:
 			      	Whom = list.Current_Object()->House;
@@ -546,9 +546,6 @@ bool Expansion_Dialog(void)
 				strcpy(Scen.ScenarioName, list.Current_Object()->FullName);
 				process = false;
 				okval = true;
-				break;
-
-			default:
 				break;
 		}
 	}

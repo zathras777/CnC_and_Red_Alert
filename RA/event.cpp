@@ -506,7 +506,7 @@ void EventClass::Execute(void)
 //	RTTIType rt;
 
 	if (Debug_Print_Events) {
-		printf("(%d) Executing %s ID:%d Frame:%d ",
+		printf("(%ld) Executing %s ID:%d Frame:%d ",
 			::Frame, EventNames[Type], ID, Frame);
 	}
 
@@ -551,7 +551,7 @@ void EventClass::Execute(void)
 				Special = Data.Options.Data;
 				HouseClass * house = Houses.Raw_Ptr(ID);
 
-				sprintf(txt, Text_String(TXT_SPECIAL_WARNING), house->Name());
+				snprintf(txt, 80, Text_String(TXT_SPECIAL_WARNING), house->Name());
 				Session.Messages.Add_Message(NULL, 0, txt,
 					house->RemapColor,
 					TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_FULLSHADOW, 1200);
@@ -917,7 +917,7 @@ void EventClass::Execute(void)
 				printf("%d\n", ((char *)Data.Variable.Pointer)[i]);
 			}
 			if (ID != PlayerPtr->ID) {
-				delete [] Data.Variable.Pointer;
+				delete [] (char *)Data.Variable.Pointer;
 			}
 			break;
 
@@ -955,7 +955,7 @@ void EventClass::Execute(void)
 #endif	//WIN32
 #endif	//	!WOLAPI_INTEGRATION
 			if (Debug_Print_Events) {
-				printf("DesiredFrameRate:%d MaxAhead:%d ",
+				printf("DesiredFrameRate:%d MaxAhead:%ld ",
 					Session.DesiredFrameRate,
 					Session.MaxAhead);
 			}
@@ -1002,7 +1002,7 @@ void EventClass::Execute(void)
 				{
 					if (ID == Session.Players[i]->Player.ID) 
 					{
-						sprintf( szMessage, TXT_WOL_DRAW_PROPOSED_OTHER, Session.Players[i]->Name );
+						snprintf( szMessage,100,  TXT_WOL_DRAW_PROPOSED_OTHER, Session.Players[i]->Name );
 						break;
 					}
 				}
@@ -1025,7 +1025,7 @@ void EventClass::Execute(void)
 				{
 					if (ID == Session.Players[i]->Player.ID) 
 					{
-						sprintf( szMessage, TXT_WOL_DRAW_RETRACTED_OTHER, Session.Players[i]->Name );
+						snprintf( szMessage, 100, TXT_WOL_DRAW_RETRACTED_OTHER, Session.Players[i]->Name );
 						break;
 					}
 				}

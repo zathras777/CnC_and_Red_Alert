@@ -310,7 +310,7 @@ GameType Select_MPlayer_Game (void)
 		//.....................................................................
 		//	Process input
 		//.....................................................................
-		switch (input) {
+		switch (static_cast<int>(input)) {
 			case (BUTTON_MODEMSERIAL | KN_BUTTON):
 				selection = BUTTON_MODEMSERIAL;
 				pressed = true;
@@ -362,9 +362,6 @@ GameType Select_MPlayer_Game (void)
 			case KN_RETURN:
 				selection = curbutton + BUTTON_MODEMSERIAL;
 				pressed = true;
-				break;
-
-			default:
 				break;
 		}
 
@@ -810,7 +807,7 @@ int Surrender_Dialog(int text)
 		//.....................................................................
 		//	Get user input
 		//.....................................................................
-		KeyNumType input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		//.....................................................................
 		//	Process input
@@ -1001,7 +998,7 @@ int Abort_Dialog(void)
 		//.....................................................................
 		//	Get user input
 		//.....................................................................
-		KeyNumType input = commands->Input();
+		int input = static_cast<int>(commands->Input());
 
 		//.....................................................................
 		//	Process input
@@ -1047,9 +1044,6 @@ int Abort_Dialog(void)
 					curbutton = 1;
 				}
 				buttons[curbutton]->Turn_On();
-				break;
-
-			default:
 				break;
 		}
 	}

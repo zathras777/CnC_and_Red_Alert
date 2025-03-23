@@ -351,7 +351,7 @@ void GameOptionsClass::Process(void)
 		/*
 		**	Get user input.
 		*/
-		KeyNumType input = buttons->Input();
+		int input = static_cast<int>(buttons->Input());
 
 		/*
 		**	Process Input.

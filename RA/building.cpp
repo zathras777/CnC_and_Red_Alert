@@ -305,6 +305,8 @@ RadioMessageType BuildingClass::Receive_Message(RadioClass * from, RadioMessageT
 					case STRUCT_REFINERY:
 						param = ::As_Target(Coord_Cell(Adjacent_Cell(Center_Coord(), DIR_S)));
 						break;
+					default:
+						break;
 				}
 
 				/*
@@ -318,7 +320,7 @@ RadioMessageType BuildingClass::Receive_Message(RadioClass * from, RadioMessageT
 					*/
 					Transmit_Message(RADIO_TETHER);
 					if (*this == STRUCT_REFINERY && Transmit_Message(RADIO_BACKUP_NOW, from) != RADIO_ROGER) {
-						from->Scatter(NULL, true, true);
+						from->Scatter(0/*NULL*/, true, true);
 					}
 				}
 			}
@@ -5134,11 +5136,11 @@ void BuildingClass::Write_INI(CCINIClass & ini)
 	for (int index = 0; index < Buildings.Count(); index++) {
 		BuildingClass * building = Buildings.Ptr(index);
 		if (!building->IsInLimbo) {
-			char	uname[10];
+			char	uname[12];
 			char	buf[127];
 
-			sprintf(uname, "%d", index);
-			sprintf(buf, "%s,%s,%d,%u,%d,%s,%d,%d",
+			snprintf(uname, 12, "%d", index);
+			snprintf(buf, 127, "%s,%s,%d,%u,%d,%s,%d,%d",
 				building->House->Class->IniName,
 				building->Class->IniName,
 				building->Health_Ratio()*256,

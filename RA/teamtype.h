@@ -136,7 +136,7 @@ class TeamTypeClass : public AbstractTypeClass
 		/*
 		**	File I/O routines
 		*/
-		void Build_INI_Entry(char * buffer);
+		void Build_INI_Entry(char * buffer, size_t bufLen);
 		static void Read_INI(CCINIClass & ini);
 		void Fill_In(char *name, char *entry);
 		static void Write_INI(CCINIClass & ini);

@@ -61,7 +61,7 @@ int Find_Patch(OUT char *filename,int maxlen, ConfigFile &config)
       _chdir(gamePath);  // goto the directory with the game
 
       // should probably get the registry entry for the wchat install path
-      sprintf(string,"patches\\*.%s",extensions[i]);
+      snprintf(string, 128, "patches\\*.%s",extensions[i]);
       hFile=FindFirstFile(string,&findData);
       if (hFile!=INVALID_HANDLE_VALUE)
       {
@@ -92,7 +92,7 @@ bit8 Get_App_Dir(OUT char *filename,int maxlen, ConfigFile &config,int index)
   char                gamePath[MAX_PATH];
 
 
-  sprintf(string,"SKU%d",index);
+  snprintf(string, 128, "SKU%d",index);
 
   // Can't find this product
   if (config.getString(string,key)==FALSE)

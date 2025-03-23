@@ -992,10 +992,10 @@ static RetcodeType Wait_For_Players(int first_time, ConnManClass *net,
 				fp = fopen("recon.txt","wt");
 				if (fp) {
 					fprintf(fp,"# Connections: %d\n",net->Num_Connections());
-					fprintf(fp,"   My Frame #: %d\n",Frame);
+					fprintf(fp,"   My Frame #: %ld\n",Frame);
 					for (i = 0; i < net->Num_Connections(); i++) {
 						housep = HouseClass::As_Pointer((HousesType)(net->Connection_ID(i)));
-						fprintf(fp,"%15s: Their Sent:%d  Their Recv:%d  Their Frame:%d\n",
+						fprintf(fp,"%15s: Their Sent:%d  Their Recv:%d  Their Frame:%ld\n",
 							housep->IniName, their_sent[i], their_recv[i], their_frame[i]);
 					}
 					fclose(fp);
@@ -1869,9 +1869,9 @@ static RetcodeType Process_Receive_Packet(ConnManClass *net,
 
 	if (Debug_Print_Events) {
 		if (event->Type == EventClass::FRAMESYNC) {
-			printf("(%d) Received FRAMESYNC: ", Frame);
+			printf("(%ld) Received FRAMESYNC: ", Frame);
 		} else {
-			printf("(%d) Received FRAMEINFO: ", Frame);
+			printf("(%ld) Received FRAMEINFO: ", Frame);
 		}
 		printf("EvFrame:%d ID:%d CRC:%x CmdCount:%d Delay:%d\n",
 			event->Frame,
@@ -2602,7 +2602,7 @@ int Add_Compressed_Events(void *buf, int bufsize, int frame_delay,
 	memset (&prevevent, 0, sizeof(EventClass));
 
 	if (Debug_Print_Events) {
-		printf("\n(%d) Building Send Packet\n", Frame);
+		printf("\n(%ld) Building Send Packet\n", Frame);
 	}
 
 	//------------------------------------------------------------------------
@@ -2974,7 +2974,7 @@ int Extract_Uncompressed_Events(void *buf, int bufsize)
 
 			if (!DoList.Add( *event )) {
 				if (event->Type == EventClass::ADDPLAYER) {
-					delete [] event->Data.Variable.Pointer;
+					delete [] static_cast<char *>(event->Data.Variable.Pointer);
 				}
 				return (-1);
 			}
@@ -3159,7 +3159,7 @@ int Extract_Compressed_Events(void *buf, int bufsize)
 
 			if ( !DoList.Add( eventdata ) ) {
 				if (eventdata.Type == EventClass::ADDPLAYER) {
-					delete [] eventdata.Data.Variable.Pointer;
+					delete [] static_cast<char *>(eventdata.Data.Variable.Pointer);
 				}
 				return (-1);
 			}
@@ -3378,7 +3378,7 @@ static int Execute_DoList(int max_houses, HousesType base_house,
 
 					if (Debug_Print_Events) {
 						if (DoList[j].Type==EventClass::EXIT) {
-							printf("(%d) Executing EXIT, ID:%d (%s), EvFrame:%d\n",
+							printf("(%ld) Executing EXIT, ID:%d (%s), EvFrame:%d\n",
 								Frame,
 								DoList[j].ID,
 								(HouseClass::As_Pointer((HousesType)(DoList[j].ID)))->IniName,
@@ -4199,11 +4199,11 @@ static void Print_CRCs(EventClass *ev)
 		Scen.RandomNumber.Count1,
 		Scen.RandomNumber.Count2);
 #else
-	fprintf(fp,"\nRandom Number:%x\n",Scen.RandomNumber.Seed);
+	fprintf(fp,"\nRandom Number:%lx\n",Scen.RandomNumber.Seed);
 #endif
 
-	Mono_Printf("My Frame:%d  \n",Frame);
-	fprintf(fp,"My Frame:%d\n",Frame);
+	Mono_Printf("My Frame:%ld  \n",Frame);
+	fprintf(fp,"My Frame:%ld\n",Frame);
 
 	if (ev) {
 		fprintf(fp,"\n");
@@ -4447,15 +4447,15 @@ void Dump_Packet_Too_Late_Stuff(EventClass *event, ConnManClass *net,
 	fprintf(fp,"\n");
 
 	fprintf(fp,"--------------------- My data: ---------------------\n");
-	fprintf(fp,"My Frame:%d\n",Frame);
-	fprintf(fp,"My MaxAhead:%d\n",Session.MaxAhead);
+	fprintf(fp,"My Frame:%ld\n",Frame);
+	fprintf(fp,"My MaxAhead:%ld\n",Session.MaxAhead);
 
 	if (net) {
 		fprintf(fp,"-------------------- Frame Stats: ------------------\n");
 		fprintf(fp,"Name          ID  TheirFrame  TheirSent  TheirRecv\n");
 		for (i = 0; i < net->Num_Connections(); i++) {
 			house = (HousesType)(net->Connection_ID(i));
-			fprintf(fp,"%12s  %2d    %6d      %6d      %6d\n",
+			fprintf(fp,"%12s  %2d    %6ld      %6d      %6d\n",
 				(HouseClass::As_Pointer(house))->IniName,
 				net->Connection_ID(i),
 				their_frame[i],

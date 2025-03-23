@@ -128,7 +128,7 @@ struct TActionClass {
 	void Code_Pointers(void);
 	void Decode_Pointers(void);
 	void Read_INI(void);
-	void Build_INI_Entry(char * buffer) const;
+	void Build_INI_Entry(char * buffer, size_t bufLen) const;
 
 	bool operator() (HousesType house, ObjectClass * object, int id, CELL cell);
 };

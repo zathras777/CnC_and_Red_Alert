@@ -3196,6 +3196,8 @@ ActionType InfantryClass::What_Action(CELL cell) const
 //			case TEMPLATE_BRIDGE_3A:
 //			case TEMPLATE_BRIDGE_3B:
 				return(ACTION_SABOTAGE);
+			default:
+				break;
 		}
 	}
 
@@ -3426,11 +3428,11 @@ void InfantryClass::Write_INI(CCINIClass & ini)
 	for (int index = 0; index < Infantry.Count(); index++) {
 		InfantryClass * infantry = Infantry.Ptr(index);
 		if (!infantry->IsInLimbo) {
-			char	uname[10];
+			char	uname[12];
 			char	buf[128];
 
-			sprintf(uname, "%d", index);
-			sprintf(buf, "%s,%s,%d,%u,%d,%s,%d,%s",
+			snprintf(uname, 12, "%d", index);
+			snprintf(buf, 128, "%s,%s,%d,%u,%d,%s,%d,%s",
 					infantry->House->Class->IniName,
 					infantry->Class->IniName,
 					infantry->Health_Ratio()*256,
@@ -3619,6 +3621,8 @@ void InfantryClass::Firing_AI(void)
 						NavCom = TARGET_NONE;
 						Path[0] = FACING_NONE;
 					}
+					break;
+				default:
 					break;
 			}
 		}

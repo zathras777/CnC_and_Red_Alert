@@ -783,6 +783,8 @@ bool DriveClass::While_Moving(void)
 									Map[c].Incoming(0, true, true);
 								}
 								break;
+							default:
+								break;
 						}
 					}
 				}
@@ -793,7 +795,7 @@ bool DriveClass::While_Moving(void)
 				Coord = Head_To_Coord();
 				Stop_Driver();
 				TrackNumber = -1;
-				TrackIndex = NULL;
+				TrackIndex = 0/*NULL*/;
 
 				/*
 				**	Perform "per cell" activities.

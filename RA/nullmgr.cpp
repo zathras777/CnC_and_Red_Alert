@@ -1546,7 +1546,7 @@ int NullModemClass::Detect_Modem( SerialSettingsType *settings, bool reconnect )
 			*/
 			if (status < ASSUCCESS) {
 				if (WWMessageBox().Process(TXT_ERROR_NO_INIT, TXT_IGNORE, TXT_CANCEL)) {
-					delete istr;
+					delete [] istr;
 					return( false );
 				}
 #ifdef WIN32
@@ -1812,14 +1812,11 @@ DialStatusType NullModemClass::Dial_Modem( char *string, DialMethodType method, 
 		/*.....................................................................
 		Process input
 		.....................................................................*/
-		switch (Input) {
+		switch (static_cast<int>(Input)) {
 			case (KN_ESC):
 			case (BUTTON_CANCEL | KN_BUTTON):
 				dialstatus = DIAL_CANCELED;
 				process = false;
-				break;
-
-			default:
 				break;
 		}
 
@@ -2019,14 +2016,11 @@ DialStatusType NullModemClass::Answer_Modem( bool reconnect )
 		Process input
 		.....................................................................*/
 		if (!Input) Input = Commands->Input();
-		switch (Input) {
+		switch (static_cast<int>(Input)) {
 			case (KN_ESC):
 			case (BUTTON_CANCEL | KN_BUTTON):
 				dialstatus = DIAL_CANCELED;
 				process = false;
-				break;
-
-			default:
 				break;
 		}
 
@@ -2080,7 +2074,7 @@ DialStatusType NullModemClass::Answer_Modem( bool reconnect )
 		if (delay <= 0) {
 			if (ring) {
 				if (SerialPort->Get_Modem_Status() & CD_SET) {
-					sprintf(ModemRXString, "%s", "Connected");
+					snprintf(ModemRXString, 80, "%s", "Connected");
 					dialstatus = DIAL_CONNECTED;
 				} else {
 					dialstatus = DIAL_ERROR;
@@ -2370,7 +2364,7 @@ int NullModemClass::Abort_Modem( PORT * )
 	*/
 	Input = Commands->Input();
 
-	switch ( Input ) {
+	switch ( static_cast<int>(Input) ) {
 		case (KN_ESC):
 		case (BUTTON_CANCEL | KN_BUTTON):
 			return( ASUSERABORT );

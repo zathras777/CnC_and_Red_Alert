@@ -403,7 +403,7 @@ bool Receive_Remote_File ( char *file_name, unsigned int file_length, int gamety
 
 			if (NullModem.Get_Message ((void*)&receive_packet, (int*)&packet_len) > 0) {
 
-				if (receive_packet.Command == NET_FILE_CHUNK){
+				if (receive_packet.Command == (SerialCommandType)NET_FILE_CHUNK){
 
 					if (receive_packet.BlockNumber == last_received_block + 1){
 
@@ -435,7 +435,7 @@ bool Receive_Remote_File ( char *file_name, unsigned int file_length, int gamety
 				&sender_address, &product_id)){
 
 #ifdef WINSOCK_IPX
-				if (receive_packet.Command == NET_FILE_CHUNK && sender_address == Session.HostAddress){
+				if (receive_packet.Command == (SerialCommandType) NET_FILE_CHUNK && sender_address == Session.HostAddress){
 #else	//WINSOCK_IPX
 				if (receive_packet.Command == NET_FILE_CHUNK &&
 							(Winsock.Get_Connected() || sender_address == Session.HostAddress)){
@@ -472,7 +472,7 @@ bool Receive_Remote_File ( char *file_name, unsigned int file_length, int gamety
 			/*
 			---------------------------- Process input ----------------------------
 			*/
-			switch (input) {
+			switch (static_cast<int>(input)) {
 
 				/*
 				** Cancel. Just return to the main menu
@@ -860,7 +860,7 @@ bool Send_Remote_File ( char *file_name, int gametype )
 			/*
 			---------------------------- Process input ----------------------------
 			*/
-			switch (input) {
+			switch (static_cast<int>(input)) {
 
 				/*
 				** Cancel. Just return to the main menu

@@ -1269,7 +1269,7 @@ void InfantryTypeClass::One_Time(void)
 		**	The small build image icon sized shapes are always generic.
 		*/
 		char buffer[_MAX_FNAME];
-		sprintf(buffer, "%.4sICON", uclass->Graphic_Name());
+		snprintf(buffer, _MAX_FNAME, "%.4sICON", uclass->Graphic_Name());
 		_makepath(fullname, NULL, NULL, buffer, ".SHP");
 
 		#ifndef NDEBUG

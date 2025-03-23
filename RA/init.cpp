@@ -1172,6 +1172,10 @@ bool Select_Game(bool fade)
 								}
 							}
 							break;
+						case GAME_IPX:
+						case GAME_TEN:
+						case GAME_MPATH:
+							break;
 
 #endif	//WIN32
 #endif	//	!WOLAPI_INTEGRATION
@@ -1201,6 +1205,11 @@ bool Select_Game(bool fade)
 #else
 							Options.ScoreVolume = 0;
 #endif
+							break;
+
+						case GAME_NORMAL:
+						case GAME_TEN:
+						case GAME_MPATH:
 							break;
 
 #ifdef WOLAPI_INTEGRATION		//	implies also WINSOCK_IPX
@@ -3289,7 +3298,8 @@ static void Init_Mouse(void)
 		char buffer[255];
 		GamePalette.Set();
 		GamePalette.Set();
-		sprintf(buffer, TEXT_NO_MOUSE);
+		strncpy(buffer, TEXT_NO_MOUSE, 255);
+		//snprintf(buffer, 255, TEXT_NO_MOUSE);
 		VisiblePage.Clear();
 		WWMessageBox().Process(buffer, TXT_OK);
 		//Prog_End();
@@ -3445,8 +3455,8 @@ static void Init_Bulk_Data(void)
 		TutorialText[index] = NULL;
 
 		char buffer[128];
-		char num[10];
-		sprintf(num, "%d", index);
+		char num[12];
+		snprintf(num, 12, "%d", index);
 		if (ini.Get_String("Tutorial", num, "", buffer, sizeof(buffer))) {
 			TutorialText[index] = strdup(buffer);
 		}

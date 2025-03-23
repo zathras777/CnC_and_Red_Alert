@@ -134,6 +134,8 @@ bool CarryoverClass::Create(void) const
 			ttype = &VesselTypeClass::As_Reference(Type.Vessel);
 			techno = new VesselClass(Type.Vessel, House);
 			break;
+		default:
+			break;
 	}
 
 	if (techno) {

@@ -220,9 +220,9 @@ void TActionClass::Detach(TARGET target)
  * HISTORY:                                                                                    *
  *   02/22/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void TActionClass::Build_INI_Entry(char * ptr) const
+void TActionClass::Build_INI_Entry(char * ptr, size_t bufLen) const
 {
-	sprintf(ptr, "%d,%d,%d,%d", Action, TeamTypes.Logical_ID(Team), TriggerTypes.Logical_ID(Trigger), Data.Value);
+	snprintf(ptr, bufLen, "%d,%d,%d,%d", Action, TeamTypes.Logical_ID(Team), TriggerTypes.Logical_ID(Trigger), Data.Value);
 }
 
 

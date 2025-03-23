@@ -392,7 +392,7 @@ void Window_Box(WindowNumberType window, BoxStyleEnum style)
  *   12/24/1991 JLB : Created.                                                                 *
  *   10/26/94   JLB : Handles font X spacing in a more friendly manner.                        *
  *=============================================================================================*/
-void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlType * fore, unsigned back, TextPrintType flag)
+void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlType * fore, unsigned back, int/*TextPrintType*/ flag)
 {
 	static int		yspace=0;			// Y spacing adjustment for font.
 	static int		xspace=0;			// Spacing adjustment for font.
@@ -662,10 +662,10 @@ void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlTy
  * HISTORY:                                                                                    *
  *   11/29/1994 JLB : Created                                                                  *
  *=============================================================================================*/
-void Fancy_Text_Print(int text, unsigned x, unsigned y, RemapControlType * fore, unsigned back, TextPrintType flag, ...)
+void Fancy_Text_Print(int text, unsigned x, unsigned y, RemapControlType * fore, unsigned back, int /*TextPrintType*/ flag, ...)
 {
-	char		buffer[512];		// Working staging buffer.
-	va_list	arg;					// Argument list var.
+	char buffer[512];		// Working staging buffer.
+	va_list	arg;			// Argument list var.
 
 	/*
 	**	If the text number is valid, then process it.
@@ -678,7 +678,7 @@ void Fancy_Text_Print(int text, unsigned x, unsigned y, RemapControlType * fore,
 		**	how to handle EMS pointers.
 		*/
 		char const * tptr = Text_String(text);
-		vsprintf(buffer, tptr, arg);
+		vsnprintf(buffer, 512, tptr, arg);
 		va_end(arg);
 
 		Simple_Text_Print(buffer, x, y, fore, back, flag);
@@ -719,7 +719,7 @@ void Fancy_Text_Print(int text, unsigned x, unsigned y, RemapControlType * fore,
  *   10/26/94   JLB : Handles font X spacing in a more friendly manner.                        *
  *   11/29/1994 JLB : Separated actual draw action.                                            *
  *=============================================================================================*/
-void Fancy_Text_Print(char const * text, unsigned x, unsigned y, RemapControlType * fore, unsigned back, TextPrintType flag, ...)
+void Fancy_Text_Print(char const * text, unsigned x, unsigned y, RemapControlType * fore, unsigned back, int /*TextPrintType*/ flag, ...)
 {
 	char		buffer[512];		// Working staging buffer.
 	va_list	arg;					// Argument list var.
@@ -735,7 +735,7 @@ void Fancy_Text_Print(char const * text, unsigned x, unsigned y, RemapControlTyp
 		**	call with locking code.
 		*/
 		va_start(arg, flag);
-		vsprintf(buffer, text, arg);
+		vsnprintf(buffer, 512, text, arg);
 		va_end(arg);
 
 		Simple_Text_Print(buffer, x, y, fore, back, flag);
@@ -790,7 +790,7 @@ void Conquer_Clip_Text_Print(char const * text, unsigned x, unsigned y, RemapCon
 		**	Set the font and spacing characteristics according to the flag
 		**	value passed in.
 		*/
-		Simple_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, flag);
+		Simple_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, (int)flag);
 
 		char * source = &buffer[0];
 		unsigned offset = 0;
@@ -831,7 +831,7 @@ void Conquer_Clip_Text_Print(char const * text, unsigned x, unsigned y, RemapCon
 				/*
 				**	Print this text block and advance the offset accordingly.
 				*/
-				Simple_Text_Print(source, x+offset, y, fore, back, flag);
+				Simple_Text_Print(source, x+offset, y, fore, back, (int)flag);
 				offset += w;
 			}
 

@@ -348,7 +348,7 @@ short const * Coord_Spillage_List(COORDINATE coord, Rect const & rect, bool noce
  * HISTORY:                                                                                    *
  *   05/27/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-COORDINATE Coord_Move(COORDINATE start, register DirType dir, unsigned short distance)
+COORDINATE Coord_Move(COORDINATE start, DirType dir, unsigned short distance)
 {
 #ifdef NEVER
 	short x = Coord_X(start);

@@ -571,7 +571,7 @@ void VesselTypeClass::One_Time(void)
 			/*
 			**	Fetch the supporting data files for the unit.
 			*/
-			sprintf(buffer, "%sICON", uclass.Graphic_Name());
+			snprintf(buffer, _MAX_FNAME, "%sICON", uclass.Graphic_Name());
 			_makepath(fullname, NULL, NULL, buffer, ".SHP");
 			((void const *&)uclass.CameoData) = MFCD::Retrieve(fullname);
 		}
@@ -628,6 +628,9 @@ void VesselTypeClass::Turret_Adjust(DirType dir, int & x, int & y) const
 			Normal_Move_Point(xx, yy, dir+DIR_S, 8);
 			x = xx;
 			y = yy-4;
+			break;
+		// Catch all unhandled cases
+		default:
 			break;
 	}
 }

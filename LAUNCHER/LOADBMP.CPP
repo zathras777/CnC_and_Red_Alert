@@ -183,13 +183,13 @@ bit8 LoadBmp::drawBmp(void)
   HPALETTE select=SelectPalette(ps.hdc,PalHandle_,0);
   if (select==NULL)
   {
-    sprintf(string,"Select Pal Fail: %d",GetLastError());
+    snprintf(string, 128, "Select Pal Fail: %d",GetLastError());
     MessageBox(NULL,string,"OK",MB_OK);
   }
   UINT realize=RealizePalette(ps.hdc);
   if (realize==GDI_ERROR)
   {
-    sprintf(string,"Realize Pal Fail: %d",GetLastError());
+    snprintf(string, 128, "Realize Pal Fail: %d",GetLastError());
     MessageBox(NULL,string,"OK",MB_OK);
   }
 

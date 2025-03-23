@@ -783,8 +783,8 @@ void TerrainClass::Write_INI(CCINIClass & ini)
 
 		terrain = Terrains.Ptr(index);
 		if (terrain != NULL && !terrain->IsInLimbo && terrain->IsActive) {
-			char	uname[10];
-			sprintf(uname, "%d", Coord_Cell(terrain->Coord));
+			char	uname[12];
+			snprintf(uname, 12, "%d", Coord_Cell(terrain->Coord));
 			ini.Put_TerrainType(INI_Name(), uname, *terrain);
 		}
 	}

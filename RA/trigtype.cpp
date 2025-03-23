@@ -1981,7 +1981,7 @@ void TriggerTypeClass::Write_INI(CCINIClass & ini)
 		char buf[256];
 		TriggerTypeClass * trigger = TriggerTypes.Ptr(index);
 
-		trigger->Build_INI_Entry(buf);
+		trigger->Build_INI_Entry(buf, 256);
 		ini.Put_String(INI_Name(), trigger->IniName, buf);
 	}
 }
@@ -2003,30 +2003,43 @@ void TriggerTypeClass::Write_INI(CCINIClass & ini)
  * HISTORY:                                                                                    *
  *   07/09/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-void TriggerTypeClass::Build_INI_Entry(char * buffer) const
+void TriggerTypeClass::Build_INI_Entry(char * buffer, size_t bufLen) const
 {
+	size_t remainingBuffer = bufLen;
 	/*
 	**	Build the root portion of the trigger event.
 	*/
-	sprintf(buffer, "%d,%d,%d,%d,", IsPersistant, House, EventControl, ActionControl);
+	snprintf(buffer, remainingBuffer, "%d,%d,%d,%d,", IsPersistant, House, EventControl, ActionControl);
 
 	/*
 	**	Append the event and action values.
 	*/
-	buffer += strlen(buffer);
-	Event1.Build_INI_Entry(buffer);
+	size_t used = strlen(buffer);
+	buffer += used; //strlen(buffer);
+	remainingBuffer = bufLen - used;
+
+	Event1.Build_INI_Entry(buffer, remainingBuffer);
 
 	strcat(buffer, ",");
-	buffer += strlen(buffer);
-	Event2.Build_INI_Entry(buffer);
+	used = strlen(buffer);
+	buffer += used; //strlen(buffer);
+	remainingBuffer = bufLen - used;
+//	buffer += strlen(buffer);
+	Event2.Build_INI_Entry(buffer, remainingBuffer);
 
 	strcat(buffer, ",");
-	buffer += strlen(buffer);
-	Action1.Build_INI_Entry(buffer);
+	used = strlen(buffer);
+	buffer += used; //strlen(buffer);
+	remainingBuffer = bufLen - used;
+//	buffer += strlen(buffer);
+	Action1.Build_INI_Entry(buffer, remainingBuffer);
 
 	strcat(buffer, ",");
-	buffer += strlen(buffer);
-	Action2.Build_INI_Entry(buffer);
+	used = strlen(buffer);
+	buffer += used; //strlen(buffer);
+	remainingBuffer = bufLen - used;
+//    buffer += strlen(buffer);
+	Action2.Build_INI_Entry(buffer, remainingBuffer);
 }
 
 

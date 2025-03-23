@@ -1068,7 +1068,7 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 	WWWritePrivateProfileString("SerialDefaults", "DialMethod", DialMethodCheck[ SerialDefaults.DialMethod ], buffer);
 	WWWritePrivateProfileInt ("SerialDefaults", "Baud", SerialDefaults.Baud, buffer);
 	WWWritePrivateProfileInt ("SerialDefaults", "IRQ", SerialDefaults.IRQ, buffer);
-	sprintf(buf, "%x", SerialDefaults.Port);
+	snprintf(buf, 128, "%x", SerialDefaults.Port);
 	WWWritePrivateProfileString("SerialDefaults", "Port", buf, buffer);
 	WWWritePrivateProfileInt ("SerialDefaults", "Compression", SerialDefaults.Compression , buffer);
 	WWWritePrivateProfileInt ("SerialDefaults", "ErrorCorrection", SerialDefaults.ErrorCorrection, buffer);
@@ -1084,7 +1084,7 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 	//	ascending order.
 	//------------------------------------------------------------------------
 	for (i = (InitStrings.Count() - 1); i >= 0; i--) {
-		sprintf( buf, "%03d", i);
+		snprintf( buf, 128, "%03d", i);
 		WWWritePrivateProfileString ("InitStrings", buf, InitStrings[i], buffer);
 	}
 
@@ -1098,7 +1098,7 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 	//	Format: Entry=Name,PhoneNum,Port,IRQ,Baud,InitString
 	//------------------------------------------------------------------------
 	for (i = (PhoneBook.Count() - 1); i >= 0; i--) {
-		sprintf(buf,"%s|%s|%x|%d|%d|%d|%d|%d|%s|%d|%d|%s",
+		snprintf(buf,128, "%s|%s|%x|%d|%d|%d|%d|%d|%s|%d|%d|%s",
 			PhoneBook[i]->Name,
 			PhoneBook[i]->Number,
 			PhoneBook[i]->Settings.Port,
@@ -1111,7 +1111,7 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 			PhoneBook[i]->Settings.InitStringIndex,
 			PhoneBook[i]->Settings.CallWaitStringIndex,
 			PhoneBook[i]->Settings.CallWaitString);
-		sprintf( entrytext, "%03d", i );
+		snprintf( entrytext, 4, "%03d", i );
 		WWWritePrivateProfileString ("PhoneBook", entrytext, buf, buffer);
 	}
 
@@ -1154,8 +1154,8 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 
 		//	Save all InitString entries.
 		for (int index = 0; index < InitStrings.Count(); index++) {
-			char buf[10];
-			sprintf( buf, "%03d", index);
+			char buf[12];
+			snprintf( buf, 12, "%03d", index);
 			ini.Put_String("InitStrings", buf, InitStrings[index]);
 		}
 
@@ -1166,8 +1166,8 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 		//	Format: Entry=Name,PhoneNum,Port,IRQ,Baud,InitString
 		for (int i = (PhoneBook.Count() - 1); i >= 0; i--) {
 			char buf[128];
-			char entrytext[10];
-			sprintf(buf,"%s|%s|%x|%d|%d|%d|%d|%d|%s|%d|%d|%s",
+			char entrytext[12];
+			snprintf(buf,128,"%s|%s|%x|%d|%d|%d|%d|%d|%s|%d|%d|%s",
 				PhoneBook[i]->Name,
 				PhoneBook[i]->Number,
 				PhoneBook[i]->Settings.Port,
@@ -1180,7 +1180,7 @@ void SessionClass::Write_MultiPlayer_Settings (void)
 				PhoneBook[i]->Settings.InitStringIndex,
 				PhoneBook[i]->Settings.CallWaitStringIndex,
 				PhoneBook[i]->Settings.CallWaitString);
-			sprintf( entrytext, "%03d", i );
+			snprintf( entrytext, 12, "%03d", i );
 			ini.Put_String("PhoneBook", entrytext, buf);
 		}
 

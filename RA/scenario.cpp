@@ -361,7 +361,7 @@ Theme.Stop();
 	*/
 	char buffer[25];
 	if (Scen.BriefMovie != VQ_NONE) {
-		sprintf(buffer, "%s.VQA", VQName[Scen.BriefMovie]);
+		snprintf(buffer, 25, "%s.VQA", VQName[Scen.BriefMovie]);
 	}
 	if (Session.Type == GAME_NORMAL && (Scen.BriefMovie == VQ_NONE || !CCFileClass(buffer).Is_Available())) {
 		/*
@@ -928,9 +928,9 @@ void Do_Win(void)
 			if (AntsEnabled) {
 				char scenarioname[24];
 				strcpy(scenarioname, Scen.ScenarioName);
-				char buf[10];
+				char buf[12];
 				Scen.Scenario++;
-				sprintf(buf, "%02d", Scen.Scenario);
+				snprintf(buf, 12, "%02d", Scen.Scenario);
 				memcpy(&scenarioname[3], buf, 2);
 				Scen.Set_Scenario_Name(scenarioname);
 			} else {
@@ -1286,7 +1286,7 @@ bool Restate_Mission(char const * name, int button1, int button2)
 		bool brief = true;
 		char buffer[25];
 		if (Scen.BriefMovie != VQ_NONE) {
-			sprintf(buffer, "%s.VQA", VQName[Scen.BriefMovie]);
+			snprintf(buffer, 25, "%s.VQA", VQName[Scen.BriefMovie]);
 		}
 
 		if (Scen.BriefMovie == VQ_NONE || !CCFileClass(buffer).Is_Available()) {
@@ -1322,7 +1322,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	char buffer[BUFFSIZE];
 	bool retval;
 	bool process;								// loop while true
-	KeyNumType input;							// user input
+	//KeyNumType input;							// user input
 	int selection;
 	bool pressed;
 	int curbutton;
@@ -1517,7 +1517,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	VisiblePage.Blit(seen_buff_save);
 	#endif
 
-	static char _scorepal[]={0,1,12,13,4,5,6,7,8,9,10,255,252,253,14,248};
+	static unsigned char _scorepal[]={0,1,12,13,4,5,6,7,8,9,10,255,252,253,14,248};
 	Set_Font_Palette(_scorepal);
 	temp.Set(FADE_PALETTE_MEDIUM, Call_Back);
 
@@ -1619,7 +1619,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 			/*
 			**	Fetch and process input.
 			*/
-			input = buttonlist->Input();
+			int input = static_cast<int>(buttonlist->Input());
 			switch (input) {
 				case (BUTTON_1|BUTTON_FLAG):
 					selection = realval[0];
@@ -1738,19 +1738,25 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	** Now set the palette, depending on if we're going to show the video or
 	** go back to the main menu.
 	*/
-	switch (retval) {
+
+	if (retval) {
+		BlackPalette.Set(FADE_PALETTE_MEDIUM, Call_Back);
+		SeenPage.Clear();
+	}
+/*	switch (retval) {
 		case 0:
 //			BlackPalette.Set(FADE_PALETTE_MEDIUM, Call_Back);
 //			SeenPage.Clear();
 ////			CCPalette.Set();
 //			break;
-		case 1:
+		case true:
 			BlackPalette.Set(FADE_PALETTE_MEDIUM, Call_Back);
 			SeenPage.Clear();
 			break;
 		default:
 			break;
 	}
+*/
 	Show_Mouse();
 
 	GadgetClass::Set_Color_Scheme(&ColorRemaps[PCOLOR_DIALOG_BLUE]);
@@ -1849,7 +1855,7 @@ void ScenarioClass::Set_Scenario_Name(int scenario, ScenarioPlayerType player, S
 		** Find which variations are available for this scenario
 		*/
 		for (i = SCEN_VAR_FIRST; i < SCEN_VAR_COUNT; i++) {
-			sprintf(fname, "SC%c%02d%c%c.INI", c_player, scenario, c_dir, 'A' + i);
+			snprintf(fname, _MAX_FNAME+_MAX_EXT, "SC%c%02d%c%c.INI", c_player, scenario, c_dir, 'A' + i);
 			if (!CCFileClass(fname).Is_Available()) {
 				break;
 			}
@@ -1892,7 +1898,7 @@ void ScenarioClass::Set_Scenario_Name(int scenario, ScenarioPlayerType player, S
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
 //Mono_Printf("In set_scenario_name, scenario # = %d\n",scenario);Keyboard->Get();Keyboard->Get();
 	if (scenario < 100) {
-		sprintf(ScenarioName, "SC%c%02d%c%c.INI", c_player, scenario, c_dir, c_var);
+		snprintf(ScenarioName, 512, "SC%c%02d%c%c.INI", c_player, scenario, c_dir, c_var);
 	} else {
 		char first = (scenario / 36) + 'A';
 		char second = scenario % 36;
@@ -1903,7 +1909,7 @@ void ScenarioClass::Set_Scenario_Name(int scenario, ScenarioPlayerType player, S
 			second = (second - 10) + 'A';
 		}
 
-		sprintf(ScenarioName, "SC%c%c%c%c%c.INI", c_player, first, second, c_dir, c_var);
+		snprintf(ScenarioName, 512, "SC%c%c%c%c%c.INI", c_player, first, second, c_dir, c_var);
 	}
 #else
 	sprintf(ScenarioName, "SC%c%02d%c%c.INI", c_player, scenario, c_dir, c_var);
@@ -3398,6 +3404,9 @@ static CELL Clip_Move(CELL cell, FacingType facing, int dist)
 		case FACING_NW:
 			x -= dist;
 			y -= dist;
+			break;
+		case FACING_COUNT:
+		case FACING_NONE:
 			break;
 	}
 

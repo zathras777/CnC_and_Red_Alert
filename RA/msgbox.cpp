@@ -305,7 +305,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 				input = KN_ESC;
 			}
 #endif
-			switch (input) {
+			switch (static_cast<int>(input)) {
 				case (KN_ESC):
 					selection = realval[numbuttons-1];
 					pressed = true;
@@ -378,8 +378,6 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 				/*
 				**	Check 'input' to see if it's the 1st char of button text
 				*/
-				default:
-					break;
 			}
 
 			if (pressed) {

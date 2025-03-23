@@ -835,7 +835,7 @@ int Main_Menu(unsigned long )
 		/*
 		**	Dispatch the input to be processed.
 		*/
-		switch (input) {
+		switch (static_cast<int>(input)) {
 			case (BUTTON_EXPAND | KN_BUTTON):
 				retval = (input & 0x7FFF) - BUTTON_EXPAND;
 				process = false;
@@ -1001,10 +1001,6 @@ int Main_Menu(unsigned long )
 			}
 			#endif
 #endif
-
-
-			default:
-				break;
 		}
 	}
 
