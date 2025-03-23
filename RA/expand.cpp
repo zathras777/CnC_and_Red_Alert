@@ -336,7 +336,7 @@ class EListClass : public ListClass
  *=============================================================================================*/
 void EListClass::Draw_Entry(int index, int x, int y, int width, int selected)
 {
-	char buffer[128];
+	char buffer[256];
 	RemapControlType * scheme = GadgetClass::Get_Color_Scheme();
 
 	int text = TXT_NONE;
@@ -345,7 +345,7 @@ void EListClass::Draw_Entry(int index, int x, int y, int width, int selected)
 	} else {
 		text = TXT_SOVIET;
 	}
-	snprintf(buffer, 128, "%s: %s", Text_String(text), Get_Object(index)->Name);
+	snprintf(buffer, 256, "%s: %s", Text_String(text), Get_Object(index)->Name);
 
 	TextPrintType flags = TextFlags;
 
