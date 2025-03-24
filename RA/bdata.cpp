@@ -3104,7 +3104,7 @@ void BuildingTypeClass::One_Time(void)
 		*/
 		if (building.Level != -1) {
 //		if (building.IsBuildable) {
-			sprintf(buffer, "%sICON", building.Graphic_Name());
+			snprintf(buffer, 256, "%sICON", building.Graphic_Name());
 
 			if (building.IsFake) {
 				buffer[3] = 'F';
@@ -3117,7 +3117,8 @@ void BuildingTypeClass::One_Time(void)
 		/*
 		**	Fetch the construction animation for this building.
 		*/
-		sprintf(buffer, "%sMAKE", building.Graphic_Name());
+
+		snprintf(buffer, 256, "%sMAKE", building.Graphic_Name());
 		_makepath(fullname, NULL, NULL, buffer, ".SHP");
 		void const * dataptr;
 		dataptr = MFCD::Retrieve(fullname);
@@ -3134,6 +3135,7 @@ void BuildingTypeClass::One_Time(void)
 		/*
 		**	Fetch the normal game shape for this building.
 		*/
+
 		_makepath(fullname, NULL, NULL, building.Graphic_Name(), ".SHP");
 		((void const *&)building.ImageData) = MFCD::Retrieve(fullname);
 	}
@@ -3363,7 +3365,7 @@ void BuildingTypeClass::Init(TheaterType theater)
 				**	Buildup data is probably theater specific as well. Fetch a pointer to the
 				**	data at this time as well.
 				*/
-				sprintf(fullname, "%sMAKE.%s", classptr->Graphic_Name(), Theaters[theater].Suffix);
+				snprintf(fullname, 512, "%sMAKE.%s", classptr->Graphic_Name(), Theaters[theater].Suffix);
 				((void const *&)classptr->BuildupData) = MFCD::Retrieve(fullname);
 				if (classptr->BuildupData) {
 					int timedelay = 1;
