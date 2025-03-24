@@ -3,6 +3,7 @@ project(CnCRedAlert)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 if(MSVC)
     add_compile_options(
@@ -30,6 +31,9 @@ add_compile_definitions(-DWIN32) # hopefully easier than DOS
 add_subdirectory(port)
 add_subdirectory(SDLLIB)
 add_subdirectory(WINVQ)
+
+# Start adding in tools that may be useful.
+add_subdirectory(TOOLS/MIX)
 
 add_subdirectory(RA)
 add_subdirectory(TD)
